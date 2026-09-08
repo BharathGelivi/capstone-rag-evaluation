@@ -1,0 +1,197 @@
+{
+    "framework_metadata": {
+        "trace_id": "be9c6752-8bea-4e70-8d4d-8cf48d2f7e61",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T13:03:29.729820Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS section 167, who may be deputed to make a local inquiry necessary under sections 164, 165 or 166, and what may that person be given?",
+        "generated_answer": "A District Magistrate or Sub-divisional Magistrate may depute any Magistrate subordinate to him to make the inquiry, and may furnish him with such written instructions as may seem necessary for his guidance [Chunk-ID: ff895998-9c65-457e-8a36-708a7258c9b7].",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 8,
+        "total_claims": 8,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.27445268630981445,
+                    "pool_size": 36
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9996869564056396,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.25,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 4
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9996869564056396
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 4,
+        "verified_claims": 8,
+        "supported_claims": 8,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.25,
+        "average_entailment": 0.9981420412659645,
+        "retrieval_latency_ms": 1313.1916522979736,
+        "generation_latency_ms": 6572.329044342041,
+        "verification_latency_ms": 1063733.577489853
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace be9c6752-8bea-4e70-8d4d-8cf48d2f7e61.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "bec539da-df4d-4820-be43-bcb1f56301bd",
+            "claim_text": "A District Magistrate or Sub-divisional Magistrate may depute any Magistrate subordinate to him to make the inquiry",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "e908d6ed-ae50-48d9-a42b-791236f26ab2",
+            "claim_text": "A District Magistrate or Sub-divisional Magistrate may depute any Magistrate subordinate to him",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "f01844a1-16b9-43d6-898c-578ce9ae8abf",
+            "claim_text": "any Magistrate subordinate to him may be deputed by a District Magistrate or Sub-divisional Magistrate",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "5bb1b079-ce86-4820-b47e-0f2db50eedf1",
+            "claim_text": "A District Magistrate or Sub-divisional Magistrate may make the inquiry",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "056e7457-663b-442d-b499-b880508998ca",
+            "claim_text": "A District Magistrate or Sub-divisional Magistrate may furnish him with written instructions",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "a901d6d9-cf43-4d5e-ac38-0a97e769f92b",
+            "claim_text": "written instructions may be furnished by a District Magistrate or Sub-divisional Magistrate",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "152c23eb-7b22-45d7-bf86-17bdc13278ab",
+            "claim_text": "written instructions may be necessary for his guidance",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        },
+        {
+            "claim_id": "a09d52aa-4091-41f7-b601-d7667985e404",
+            "claim_text": "written instructions may seem necessary",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff895998-9c65-457e-8a36-708a7258c9b7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "167. (1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid.\n(2) The report of the person so deputed may be read as evidence in the case.\n(3) When any costs have been incurred by any party to a proceeding under\nsection 164, section 165 or section 166, the Magistrate passing a decision may direct by\nwhom such costs shall be paid, whether by such party or by any other party to the proceeding,\nand whether in whole or in part or proportion and such costs may include any expenses\nincurred in respect of witnesses and of advocates' fees, which the Court may consider\nreasonable."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (25%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/4 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T13:03:29.729936Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

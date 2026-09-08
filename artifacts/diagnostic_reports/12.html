@@ -1,0 +1,899 @@
+<title>X-RAG Diagnostic Report — 3c68552b-f6b4-4936-b178-61ae845d6019</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>What punishment applies if a person already under a sentence of life imprisonment commits murder?</h1>
+    <p class="dek">Trace <span class="mono">3c68552b-f6b4-4936-b178-61ae845d6019</span>, generated 2026-09-06T13:30:19.675691Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">100%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNKNOWN</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">3 / 3</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.992</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">What punishment applies if a person already under a sentence of life imprisonment commits murder?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">If a person who is already serving a sentence of imprisonment for life commits murder, the law prescribes that they shall be punished with **death or imprisonment for life**, where the life sentence is understood to mean the remainder of that person’s natural life【c915250d-039f-455d-a068-4a082cb495ce】.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 0.70s retrieval + 6.93s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">7.630s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">66</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: cc3b3dd7-7f37-4e35-aaf2-9114d7b0c885] ---
+to kill him, and not having been subject to the provocation, assists A in killing Z. Here,
+thoughA and B are both engaged in causing Z’s death, B is guilty of murder, and Ais guilty
+only of culpable homicide.
+CHAPTERII
+OF PUNISHMENTS
+4. The punishments to which offenders are liable under the provisions of this Sanhita
+are—
+(a) Death;
+(b) Imprisonment for life;
+(c) Imprisonment, which is of two descriptions, namely:—
+(1) Rigorous, that is, with hard labour;
+(2) Simple;
+(d) Forfeiture of property;
+(e) Fine;
+(f) Community Service.
+5. The appropriate Government may, without the consent of the offender, commute
+any punishment under this Sanhita to any other punishment in accordance with section 474
+of the Bharatiya Nagarik Suraksha Sanhita, 2023.
+Explanation.––For the purposes of this section the expression “appropriate
+Government” means,––
+(a) in cases where the sentence is a sentence of death or is for an offence
+against any law relating to a matter to which the executive power of the Union extends,
+the Central Government; and
+(b) in cases where the sentence (whether of death or not) is for an offence
+against any law relating to a matter to which the executive power of the State extends,
+the Government of the State within which the offender is sentenced.
+6. In calculating fractions of terms of punishment, imprisonment for life shall be
+reckoned as equivalent to imprisonment for twenty years unless otherwise provided.
+7. In every case in which an offender is punishable with imprisonment which may be
+of either description, it shall be competent to the Court which sentences such offender to
+direct in the sentence that such imprisonment shall be wholly rigorous, or that such
+imprisonment shall be wholly simple, or that any part of such imprisonment shall be rigorous
+and the rest simple.
+8. (1) Where no sum is expressed to which a fine may extend, the amount of fine to
+which the offender is liable is unlimited, but shall not be excessive.
+
+--- Context chunk 2 [Chunk-ID: 320c1526-fed5-4985-ae85-e16910f24ab6] ---
+Here, if A knew that the grievous hurt
+abetted was likely to cause death, A is liable to be punished with the punishment provided
+for murder.
+54. Whenever any person, who is absent would be liable to be punished as an abettor,
+is present when the act or offence for which he would be punishable in consequence of the
+abetment is committed, he shall be deemed to have committed such act or offence.
+55. Whoever abets the commission of an offence punishable with death or
+imprisonment for life, shall, if that offence be not committed in consequence of the abetment,
+and no express provision is made under this Sanhita for the punishment of such abetment, be
+punished with imprisonment of either description for a term which may extend to seven
+years, and shall also be liable to fine; and if any act for which the abettor is liable in consequence
+of the abetment, and which causes hurt to any person, is done, the abettor shall be liable to
+imprisonment of either description for a term which may extend to fourteen years, and shall
+also be liable to fine.
+Illustration.
+A instigates B to murder Z. The offence is not committed. If B had murdered Z, he
+would have been subject to the punishment of death or imprisonment for life.Therefore, Ais
+liable to imprisonment for a term which may extend to seven years and also to a fine; and if
+any hurt be done to Z in consequence of the abetment, he will be liable to imprisonment for
+a term which may extend to fourteen years, and to fine.
+56.
+
+--- Context chunk 3 [Chunk-ID: c915250d-039f-455d-a068-4a082cb495ce] ---
+D.—General provisions regarding execution
+465. Every warrant for the execution of a sentence may be issued either by the Judge
+or Magistrate who passed the sentence, or by his successor-in-office.
+466. (1) When a sentence of death, imprisonment for life or fine is passed under this
+Sanhita on an escaped convict, such sentence shall, subject to the provisions hereinbefore
+contained, take effect immediately.
+(2) When a sentence of imprisonment for a term is passed under this Sanhita on an
+escaped convict,—
+(a) if such sentence is severer in kind than the sentence which such convict
+was undergoing when he escaped, the new sentence shall take effect immediately;
+(b) if such sentence is not severer in kind than the sentence which such convict
+was undergoing when he escaped, the new sentence shall take effect after he has
+suffered imprisonment for a further period equal to that which, at the time of his
+escape, remained unexpired of his former sentence.
+(3) For the purposes of sub-section (2), a sentence of rigorous imprisonment shall be
+deemed to be severer in kind than a sentence of simple imprisonment.
+467. (1) When a person already undergoing a sentence of imprisonment is sentenced
+on a subsequent conviction to imprisonment or imprisonment for life, such imprisonment or
+imprisonment for life shall commence at the expiration of the imprisonment to which he has
+been previously sentenced, unless the Court directs that the subsequent sentence shall
+run concurrently with such previous sentence:
+Provided that where a person who has been sentenced to imprisonment by an order
+under section 141 in default of furnishing security is, whilst undergoing such sentence,
+sentenced to imprisonment for an offence committed prior to the making of such order, the
+latter sentence shall commence immediately.
+(2) When a person already undergoing a sentence of imprisonment for life is sentenced
+on a subsequent conviction to imprisonment for a term or imprisonment for life, the
+subsequent sentence shall run concurrently with such previous sentence.
+Suspension of
+execution of
+sentence of
+imprisonment.
+Who may
+issue warrant.
+Sentence on
+escaped
+convict when
+to take effect.
+Sentence on
+offender
+already
+sentenced for
+another
+offence.
+
+--- Context chunk 4 [Chunk-ID: b12250cd-e697-4480-a5e7-cf7457fb9381] ---
+(2) When a person already undergoing a sentence of imprisonment for life is sentenced
+on a subsequent conviction to imprisonment for a term or imprisonment for life, the
+subsequent sentence shall run concurrently with such previous sentence.
+Suspension of
+execution of
+sentence of
+imprisonment.
+Who may
+issue warrant.
+Sentence on
+escaped
+convict when
+to take effect.
+Sentence on
+offender
+already
+sentenced for
+another
+offence.
+140
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: 8724781a-dcc0-4775-8e72-d277a09d1944] ---
+(2) When any person offending under sub-section (1) is under sentence of imprisonment
+for life, he may, if hurt is caused, be punished with death or with imprisonment for life, which
+shall mean the remainder of that person’s natural life.
+Illustrations.
+(a) A shoots at Z with intention to kill him, under such circumstances that, if death
+ensued, A would be guilty of murder. A is liable to punishment under this section.
+(b)A, with the intention of causing the death of a child of tender years, exposes it in a
+desert place. A has committed the offence defined by this section, though the death of the
+child does not ensue.
+(c) A, intending to murder Z, buys a gun and loads it. A has not yet committed the
+offence.Afires the gun at Z. He has committed the offence defined in this section, and, if by
+such firing he wounds Z, he is liable to the punishment provided by the latter part of
+sub-section (1).
+(d) A, intending to murder Z by poison, purchases poison and mixes the same with
+food which remains in A’s keeping; A has not yet committed the offence defined in this
+section. A places the food on Z’s table or delivers it to Z’s servants to place it on Z’s table.A
+has committed the offence defined in this section.
+110. Whoever does any act with such intention or knowledge and under such
+circumstances that, if he by that act caused death, he would be guilty of culpable homicide
+not amounting to murder, shall be punished with imprisonment of either description for a
+term which may extend to three years, or with fine, or with both; and, if hurt is caused to any
+person by such act, shall be punished with imprisonment of either description for a term
+which may extend to seven years, or with fine, or with both.
+Illustration.
+A, on grave and sudden provocation, fires a pistol at Z, under such circumstances that
+if he thereby caused death, he would be guilty of culpable homicide not amounting to
+murder. A has committed the offence defined in this section.
+111.
+
+--- Context chunk 6 [Chunk-ID: ac6c1423-8651-4ff8-9f26-0cf720a5f981] ---
+102. If a person, by doing anything which he intends or knows to be likely to cause
+death, commits culpable homicide by causing the death of any person, whose death he
+neither intends nor knows himself to be likely to cause, the culpable homicide committed by
+the offender is of the description of which it would have been if he had caused the death of
+the person whose death he intended or knew himself to be likely to cause.
+103. (1) Whoever commits murder shall be punished with death or imprisonment for
+life, and shall also be liable to fine.
+(2) When a group of five or more persons acting in concert commits murder on the
+ground of race, caste or community, sex, place of birth, language, personal belief or any
+other similar ground each member of such group shall be punished with death or with
+imprisonment for life, and shall also be liable to fine.
+104.Whoever, being under sentence of imprisonment for life, commits murder, shall be
+punished with death or with imprisonment for life, which shall mean the remainder of that
+person’s natural life.
+105. Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.
+106. (1) Whoever causes death of any person by doing any rash or negligent act not
+amounting to culpable homicide, shall be punished with imprisonment of either description
+for a term which may extend to five years, and shall also be liable to fine; and if such act is
+done by a registered medical practitioner while performing medical procedure, he shall be
+punished with imprisonment of either description for a term which may extend to two years,
+and shall also be liable to fine.
+
+
+Question: What punishment applies if a person already under a sentence of life imprisonment commits murder?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (3 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A person who is already serving a sentence of imprisonment for life commits murder.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">85220089-b6d7-414d-a95f-920024c7358f</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">104.Whoever, being under sentence of imprisonment for life, commits murder, shall be
+punished with death or with imprisonment for life, which shall mean the remainder of that
+person’s natural life.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The law prescribes that they shall be punished with death or imprisonment for life.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">2587f161-f9fb-4671-b597-3235a42b8198</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">cc3b3dd7-7f37-4e35-aaf2-9114d7b0c885</span> (rank 6)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">The punishments to which offenders are liable under the provisions of this Sanhita
+are—
+(a) Death;
+(b) Imprisonment for life;
+(c) Imprisonment, which is of two descriptions, namely:—
+(1) Rigorous, that is, with hard labour;
+(2) Simple;
+(d) Forfeiture of property;
+(e) Fine;
+(f) Community Service.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The life sentence is understood to mean the remainder of that person’s natural life.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">16d3747b-5d40-4162-9044-19b0d54ae5cf</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">8724781a-dcc0-4775-8e72-d277a09d1944</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(2) When any person offending under sub-section (1) is under sentence of imprisonment
+for life, he may, if hurt is caused, be punished with death or with imprisonment for life, which
+shall mean the remainder of that person’s natural life.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span>
+            <span class="chunk-src">bns.pdf p.34</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.293</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">19.73</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0310</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.980</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">6</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ba51310f-ee90-4a0f-a4f9-a9d1a4aa4261</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">77</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2229 (2229 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">102. If a person, by doing anything which he intends or knows to be likely to cause
+death, commits culpable homicide by causing the death of any person, whose death he
+neither intends nor knows himself to be likely to cause, the culpable homicide committed by
+the offender is of the description of which it would have been if he had caused the death of
+the person whose death he intended or knew himself to be likely to cause.
+103. (1) Whoever commits murder shall be punished with death or imprisonment for
+life, and shall also be liable to fine.
+(2) When a group of five or more persons acting in concert commits murder on the
+ground of race, caste or community, sex, place of birth, language, personal belief or any
+other similar ground each member of such group shall be punished with death or with
+imprisonment for life, and shall also be liable to fine.
+104.Whoever, being under sentence of imprisonment for life, commits murder, shall be
+punished with death or with imprisonment for life, which shall mean the remainder of that
+person’s natural life.
+105. Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.
+106. (1) Whoever causes death of any person by doing any rash or negligent act not
+amounting to culpable homicide, shall be punished with imprisonment of either description
+for a term which may extend to five years, and shall also be liable to fine; and if such act is
+done by a registered medical practitioner while performing medical procedure, he shall be
+punished with imprisonment of either description for a term which may extend to two years,
+and shall also be liable to fine.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">8724781a-dcc0-4775-8e72-d277a09d1944</span>
+            <span class="chunk-src">bns.pdf p.35</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.252</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">19.73</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0320</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.935</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">4</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">c8972a42-b75f-4bf1-a53a-1f40b2403a17</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">80</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1976 (1976 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) When any person offending under sub-section (1) is under sentence of imprisonment
+for life, he may, if hurt is caused, be punished with death or with imprisonment for life, which
+shall mean the remainder of that person’s natural life.
+Illustrations.
+(a) A shoots at Z with intention to kill him, under such circumstances that, if death
+ensued, A would be guilty of murder. A is liable to punishment under this section.
+(b)A, with the intention of causing the death of a child of tender years, exposes it in a
+desert place. A has committed the offence defined by this section, though the death of the
+child does not ensue.
+(c) A, intending to murder Z, buys a gun and loads it. A has not yet committed the
+offence.Afires the gun at Z. He has committed the offence defined in this section, and, if by
+such firing he wounds Z, he is liable to the punishment provided by the latter part of
+sub-section (1).
+(d) A, intending to murder Z by poison, purchases poison and mixes the same with
+food which remains in A’s keeping; A has not yet committed the offence defined in this
+section. A places the food on Z’s table or delivers it to Z’s servants to place it on Z’s table.A
+has committed the offence defined in this section.
+110. Whoever does any act with such intention or knowledge and under such
+circumstances that, if he by that act caused death, he would be guilty of culpable homicide
+not amounting to murder, shall be punished with imprisonment of either description for a
+term which may extend to three years, or with fine, or with both; and, if hurt is caused to any
+person by such act, shall be punished with imprisonment of either description for a term
+which may extend to seven years, or with fine, or with both.
+Illustration.
+A, on grave and sudden provocation, fires a pistol at Z, under such circumstances that
+if he thereby caused death, he would be guilty of culpable homicide not amounting to
+murder. A has committed the offence defined in this section.
+111.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">b12250cd-e697-4480-a5e7-cf7457fb9381</span>
+            <span class="chunk-src">bnss.pdf p.140</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.254</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.60</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0315</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.876</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">3a0fee5f-81b1-4b93-8c30-7746d8ea206d</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">604</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">3550 - 4380 (830 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) When a person already undergoing a sentence of imprisonment for life is sentenced
+on a subsequent conviction to imprisonment for a term or imprisonment for life, the
+subsequent sentence shall run concurrently with such previous sentence.
+Suspension of
+execution of
+sentence of
+imprisonment.
+Who may
+issue warrant.
+Sentence on
+escaped
+convict when
+to take effect.
+Sentence on
+offender
+already
+sentenced for
+another
+offence.
+140
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">c915250d-039f-455d-a068-4a082cb495ce</span>
+            <span class="chunk-src">bnss.pdf p.140</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.288</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">20.39</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0318</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.775</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">5</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">3a0fee5f-81b1-4b93-8c30-7746d8ea206d</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">603</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1734 - 3976 (2242 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">D.—General provisions regarding execution
+465. Every warrant for the execution of a sentence may be issued either by the Judge
+or Magistrate who passed the sentence, or by his successor-in-office.
+466. (1) When a sentence of death, imprisonment for life or fine is passed under this
+Sanhita on an escaped convict, such sentence shall, subject to the provisions hereinbefore
+contained, take effect immediately.
+(2) When a sentence of imprisonment for a term is passed under this Sanhita on an
+escaped convict,—
+(a) if such sentence is severer in kind than the sentence which such convict
+was undergoing when he escaped, the new sentence shall take effect immediately;
+(b) if such sentence is not severer in kind than the sentence which such convict
+was undergoing when he escaped, the new sentence shall take effect after he has
+suffered imprisonment for a further period equal to that which, at the time of his
+escape, remained unexpired of his former sentence.
+(3) For the purposes of sub-section (2), a sentence of rigorous imprisonment shall be
+deemed to be severer in kind than a sentence of simple imprisonment.
+467. (1) When a person already undergoing a sentence of imprisonment is sentenced
+on a subsequent conviction to imprisonment or imprisonment for life, such imprisonment or
+imprisonment for life shall commence at the expiration of the imprisonment to which he has
+been previously sentenced, unless the Court directs that the subsequent sentence shall
+run concurrently with such previous sentence:
+Provided that where a person who has been sentenced to imprisonment by an order
+under section 141 in default of furnishing security is, whilst undergoing such sentence,
+sentenced to imprisonment for an offence committed prior to the making of such order, the
+latter sentence shall commence immediately.
+(2) When a person already undergoing a sentence of imprisonment for life is sentenced
+on a subsequent conviction to imprisonment for a term or imprisonment for life, the
+subsequent sentence shall run concurrently with such previous sentence.
+Suspension of
+execution of
+sentence of
+imprisonment.
+Who may
+issue warrant.
+Sentence on
+escaped
+convict when
+to take effect.
+Sentence on
+offender
+already
+sentenced for
+another
+offence.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">320c1526-fed5-4985-ae85-e16910f24ab6</span>
+            <span class="chunk-src">bns.pdf p.20</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.320</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">16.46</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0286</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.670</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">12</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">8</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">f8a1509e-7bf6-4f59-99d9-4551b509cb10</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">45</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1169 - 2656 (1487 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Here, if A knew that the grievous hurt
+abetted was likely to cause death, A is liable to be punished with the punishment provided
+for murder.
+54. Whenever any person, who is absent would be liable to be punished as an abettor,
+is present when the act or offence for which he would be punishable in consequence of the
+abetment is committed, he shall be deemed to have committed such act or offence.
+55. Whoever abets the commission of an offence punishable with death or
+imprisonment for life, shall, if that offence be not committed in consequence of the abetment,
+and no express provision is made under this Sanhita for the punishment of such abetment, be
+punished with imprisonment of either description for a term which may extend to seven
+years, and shall also be liable to fine; and if any act for which the abettor is liable in consequence
+of the abetment, and which causes hurt to any person, is done, the abettor shall be liable to
+imprisonment of either description for a term which may extend to fourteen years, and shall
+also be liable to fine.
+Illustration.
+A instigates B to murder Z. The offence is not committed. If B had murdered Z, he
+would have been subject to the punishment of death or imprisonment for life.Therefore, Ais
+liable to imprisonment for a term which may extend to seven years and also to a fine; and if
+any hurt be done to Z in consequence of the abetment, he will be liable to imprisonment for
+a term which may extend to fourteen years, and to fine.
+56.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">cc3b3dd7-7f37-4e35-aaf2-9114d7b0c885</span>
+            <span class="chunk-src">bns.pdf p.8</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.300</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">14.36</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0279</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.649</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">7</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">17</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">2fb15809-71c4-4314-bf9c-6b80e6aea677</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">15</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1964 (1964 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">to kill him, and not having been subject to the provocation, assists A in killing Z. Here,
+thoughA and B are both engaged in causing Z’s death, B is guilty of murder, and Ais guilty
+only of culpable homicide.
+CHAPTERII
+OF PUNISHMENTS
+4. The punishments to which offenders are liable under the provisions of this Sanhita
+are—
+(a) Death;
+(b) Imprisonment for life;
+(c) Imprisonment, which is of two descriptions, namely:—
+(1) Rigorous, that is, with hard labour;
+(2) Simple;
+(d) Forfeiture of property;
+(e) Fine;
+(f) Community Service.
+5. The appropriate Government may, without the consent of the offender, commute
+any punishment under this Sanhita to any other punishment in accordance with section 474
+of the Bharatiya Nagarik Suraksha Sanhita, 2023.
+Explanation.––For the purposes of this section the expression “appropriate
+Government” means,––
+(a) in cases where the sentence is a sentence of death or is for an offence
+against any law relating to a matter to which the executive power of the Union extends,
+the Central Government; and
+(b) in cases where the sentence (whether of death or not) is for an offence
+against any law relating to a matter to which the executive power of the State extends,
+the Government of the State within which the offender is sentenced.
+6. In calculating fractions of terms of punishment, imprisonment for life shall be
+reckoned as equivalent to imprisonment for twenty years unless otherwise provided.
+7. In every case in which an offender is punishable with imprisonment which may be
+of either description, it shall be competent to the Court which sentences such offender to
+direct in the sentence that such imprisonment shall be wholly rigorous, or that such
+imprisonment shall be wholly simple, or that any part of such imprisonment shall be rigorous
+and the rest simple.
+8. (1) Where no sum is expressed to which a fine may extend, the amount of fine to
+which the offender is liable is unlimited, but shall not be excessive.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 3/6 chunks used (50%)</div>
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">All generated claims are fully supported by evidence.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 3c68552b-f6b4-4936-b178-61ae845d6019.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>GENERATOR passed (confidence=0.95).</li><li>GROUNDING passed (confidence=0.90).</li><li>No failures detected. Pipeline is healthy or all evidence is UNKNOWN.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.930</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    <p class='muted'>None recommended -- pipeline is healthy for this example.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.333</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">1 / 3</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">Punished with death or with imprisonment for life, which shall mean the remainder of that person&#x27;s natural life.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">That person is punished with death.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.034</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">If a person who is already serving a sentence of imprisonment for life commits murder, the law prescribes that they shall be punished with **death or imprisonment for life**, where the life sentence is understood to mean the remainder of that person’s natural life【c915250d-039f-455d-a068-4a082cb495ce】.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot warn"></span>
+            <span class="claim-status warn">PARTIALLY_SUPPORTED</span>
+            <span class="claim-summary-text">That person is punished with imprisonment for life.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.587</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">If a person who is already serving a sentence of imprisonment for life commits murder, the law prescribes that they shall be punished with **death or imprisonment for life**, where the life sentence is understood to mean the remainder of that person’s natural life【c915250d-039f-455d-a068-4a082cb495ce】.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot warn"></span>
+            <span class="claim-status warn">NOT_VERIFIABLE</span>
+            <span class="claim-summary-text">Imprisonment for life shall mean the remainder of that person&#x27;s natural life.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.249</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">If a person who is already serving a sentence of imprisonment for life commits murder, the law prescribes that they shall be punished with **death or imprisonment for life**, where the life sentence is understood to mean the remainder of that person’s natural life【c915250d-039f-455d-a068-4a082cb495ce】.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.992</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNKNOWN</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.892</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val mid mono">0.500</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val hi mono">0.833</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.333</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 3c68552b-f6b4-4936-b178-61ae845d6019 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

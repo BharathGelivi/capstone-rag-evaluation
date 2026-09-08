@@ -1,0 +1,262 @@
+{
+    "framework_metadata": {
+        "trace_id": "71b4acb1-e662-4fec-86f4-2abae8a5dfc1",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T11:35:14.698921Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under what circumstances does the right of private defence of the body NOT extend to voluntarily causing the assailant's death?",
+        "generated_answer": "The right of private defence of the body **does not** extend to voluntarily causing the assailant\u2019s death in the following situations:\n\n1. **The offence is not one of the categories listed in \u00a7\u202f38** \u2013 i.e., it is not:  \n   - an assault that reasonably causes apprehension of death,  \n   - an assault that reasonably causes apprehension of grievous hurt,  \n   - an assault with the intention of committing rape,  \n   - an assault with the intention of gratifying unnatural lust, or  \n   - an assault with the intention of kidnapping or abducting.  \n   *[\u00a7\u202f39: \u201cIf the offence be not of any of the descriptions specified in section\u202f38, the right of private defence of the body does not extend to the voluntary causing of death \u2026\u201d]*\u301090f8747a-7f40-4ae3-b114-2b216129f432\u3011\n\n2. **The act is done by a public servant (or under his direction) in good faith under colour of office and does not reasonably cause apprehension of death or grievous hurt.**  \n   *[\u00a7\u202f37(1)(a)\u2011(b): no right of private defence against such acts]*\u301069db30c9-72ad-48eb-b310-9e3137806fa2\u3011\n\n3. **There is time to have recourse to the protection of the public authorities.**  \n   *[\u00a7\u202f37(1)(c)]*\u301069db30c9-72ad-48eb-b310-9e3137806fa2\u3011\n\n4. **The defence would inflict more harm than is necessary for the purpose of defence.**  \n   *[\u00a7\u202f37(2): \u201cThe right of private defence in no case extends to the inflicting of more harm than it is necessary to inflict for the purpose of defence.\u201d]*\u30106f639d07-62fa-48e0-a811-5492ff51880e\u3011\n\nIn short, the right to cause death is limited to those assaults that raise a reasonable apprehension of death or grievous hurt (or the specific serious intents listed in \u00a7\u202f38); outside those bounds, the defender may only use force sufficient to cause non\u2011lethal harm.",
+        "overall_health_score": 0.6875,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 11,
+        "total_claims": 16,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.21580976247787476,
+                    "pool_size": 61
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9986571073532104,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.8333333333333334,
+                    "chunks_used": 5,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "5 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 5,
+                    "max_score": 0.9986571073532104
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 16,
+        "supported_claims": 11,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 5,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6875,
+        "evidence_coverage": 1.0,
+        "average_entailment": 0.7356505026109517,
+        "retrieval_latency_ms": 1421.9779968261719,
+        "generation_latency_ms": 9301.13959312439,
+        "verification_latency_ms": 43008.04829597473
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 71b4acb1-e662-4fec-86f4-2abae8a5dfc1.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 5 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "1bb6b5b5-082c-46d3-a283-4bc5d82e367f",
+            "claim_text": "The right of private defence of the body does not extend to voluntarily causing the assailant\u2019s death in the following situations.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "56f0f9d9-31e6-4e2e-a2ae-c5b3ce707d02",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If the offence, the committing of which, or the attempting to commit which occasions\nthe exercise of the right of private defence, be theft, mischief, or criminal trespass, not of any\nof the descriptions specified in section 41, that right does not extend to the voluntary\ncausing of death, but does extend, subject to the restrictions specified in section 37, to the\nvoluntary causing to the wrong-doer of any harm other than death."
+        },
+        {
+            "claim_id": "e37057ca-c702-4876-8def-8554841b36e2",
+            "claim_text": "The offence is not one of the categories listed in \u00a7\u202f38.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "90f8747a-7f40-4ae3-b114-2b216129f432",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If the offence be not of any of the descriptions specified in section 38, the right of\nprivate defence of the body does not extend to the voluntary causing of death to the\nassailant, but does extend, under the restrictions specified in section 37, to the voluntary\ncausing to the assailant of any harm other than death."
+        },
+        {
+            "claim_id": "a8ef307a-8e9e-49aa-98d4-c5bf1780c8cd",
+            "claim_text": "The offence is not an assault that reasonably causes apprehension of death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13609d07-4b5c-46ae-b3b3-82b26460bc1f",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Act causing\nslight harm."
+        },
+        {
+            "claim_id": "5999cc0b-baa2-4507-a277-042ac0179256",
+            "claim_text": "The offence is not an assault that reasonably causes apprehension of grievous hurt.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13609d07-4b5c-46ae-b3b3-82b26460bc1f",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Act causing\nslight harm."
+        },
+        {
+            "claim_id": "f01327b9-54de-4232-b0e4-0bfea282fab5",
+            "claim_text": "The offence is not an assault with the intention of committing rape.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B, knowing\nthat fact and also that C is not Z, wilfully represents toAthat C is Z, and thereby intentionally\ncauses A to apprehend C. Here B abets by instigation the apprehension of C.\nExplanation 2.\u2014Whoever, either prior to or at the time of the commission of an act,\ndoes anything in order to facilitate the commission of that act, and thereby facilitates the\ncommission thereof, is said to aid the doing of that act."
+        },
+        {
+            "claim_id": "1d75860d-2108-4fa3-839f-0f9fec5a8fad",
+            "claim_text": "The offence is not an assault with the intention of gratifying unnatural lust.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13609d07-4b5c-46ae-b3b3-82b26460bc1f",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "14\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "8d13cba5-748c-46ae-886f-d56ef62dd2f5",
+            "claim_text": "The offence is not an assault with the intention of kidnapping or abducting.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B, knowing\nthat fact and also that C is not Z, wilfully represents toAthat C is Z, and thereby intentionally\ncauses A to apprehend C. Here B abets by instigation the apprehension of C.\nExplanation 2.\u2014Whoever, either prior to or at the time of the commission of an act,\ndoes anything in order to facilitate the commission of that act, and thereby facilitates the\ncommission thereof, is said to aid the doing of that act."
+        },
+        {
+            "claim_id": "6751b614-31a6-4c25-b9b7-a8a72978afd6",
+            "claim_text": "The act is done by a public servant (or under his direction) in good faith under colour of office.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "69db30c9-72ad-48eb-b310-9e3137806fa2",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "(1) There is no right of private defence,\u2013\u2013\n(a) against an act which does not reasonably cause the apprehension of death\nor of grievous hurt, if done, or attempted to be done, by a public servant acting in good\nfaith under colour of his office, though that act, may not be strictly justifiable by law;\n(b) against an act which does not reasonably cause the apprehension of death\nor of grievous hurt, if done, or attempted to be done, by the direction of a public\nservant acting in good faith under colour of his office, though that direction may not\nbe strictly justifiable by law;\n(c) in cases in which there is time to have recourse to the protection of the public\nauthorities."
+        },
+        {
+            "claim_id": "3522fd7f-64e0-4ae1-8759-f9016995b5a7",
+            "claim_text": "The act does not reasonably cause apprehension of death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "exercise that right without risk of harm to an innocent person, his right of private defence\nextends to the running of that risk."
+        },
+        {
+            "claim_id": "2e075b58-32dc-4f13-9ccd-c29359968267",
+            "claim_text": "The act does not reasonably cause apprehension of grievous hurt.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "exercise that right without risk of harm to an innocent person, his right of private defence\nextends to the running of that risk."
+        },
+        {
+            "claim_id": "3f7ee4cd-a22e-4299-9c81-defb1905424b",
+            "claim_text": "There is time to have recourse to the protection of the public authorities.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B, knowing\nthat fact and also that C is not Z, wilfully represents toAthat C is Z, and thereby intentionally\ncauses A to apprehend C. Here B abets by instigation the apprehension of C.\nExplanation 2.\u2014Whoever, either prior to or at the time of the commission of an act,\ndoes anything in order to facilitate the commission of that act, and thereby facilitates the\ncommission thereof, is said to aid the doing of that act."
+        },
+        {
+            "claim_id": "596405d2-d13f-4506-a519-e7203acade1d",
+            "claim_text": "The defence would inflict more harm than is necessary for the purpose of defence.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "6f639d07-62fa-48e0-a811-5492ff51880e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "The right of private defence of the body extends, under the restrictions specified in\nsection 37, to the voluntary causing of death or of any other harm to the assailant, if the\noffence which occasions the exercise of the right be of any of the descriptions hereinafter\nenumerated, namely:\u2014\n(a) such an assault as may reasonably cause the apprehension that death will\notherwise be the consequence of such assault;\n(b) such an assault as may reasonably cause the apprehension that grievous\nhurt will otherwise be the consequence of such assault;\n(c) an assault with the intention of committing rape;\n(d) an assault with the intention of gratifying unnatural lust;\n(e) an assault with the intention of kidnapping or abducting;\nRight of\nprivate\ndefence\nagainst act of\na person of\nunsound mind,\netc."
+        },
+        {
+            "claim_id": "6ec4179d-9a6e-4b2f-8d85-cc36395252a8",
+            "claim_text": "The right to cause death is limited to those assaults that raise a reasonable apprehension of death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "6f639d07-62fa-48e0-a811-5492ff51880e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "The right of private defence of the body extends, under the restrictions specified in\nsection 37, to the voluntary causing of death or of any other harm to the assailant, if the\noffence which occasions the exercise of the right be of any of the descriptions hereinafter\nenumerated, namely:\u2014\n(a) such an assault as may reasonably cause the apprehension that death will\notherwise be the consequence of such assault;\n(b) such an assault as may reasonably cause the apprehension that grievous\nhurt will otherwise be the consequence of such assault;\n(c) an assault with the intention of committing rape;\n(d) an assault with the intention of gratifying unnatural lust;\n(e) an assault with the intention of kidnapping or abducting;\nRight of\nprivate\ndefence\nagainst act of\na person of\nunsound mind,\netc."
+        },
+        {
+            "claim_id": "e6e4159e-42bc-4eb0-964b-30b30aaa779d",
+            "claim_text": "The right to cause death is limited to those assaults that raise a reasonable apprehension of grievous hurt.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "6f639d07-62fa-48e0-a811-5492ff51880e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "The right of private defence of the body extends, under the restrictions specified in\nsection 37, to the voluntary causing of death or of any other harm to the assailant, if the\noffence which occasions the exercise of the right be of any of the descriptions hereinafter\nenumerated, namely:\u2014\n(a) such an assault as may reasonably cause the apprehension that death will\notherwise be the consequence of such assault;\n(b) such an assault as may reasonably cause the apprehension that grievous\nhurt will otherwise be the consequence of such assault;\n(c) an assault with the intention of committing rape;\n(d) an assault with the intention of gratifying unnatural lust;\n(e) an assault with the intention of kidnapping or abducting;\nRight of\nprivate\ndefence\nagainst act of\na person of\nunsound mind,\netc."
+        },
+        {
+            "claim_id": "8720fe8b-7a8a-4ea3-9338-25e74fd0f778",
+            "claim_text": "The right to cause death is limited to those assaults that raise the specific serious intents listed in \u00a7\u202f38.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "56f0f9d9-31e6-4e2e-a2ae-c5b3ce707d02",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "16\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "d87e0880-6174-4205-92ae-6323f11bb053",
+            "claim_text": "Outside those bounds, the defender may only use force sufficient to cause non\u2011lethal harm.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B, knowing\nthat fact and also that C is not Z, wilfully represents toAthat C is Z, and thereby intentionally\ncauses A to apprehend C. Here B abets by instigation the apprehension of C.\nExplanation 2.\u2014Whoever, either prior to or at the time of the commission of an act,\ndoes anything in order to facilitate the commission of that act, and thereby facilitates the\ncommission thereof, is said to aid the doing of that act."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (5 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 5).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T11:35:14.699933Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

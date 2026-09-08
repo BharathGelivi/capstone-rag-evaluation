@@ -1,0 +1,147 @@
+{
+    "framework_metadata": {
+        "trace_id": "6d3b7c1d-21c3-41c2-9eee-a33994ddedf0",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T14:11:38.071824Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, when are facts relevant because they are consistent or inconsistent with the opinions of experts?",
+        "generated_answer": "Facts, not otherwise relevant, are relevant if they support or are inconsistent with the opinions of experts, when such opinions are relevant [Chunk-ID: 394ca49a-4b34-40fb-a5ca-d523488dbe43].",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 3,
+        "total_claims": 3,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.30073392391204834,
+                    "pool_size": 33
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9709451794624329,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.4,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9709451794624329
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 3,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.4,
+        "average_entailment": 0.988706092039744,
+        "retrieval_latency_ms": 1113.865852355957,
+        "generation_latency_ms": 70833.92834663391,
+        "verification_latency_ms": 824466.062784195
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 6d3b7c1d-21c3-41c2-9eee-a33994ddedf0.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "9d6dd34a-cad6-429e-84e2-1bbe0a544f83",
+            "claim_text": "Facts are relevant if they support the opinions of experts",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "394ca49a-4b34-40fb-a5ca-d523488dbe43",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts, not otherwise relevant, are relevant if they support or are inconsistent\nwith the opinions of experts, when such opinions are relevant."
+        },
+        {
+            "claim_id": "75d249c8-4cd2-4ec7-b478-8084d631366f",
+            "claim_text": "Facts are relevant if they are inconsistent with the opinions of experts",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "394ca49a-4b34-40fb-a5ca-d523488dbe43",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts, not otherwise relevant, are relevant if they support or are inconsistent\nwith the opinions of experts, when such opinions are relevant."
+        },
+        {
+            "claim_id": "4bb2e13e-ea00-4090-9962-ac2da59ac30b",
+            "claim_text": "The opinions of experts are relevant",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d635413c-ec4d-4e2b-8715-238fc3fa45f0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "The opinions of\nexperts as to the symptoms produced by the poison by which A is supposed to have died,\nare relevant.\n(b) The question is, whether A, at the time of doing a certain act, was, by reason of\nunsoundness of mind, incapable of knowing the nature of the act, or that he was doing what\nwas either wrong or contrary to law."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T14:11:38.072650Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

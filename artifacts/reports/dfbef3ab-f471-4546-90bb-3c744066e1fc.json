@@ -1,0 +1,182 @@
+{
+    "framework_metadata": {
+        "trace_id": "dfbef3ab-f471-4546-90bb-3c744066e1fc",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T16:13:34.726790Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What does the Bharatiya Sakshya Adhiniyam say about the standard corporate tax rate applicable to private limited companies?",
+        "generated_answer": "I do not have enough information to answer this. The retrieved excerpts of the Bharatiya\u202fSakshya\u202fAdhiniyam,\u202f2023 concern evidence procedures, public\u2011servant definitions, and related criminal\u2011process provisions; they do not mention corporate tax rates or any tax treatment for private limited companies.",
+        "overall_health_score": 0.8333,
+        "primary_issue": "GROUNDING_FAILURE",
+        "supported_claims": 5,
+        "total_claims": 6,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.4062553644180298,
+                    "pool_size": 73
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.38794082403182983,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.38794082403182983
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "FAIL",
+                "observation": "1 claim(s) are actively contradicted by retrieved evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "contradicted_count": 1
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 5,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 1,
+        "grounding_score": 0.8333333333333334,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7887580165018638,
+        "retrieval_latency_ms": 1120.8665370941162,
+        "generation_latency_ms": 4029.834270477295,
+        "verification_latency_ms": 5039.777994155884
+    },
+    "root_cause_analysis": {
+        "primary_cause": "GROUNDING_FAILURE",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace dfbef3ab-f471-4546-90bb-3c744066e1fc.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "Failure at GROUNDING: GROUNDING_FAILURE (confidence=0.95). Observation: 1 claim(s) are actively contradicted by retrieved evidence.",
+            "Primary root cause: GROUNDING_FAILURE at GROUNDING (earliest upstream failure, confidence=0.95).",
+            "Analysis complete. Primary cause: GROUNDING_FAILURE."
+        ],
+        "diagnosis_confidence": 0.94
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "GROUNDING_FAILURE",
+        "next_priority": "Require Explicit Citations",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "a51a2f84-9ac3-4b10-9659-7713beada7f2",
+            "claim_text": "I do not have enough information to answer this.",
+            "verification_status": "CONTRADICTED",
+            "supporting_chunk_id": "5b3fb972-5d61-4b66-864e-9d0edf0a9e7b",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "of any property, or to execute any judicial process, or to administer any oath, or\nto interpret, or to preserve order in the Court, and every person specially\nauthorised by a Court to perform any of such duties;\n(d) every assessor or member of a panchayat assisting a Court or public\nservant;\n(e) every arbitrator or other person to whom any cause or matter has been\nreferred for decision or report by any Court, or by any other competent public\nauthority;\n(f) every person who holds any office by virtue of which he is empowered\nto place or keep any person in confinement;\n(g) every officer of the Government whose duty it is, as such officer, to\nprevent offences, to give information of offences, to bring offenders to justice,\nor to protect the public health, safety or convenience;\n(h) every officer whose duty it is, as such officer, to take, receive, keep or\nexpend any property on behalf of the Government, or to make any survey,\nassessment or contract on behalf of the Government, or to execute any\nrevenue-process, or to investigate, or to report, on any matter affecting the\npecuniary interests of the Government, or to make, authenticate or keep any\ndocument relating to the pecuniary interests of the Government, or to prevent\nthe infraction of any law for the protection of the pecuniary interests of the\nGovernment;\n(i) every officer whose duty it is, as such officer, to take, receive, keep or\nexpend any property, to make any survey or assessment or to levy any rate or tax\nfor any secular common purpose of any village, town or district, or to make,\nauthenticate or keep any document for the ascertaining of the rights of the\npeople of any village, town or district;\n(j) every person who holds any office by virtue of which he is empowered\nto prepare, publish, maintain or revise an electoral roll or to conduct an election\nor part of an election;\n(k) every person\u2014\n(i) in the service or pay of the Government or remunerated by fees or\ncommission for the performance of any public duty by the Government;\n(ii) in the service or pay of a local authority as defined in clause (31)\nof section 3 of the General ClausesAct,"
+        },
+        {
+            "claim_id": "a88126aa-f4b2-4af1-b959-4829ff2296d7",
+            "claim_text": "The retrieved excerpts of the Bharatiya Sakshya Adhiniyam, 2023 concern evidence procedures.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "046da990-1d49-49f9-b427-c5dbbaddd1c7",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "section 74, section 75, section 76, section 77, section 78, section 79 or section 124 of the\nBharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, shall be\nrecorded, by a woman police officer or any woman officer."
+        },
+        {
+            "claim_id": "d4fb3203-61b6-4cdf-bc6d-803e14124f13",
+            "claim_text": "The retrieved excerpts of the Bharatiya Sakshya Adhiniyam, 2023 concern public-servant definitions.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "046da990-1d49-49f9-b427-c5dbbaddd1c7",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "section 74, section 75, section 76, section 77, section 78, section 79 or section 124 of the\nBharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, shall be\nrecorded, by a woman police officer or any woman officer."
+        },
+        {
+            "claim_id": "afbd2efb-d807-4e35-be0f-51df0b157a62",
+            "claim_text": "The retrieved excerpts of the Bharatiya Sakshya Adhiniyam, 2023 concern related criminal-process provisions.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "046da990-1d49-49f9-b427-c5dbbaddd1c7",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "section 74, section 75, section 76, section 77, section 78, section 79 or section 124 of the\nBharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, shall be\nrecorded, by a woman police officer or any woman officer."
+        },
+        {
+            "claim_id": "b431def8-65d3-4753-bc40-c0b1fc5cb71d",
+            "claim_text": "The retrieved excerpts of the Bharatiya Sakshya Adhiniyam, 2023 do not mention corporate tax rates.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "9d9795ee-c919-4dc3-a1c7-f4644391edda",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "(2) If any such document, parcel or thing is, in the opinion of any other Magistrate,\nwhether Executive or Judicial, or of any Commissioner of Police or District Superintendent\nof Police, wanted for any such purpose, he may require the postal authority to cause search\nto be made for and to detain such document, parcel or thing pending the order of a District\nMagistrate, Chief Judicial Magistrate or Court under sub-section (1)."
+        },
+        {
+            "claim_id": "695ae3be-671a-412f-992c-6203afcdfb57",
+            "claim_text": "The retrieved excerpts of the Bharatiya Sakshya Adhiniyam, 2023 do not mention any tax treatment for private limited companies.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "9d9795ee-c919-4dc3-a1c7-f4644391edda",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "(2) If any such document, parcel or thing is, in the opinion of any other Magistrate,\nwhether Executive or Judicial, or of any Commissioner of Police or District Superintendent\nof Police, wanted for any such purpose, he may require the postal authority to cause search\nto be made for and to detain such document, parcel or thing pending the order of a District\nMagistrate, Chief Judicial Magistrate or Court under sub-section (1)."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "experimental",
+            "title": "Require Explicit Citations",
+            "description": "Force the LLM to append [Chunk-ID] to every sentence it generates.",
+            "observed_evidence": "LLM struggles to maintain factual fidelity across long generation spans (1 contradicted claim(s) observed).",
+            "expected_improvement": "Self-correction during generation ensures every fact is linked to evidence.",
+            "success_metric": "100% of claims map cleanly to a cited chunk (currently 1 contradicted).",
+            "tradeoff": "Increases output token length and adds parsing overhead."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.3333333333333333,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T16:13:34.727026Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

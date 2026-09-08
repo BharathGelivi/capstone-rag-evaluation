@@ -1,0 +1,180 @@
+11:50:07 INFO    Running E3 in live mode (seed=20260801).
+11:50:07 INFO    ======================================================================
+11:50:07 INFO    E3 -- Refusal calibration -- faithfulness metrics reward silence [live]
+11:50:07 INFO    ======================================================================
+11:50:07 INFO    exp03_refusal_calibration: 75/104 examples already recorded; 29 remaining.
+11:50:07 INFO    Loading registry from 'artifacts/chunk_registry.json'.
+11:50:07 INFO    Successfully loaded 893 record(s) across 398 document(s).
+11:50:08 INFO    CUDA available: NVIDIA GeForce RTX 4060 Laptop GPU (8.6 GB) — loading models on GPU.
+11:50:08 INFO    Loading NLI Verification Model: cross-encoder/nli-deberta-v3-large on NVIDIA GeForce RTX 4060 Laptop GPU (7.4 / 8.6 GB free)
+Device set to use cuda:0
+11:50:17 INFO    Initializing ChromaDB at ./db/chroma with collection 'rag_benchmark_collection'
+11:50:18 INFO    ChromaDB collection initialized successfully.
+11:50:18 INFO    Loading shared embedding model BAAI/bge-base-en-v1.5 on cuda.
+11:50:41 INFO    Initialising Generator: model=nvidia/nemotron-3-super-120b-a12b
+11:50:41 INFO    exp03_refusal_calibration: example 1/29 (gen1_strict/eval/37)
+11:50:44 INFO    Generating answer for: 'Under BNS section 105 (culpable homicide not amounting to murder), what specific fine amount applies when the act is done with mere knowledge of likely death rather than intention to cause it?'
+11:51:01 INFO    Generation complete in 16.946s.
+11:51:03 INFO    exp03_refusal_calibration: example 2/29 (gen1_strict/eval/38)
+11:51:04 INFO    Generating answer for: 'Given that BNS section 103 caps the punishment for murder at ten years' imprisonment, what additional fine is imposed on top of that ten-year term?'
+11:51:11 INFO    Generation complete in 6.644s.
+11:51:13 INFO    exp03_refusal_calibration: example 3/29 (gen1_strict/probe/P12)
+11:51:14 INFO    Generating answer for: 'What is the procedure for filing a trademark opposition before the Indian Registrar of Trade Marks?'
+11:51:15 INFO    Generation complete in 1.262s.
+11:51:15 INFO    exp03_refusal_calibration: example 4/29 (gen2_current/eval/1)
+11:51:15 INFO    Generating answer for: 'According to the BNS, what three ways can a person 'abet' the doing of a thing?'
+11:51:15 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:51:24 INFO    Generation complete in 8.597s.
+11:51:38 INFO    exp03_refusal_calibration: example 5/29 (gen2_current/eval/2)
+11:51:39 INFO    Generating answer for: 'Under what circumstances does the right of private defence of the body NOT extend to voluntarily causing the assailant's death?'
+11:51:54 INFO    Generation complete in 14.821s.
+You seem to be using the pipelines sequentially on GPU. In order to maximize efficiency please use a dataset
+11:52:12 INFO    exp03_refusal_calibration: example 6/29 (gen2_current/eval/3)
+11:52:12 INFO    Generating answer for: 'When does the right of private defence of the body commence, and how long does it continue?'
+11:52:24 INFO    Generation complete in 12.048s.
+11:52:36 INFO    exp03_refusal_calibration: example 7/29 (gen2_current/eval/5)
+11:52:36 INFO    Generating answer for: 'What is the punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten?'
+11:52:40 INFO    Generation complete in 3.434s.
+11:52:46 INFO    exp03_refusal_calibration: example 8/29 (gen2_current/eval/31)
+11:52:46 INFO    Generating answer for: 'What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?'
+11:52:47 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:52:57 INFO    Generation complete in 10.609s.
+11:52:57 INFO    exp03_refusal_calibration: example 9/29 (gen2_current/eval/32)
+11:52:58 INFO    Generating answer for: 'What does the Bharatiya Sakshya Adhiniyam say about the standard corporate tax rate applicable to private limited companies?'
+11:52:59 INFO    Generation complete in 1.347s.
+11:52:59 INFO    exp03_refusal_calibration: example 10/29 (gen2_current/eval/33)
+11:53:00 INFO    Generating answer for: 'According to the BNSS, what is the specific process and timeline for filing a trademark infringement suit?'
+11:53:02 INFO    Generation complete in 2.092s.
+11:53:02 INFO    exp03_refusal_calibration: example 11/29 (gen2_current/eval/34)
+11:53:03 INFO    Generating answer for: 'What penalty does the BNS prescribe for a company's failure to file annual financial statements with the Registrar of Companies?'
+11:53:03 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:53:07 INFO    Generation complete in 4.109s.
+11:53:07 INFO    exp03_refusal_calibration: example 12/29 (gen2_current/eval/35)
+11:53:08 INFO    Generating answer for: 'What legal consequence follows if someone deliberately sets fire to a dwelling-house after being instigated to do so by another person who has a guilty intention, where the person who set the fire lacked the mental capacity to know the act was wrong?'
+11:53:08 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:53:10 WARNING Rate-limited (attempt 2/4), backing off 4.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:53:15 WARNING Rate-limited (attempt 3/4), backing off 6.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:53:42 INFO    Generation complete in 33.578s.
+11:53:51 INFO    exp03_refusal_calibration: example 13/29 (gen2_current/eval/36)
+11:53:51 INFO    Generating answer for: 'What is the exact fine amount prescribed for murder under BNS section 103?'
+11:53:51 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:54:01 INFO    Generation complete in 9.723s.
+11:54:06 INFO    exp03_refusal_calibration: example 14/29 (gen2_current/eval/37)
+11:54:06 INFO    Generating answer for: 'Under BNS section 105 (culpable homicide not amounting to murder), what specific fine amount applies when the act is done with mere knowledge of likely death rather than intention to cause it?'
+11:54:30 INFO    Generation complete in 23.171s.
+11:54:39 INFO    exp03_refusal_calibration: example 15/29 (gen2_current/eval/38)
+11:54:40 INFO    Generating answer for: 'Given that BNS section 103 caps the punishment for murder at ten years' imprisonment, what additional fine is imposed on top of that ten-year term?'
+11:54:44 INFO    Generation complete in 4.539s.
+11:54:53 INFO    exp03_refusal_calibration: example 16/29 (gen2_current/eval/39)
+11:54:53 INFO    Generating answer for: 'Given that BNS section 65(2) prescribes life imprisonment as the maximum possible punishment for raping a woman under twelve years of age, why does the law show leniency in this specific case?'
+11:55:05 INFO    Generation complete in 12.025s.
+11:55:21 INFO    exp03_refusal_calibration: example 17/29 (gen2_current/eval/40)
+11:55:21 INFO    Generating answer for: 'Since BNSS section 35 permits arrest without a warrant for any cognizable offence regardless of its severity, what safeguards exist to prevent misuse of this power?'
+11:55:42 INFO    Generation complete in 21.360s.
+11:56:01 INFO    exp03_refusal_calibration: example 18/29 (gen2_current/probe/P01)
+11:56:01 INFO    Generating answer for: 'What is the standard deduction for a single filer under the US Internal Revenue Code?'
+11:56:04 INFO    Generation complete in 3.023s.
+11:56:04 INFO    exp03_refusal_calibration: example 19/29 (gen2_current/probe/P02)
+11:56:05 INFO    Generating answer for: 'Under the GDPR, how long does a controller have to report a personal data breach?'
+11:56:06 INFO    Generation complete in 1.218s.
+11:56:06 INFO    exp03_refusal_calibration: example 20/29 (gen2_current/probe/P03)
+11:56:06 INFO    Generating answer for: 'What is the boiling point of ethanol at standard pressure?'
+11:56:07 INFO    Generation complete in 0.800s.
+11:56:07 INFO    exp03_refusal_calibration: example 21/29 (gen2_current/probe/P04)
+11:56:08 INFO    Generating answer for: 'Which team won the 2018 FIFA World Cup final?'
+11:56:09 INFO    Generation complete in 1.049s.
+11:56:09 INFO    exp03_refusal_calibration: example 22/29 (gen2_current/probe/P05)
+11:56:09 INFO    Generating answer for: 'What are the elements of promissory estoppel under English contract law?'
+11:56:13 INFO    Generation complete in 3.954s.
+11:56:13 INFO    exp03_refusal_calibration: example 23/29 (gen2_current/probe/P06)
+11:56:14 INFO    Generating answer for: 'How do I configure a Kubernetes ingress controller for TLS termination?'
+11:56:14 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:16 WARNING Rate-limited (attempt 2/4), backing off 4.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:20 WARNING Rate-limited (attempt 3/4), backing off 6.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:31 INFO    Generation complete in 17.124s.
+11:56:37 INFO    exp03_refusal_calibration: example 24/29 (gen2_current/probe/P07)
+11:56:37 INFO    Generating answer for: 'What sentence does the Model Penal Code prescribe for reckless endangerment?'
+11:56:38 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:40 WARNING Rate-limited (attempt 2/4), backing off 4.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:44 WARNING Rate-limited (attempt 3/4), backing off 6.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:52 INFO    Generation complete in 14.440s.
+11:56:52 INFO    exp03_refusal_calibration: example 25/29 (gen2_current/probe/P08)
+11:56:52 INFO    Generating answer for: 'What is the maximum permissible blood alcohol concentration for drivers in Germany?'
+11:56:53 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:56:55 WARNING Rate-limited (attempt 2/4), backing off 4.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:00 INFO    Generation complete in 7.265s.
+11:57:00 INFO    exp03_refusal_calibration: example 26/29 (gen2_current/probe/P09)
+11:57:00 INFO    Generating answer for: 'Summarise the holding in Marbury v. Madison.'
+11:57:01 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:04 INFO    Generation complete in 3.134s.
+11:57:04 INFO    exp03_refusal_calibration: example 27/29 (gen2_current/probe/P10)
+11:57:04 INFO    Generating answer for: 'What vaccination schedule does the WHO recommend for infants under one year?'
+11:57:04 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:06 WARNING Rate-limited (attempt 2/4), backing off 4.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:10 WARNING Rate-limited (attempt 3/4), backing off 6.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:17 ERROR   LLM generation failed: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+Traceback (most recent call last):
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\src\generator.py", line 332, in generate
+    response = rate_limiter.call(self.llm.chat, messages)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\src\rate_limiter.py", line 73, in call
+    return fn(*args, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index_instrumentation\dispatcher.py", line 413, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index\llms\openai_like\base.py", line 173, in chat
+    return super().chat(messages, **kwargs)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index_instrumentation\dispatcher.py", line 413, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index\core\llms\callbacks.py", line 179, in wrapped_llm_chat
+    f_return_val = f(_self, messages, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index\llms\openai\base.py", line 404, in chat
+    return chat_fn(messages, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index\llms\openai\base.py", line 106, in wrapper
+    return f(self, *args, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\llama_index\llms\openai\base.py", line 500, in _chat
+    response = client.chat.completions.create(
+        messages=message_dicts,
+        stream=False,
+        **self._get_model_kwargs(**kwargs),
+    )
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\openai\_utils\_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\openai\resources\chat\completions\completions.py", line 1296, in create
+    return self._post(
+           ~~~~~~~~~~^
+        "/chat/completions",
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<53 lines>...
+        stream_cls=Stream[ChatCompletionChunk],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\openai\_base_client.py", line 1375, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\venv\Lib\site-packages\openai\_base_client.py", line 1148, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.RateLimitError: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:17 INFO    Generation complete in 12.534s.
+11:57:17 INFO    exp03_refusal_calibration: example 28/29 (gen2_current/probe/P11)
+11:57:17 INFO    Generating answer for: 'Under the Indian Contract Act 1872, what makes an agreement void for want of consideration?'
+11:57:18 WARNING Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+11:57:24 INFO    Generation complete in 6.945s.
+11:57:24 INFO    exp03_refusal_calibration: example 29/29 (gen2_current/probe/P12)
+11:57:25 INFO    Generating answer for: 'What is the procedure for filing a trademark opposition before the Indian Registrar of Trade Marks?'
+11:57:26 INFO    Generation complete in 1.089s.
+11:57:26 INFO    E3 complete in 439.5s -- 104 examples. Summary: artifacts\experiments\exp03_refusal_calibration\summary.json
+11:57:26 INFO    Suite report written to artifacts\experiments\SUITE_REPORT.md
+
+Experiment suite status  (artifacts\experiments)
+
+#   status       records    mode      key
+------------------------------------------------------------------------
+1   complete     158/158    offline   exp01_fault_injection
+2   complete     80/80      live      exp02_reranker_window
+3   complete     104/104    live      exp03_refusal_calibration
+4   complete     200/200    live      exp04_corpus_quality
+5   complete     76/76      offline   exp05_diagnostic_agreement
+6   complete     638/638    offline   exp06_strategy_ablation
+7   complete     56/56      offline   exp07_generation_ablation
+

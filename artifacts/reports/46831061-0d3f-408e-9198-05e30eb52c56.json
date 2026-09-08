@@ -1,0 +1,199 @@
+{
+    "framework_metadata": {
+        "trace_id": "46831061-0d3f-408e-9198-05e30eb52c56",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T17:30:21.678017Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under what four conditions is causing death classified as murder rather than merely culpable homicide, per BNS section 101?",
+        "generated_answer": "Under **BNS\u202f\u00a7\u202f101**, causing death is treated as **murder** (rather than merely culpable homicide) when any of the following four conditions is met:\n\n1. **Intention to cause death** \u2013 the act is done with the intention of causing death.  \n2. **Intention to cause bodily injury known to be likely to cause death** \u2013 the act is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person harmed.  \n3. **Intention to cause bodily injury sufficient in the ordinary course of nature to cause death** \u2013 the act is done with the intention of causing bodily injury, and the injury intended is sufficient, in the ordinary course of nature, to cause death.  \n4. **Knowledge of imminent danger** \u2013 the offender knows that the act is so imminently dangerous that it must, in all probability, cause death (or such bodily injury as is likely to cause death) and commits the act without any excuse for incurring that risk.  \n\nThese four sub\u2011clauses (a)\u2013(d) of \u00a7\u202f101 delineate when culpable homicide escalates to murder.  \n\n*Source: [Chunk-ID: 56cf25b2-4acb-4edd-8e17-5c28dc06cfbb]*",
+        "overall_health_score": 0.6429,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 7,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2934378981590271,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.6950578689575195,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.6950578689575195
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 7,
+        "supported_claims": 4,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6428571428571429,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7164457621318954,
+        "retrieval_latency_ms": 57039.24345970154,
+        "generation_latency_ms": 5785.209894180298,
+        "verification_latency_ms": 42115.397691726685
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 46831061-0d3f-408e-9198-05e30eb52c56.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "2dfcbdee-7bad-4a16-8ee0-d14055b9710d",
+            "claim_text": "Under BNS \u00a7101, causing death is treated as murder (rather than merely culpable homicide) when any of the following four conditions is met.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B is by this provocation excited to violent rage.A, a bystander, intending\nto take advantage of B\u2019s rage, and to cause him to kill Z, puts a knife into B\u2019s hand for that\npurpose."
+        },
+        {
+            "claim_id": "387b2bc0-c9ca-44db-b83f-cb78626a6a2b",
+            "claim_text": "Intention to cause death \u2013 the act is done with the intention of causing death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(f) Z strikes B."
+        },
+        {
+            "claim_id": "5e256e2b-3f4a-42f9-acfc-ec1d8c2d44d5",
+            "claim_text": "Intention to cause bodily injury known to be likely to cause death \u2013 the act is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person harmed.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "A is moved to sudden passion by\nthese words, and kills Z."
+        },
+        {
+            "claim_id": "c66be823-4efe-46e3-99a6-efde975fda69",
+            "claim_text": "Intention to cause bodily injury sufficient in the ordinary course of nature to cause death \u2013 the act is done with the intention of causing bodily injury, and the injury intended is sufficient, in the ordinary course of nature, to cause death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "56cf25b2-4acb-4edd-8e17-5c28dc06cfbb",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Z dies in consequence."
+        },
+        {
+            "claim_id": "8c39402c-3ac5-4dde-a499-9ba112aebebb",
+            "claim_text": "Knowledge of imminent danger \u2013 the offender knows that the act is so imminently dangerous that it must, in all probability, cause death (or such bodily injury as is likely to cause death) and commits the act without any excuse for incurring that risk.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "56cf25b2-4acb-4edd-8e17-5c28dc06cfbb",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Except in the cases hereinafter excepted, culpable homicide is murder,\u2013\u2013\n(a) if the act by which the death is caused is done with the intention of causing\ndeath; or\n(b) if the act by which the death is caused is done with the intention of causing\nsuch bodily injury as the offender knows to be likely to cause the death of the person\nto whom the harm is caused; or\n(c) if the act by which the death is caused is done with the intention of causing\nbodily injury to any person and the bodily injury intended to be inflicted is sufficient\nin the ordinary course of nature to cause death; or\n(d) if the person committing the act by which the death is caused, knows that it\nis so imminently dangerous that it must, in all probability, cause death, or such bodily\ninjury as is likely to cause death, and commits such act without any excuse for incurring\nthe risk of causing death or such injury as aforesaid."
+        },
+        {
+            "claim_id": "2d13155b-9282-46e5-af82-c4a6732c1fbf",
+            "claim_text": "These four sub-clauses (a)\u2013(d) of \u00a7101 delineate when culpable homicide escalates to murder.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "64b53da5-df43-411b-a070-98d8801ca321",
+            "claim_text": "The source of this information is Chunk-ID: 56cf25b2-4acb-4edd-8e17-5c28dc06cfbb.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.2,
+        "total_gold_claims": 5,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T17:30:21.681963Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

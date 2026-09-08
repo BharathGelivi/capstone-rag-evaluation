@@ -1,0 +1,123 @@
+{
+    "framework_metadata": {
+        "trace_id": "36e044d5-47d5-4dae-8ab8-4bf44922bd0e",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T15:01:42.460265Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS, if a Magistrate attaches a subject of dispute after finding a case to be one of emergency, when may that Magistrate withdraw the attachment?",
+        "generated_answer": "Under the Bharatiya Nyaya Sanhita, 2023 (BNSS), a Magistrate who attaches the subject of a dispute after finding the case to be one of emergency may withdraw that attachment **at any time** if he is satisfied that there is no longer any likelihood of a breach of the peace concerning the subject of dispute\u30106e109610-3ad4-4953-a3d8-9df55d06f072\u3011. This provision is found in the proviso to subsection\u202f(1) of section\u202f165 of the BNSS.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 0,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3191984295845032,
+                    "pool_size": 65
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9991139769554138,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9991139769554138
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "UNKNOWN",
+                "observation": "No claims were available to assess grounding.",
+                "confidence": "0.5",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 0,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.0,
+        "average_entailment": 0.0,
+        "retrieval_latency_ms": 2014.664649963379,
+        "generation_latency_ms": 44669.15535926819,
+        "verification_latency_ms": 0.2639293670654297
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 36e044d5-47d5-4dae-8ab8-4bf44922bd0e.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "Skipping GROUNDING: status is UNKNOWN (insufficient evidence).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.95
+    },
+    "overall_assessment": {
+        "major_strength": "GENERATOR is healthy (confidence=95%): All generated claims are fully supported by evidence.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T15:01:42.460628Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

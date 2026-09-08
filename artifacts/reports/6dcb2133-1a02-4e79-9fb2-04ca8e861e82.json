@@ -1,0 +1,160 @@
+{
+    "framework_metadata": {
+        "trace_id": "6dcb2133-1a02-4e79-9fb2-04ca8e861e82",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T16:07:46.310173Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?",
+        "generated_answer": "I do not have enough information to answer this.",
+        "overall_health_score": 0.0,
+        "primary_issue": "RETRIEVAL_MISS",
+        "supported_claims": 0,
+        "total_claims": 1,
+        "number_of_corrective_actions": 4,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.39520251750946045,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "FAIL",
+                "observation": "No retrieved chunks provide support, and retrieval scores strongly indicate a lack of useful evidence.",
+                "confidence": "0.85",
+                "metadata": {
+                    "max_score": 0.1770341843366623,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "UNKNOWN",
+                "observation": "1 generated claims are unsupported, but retrieval quality is ambiguous.",
+                "confidence": "0.5",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.1770341843366623
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 1,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.020344765856862068,
+        "retrieval_latency_ms": 1070.373773574829,
+        "generation_latency_ms": 6230.14497756958,
+        "verification_latency_ms": 2069.3113803863525
+    },
+    "root_cause_analysis": {
+        "primary_cause": "RETRIEVAL_MISS",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 6dcb2133-1a02-4e79-9fb2-04ca8e861e82.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Failure at RETRIEVER: RETRIEVAL_MISS (confidence=0.85). Observation: No retrieved chunks provide support, and retrieval scores strongly indicate a lack of useful evidence.",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Skipping GENERATOR: status is UNKNOWN (insufficient evidence).",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: RETRIEVAL_MISS at RETRIEVER (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: RETRIEVAL_MISS."
+        ],
+        "diagnosis_confidence": 0.88
+    },
+    "overall_assessment": {
+        "major_strength": "GROUNDING is healthy (confidence=90%): No claims are contradicted by retrieved evidence.",
+        "major_weakness": "RETRIEVAL_MISS",
+        "next_priority": "Increase Retrieval Top-K",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "d7eb8af3-e98f-421a-8421-753c2efe16d7",
+            "claim_text": "I do not have enough information to answer this.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "34\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Increase Retrieval Top-K",
+            "description": "Increase the number of retrieved documents before providing context to the LLM.",
+            "observed_evidence": "Ground truth or highly relevant chunks are present but ranked lower than current Top-K (observed max retrieval score: 0.177, threshold: 0.500).",
+            "expected_improvement": "Higher recall; missing context is caught within the expanded window.",
+            "success_metric": "Verification support score increases above 0.8 (current retrieval confidence: 0.850).",
+            "tradeoff": "Increases prompt token usage, latency, and cost."
+        },
+        {
+            "priority": "short_term",
+            "title": "Implement Hybrid Search (Dense + Sparse)",
+            "description": "Add BM25 lexical search and combine with semantic vector search using Reciprocal Rank Fusion.",
+            "observed_evidence": "Queries containing specific IDs, acronyms, or names fail semantic retrieval.",
+            "expected_improvement": "Near-perfect recall for exact-match terminology.",
+            "success_metric": "Retrieval hit rate for exact entity queries approaches 1.0.",
+            "tradeoff": "Requires maintaining a secondary inverted index and fusion overhead."
+        },
+        {
+            "priority": "experimental",
+            "title": "Deploy Cross-Encoder Reranker",
+            "description": "Pass the Top-N results through a Cross-Encoder to re-score query-document relevance.",
+            "observed_evidence": "Bi-encoder returns top-k chunks that share vocabulary but lack true semantic relevance to the question.",
+            "expected_improvement": "Drastically improved precision at Top-1 and Top-3.",
+            "success_metric": "Precision@3 increases by at least 20%.",
+            "tradeoff": "High computational cost; increases retrieval latency by 100-300ms."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 0
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T16:07:46.310535Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

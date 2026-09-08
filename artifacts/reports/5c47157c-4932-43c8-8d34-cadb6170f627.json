@@ -1,0 +1,182 @@
+{
+    "framework_metadata": {
+        "trace_id": "5c47157c-4932-43c8-8d34-cadb6170f627",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T02:58:09.635519Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNS section 105 (culpable homicide not amounting to murder), what specific fine amount applies when the act is done with mere knowledge of likely death rather than intention to cause it?",
+        "generated_answer": "Under BNS\u202f\u00a7\u202f105, when the act causing death is done **with the knowledge that it is likely to cause death but without any intention to cause death**, the offender is punishable with imprisonment of either description for a term which may extend to ten years **and shall also be liable to fine**\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011.  \n\nThe section does **not specify a particular fine amount**; it merely states that a fine shall be imposed, leaving the exact sum to the discretion of the court. No exact figure is provided in the retrieved context.",
+        "overall_health_score": 0.6667,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 6,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2782416343688965,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.967172384262085,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.967172384262085
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6666666666666666,
+        "evidence_coverage": 0.8333333333333334,
+        "average_entailment": 0.6780222297335664,
+        "retrieval_latency_ms": 620.1810836791992,
+        "generation_latency_ms": 8746.295690536499,
+        "verification_latency_ms": 16958.3580493927
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 5c47157c-4932-43c8-8d34-cadb6170f627.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "0c76c7d3-7670-4f45-9426-c294e16f5f0c",
+            "claim_text": "Under BNS \u00a7 105, when the act causing death is done with the knowledge that it is likely to cause death but without any intention to cause death, the offender is punishable with imprisonment of either description for a term which may extend to ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "5adbdf98-5ef8-4387-b3ac-1be72f8cc767",
+            "claim_text": "Under BNS \u00a7 105, when the act causing death is done with the knowledge that it is likely to cause death but without any intention to cause death, the offender shall also be liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "a88e8a7b-25b8-47f6-b048-38f90229f6a8",
+            "claim_text": "The section does not specify a particular fine amount.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "01858be4-6a44-4c78-ad2e-9d51a448976b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "amounting to murder, if act Imprisonment for not less\nby which the death is\nthan 5 years but which\ncaused is done with\nmay extend to 10 years\nintention of causing death,\nand fine."
+        },
+        {
+            "claim_id": "f21fb627-03f2-49dd-97e8-b55a4918fc89",
+            "claim_text": "The section merely states that a fine shall be imposed.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "aef2bc98-c173-418f-aeb2-e8d815ce6cc0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "12\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "50855d9f-6be8-463c-8cee-8ec8956ff69c",
+            "claim_text": "The exact sum is left to the discretion of the court.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "c0b7ea50-14f9-464a-b79a-bd28b1fab3ba",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "34\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "f6931b7d-7d53-4760-b383-2fbecdaaadcd",
+            "claim_text": "No exact figure is provided in the retrieved context.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "619ee78d-7f5b-442f-b3ff-13b9ca4fe9a2",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B does not know it."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T02:58:09.635600Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

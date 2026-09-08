@@ -1,0 +1,1005 @@
+<title>X-RAG Diagnostic Report — eb2a1035-84ca-42d3-9a41-6f908221e351</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>What legal consequence follows if someone deliberately sets fire to a dwelling-house after being instigated to do so by another person who has a guilty intention, where the person who set the fire lacked the mental capacity to know the act was wrong?</h1>
+    <p class="dek">Trace <span class="mono">eb2a1035-84ca-42d3-9a41-6f908221e351</span>, generated 2026-09-06T16:29:25.200810Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">100%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNKNOWN</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">10 / 10</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.997</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">What legal consequence follows if someone deliberately sets fire to a dwelling-house after being instigated to do so by another person who has a guilty intention, where the person who set the fire lacked the mental capacity to know the act was wrong?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">The person who actually set the fire (B) is **not guilty of any offence** because, due to unsoundness of mind, they were incapable of knowing the nature of the act or that it was wrong.  
+
+However, the instigator (A), who acted with a guilty intention, is **guilty of abetting the offence of setting fire to a dwelling‑house** and is liable to the punishment prescribed for that offence.  
+
+This follows directly from the illustration in the retrieved context:  
+
+&gt; “A instigates B to set fire to a dwelling‑house. B, in consequence of his unsoundness of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong or contrary to law, sets fire to the house in consequence of A’s instigation. B has committed no offence, but A is guilty of abetting the offence of setting fire to a dwelling‑house, and is liable to the punishment provided for that offence.”【63cb2c24-3b1a-4f5f-bdce-52797e73b527】.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 0.83s retrieval + 45.08s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">45.917s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">60</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: c5c0c6a2-236a-469f-8dce-9d639c45fc68] ---
+Illustration.
+A sets fire, by night, to an inhabited house in a large town, for the purpose of
+facilitating a robbery and thus causes the death of a person. Here, A may not have
+intended to cause death; and may even be sorry that death has been caused by his act;
+yet, if he knew that he was likely to cause death, he has caused death voluntarily;
+(34) “will” means any testamentary document;
+(35) “woman” means a female human being of any age;
+(36) “wrongful gain” means gain by unlawful means of property to which the
+person gaining is not legally entitled;
+(37) “wrongful loss” means the loss by unlawful means of property to which the
+person losing it is legally entitled;
+(38) “gaining wrongfully” and “losing wrongfully”.—A person is said to gain
+wrongfully when such person retains wrongfully, as well as when such person acquires
+wrongfully.Aperson is said to lose wrongfully when such person is wrongfully kept out
+of any property, as well as when such person is wrongfully deprived of property; and
+(39) words and expressions used but not defined in this Sanhita but defined in
+the InformationTechnologyAct, 2000 and the Bharatiya Nagarik Suraksha Sanhita,2023
+shall have the meanings respectively assigned to them in that Act and Sanhita.
+3. (1) Throughout this Sanhita every definition of an offence, every penal provision,
+and every Illustration of every such definition or penal provision, shall be understood
+subject to the exceptions contained in the Chapter entitled “General Exceptions”, though
+those exceptions are not repeated in such definition, penal provision, or Illustration.
+Illustrations.
+(a) The sections in this Sanhita, which contain definitions of offences, do not express
+that a child under seven years of age cannot commit such offences; but the definitions are to
+be understood subject to the general exception which provides that nothing shall be an
+offence which is done by a child under seven years of age.
+(b)A, a police officer, without warrant, apprehends Z, who has committed murder.
+
+--- Context chunk 2 [Chunk-ID: ecfce8ef-071a-4b11-9a6a-64a659fdcbfb] ---
+Illustration.
+A instigates B to resist by force a distress made by a public servant. B, in consequence,
+resists that distress. In offering the resistance, B voluntarily causes grievous hurt to the
+officer executing the distress.As B has committed both the offence of resisting the distress,
+and the offence of voluntarily causing grievous hurt, B is liable to punishment for both these
+offences; and, ifA knew that B was likely voluntarily to cause grievous hurt in resisting the
+distress, A will also be liable to punishment for each of the offences.
+53. When an act is abetted with the intention on the part of the abettor of causing a
+particular effect, and an act for which the abettor is liable in consequence of the abetment,
+causes a different effect from that intended by the abettor, the abettor is liable for the effect
+caused, in the same manner and to the same extent as if he had abetted the act with the
+intention of causing that effect, provided he knew that the act abetted was likely to cause
+that effect.
+Illustration.
+A instigates B to cause grievous hurt to Z. B, in consequence of the instigation,
+causes grievous hurt to Z. Z dies in consequence. Here, if A knew that the grievous hurt
+abetted was likely to cause death, A is liable to be punished with the punishment provided
+for murder.
+54. Whenever any person, who is absent would be liable to be punished as an abettor,
+is present when the act or offence for which he would be punishable in consequence of the
+abetment is committed, he shall be deemed to have committed such act or offence.
+55.
+
+--- Context chunk 3 [Chunk-ID: 7812bbd9-f940-47cf-8ee2-ff4b296391d0] ---
+46. A person abets an offence, who abets either the commission of an offence, or the
+commission of an act which would be an offence, if committed by a person capable by law of
+committing an offence with the same intention or knowledge as that of the abettor.
+Explanation 1.—The abetment of the illegal omission of an act may amount to an
+offence although the abettor may not himself be bound to do that act.
+Explanation 2.—To constitute the offence of abetment it is not necessary that the act
+abetted should be committed, or that the effect requisite to constitute the offence should be
+caused.
+Illustrations.
+(a) A instigates B to murder C. B refuses to do so. A is guilty of abetting B to commit
+murder.
+(b) A instigates B to murder D. B in pursuance of the instigation stabs D. D recovers
+from the wound.Ais guilty of instigating B to commit murder.
+Explanation 3.—It is not necessary that the person abetted should be capable by law
+of committing an offence, or that he should have the same guilty intention or knowledge as
+that of the abettor, or any guilty intention or knowledge.
+Abetment of a
+thing.
+Abettor.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+17
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 4 [Chunk-ID: 246f091b-c03e-481c-8ee0-675521393c74] ---
+Explanation.—A threat to injure the reputation of any deceased person in whom the
+person threatened is interested, is within this section.
+Illustration.
+A, for the purpose of inducing B to resist from prosecuting a civil suit, threatens to
+burn B’s house.Ais guilty of criminal intimidation.
+(2) Whoever commits the offence of criminal intimidation shall be punished with
+imprisonment of either description for a term which may extend to two years, or with fine, or
+with both.
+(3) Whoever commits the offence of criminal intimidation by threatening to cause
+death or grievous hurt, or to cause the destruction of any property by fire, or to cause an
+offence punishable with death or imprisonment for life, or with imprisonment for a term which
+may extend to seven years, or to impute unchastity to a woman, shall be punished with
+imprisonment of either description for a term which may extend to seven years, or with fine,
+or with both.
+(4) Whoever commits the offence of criminal intimidation by an anonymous
+communication, or having taken precaution to conceal the name or abode of the person from
+whom the threat comes, shall be punished with imprisonment of either description for a term
+which may extend to two years, in addition to the punishment provided for the offence under
+sub-section (1).
+352. Whoever intentionally insults in any manner, and thereby gives provocation to
+any person, intending or knowing it to be likely that such provocation will cause him to break
+the public peace, or to commit any other offence, shall be punished with imprisonment of
+either description for a term which may extend to two years, or with fine, or with both.
+353.
+
+--- Context chunk 5 [Chunk-ID: a40b67ca-3a9e-4ada-b318-69dc6a4dda1b] ---
+Illustrations.
+(a) A instigates a child to put poison into the food of Z, and gives him poison for that
+purpose. The child, in consequence of the instigation, by mistake puts the poison into the
+food of Y, which is by the side of that of Z. Here, if the child was acting under the influence
+of A’s instigation, and the act done was under the circumstances a probable consequence of
+the abetment,Ais liable in the same manner and to the same extent as if he had instigated the
+child to put the poison into the food of Y.
+(b) A instigates B to burn Z’s house, B sets fire to the house and at the same time
+commits theft of property there.A, though guilty of abetting the burning of the house, is not
+guilty of abetting the theft; for the theft was a distinct act, and not a probable consequence
+of the burning.
+(c)Ainstigates B and C to break into an inhabited house at midnight for the purpose of
+robbery, and provides them with arms for that purpose. B and C break into the house, and
+being resisted by Z, one of the inmates, murder Z. Here, if that murder was the probable
+consequence of the abetment, A is liable to the punishment provided for murder.
+52. If the act for which the abettor is liable under section 51 is committed in addition to
+the act abetted, and constitute a distinct offence, the abettor is liable to punishment for each
+of the offences.
+Punishment of
+abetment if
+act abetted is
+committed in
+consequence
+and where no
+express
+provision is
+made for its
+punishment.
+Punishment of
+abetment if
+person abetted
+does act with
+different
+intention
+from that of
+abettor.
+Liability of
+abettor when
+one act
+abetted and
+different act
+done.
+Abettor when
+liable to
+cumulative
+punishment
+for act abetted
+and for act
+done.
+Sec.
+
+--- Context chunk 6 [Chunk-ID: 63cb2c24-3b1a-4f5f-bdce-52797e73b527] ---
+Illustrations.
+(a) A, with a guilty intention, abets a child or a person of unsound mind to commit an
+act which would be an offence, if committed by a person capable by law of committing an
+offence, and having the same intention asA. HereA, whether the act be committed or not, is
+guilty of abetting an offence.
+(b) A, with the intention of murdering Z, instigates B, a child under seven years of age,
+to do an act which causes Z’s death. B, in consequence of the abetment, does the act in the
+absence of A and thereby causes Z’s death. Here, though B was not capable by law of
+committing an offence, Ais liable to be punished in the same manner as if B had been capable
+by law of committing an offence, and had committed murder, and he is therefore subject to
+the punishment of death.
+(c)Ainstigates B to set fire to a dwelling-house. B, in consequence of his unsoundness
+of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong
+or contrary to law, sets fire to the house in consequence ofA’s instigation. B has committed
+no offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is
+liable to the punishment provided for that offence.
+(d) A, intending to cause a theft to be committed, instigates B to take property belonging
+to Z out of Z’s possession. Ainduces B to believe that the property belongs to A. B takes the
+property out of Z’s possession, in good faith, believing it to beA’s property. B, acting under
+this misconception, does not take dishonestly, and therefore does not commit theft. But A is
+guilty of abetting theft, and is liable to the same punishment as if B had committed theft.
+Explanation 4.—The abetment of an offence being an offence, the abetment of such
+an abetment is also an offence.
+Illustration.
+A instigates B to instigate C to murder Z. B accordingly instigates C to murder Z, and
+C commits that offence in consequence of B’s instigation.
+
+
+Question: What legal consequence follows if someone deliberately sets fire to a dwelling-house after being instigated to do so by another person who has a guilty intention, where the person who set the fire lacked the mental capacity to know the act was wrong?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (10 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">B actually set the fire.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">73d94539-9c39-4ba1-9412-a0acb27bc563</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">B, in consequence of his unsoundness
+of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong
+or contrary to law, sets fire to the house in consequence ofA’s instigation.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">B is not guilty of any offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">0e65c388-27dc-4cbc-ba8d-b0ee7f64ec41</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">B has committed
+no offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is
+liable to the punishment provided for that offence.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">B was incapable of knowing the nature of the act due to unsoundness of mind.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">52705d2a-0b09-45df-aa64-00bc8f601a5b</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">B, in consequence of his unsoundness
+of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong
+or contrary to law, sets fire to the house in consequence ofA’s instigation.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">B was incapable of knowing that the act was wrong due to unsoundness of mind.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">eb9ec324-e205-4282-87c2-cf34975acb0e</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">B, in consequence of his unsoundness
+of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong
+or contrary to law, sets fire to the house in consequence ofA’s instigation.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A is the instigator.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">7a6906cc-baf6-4b2a-b654-2d76403c9d66</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a40b67ca-3a9e-4ada-b318-69dc6a4dda1b</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(c)Ainstigates B and C to break into an inhabited house at midnight for the purpose of
+robbery, and provides them with arms for that purpose.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A acted with a guilty intention.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">fd9b1623-9519-40c2-a2c9-fcc13466ef4f</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(b) A, with the intention of murdering Z, instigates B, a child under seven years of age,
+to do an act which causes Z’s death.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A instigates B to set fire to a dwelling‑house.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">a8d4ba3e-36f7-4d16-950c-7f74c012b3ab</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(c)Ainstigates B to set fire to a dwelling-house.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">B sets fire to the house in consequence of A’s instigation.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">95e5c7a0-bac8-4c29-8ffc-38b75cc42eab</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a40b67ca-3a9e-4ada-b318-69dc6a4dda1b</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(b) A instigates B to burn Z’s house, B sets fire to the house and at the same time
+commits theft of property there.A, though guilty of abetting the burning of the house, is not
+guilty of abetting the theft; for the theft was a distinct act, and not a probable consequence
+of the burning.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A is guilty of abetting the offence of setting fire to a dwelling‑house.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">b9e1fecb-9732-4a19-b8e7-896dde174fca</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">B has committed
+no offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is
+liable to the punishment provided for that offence.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A is liable to the punishment prescribed for that offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">4061c024-af9d-49f9-82d8-20c8a5cba166</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">B has committed
+no offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is
+liable to the punishment provided for that offence.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">63cb2c24-3b1a-4f5f-bdce-52797e73b527</span>
+            <span class="chunk-src">bns.pdf p.18</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.272</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">55.43</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.937</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">edaba052-c9b1-4a0e-9950-8414a174eba2</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">38</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1943 (1943 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustrations.
+(a) A, with a guilty intention, abets a child or a person of unsound mind to commit an
+act which would be an offence, if committed by a person capable by law of committing an
+offence, and having the same intention asA. HereA, whether the act be committed or not, is
+guilty of abetting an offence.
+(b) A, with the intention of murdering Z, instigates B, a child under seven years of age,
+to do an act which causes Z’s death. B, in consequence of the abetment, does the act in the
+absence of A and thereby causes Z’s death. Here, though B was not capable by law of
+committing an offence, Ais liable to be punished in the same manner as if B had been capable
+by law of committing an offence, and had committed murder, and he is therefore subject to
+the punishment of death.
+(c)Ainstigates B to set fire to a dwelling-house. B, in consequence of his unsoundness
+of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong
+or contrary to law, sets fire to the house in consequence ofA’s instigation. B has committed
+no offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is
+liable to the punishment provided for that offence.
+(d) A, intending to cause a theft to be committed, instigates B to take property belonging
+to Z out of Z’s possession. Ainduces B to believe that the property belongs to A. B takes the
+property out of Z’s possession, in good faith, believing it to beA’s property. B, acting under
+this misconception, does not take dishonestly, and therefore does not commit theft. But A is
+guilty of abetting theft, and is liable to the same punishment as if B had committed theft.
+Explanation 4.—The abetment of an offence being an offence, the abetment of such
+an abetment is also an offence.
+Illustration.
+A instigates B to instigate C to murder Z. B accordingly instigates C to murder Z, and
+C commits that offence in consequence of B’s instigation.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">a40b67ca-3a9e-4ada-b318-69dc6a4dda1b</span>
+            <span class="chunk-src">bns.pdf p.19</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.326</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">43.27</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0323</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.156</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">e4e6deec-011c-452d-86c4-42777e4ef9f5</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">42</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1870 - 3601 (1731 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustrations.
+(a) A instigates a child to put poison into the food of Z, and gives him poison for that
+purpose. The child, in consequence of the instigation, by mistake puts the poison into the
+food of Y, which is by the side of that of Z. Here, if the child was acting under the influence
+of A’s instigation, and the act done was under the circumstances a probable consequence of
+the abetment,Ais liable in the same manner and to the same extent as if he had instigated the
+child to put the poison into the food of Y.
+(b) A instigates B to burn Z’s house, B sets fire to the house and at the same time
+commits theft of property there.A, though guilty of abetting the burning of the house, is not
+guilty of abetting the theft; for the theft was a distinct act, and not a probable consequence
+of the burning.
+(c)Ainstigates B and C to break into an inhabited house at midnight for the purpose of
+robbery, and provides them with arms for that purpose. B and C break into the house, and
+being resisted by Z, one of the inmates, murder Z. Here, if that murder was the probable
+consequence of the abetment, A is liable to the punishment provided for murder.
+52. If the act for which the abettor is liable under section 51 is committed in addition to
+the act abetted, and constitute a distinct offence, the abettor is liable to punishment for each
+of the offences.
+Punishment of
+abetment if
+act abetted is
+committed in
+consequence
+and where no
+express
+provision is
+made for its
+punishment.
+Punishment of
+abetment if
+person abetted
+does act with
+different
+intention
+from that of
+abettor.
+Liability of
+abettor when
+one act
+abetted and
+different act
+done.
+Abettor when
+liable to
+cumulative
+punishment
+for act abetted
+and for act
+done.
+Sec.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">246f091b-c03e-481c-8ee0-675521393c74</span>
+            <span class="chunk-src">bns.pdf p.98</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.376</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.43</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0254</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.099</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">16</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">22</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">1cbbd314-0dab-4754-8f6e-c1bfca775c66</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">245</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1661 (1661 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation.—A threat to injure the reputation of any deceased person in whom the
+person threatened is interested, is within this section.
+Illustration.
+A, for the purpose of inducing B to resist from prosecuting a civil suit, threatens to
+burn B’s house.Ais guilty of criminal intimidation.
+(2) Whoever commits the offence of criminal intimidation shall be punished with
+imprisonment of either description for a term which may extend to two years, or with fine, or
+with both.
+(3) Whoever commits the offence of criminal intimidation by threatening to cause
+death or grievous hurt, or to cause the destruction of any property by fire, or to cause an
+offence punishable with death or imprisonment for life, or with imprisonment for a term which
+may extend to seven years, or to impute unchastity to a woman, shall be punished with
+imprisonment of either description for a term which may extend to seven years, or with fine,
+or with both.
+(4) Whoever commits the offence of criminal intimidation by an anonymous
+communication, or having taken precaution to conceal the name or abode of the person from
+whom the threat comes, shall be punished with imprisonment of either description for a term
+which may extend to two years, in addition to the punishment provided for the offence under
+sub-section (1).
+352. Whoever intentionally insults in any manner, and thereby gives provocation to
+any person, intending or knowing it to be likely that such provocation will cause him to break
+the public peace, or to commit any other offence, shall be punished with imprisonment of
+either description for a term which may extend to two years, or with fine, or with both.
+353.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">7812bbd9-f940-47cf-8ee2-ff4b296391d0</span>
+            <span class="chunk-src">bns.pdf p.17</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.364</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">18.06</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0272</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.052</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">11</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">16</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">3ab99971-d196-496a-826a-242b7a530b66</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">37</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1669 - 3195 (1526 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">46. A person abets an offence, who abets either the commission of an offence, or the
+commission of an act which would be an offence, if committed by a person capable by law of
+committing an offence with the same intention or knowledge as that of the abettor.
+Explanation 1.—The abetment of the illegal omission of an act may amount to an
+offence although the abettor may not himself be bound to do that act.
+Explanation 2.—To constitute the offence of abetment it is not necessary that the act
+abetted should be committed, or that the effect requisite to constitute the offence should be
+caused.
+Illustrations.
+(a) A instigates B to murder C. B refuses to do so. A is guilty of abetting B to commit
+murder.
+(b) A instigates B to murder D. B in pursuance of the instigation stabs D. D recovers
+from the wound.Ais guilty of instigating B to commit murder.
+Explanation 3.—It is not necessary that the person abetted should be capable by law
+of committing an offence, or that he should have the same guilty intention or knowledge as
+that of the abettor, or any guilty intention or knowledge.
+Abetment of a
+thing.
+Abettor.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+17
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">ecfce8ef-071a-4b11-9a6a-64a659fdcbfb</span>
+            <span class="chunk-src">bns.pdf p.20</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.368</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">15.71</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0243</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.044</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">13</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">34</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">f8a1509e-7bf6-4f59-99d9-4551b509cb10</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">44</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1570 (1570 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustration.
+A instigates B to resist by force a distress made by a public servant. B, in consequence,
+resists that distress. In offering the resistance, B voluntarily causes grievous hurt to the
+officer executing the distress.As B has committed both the offence of resisting the distress,
+and the offence of voluntarily causing grievous hurt, B is liable to punishment for both these
+offences; and, ifA knew that B was likely voluntarily to cause grievous hurt in resisting the
+distress, A will also be liable to punishment for each of the offences.
+53. When an act is abetted with the intention on the part of the abettor of causing a
+particular effect, and an act for which the abettor is liable in consequence of the abetment,
+causes a different effect from that intended by the abettor, the abettor is liable for the effect
+caused, in the same manner and to the same extent as if he had abetted the act with the
+intention of causing that effect, provided he knew that the act abetted was likely to cause
+that effect.
+Illustration.
+A instigates B to cause grievous hurt to Z. B, in consequence of the instigation,
+causes grievous hurt to Z. Z dies in consequence. Here, if A knew that the grievous hurt
+abetted was likely to cause death, A is liable to be punished with the punishment provided
+for murder.
+54. Whenever any person, who is absent would be liable to be punished as an abettor,
+is present when the act or offence for which he would be punishable in consequence of the
+abetment is committed, he shall be deemed to have committed such act or offence.
+55.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">c5c0c6a2-236a-469f-8dce-9d639c45fc68</span>
+            <span class="chunk-src">bns.pdf p.6</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.327</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">22.29</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0308</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.031</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">7</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">27647dd2-4fcb-4a84-a51f-f2b5d7e11dcf</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">11</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1073 - 3097 (2024 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustration.
+A sets fire, by night, to an inhabited house in a large town, for the purpose of
+facilitating a robbery and thus causes the death of a person. Here, A may not have
+intended to cause death; and may even be sorry that death has been caused by his act;
+yet, if he knew that he was likely to cause death, he has caused death voluntarily;
+(34) “will” means any testamentary document;
+(35) “woman” means a female human being of any age;
+(36) “wrongful gain” means gain by unlawful means of property to which the
+person gaining is not legally entitled;
+(37) “wrongful loss” means the loss by unlawful means of property to which the
+person losing it is legally entitled;
+(38) “gaining wrongfully” and “losing wrongfully”.—A person is said to gain
+wrongfully when such person retains wrongfully, as well as when such person acquires
+wrongfully.Aperson is said to lose wrongfully when such person is wrongfully kept out
+of any property, as well as when such person is wrongfully deprived of property; and
+(39) words and expressions used but not defined in this Sanhita but defined in
+the InformationTechnologyAct, 2000 and the Bharatiya Nagarik Suraksha Sanhita,2023
+shall have the meanings respectively assigned to them in that Act and Sanhita.
+3. (1) Throughout this Sanhita every definition of an offence, every penal provision,
+and every Illustration of every such definition or penal provision, shall be understood
+subject to the exceptions contained in the Chapter entitled “General Exceptions”, though
+those exceptions are not repeated in such definition, penal provision, or Illustration.
+Illustrations.
+(a) The sections in this Sanhita, which contain definitions of offences, do not express
+that a child under seven years of age cannot commit such offences; but the definitions are to
+be understood subject to the general exception which provides that nothing shall be an
+offence which is done by a child under seven years of age.
+(b)A, a police officer, without warrant, apprehends Z, who has committed murder.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 2/6 chunks used (33%)</div>
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">All generated claims are fully supported by evidence.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace eb2a1035-84ca-42d3-9a41-6f908221e351.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>GENERATOR passed (confidence=0.95).</li><li>GROUNDING passed (confidence=0.90).</li><li>No failures detected. Pipeline is healthy or all evidence is UNKNOWN.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.930</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>2/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.750</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">3 / 4</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">The person who actually set fire to the house, being incapable (due to unsoundness of mind) of knowing the act was wrong, commits no offence; but the instigator is nonetheless guilty of abetting the offence of setting fire to a dwelling-house and is liable to the punishment provided for that offence.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The person who actually set fire to the house is incapable (due to unsoundness of mind) of knowing the act was wrong.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.999</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">B, in consequence of his unsoundness of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong or contrary to law, sets fire to the house in consequence of A’s instigation.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The person who actually set fire to the house commits no offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.021</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">B has committed no offence, but A is guilty of abetting the offence of setting fire to a dwelling‑house, and is liable to the punishment provided for that offence.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The instigator is guilty of abetting the offence of setting fire to a dwelling-house.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.995</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">B has committed no offence, but A is guilty of abetting the offence of setting fire to a dwelling‑house, and is liable to the punishment provided for that offence.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The instigator is liable to the punishment provided for the offence of setting fire to a dwelling-house.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.999</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">However, the instigator (A), who acted with a guilty intention, is **guilty of abetting the offence of setting fire to a dwelling‑house** and is liable to the punishment prescribed for that offence.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.997</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNKNOWN</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.719</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val hi mono">0.917</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val mid mono">0.667</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.333</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace eb2a1035-84ca-42d3-9a41-6f908221e351 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

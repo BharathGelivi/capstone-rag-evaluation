@@ -1,0 +1,167 @@
+{
+    "framework_metadata": {
+        "trace_id": "2705f540-e686-48f4-afee-9c57efe6cd66",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T15:07:43.691329Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "When does the right of private defence of the body commence, and how long does it continue?",
+        "generated_answer": "The right of private defence of the body **commences** as soon as a reasonable apprehension of danger to the body arises from an attempt or threat to commit an offence (even if the offence itself has not yet been committed). It **continues** for as long as that reasonable apprehension of danger to the body persists.  \n\n*Source: Section\u202f40 of the text*\u301090f8747a-7f40-4ae3-b114-2b216129f432\u3011.",
+        "overall_health_score": 0.6667,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 2,
+        "total_claims": 3,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3060135245323181,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.8586911559104919,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.8586911559104919
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 3,
+        "supported_claims": 2,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6666666666666666,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.6665163011445353,
+        "retrieval_latency_ms": 15418.67971420288,
+        "generation_latency_ms": 4934.326648712158,
+        "verification_latency_ms": 47495.37754058838
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 2705f540-e686-48f4-afee-9c57efe6cd66.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "5ce9dba9-bb9d-40cd-b73c-5e106820a999",
+            "claim_text": "The right of private defence of the body commences as soon as a reasonable apprehension of danger to the body arises from an attempt or threat to commit an offence, even if the offence itself has not yet been committed.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "90f8747a-7f40-4ae3-b114-2b216129f432",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The right of private defence of the body commences as soon as a reasonable\napprehension of danger to the body arises from an attempt or threat to commit the offence\nthough the offence may not have been committed; and it continues as long as such\napprehension of danger to the body continues."
+        },
+        {
+            "claim_id": "e8cc5be6-6e84-411a-babc-0fa6c5b998bd",
+            "claim_text": "The right of private defence of the body continues for as long as that reasonable apprehension of danger to the body persists.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "90f8747a-7f40-4ae3-b114-2b216129f432",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The right of private defence of the body commences as soon as a reasonable\napprehension of danger to the body arises from an attempt or threat to commit the offence\nthough the offence may not have been committed; and it continues as long as such\napprehension of danger to the body continues."
+        },
+        {
+            "claim_id": "1b651a13-21be-4dd6-86f9-f8477210bbcd",
+            "claim_text": "The source is Section 40 of the text.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "90f8747a-7f40-4ae3-b114-2b216129f432",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "41."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.75,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T15:07:43.695749Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

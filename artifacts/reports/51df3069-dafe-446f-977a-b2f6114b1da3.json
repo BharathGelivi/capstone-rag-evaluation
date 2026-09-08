@@ -1,0 +1,190 @@
+{
+    "framework_metadata": {
+        "trace_id": "51df3069-dafe-446f-977a-b2f6114b1da3",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:22:51.181299Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "How does the BNS's organised crime provision in section 111 define a 'continuing unlawful activity'?",
+        "generated_answer": "Section\u202f111 of the BNS defines **\u201ccontinuing unlawful activity\u201d** as:\n\n> an activity prohibited by law which is a cognizable offence punishable with imprisonment of three years or more, undertaken by any person, either singly or jointly, as a member of an organised crime syndicate or on behalf of such syndicate.  \n\n[Chunk\u2011ID: 4cca81ab-bd40-478d-be92-056607a2fae0]",
+        "overall_health_score": 0.8571,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 6,
+        "total_claims": 7,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.301766037940979,
+                    "pool_size": 67
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9956761002540588,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.6666666666666666,
+                    "chunks_used": 4,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9956761002540588
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 7,
+        "supported_claims": 6,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8571428571428571,
+        "evidence_coverage": 0.6666666666666666,
+        "average_entailment": 0.8970484180109841,
+        "retrieval_latency_ms": 765.8913135528564,
+        "generation_latency_ms": 2434.1282844543457,
+        "verification_latency_ms": 17682.671070098877
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 51df3069-dafe-446f-977a-b2f6114b1da3.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "c84aebb2-d50c-475d-b10f-3f28a842a1a5",
+            "claim_text": "Section 111 of the BNS defines \"continuing unlawful activity\".",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "36\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "17c80e17-0e24-4a6a-9432-37719c1b542f",
+            "claim_text": "\"Continuing unlawful activity\" is an activity prohibited by law.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section,\u2013\u2013\n(i) \u201corganised crime syndicate\u201d means a group of two or more persons who,\nacting either singly or jointly, as a syndicate or gang indulge in any continuing\nunlawful activity;\n(ii) \u201ccontinuing unlawful activity\u201d means an activity prohibited by law which is\na cognizable offence punishable with imprisonment of three years or more, undertaken\nby any person, either singly or jointly, as a member of an organised crime syndicate or\nAttempt to\ncommit\nculpable\nhomicide."
+        },
+        {
+            "claim_id": "bf9dc8bb-2a11-4561-84f1-5a2ef51073f4",
+            "claim_text": "\"Continuing unlawful activity\" is a cognizable offence.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "f0020bf0-3a33-4dba-beb9-1abb6443b441",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Whoever, knowing or having reason to believe that any persons are about to\ncommit or have recently committed robbery or dacoity, harbours them or any of them, with\nthe intention of facilitating the commission of such robbery or dacoity, or of screening\nthem or any of them from punishment, shall be punished with rigorous imprisonment for a\nterm which may extend to seven years, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "9984bdfb-d8c3-4191-9078-05f665a843a0",
+            "claim_text": "\"Continuing unlawful activity\" is punishable with imprisonment of three years or more.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "c7c7f898-a537-46a6-bbd5-0dd5adeeb3a0",
+            "claim_text": "\"Continuing unlawful activity\" is undertaken by any person, either singly or jointly.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(1) Whoever, being a member of a group or gang, either singly or jointly, commits\nany act of theft, snatching, cheating, unauthorised selling of tickets, unauthorised betting\nor gambling, selling of public examination question papers or any other similar criminal act,\nis said to commit petty organised crime."
+        },
+        {
+            "claim_id": "aba160aa-4aa0-4309-b41b-848224cf90ac",
+            "claim_text": "\"Continuing unlawful activity\" is undertaken as a member of an organised crime syndicate.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(1) Whoever, being a member of a group or gang, either singly or jointly, commits\nany act of theft, snatching, cheating, unauthorised selling of tickets, unauthorised betting\nor gambling, selling of public examination question papers or any other similar criminal act,\nis said to commit petty organised crime."
+        },
+        {
+            "claim_id": "120443fe-acc8-42f7-8725-ad7bc69d3383",
+            "claim_text": "\"Continuing unlawful activity\" is undertaken on behalf of an organised crime syndicate.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ee0db94b-c9d9-4de0-ad87-74357bd021d1",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.0,
+        "total_gold_claims": 0,
+        "recalled_gold_claims": 0
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:22:51.181443Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

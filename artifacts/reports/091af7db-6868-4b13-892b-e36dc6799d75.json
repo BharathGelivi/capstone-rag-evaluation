@@ -1,0 +1,203 @@
+{
+    "framework_metadata": {
+        "trace_id": "091af7db-6868-4b13-892b-e36dc6799d75",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T10:11:27.209789Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "How does the BNS's organised crime provision in section 111 define a 'continuing unlawful activity'?",
+        "generated_answer": "According to the provided context, a 'continuing unlawful activity' is defined as an activity prohibited by law which is a cognizable offence punishable with imprisonment of three years or more, undertaken by any person, either singly or jointly, as a member of an organised crime syndicate or on behalf of such syndicate, in respect of which more than one charge-sheets have been filed before a competent Court within the preceding period of ten years and that Court has taken cognizance of such offence [Chunk-ID: d206ca56-dd16-4aa9-bb72-e4c058bb43d7].",
+        "overall_health_score": 0.9,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 9,
+        "total_claims": 10,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.17185211181640625,
+                    "pool_size": 37
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9975837469100952,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 1.0,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 3
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9975837469100952
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 3,
+        "verified_claims": 10,
+        "supported_claims": 9,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.9,
+        "evidence_coverage": 1.0,
+        "average_entailment": 0.8516330167651176,
+        "retrieval_latency_ms": 1855.8132648468018,
+        "generation_latency_ms": 78391.4897441864,
+        "verification_latency_ms": 3621141.591310501
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 091af7db-6868-4b13-892b-e36dc6799d75.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "6d371dd6-fdf7-4a1e-8420-de5befd978de",
+            "claim_text": "a 'continuing unlawful activity' is defined",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d206ca56-dd16-4aa9-bb72-e4c058bb43d7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section,\u2013\u2013\n(i) \u201corganised crime syndicate\u201d means a group of two or more persons who,\nacting either singly or jointly, as a syndicate or gang indulge in any continuing\nunlawful activity;\n(ii) \u201ccontinuing unlawful activity\u201d means an activity prohibited by law which is\na cognizable offence punishable with imprisonment of three years or more, undertaken\nby any person, either singly or jointly, as a member of an organised crime syndicate or\nAttempt to\ncommit\nculpable\nhomicide."
+        },
+        {
+            "claim_id": "66e2938f-9f78-4001-9935-f536471ba1f6",
+            "claim_text": "a continuing unlawful activity is an activity prohibited by law",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d206ca56-dd16-4aa9-bb72-e4c058bb43d7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section,\u2013\u2013\n(i) \u201corganised crime syndicate\u201d means a group of two or more persons who,\nacting either singly or jointly, as a syndicate or gang indulge in any continuing\nunlawful activity;\n(ii) \u201ccontinuing unlawful activity\u201d means an activity prohibited by law which is\na cognizable offence punishable with imprisonment of three years or more, undertaken\nby any person, either singly or jointly, as a member of an organised crime syndicate or\nAttempt to\ncommit\nculpable\nhomicide."
+        },
+        {
+            "claim_id": "7e9397af-1179-4919-ab8d-26866885f92a",
+            "claim_text": "the activity is a cognizable offence",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c48aba18-cb24-43ce-9681-62615a8fc7f0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section \"theft\" includes trick theft, theft\nfrom vehicle, dwelling house or business premises, cargo theft, pick pocketing, theft through\ncard skimming, shoplifting and theft ofAutomated Teller Machine.\n(2) Whoever commits any petty organised crime shall be punished with imprisonment\nfor a term which shall not be less than one year but which may extend to seven years, and\nshall also be liable to fine."
+        },
+        {
+            "claim_id": "85d81bbe-569b-431a-8164-c58ec856fae3",
+            "claim_text": "the activity is punishable with imprisonment of three years or more",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "620fe9aa-4ca6-4fed-86b4-28a911b79d16",
+            "claim_text": "the activity is undertaken by any person",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "d206ca56-dd16-4aa9-bb72-e4c058bb43d7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "A has committed the offence defined in this section.\n111. (1) Any continuing unlawful activity including kidnapping, robbery, vehicle\ntheft, extortion, land grabbing, contract killing, economic offence, cyber-crimes, trafficking\nof persons, drugs, weapons or illicit goods or services, human trafficking for prostitution or\nransom, by any person or a group of persons acting in concert, singly or jointly, either as a\nmember of an organised crime syndicate or on behalf of such syndicate, by use of violence,\nthreat of violence, intimidation, coercion, or by any other unlawful means to obtain direct or\nindirect material benefit including a financial benefit, shall constitute organised crime."
+        },
+        {
+            "claim_id": "7aeffb89-47b2-4d8d-b27a-1c7e6eef77b3",
+            "claim_text": "the activity is undertaken by any person either singly or jointly",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d206ca56-dd16-4aa9-bb72-e4c058bb43d7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "A has committed the offence defined in this section.\n111. (1) Any continuing unlawful activity including kidnapping, robbery, vehicle\ntheft, extortion, land grabbing, contract killing, economic offence, cyber-crimes, trafficking\nof persons, drugs, weapons or illicit goods or services, human trafficking for prostitution or\nransom, by any person or a group of persons acting in concert, singly or jointly, either as a\nmember of an organised crime syndicate or on behalf of such syndicate, by use of violence,\nthreat of violence, intimidation, coercion, or by any other unlawful means to obtain direct or\nindirect material benefit including a financial benefit, shall constitute organised crime."
+        },
+        {
+            "claim_id": "2dc50308-63c6-4250-9f9b-0c5a471ebed8",
+            "claim_text": "the activity is undertaken by a member of an organised crime syndicate",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d206ca56-dd16-4aa9-bb72-e4c058bb43d7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section,\u2013\u2013\n(i) \u201corganised crime syndicate\u201d means a group of two or more persons who,\nacting either singly or jointly, as a syndicate or gang indulge in any continuing\nunlawful activity;\n(ii) \u201ccontinuing unlawful activity\u201d means an activity prohibited by law which is\na cognizable offence punishable with imprisonment of three years or more, undertaken\nby any person, either singly or jointly, as a member of an organised crime syndicate or\nAttempt to\ncommit\nculpable\nhomicide."
+        },
+        {
+            "claim_id": "cc61c02a-733a-4f86-a5e4-e28f9f6e112a",
+            "claim_text": "the activity is undertaken on behalf of an organised crime syndicate",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d206ca56-dd16-4aa9-bb72-e4c058bb43d7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section,\u2013\u2013\n(i) \u201corganised crime syndicate\u201d means a group of two or more persons who,\nacting either singly or jointly, as a syndicate or gang indulge in any continuing\nunlawful activity;\n(ii) \u201ccontinuing unlawful activity\u201d means an activity prohibited by law which is\na cognizable offence punishable with imprisonment of three years or more, undertaken\nby any person, either singly or jointly, as a member of an organised crime syndicate or\nAttempt to\ncommit\nculpable\nhomicide."
+        },
+        {
+            "claim_id": "dd9152d9-1475-4566-8587-211066fbf9bc",
+            "claim_text": "more than one charge-sheets have been filed before a competent Court within the preceding period of ten years",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "1377491d-7c90-408c-8cb5-2eff2f9d81df",
+            "claim_text": "a Court has taken cognizance of such offence",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.7,
+        "total_gold_claims": 10,
+        "recalled_gold_claims": 7
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T10:11:27.210208Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

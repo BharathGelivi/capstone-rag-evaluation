@@ -1,0 +1,183 @@
+{
+    "framework_metadata": {
+        "trace_id": "220426be-a609-4290-83ea-7b84095f0bcd",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T23:24:26.597084Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, are facts inconsistent with a fact in issue, or that make the existence of a fact in issue highly probable or improbable, relevant even if not otherwise relevant?",
+        "generated_answer": "Yes. Under the Bharatiya Sakshya Adhiniyam (BSA), facts that are **inconsistent with a fact in issue** or that **make the existence or non\u2011existence of a fact in issue highly probable or improbable** are deemed relevant **even if they would not otherwise be relevant**.\n\nThis is expressly provided in **Section\u202f9** of the BSA:\n\n> **9. Facts not otherwise relevant are relevant\u2014**  \n> **(1) if they are inconsistent with any fact in issue or relevant fact;**  \n> **(2) if by themselves or in connection with other facts they make the existence or non\u2011existence of any fact in issue or relevant fact highly probable or improbable.**  \n\n[Chunk-ID: 1f44cb03-d12a-41ef-940b-49a1848dd6ec]  \n\nThus, such facts are admissible as relevant evidence under the BSA.",
+        "overall_health_score": 0.6,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 5,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3519076108932495,
+                    "pool_size": 53
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9910722374916077,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9910722374916077
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.4710327746346593,
+        "retrieval_latency_ms": 745.1093196868896,
+        "generation_latency_ms": 16746.023654937744,
+        "verification_latency_ms": 12268.098831176758
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 220426be-a609-4290-83ea-7b84095f0bcd.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "86d04676-7fa8-43a5-bc71-4e1516ca3641",
+            "claim_text": "Under the Bharatiya Sakshya Adhiniyam (BSA), facts that are inconsistent with a fact in issue are deemed relevant even if they would not otherwise be relevant.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "1f44cb03-d12a-41ef-940b-49a1848dd6ec",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "9c8774d0-886a-4aa2-b3a7-2a924ee9288c",
+            "claim_text": "Under the Bharatiya Sakshya Adhiniyam (BSA), facts that make the existence or non-existence of a fact in issue highly probable or improbable are deemed relevant even if they would not otherwise be relevant.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "1f44cb03-d12a-41ef-940b-49a1848dd6ec",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "d32473a0-a718-4108-9f63-df51805b3c16",
+            "claim_text": "Section 9 of the Bharatiya Sakshya Adhiniyam (BSA) expressly provides that facts not otherwise relevant are relevant if they are inconsistent with any fact in issue or relevant fact.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "1f44cb03-d12a-41ef-940b-49a1848dd6ec",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Illustrations."
+        },
+        {
+            "claim_id": "9a5bf30c-8c25-4408-bff5-0cfc1828b1ad",
+            "claim_text": "Section 9 of the Bharatiya Sakshya Adhiniyam (BSA) expressly provides that facts not otherwise relevant are relevant if by themselves or in connection with other facts they make the existence or non-existence of any fact in issue or relevant fact highly probable or improbable.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "20b5e412-e216-400b-b057-91f0c36033da",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n7\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "5b4296d7-46c0-4e1e-a88f-9afaff37a85e",
+            "claim_text": "Under the Bharatiya Sakshya Adhiniyam (BSA), facts that are inconsistent with a fact in issue or that make the existence or non-existence of a fact in issue highly probable or improbable are admissible as relevant evidence.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "3d3d46c6-ce1c-4bd3-b4dc-06c4e4ad9cbb",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "18\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 0
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T23:24:26.597166Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

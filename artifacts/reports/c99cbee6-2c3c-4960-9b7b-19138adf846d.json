@@ -1,0 +1,180 @@
+{
+    "framework_metadata": {
+        "trace_id": "c99cbee6-2c3c-4960-9b7b-19138adf846d",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T00:45:06.938006Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, when is a document considered to be in 'proper custody' for the purposes of the presumption of genuineness?",
+        "generated_answer": "Under the BSA (the Bharatiya Sakshya Adhiniyam, which mirrors the relevant provisions of the Indian Evidence Act), a document is regarded as being in **proper custody** for the purpose of the presumption of genuineness when:\n\n- It is **kept in the place where it is required to be kept**, and  \n- It is **looked after by the person with whom such document is required to be kept**.\n\nAdditionally, custody will not be deemed improper if it can be shown that the document **had a legitimate origin**, or if the **circumstances of the particular case make that origin probable**.\n\nThis explanation is provided in the text accompanying sections\u202f80 and\u202f92 of the BSA.  \n\n[Chunk-ID: f940d7fd-8aa1-4435-ae63-7b1fad4e66a3]",
+        "overall_health_score": 0.5714,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 4,
+        "total_claims": 7,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2832220792770386,
+                    "pool_size": 72
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.351880818605423,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "UNKNOWN",
+                "observation": "3 generated claims are unsupported, but retrieval quality is ambiguous.",
+                "confidence": "0.5",
+                "metadata": {
+                    "unsupported_count": 3,
+                    "max_score": 0.351880818605423
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 7,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 3,
+        "contradicted_claims": 0,
+        "grounding_score": 0.5714285714285714,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.6055799167370424,
+        "retrieval_latency_ms": 1321.143388748169,
+        "generation_latency_ms": 6837.562084197998,
+        "verification_latency_ms": 14760.814189910889
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace c99cbee6-2c3c-4960-9b7b-19138adf846d.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Skipping GENERATOR: status is UNKNOWN (insufficient evidence).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.92
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "56e22acf-27a9-410a-83c2-d65fa7b22ab7",
+            "claim_text": "The BSA is the Bharatiya Sakshya Adhiniyam.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "76f77c9c-5867-44cd-8d60-fb3534ec8960",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n99\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "eb8320a3-2277-4cf8-a793-81fd45cf9087",
+            "claim_text": "The BSA mirrors the relevant provisions of the Indian Evidence Act.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "3073ca28-3dae-4ea9-ac2d-61f2230c4474",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Illustrations."
+        },
+        {
+            "claim_id": "d223e525-9c62-4feb-8610-212c9803088a",
+            "claim_text": "A document is regarded as being in proper custody for the purpose of the presumption of genuineness when it is kept in the place where it is required to be kept.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a895513d-dd0a-4ee4-9d0c-af9a2d72375f",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable."
+        },
+        {
+            "claim_id": "9d7ae0d9-842e-446a-8c74-409626a7c839",
+            "claim_text": "A document is regarded as being in proper custody for the purpose of the presumption of genuineness when it is looked after by the person with whom such document is required to be kept.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a895513d-dd0a-4ee4-9d0c-af9a2d72375f",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable."
+        },
+        {
+            "claim_id": "7757bf43-c302-49d2-9b8b-e8ae273c8211",
+            "claim_text": "Custody will not be deemed improper if it can be shown that the document had a legitimate origin.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a895513d-dd0a-4ee4-9d0c-af9a2d72375f",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable."
+        },
+        {
+            "claim_id": "b196f534-0c80-4e62-af92-c6c0ee08a4ff",
+            "claim_text": "Custody will not be deemed improper if the circumstances of the particular case make that origin probable.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a895513d-dd0a-4ee4-9d0c-af9a2d72375f",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable."
+        },
+        {
+            "claim_id": "e1a7d14a-5d0f-4291-b23c-1179b08974f8",
+            "claim_text": "This explanation is provided in the text accompanying sections 80 and 92 of the BSA.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "76f77c9c-5867-44cd-8d60-fb3534ec8960",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n99\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.6666666666666666,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T00:45:06.938089Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

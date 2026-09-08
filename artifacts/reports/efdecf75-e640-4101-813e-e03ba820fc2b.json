@@ -1,0 +1,183 @@
+{
+    "framework_metadata": {
+        "trace_id": "efdecf75-e640-4101-813e-e03ba820fc2b",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T13:03:39.522949Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "If a person intends to kill one individual but instead unintentionally causes the death of a different person, how is the resulting culpable homicide classified?",
+        "generated_answer": "Under Section\u202f102 of the Indian Penal Code (as reproduced in the retrieved context), when a person does an act that he intends or knows is likely to cause death, and thereby causes the death of someone other than the person he intended (or knew) to kill, the resulting culpable homicide is **treated as if he had caused the death of the intended person**.  \n\nIn other words, the offense is classified according to the description it would have had had the death occurred to the intended victim:\n\n- If the act would have constituted **murder** had it killed the intended person, then the unintended killing is also **murder**.  \n- If the act would have amounted only to **culpable homicide not amounting to murder** had it killed the intended person, then the unintended killing is classified as that lesser offense.  \n\nThis principle transfers the offender\u2019s intent (or knowledge) to the actual victim, so the legal description of the culpable homicide follows the intended target\u2019s outcome.  \n\n[Chunk-ID: ac6c1423-8651-4ff8-9f26-0cf720a5f981] (Section\u202f102).",
+        "overall_health_score": 0.4,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 2,
+        "total_claims": 5,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2753572463989258,
+                    "pool_size": 62
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9114284515380859,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9114284515380859
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 2,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.4,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.4611935056746006,
+        "retrieval_latency_ms": 697.8545188903809,
+        "generation_latency_ms": 9676.928043365479,
+        "verification_latency_ms": 18883.08811187744
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace efdecf75-e640-4101-813e-e03ba820fc2b.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "77ef2213-0dd7-43f1-ac79-a0e9f3bcbe0f",
+            "claim_text": "Under Section\u202f102 of the Indian Penal Code, when a person does an act that he intends or knows is likely to cause death, and thereby causes the death of someone other than the person he intended (or knew) to kill, the resulting culpable homicide is treated as if he had caused the death of the intended person.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "65151f1f-9f39-4ec8-906d-1658da0b33d5",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "32\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "c4a31821-c00f-4d10-a109-4f2ec23e35c6",
+            "claim_text": "The offense is classified according to the description it would have had had the death occurred to the intended victim.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If a person, by doing anything which he intends or knows to be likely to cause\ndeath, commits culpable homicide by causing the death of any person, whose death he\nneither intends nor knows himself to be likely to cause, the culpable homicide committed by\nthe offender is of the description of which it would have been if he had caused the death of\nthe person whose death he intended or knew himself to be likely to cause."
+        },
+        {
+            "claim_id": "d2903696-9828-49c3-aefc-e78e88a8a671",
+            "claim_text": "If the act would have constituted murder had it killed the intended person, then the unintended killing is also murder.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If a person, by doing anything which he intends or knows to be likely to cause\ndeath, commits culpable homicide by causing the death of any person, whose death he\nneither intends nor knows himself to be likely to cause, the culpable homicide committed by\nthe offender is of the description of which it would have been if he had caused the death of\nthe person whose death he intended or knew himself to be likely to cause."
+        },
+        {
+            "claim_id": "ebab5b0a-598d-4981-a7da-53b6dbd631c6",
+            "claim_text": "If the act would have amounted only to culpable homicide not amounting to murder had it killed the intended person, then the unintended killing is classified as that lesser offense.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If a person, by doing anything which he intends or knows to be likely to cause\ndeath, commits culpable homicide by causing the death of any person, whose death he\nneither intends nor knows himself to be likely to cause, the culpable homicide committed by\nthe offender is of the description of which it would have been if he had caused the death of\nthe person whose death he intended or knew himself to be likely to cause."
+        },
+        {
+            "claim_id": "13e965a9-7825-4b55-9ecf-167ecde28e9d",
+            "claim_text": "This principle transfers the offender\u2019s intent (or knowledge) to the actual victim, so the legal description of the culpable homicide follows the intended target\u2019s outcome.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If a person, by doing anything which he intends or knows to be likely to cause\ndeath, commits culpable homicide by causing the death of any person, whose death he\nneither intends nor knows himself to be likely to cause, the culpable homicide committed by\nthe offender is of the description of which it would have been if he had caused the death of\nthe person whose death he intended or knew himself to be likely to cause."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T13:03:39.523030Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

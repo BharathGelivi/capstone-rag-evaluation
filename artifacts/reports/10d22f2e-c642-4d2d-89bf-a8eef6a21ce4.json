@@ -1,0 +1,178 @@
+{
+    "framework_metadata": {
+        "trace_id": "10d22f2e-c642-4d2d-89bf-a8eef6a21ce4",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T14:28:39.665857Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, what must be true of a document for the Court to presume it is the Official Gazette, a newspaper, or a journal, and thereby presume its genuineness?",
+        "generated_answer": "For the Court to presume the genuineness of every document purporting to be the Official Gazette, or to be a newspaper or journal, the document must be kept substantially in the form required by law and be produced from proper custody [Chunk-ID: 085db423-3da6-4d5e-aaae-330ff6e11209].",
+        "overall_health_score": 0.75,
+        "primary_issue": "CHUNK_BOUNDARY",
+        "supported_claims": 2,
+        "total_claims": 4,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.20066070556640625,
+                    "pool_size": 35
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9873970150947571,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.2,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "FAIL",
+                "observation": "2 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+                "confidence": "0.8",
+                "metadata": {
+                    "boundary_claim_ids": [
+                        "0f892045-ccfa-4825-8c95-ed1a70dd4ceb",
+                        "a822abb9-e812-4874-a0d6-c9dfb6e55419"
+                    ]
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9873970150947571
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 4,
+        "supported_claims": 2,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.75,
+        "evidence_coverage": 0.2,
+        "average_entailment": 0.810904249548912,
+        "retrieval_latency_ms": 1755.3203105926514,
+        "generation_latency_ms": 5733.734130859375,
+        "verification_latency_ms": 619041.6030883789
+    },
+    "root_cause_analysis": {
+        "primary_cause": "CHUNK_BOUNDARY",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 10d22f2e-c642-4d2d-89bf-a8eef6a21ce4.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Failure Observed at CHUNKING: CHUNK_BOUNDARY. Observation: 2 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "Primary Cause Identified at CHUNKING: CHUNK_BOUNDARY (confidence=0.8).",
+            "Concluding analysis with primary cause: CHUNK_BOUNDARY."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "N/A",
+        "major_weakness": "CHUNK_BOUNDARY",
+        "next_priority": "Increase Chunk Overlap",
+        "overall_recommendation": "Requires architectural adjustments."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "d65ba1c8-b6e2-4508-915c-fe55ccb2626e",
+            "claim_text": "The Court must presume the genuineness of every document purporting to be the Official Gazette.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The Court shall presume the genuineness of every document purporting to be\nthe Official Gazette, or to be a newspaper or journal, and of every document purporting to be\na document directed by any law to be kept by any person, if such document is kept\nsubstantially in the form required by law and is produced from proper custody."
+        },
+        {
+            "claim_id": "0f892045-ccfa-4825-8c95-ed1a70dd4ceb",
+            "claim_text": "The document must be kept substantially in the form required by law.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The Court shall presume the genuineness of every electronic or digital record\npurporting to be the Official Gazette, or purporting to be electronic or digital record directed\nby any law to be kept by any person, if such electronic or digital record is kept substantially\nin the form required by law and is produced from proper custody."
+        },
+        {
+            "claim_id": "a822abb9-e812-4874-a0d6-c9dfb6e55419",
+            "claim_text": "The document must be produced from proper custody.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The Court shall presume the genuineness of every electronic or digital record\npurporting to be the Official Gazette, or purporting to be electronic or digital record directed\nby any law to be kept by any person, if such electronic or digital record is kept substantially\nin the form required by law and is produced from proper custody."
+        },
+        {
+            "claim_id": "f540615d-cff1-482e-b5ca-b5d004ae38ec",
+            "claim_text": "The Court must presume the genuineness of every document purporting to be a newspaper or journal.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The Court shall presume the genuineness of every document purporting to be\nthe Official Gazette, or to be a newspaper or journal, and of every document purporting to be\na document directed by any law to be kept by any person, if such document is kept\nsubstantially in the form required by law and is produced from proper custody."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Increase Chunk Overlap",
+            "description": "Adjust text splitter to increase overlap between adjacent chunks by 10-20%.",
+            "observed_evidence": "LLM answers partially but misses critical context that was split into the next unretrieved chunk (2 partially supported claim(s) affected).",
+            "expected_improvement": "Context is preserved across chunks.",
+            "success_metric": "Reduction in 'Partially Supported' claims (currently 2).",
+            "tradeoff": "Increases total chunk count, redundancy, and storage."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (20%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/5 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5714285714285714,
+        "total_gold_claims": 7,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T14:28:39.666011Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

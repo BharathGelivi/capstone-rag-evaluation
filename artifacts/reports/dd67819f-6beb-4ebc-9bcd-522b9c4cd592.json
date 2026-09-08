@@ -1,0 +1,213 @@
+{
+    "framework_metadata": {
+        "trace_id": "dd67819f-6beb-4ebc-9bcd-522b9c4cd592",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T18:14:56.040030Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for murder under BNS section 103, and how does it change when a group of five or more persons acting in concert commits murder on grounds such as race, caste, or community?",
+        "generated_answer": "**Murder \u2013 BNS\u202f\u00a7\u202f103**\n\n- **Basic offence ( \u00a7\u202f103(1) )**  \n  *\u201cWhoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine.\u201d*\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011\n\n- **Group offence ( \u00a7\u202f103(2) )** \u2013 when **five or more persons acting in concert** commit murder **on the ground of race, caste, community, sex, place of birth, language, personal belief or any other similar ground**:  \n  *\u201ceach member of such group shall be punished with death or with imprisonment for life, and shall also be liable to fine.\u201d*\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011\n\n**Effect of the group provision**  \nThe punishment does **not increase** beyond the basic murder penalty; it remains **death or life imprisonment plus a fine** for each participant. The provision merely extends the same penalty to every member of the qualifying group.\u301001858be4-6a44-4c78-ad2e-9d51a448976b\u3011 (which lists \u201cMurder by group of five or more persons \u2013 Death or imprisonment for life and fine\u201d).  \n\nThus, under BNS\u202f\u00a7\u202f103, murder is punishable by death or life imprisonment (with fine), and the same penalty applies to each member of a group of five or more who commits murder on the specified discriminatory grounds.",
+        "overall_health_score": 0.5714,
+        "primary_issue": "CHUNK_BOUNDARY",
+        "supported_claims": 3,
+        "total_claims": 7,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.34029054641723633,
+                    "pool_size": 62
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9983077049255371,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "FAIL",
+                "observation": "1 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+                "confidence": "0.8",
+                "metadata": {
+                    "boundary_claim_ids": [
+                        "6d0d4599-3133-4222-a139-811d54b7c6af"
+                    ]
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9983077049255371
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 7,
+        "supported_claims": 3,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.5714285714285714,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.6225523437772479,
+        "retrieval_latency_ms": 14436.070203781128,
+        "generation_latency_ms": 11061.520338058472,
+        "verification_latency_ms": 15821.146011352539
+    },
+    "root_cause_analysis": {
+        "primary_cause": "CHUNK_BOUNDARY",
+        "secondary_effects": [
+            "UNSUPPORTED_GENERATION"
+        ],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace dd67819f-6beb-4ebc-9bcd-522b9c4cd592.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Failure at CHUNKING: CHUNK_BOUNDARY (confidence=0.80). Observation: 1 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: CHUNK_BOUNDARY at CHUNKING (earliest upstream failure, confidence=0.80).",
+            "Secondary effect (propagated from CHUNKING): UNSUPPORTED_GENERATION at GENERATOR (confidence=0.85).",
+            "Analysis complete. Primary cause: CHUNK_BOUNDARY."
+        ],
+        "diagnosis_confidence": 0.88
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "CHUNK_BOUNDARY",
+        "next_priority": "Increase Chunk Overlap",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "ce41886c-27ee-4b7d-b82a-8de49c3c94ee",
+            "claim_text": "Under BNS \u00a7 103(1), whoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "ffb9b586-ff74-4521-bd41-cfd155980136",
+            "claim_text": "Under BNS \u00a7 103(2), when five or more persons acting in concert commit murder on the ground of race, caste, community, sex, place of birth, language, personal belief or any other similar ground, each member of such group shall be punished with death or imprisonment for life, and shall also be liable to fine.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "1ee1d3cc-b4bb-441e-b965-5b4f35f19230",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n223\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "5a148f45-481c-475a-b987-96433f436cba",
+            "claim_text": "The punishment for the group offence does not increase beyond the basic murder penalty.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If a person, by doing anything which he intends or knows to be likely to cause\ndeath, commits culpable homicide by causing the death of any person, whose death he\nneither intends nor knows himself to be likely to cause, the culpable homicide committed by\nthe offender is of the description of which it would have been if he had caused the death of\nthe person whose death he intended or knew himself to be likely to cause."
+        },
+        {
+            "claim_id": "de0702ec-b759-40f8-a6f5-7648a1db3f97",
+            "claim_text": "The punishment for the group offence remains death or life imprisonment plus a fine for each participant.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) When a group of five or more persons acting in concert commits murder on the\nground of race, caste or community, sex, place of birth, language, personal belief or any\nother similar ground each member of such group shall be punished with death or with\nimprisonment for life, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "6d0d4599-3133-4222-a139-811d54b7c6af",
+            "claim_text": "The provision merely extends the same penalty to every member of the qualifying group.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "e7effe1e-f49e-4fe8-885e-f4815d90e7fe",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(4) When a group of five or more persons acting in concert, causes grievous hurt to a\nperson on the ground of his race, caste or community, sex, place of birth, language, personal\nbelief or any other similar ground, each member of such group shall be guilty of the offence\nof causing grievous hurt, and shall be punished with imprisonment of either description for\na term which may extend to seven years, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "c491cc0a-0331-41c3-9148-7d57f558578e",
+            "claim_text": "Under BNS \u00a7 103, murder is punishable by death or life imprisonment (with fine).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "0d83c6ec-8068-4d00-a92a-9f82def7ba42",
+            "claim_text": "The same penalty applies to each member of a group of five or more who commits murder on the specified discriminatory grounds.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) When a group of five or more persons acting in concert commits murder on the\nground of race, caste or community, sex, place of birth, language, personal belief or any\nother similar ground each member of such group shall be punished with death or with\nimprisonment for life, and shall also be liable to fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Increase Chunk Overlap",
+            "description": "Adjust text splitter to increase overlap between adjacent chunks by 10-20%.",
+            "observed_evidence": "LLM answers partially but misses critical context that was split into the next unretrieved chunk (1 partially supported claim(s) affected).",
+            "expected_improvement": "Context is preserved across chunks.",
+            "success_metric": "Reduction in 'Partially Supported' claims (currently 1).",
+            "tradeoff": "Increases total chunk count, redundancy, and storage."
+        },
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T18:14:56.040355Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

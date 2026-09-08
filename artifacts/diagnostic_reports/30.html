@@ -1,0 +1,1113 @@
+<title>X-RAG Diagnostic Report — a4a63e58-fa5e-4af6-9a18-d5ea618c6fd5</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>Under the BSA, when is a document considered to be in &#x27;proper custody&#x27; for the purposes of the presumption of genuineness?</h1>
+    <p class="dek">Trace <span class="mono">a4a63e58-fa5e-4af6-9a18-d5ea618c6fd5</span>, generated 2026-09-06T15:59:22.865820Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">67%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNKNOWN</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">4 / 6</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.668</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">Under the BSA, when is a document considered to be in &#x27;proper custody&#x27; for the purposes of the presumption of genuineness?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">Under the BSA (Bharatiya Sakshya Adhiniyam), a document is regarded as being in **proper custody** for the purpose of the presumption of genuineness when:
+
+- It is kept **in the place where it is required to be kept**, and  
+- It is **looked after by the person with whom such document is required to be kept**.  
+
+Additionally, custody will not be considered improper if it can be shown that the document **had a legitimate origin**, or if the circumstances of the case make that origin probable.  
+
+This definition is provided in the Explanation to the relevant section (see the passage discussing sections 80 and 92)【f940d7fd-8aa1-4435-ae63-7b1fad4e66a3】.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 1.28s retrieval + 4.98s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">6.259s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">72</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: f940d7fd-8aa1-4435-ae63-7b1fad4e66a3] ---
+from day to day, and indicating that the ship was not taken out of her proper course. A may
+prove these statements, because they would be admissible between third parties, if he were
+dead, under clause (b) of section 26.
+(c)Ais accused of a crime committed by him at Kolkata. He produces a letter written
+by himself and dated at Chennai on that day, and bearing the Chennai post-mark of that day.
+The statement in the date of the letter is admissible, because, if A were dead, it would be
+admissible under clause (b) of section 26.
+(d) A is accused of receiving stolen goods knowing them to be stolen. He offers to
+prove that he refused to sell them below their value.A may prove these statements, though
+they are admissions, because they are explanatory of conduct influenced by facts in issue.
+(e) A is accused of fraudulently having in his possession counterfeit currency which
+he knew to be counterfeit. He offers to prove that he asked a skilful person to examine the
+currency as he doubted whether it was counterfeit or not, and that person did examine it
+and told him it was genuine. A may prove these facts.
+20. Oral admissions as to the contents of a document are not relevant, unless and
+until the party proposing to prove them shows that he is entitled to give secondary evidence
+of the contents of such document under the rules hereinafter contained, or unless the
+genuineness of a document produced is in question.
+21. In civil cases no admission is relevant, if it is made either upon an express condition
+that evidence of it is not to be given, or under circumstances from which the Court can infer
+that the parties agreed together that evidence of it should not be given.
+Explanation.—Nothing in this section shall be taken to exempt any advocate from
+giving evidence of any matter of which he may be compelled to give evidence under
+sub-sections (1) and (2) of section 132.
+22.
+
+--- Context chunk 2 [Chunk-ID: 76f77c9c-5867-44cd-8d60-fb3534ec8960] ---
+(2) The list of documents shall be in such form as the State Government may, by rules,
+provide.
+(3) Where the genuineness of any document is not disputed, such document may be
+read in evidence in any inquiry, trial or other proceeding under this Sanhita without proof of
+the signature of the person by whom it purports to be signed:
+Provided that the Court may, in its discretion, require such signature to be proved.
+331. When any application is made to any Court in the course of any inquiry, trial or
+other proceeding under this Sanhita, and allegations are made therein respecting any public
+servant, the applicant may give evidence of the facts alleged in the application by affidavit,
+and the Court may, if it thinks fit, order that evidence relating to such facts be so given.
+332. (1) The evidence of any person whose evidence is of a formal character may be
+given by affidavit and may, subject to all just exceptions, be read in evidence in any inquiry,
+trial or other proceeding under this Sanhita.
+(2) The Court may, if it thinks fit, and shall, on the application of the prosecution or
+the accused, summon and examine any such person as to the facts contained in his affidavit.
+Reports of
+certain
+Government
+scientific
+experts.
+No formal
+proof of
+certain
+documents.
+Evidence of
+formal
+character on
+affidavit.
+Affidavit in
+proof of
+conduct of
+public
+servants.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+99
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 3 [Chunk-ID: 3073ca28-3dae-4ea9-ac2d-61f2230c4474] ---
+91. The Court shall presume that every document, called for and not produced after
+notice to produce, was attested, stamped and executed in the manner required by law.
+92. Where any document, purporting or proved to be thirty years old, is produced
+from any custody which the Court in the particular case considers proper, the Court may
+presume that the signature and every other part of such document, which purports to be in
+the handwriting of any particular person, is in that person&#x27;s handwriting, and, in the case of
+a document executed or attested, that it was duly executed and attested by the persons by
+whom it purports to be executed and attested.
+Explanation.—The Explanation to section 80 shall also apply to this section.
+Illustrations.
+(a) A has been in possession of landed property for a long time. He produces from
+his custody deeds relating to the land showing his titles to it. The custody shall be proper.
+(b) A produces deeds relating to landed property of which he is the mortgagee. The
+mortgagor is in possession. The custody shall be proper.
+(c) A, a connection of B, produces deeds relating to lands in B&#x27;s possession, which
+were deposited with him by B for safe custody. The custody shall be proper.
+93. Where any electronic record, purporting or proved to be five years old, is produced
+from any custody which the Court in the particular case considers proper, the Court may
+presume that the electronic signature which purports to be the electronic signature of any
+particular person was so affixed by him or any person authorised by him in this behalf.
+Explanation.—The Explanation to section 81 shall also apply to this section.
+Presumption as
+to Electronic
+Signature
+Certificates.
+Presumption
+as to certified
+copies of
+foreign judicial
+records.
+Presumption
+as to books,
+maps and
+charts.
+Presumption
+as to
+electronic
+messages.
+Presumption as
+to due
+execution, etc.,
+of documents
+not produced.
+Presumption
+as to
+documents
+thirty years
+old.
+Presumption
+as to
+electronic
+records five
+years old.
+10 of 1897.
+
+--- Context chunk 4 [Chunk-ID: 055991c4-de99-46e7-ab13-61ccf1c32cc7] ---
+82. The Court shall presume that maps or plans purporting to be made by the authority
+of the Central Government or any State Government were so made, and are accurate; but
+maps or plans made for the purposes of any cause must be proved to be accurate.
+83. The Court shall presume the genuineness of, every book purporting to be printed
+or published under the authority of the Government of any country, and to contain any of
+the laws of that country, and of every book purporting to contain reports of decisions of the
+Courts of such country.
+84. The Court shall presume that every document purporting to be a
+power-of-attorney, and to have been executed before, and authenticated by, a Notary Public,
+or any Court, Judge, Magistrate, Indian Consul or Vice-Consul, or representative of the
+Central Government, was so executed and authenticated.
+85. The Court shall presume that every electronic record purporting to be an agreement
+containing the electronic or digital signature of the parties was so concluded by affixing the
+electronic or digital signature of the parties.
+86. (1) In any proceeding involving a secure electronic record, the Court shall presume
+unless contrary is proved, that the secure electronic record has not been altered since the
+specific point of time to which the secure status relates.
+(2) In any proceeding, involving secure electronic signature, the Court shall presume
+unless the contrary is proved that—
+(a) the secure electronic signature is affixed by subscriber with the intention of
+signing or approving the electronic record;
+(b) except in the case of a secure electronic record or a secure electronic signature,
+nothing in this section shall create any presumption, relating to authenticity and
+integrity of the electronic record or any electronic signature.
+Presumption
+as to Gazettes,
+newspapers,
+and other
+documents.
+Presumption
+as to Gazettes
+in electronic
+or digital
+record.
+Presumption
+as to maps or
+plans made by
+authority of
+Government.
+Presumption as
+to collections
+of laws and
+reports of
+decisions.
+Presumption
+as to powers-
+of-attorney.
+Presumption as
+to electronic
+agreements.
+Presumption
+as to
+electronic
+records and
+electronic
+signatures.
+Sec.
+
+--- Context chunk 5 [Chunk-ID: 1bd0daa4-aa34-4be8-a470-3b1427b0c7e4] ---
+Presumptions as to documents
+78. (1) The Court shall presume to be genuine every document purporting to be a
+certificate, certified copy or other document, which is by law declared to be admissible as
+evidence of any particular fact and which purports to be duly certified by any officer of the
+Central Government or of a State Government:
+Provided that such document is substantially in the form and purports to be executed
+in the manner directed by law in that behalf.
+(2) The Court shall also presume that any officer by whom any such document
+purports to be signed or certified, held, when he signed it, the official character which he
+claims in such paper.
+79. Whenever any document is produced before any Court, purporting to be a record
+or memorandum of the evidence, or of any part of the evidence, given by a witness in a
+judicial proceeding or before any officer authorised by law to take such evidence or to be a
+statement or confession by any prisoner or accused person, taken in accordance with law,
+Proof of
+documents by
+production of
+certified
+copies.
+Proof of other
+official
+documents.
+Presumption
+as to
+genuineness of
+certified
+copies.
+Presumption as
+to documents
+produced as
+record of
+evidence, etc.
+26
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________
+
+--- Context chunk 6 [Chunk-ID: a895513d-dd0a-4ee4-9d0c-af9a2d72375f] ---
+and purporting to be signed by any Judge or Magistrate, or by any such officer as aforesaid,
+the Court shall presume that—
+(i) the document is genuine;
+(ii) any statements as to the circumstances under which it was taken, purporting
+to be made by the person signing it, are true; and
+(iii) such evidence, statement or confession was duly taken.
+80. The Court shall presume the genuineness of every document purporting to be
+the Official Gazette, or to be a newspaper or journal, and of every document purporting to be
+a document directed by any law to be kept by any person, if such document is kept
+substantially in the form required by law and is produced from proper custody.
+Explanation.—For the purposes of this section and section 92, document is said to
+be in proper custody if it is in the place in which, and looked after by the person with whom
+such document is required to be kept; but no custody is improper if it is proved to have had
+a legitimate origin, or if the circumstances of the particular case are such as to render that
+origin probable.
+81. The Court shall presume the genuineness of every electronic or digital record
+purporting to be the Official Gazette, or purporting to be electronic or digital record directed
+by any law to be kept by any person, if such electronic or digital record is kept substantially
+in the form required by law and is produced from proper custody.
+Explanation.—For the purposes of this section and section 93 electronic records are
+said to be in proper custody if they are in the place in which, and looked after by the person
+with whom such document is required to be kept; but no custody is improper if it is proved
+to have had a legitimate origin, or the circumstances of the particular case are such as to
+render that origin probable.
+82. The Court shall presume that maps or plans purporting to be made by the authority
+of the Central Government or any State Government were so made, and are accurate; but
+maps or plans made for the purposes of any cause must be proved to be accurate.
+83.
+
+
+Question: Under the BSA, when is a document considered to be in &#x27;proper custody&#x27; for the purposes of the presumption of genuineness?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (6 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Under the BSA (Bharatiya Sakshya Adhiniyam), a document is regarded as being in proper custody for the purpose of the presumption of genuineness when it is kept in the place where it is required to be kept.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">211b7fa0-985e-4944-8338-321e84b2dd12</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a895513d-dd0a-4ee4-9d0c-af9a2d72375f</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Explanation.—For the purposes of this section and section 93 electronic records are
+said to be in proper custody if they are in the place in which, and looked after by the person
+with whom such document is required to be kept; but no custody is improper if it is proved
+to have had a legitimate origin, or the circumstances of the particular case are such as to
+render that origin probable.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Under the BSA (Bharatiya Sakshya Adhiniyam), a document is regarded as being in proper custody for the purpose of the presumption of genuineness when it is looked after by the person with whom such document is required to be kept.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">505f1a96-a3c9-497c-a68b-de83a9534297</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a895513d-dd0a-4ee4-9d0c-af9a2d72375f</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Explanation.—For the purposes of this section and section 93 electronic records are
+said to be in proper custody if they are in the place in which, and looked after by the person
+with whom such document is required to be kept; but no custody is improper if it is proved
+to have had a legitimate origin, or the circumstances of the particular case are such as to
+render that origin probable.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Custody will not be considered improper if it can be shown that the document had a legitimate origin.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">e82f7db2-2860-45ad-bf88-6fbe5f2d648f</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a895513d-dd0a-4ee4-9d0c-af9a2d72375f</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Explanation.—For the purposes of this section and section 92, document is said to
+be in proper custody if it is in the place in which, and looked after by the person with whom
+such document is required to be kept; but no custody is improper if it is proved to have had
+a legitimate origin, or if the circumstances of the particular case are such as to render that
+origin probable.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Custody will not be considered improper if the circumstances of the case make that origin probable.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">6d552947-ae4a-4bc7-ac47-d43adfc18914</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a895513d-dd0a-4ee4-9d0c-af9a2d72375f</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Explanation.—For the purposes of this section and section 92, document is said to
+be in proper custody if it is in the place in which, and looked after by the person with whom
+such document is required to be kept; but no custody is improper if it is proved to have had
+a legitimate origin, or if the circumstances of the particular case are such as to render that
+origin probable.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">This definition is provided in the Explanation to the relevant section.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">656f1c57-2731-4651-9b12-5158d3211878</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">1bd0daa4-aa34-4be8-a470-3b1427b0c7e4</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">26
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The definition is seen in the passage discussing sections 80 and 92【f940d7fd-8aa1-4435-ae63-7b1fad4e66a3】.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">0162863f-cb88-4f4d-bb5f-0de3a4fc3d08</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">76f77c9c-5867-44cd-8d60-fb3534ec8960</span> (rank 5)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+99
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">a895513d-dd0a-4ee4-9d0c-af9a2d72375f</span>
+            <span class="chunk-src">bsa.pdf p.27</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.283</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">24.03</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.352</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">10d286c4-5bd4-477a-bfb1-72d58b261c39</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">847</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2046 (2046 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">and purporting to be signed by any Judge or Magistrate, or by any such officer as aforesaid,
+the Court shall presume that—
+(i) the document is genuine;
+(ii) any statements as to the circumstances under which it was taken, purporting
+to be made by the person signing it, are true; and
+(iii) such evidence, statement or confession was duly taken.
+80. The Court shall presume the genuineness of every document purporting to be
+the Official Gazette, or to be a newspaper or journal, and of every document purporting to be
+a document directed by any law to be kept by any person, if such document is kept
+substantially in the form required by law and is produced from proper custody.
+Explanation.—For the purposes of this section and section 92, document is said to
+be in proper custody if it is in the place in which, and looked after by the person with whom
+such document is required to be kept; but no custody is improper if it is proved to have had
+a legitimate origin, or if the circumstances of the particular case are such as to render that
+origin probable.
+81. The Court shall presume the genuineness of every electronic or digital record
+purporting to be the Official Gazette, or purporting to be electronic or digital record directed
+by any law to be kept by any person, if such electronic or digital record is kept substantially
+in the form required by law and is produced from proper custody.
+Explanation.—For the purposes of this section and section 93 electronic records are
+said to be in proper custody if they are in the place in which, and looked after by the person
+with whom such document is required to be kept; but no custody is improper if it is proved
+to have had a legitimate origin, or the circumstances of the particular case are such as to
+render that origin probable.
+82. The Court shall presume that maps or plans purporting to be made by the authority
+of the Central Government or any State Government were so made, and are accurate; but
+maps or plans made for the purposes of any cause must be proved to be accurate.
+83.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">1bd0daa4-aa34-4be8-a470-3b1427b0c7e4</span>
+            <span class="chunk-src">bsa.pdf p.26</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.341</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">16.35</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0318</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.085</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">4</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">b025b631-6a4b-491a-a1a5-aa263975d942</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">846</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2153 - 3775 (1622 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Presumptions as to documents
+78. (1) The Court shall presume to be genuine every document purporting to be a
+certificate, certified copy or other document, which is by law declared to be admissible as
+evidence of any particular fact and which purports to be duly certified by any officer of the
+Central Government or of a State Government:
+Provided that such document is substantially in the form and purports to be executed
+in the manner directed by law in that behalf.
+(2) The Court shall also presume that any officer by whom any such document
+purports to be signed or certified, held, when he signed it, the official character which he
+claims in such paper.
+79. Whenever any document is produced before any Court, purporting to be a record
+or memorandum of the evidence, or of any part of the evidence, given by a witness in a
+judicial proceeding or before any officer authorised by law to take such evidence or to be a
+statement or confession by any prisoner or accused person, taken in accordance with law,
+Proof of
+documents by
+production of
+certified
+copies.
+Proof of other
+official
+documents.
+Presumption
+as to
+genuineness of
+certified
+copies.
+Presumption as
+to documents
+produced as
+record of
+evidence, etc.
+26
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">055991c4-de99-46e7-ab13-61ccf1c32cc7</span>
+            <span class="chunk-src">bsa.pdf p.27</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.99</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0159</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.034</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">10d286c4-5bd4-477a-bfb1-72d58b261c39</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">848</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1791 - 3986 (2195 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">82. The Court shall presume that maps or plans purporting to be made by the authority
+of the Central Government or any State Government were so made, and are accurate; but
+maps or plans made for the purposes of any cause must be proved to be accurate.
+83. The Court shall presume the genuineness of, every book purporting to be printed
+or published under the authority of the Government of any country, and to contain any of
+the laws of that country, and of every book purporting to contain reports of decisions of the
+Courts of such country.
+84. The Court shall presume that every document purporting to be a
+power-of-attorney, and to have been executed before, and authenticated by, a Notary Public,
+or any Court, Judge, Magistrate, Indian Consul or Vice-Consul, or representative of the
+Central Government, was so executed and authenticated.
+85. The Court shall presume that every electronic record purporting to be an agreement
+containing the electronic or digital signature of the parties was so concluded by affixing the
+electronic or digital signature of the parties.
+86. (1) In any proceeding involving a secure electronic record, the Court shall presume
+unless contrary is proved, that the secure electronic record has not been altered since the
+specific point of time to which the secure status relates.
+(2) In any proceeding, involving secure electronic signature, the Court shall presume
+unless the contrary is proved that—
+(a) the secure electronic signature is affixed by subscriber with the intention of
+signing or approving the electronic record;
+(b) except in the case of a secure electronic record or a secure electronic signature,
+nothing in this section shall create any presumption, relating to authenticity and
+integrity of the electronic record or any electronic signature.
+Presumption
+as to Gazettes,
+newspapers,
+and other
+documents.
+Presumption
+as to Gazettes
+in electronic
+or digital
+record.
+Presumption
+as to maps or
+plans made by
+authority of
+Government.
+Presumption as
+to collections
+of laws and
+reports of
+decisions.
+Presumption
+as to powers-
+of-attorney.
+Presumption as
+to electronic
+agreements.
+Presumption
+as to
+electronic
+records and
+electronic
+signatures.
+Sec.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">3073ca28-3dae-4ea9-ac2d-61f2230c4474</span>
+            <span class="chunk-src">bsa.pdf p.28</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.383</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">21.61</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0288</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.012</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">19</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">c6066a04-ab09-47eb-867d-e56fe7063914</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">851</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1735 - 3767 (2032 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">91. The Court shall presume that every document, called for and not produced after
+notice to produce, was attested, stamped and executed in the manner required by law.
+92. Where any document, purporting or proved to be thirty years old, is produced
+from any custody which the Court in the particular case considers proper, the Court may
+presume that the signature and every other part of such document, which purports to be in
+the handwriting of any particular person, is in that person&#x27;s handwriting, and, in the case of
+a document executed or attested, that it was duly executed and attested by the persons by
+whom it purports to be executed and attested.
+Explanation.—The Explanation to section 80 shall also apply to this section.
+Illustrations.
+(a) A has been in possession of landed property for a long time. He produces from
+his custody deeds relating to the land showing his titles to it. The custody shall be proper.
+(b) A produces deeds relating to landed property of which he is the mortgagee. The
+mortgagor is in possession. The custody shall be proper.
+(c) A, a connection of B, produces deeds relating to lands in B&#x27;s possession, which
+were deposited with him by B for safe custody. The custody shall be proper.
+93. Where any electronic record, purporting or proved to be five years old, is produced
+from any custody which the Court in the particular case considers proper, the Court may
+presume that the electronic signature which purports to be the electronic signature of any
+particular person was so affixed by him or any person authorised by him in this behalf.
+Explanation.—The Explanation to section 81 shall also apply to this section.
+Presumption as
+to Electronic
+Signature
+Certificates.
+Presumption
+as to certified
+copies of
+foreign judicial
+records.
+Presumption
+as to books,
+maps and
+charts.
+Presumption
+as to
+electronic
+messages.
+Presumption as
+to due
+execution, etc.,
+of documents
+not produced.
+Presumption
+as to
+documents
+thirty years
+old.
+Presumption
+as to
+electronic
+records five
+years old.
+10 of 1897.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">76f77c9c-5867-44cd-8d60-fb3534ec8960</span>
+            <span class="chunk-src">bnss.pdf p.99</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.393</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">10.47</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0244</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.006</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">35</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">12</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">cee2bd4f-b8f1-4116-bbb7-9f7eef22c4da</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">505</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2219 - 3990 (1771 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) The list of documents shall be in such form as the State Government may, by rules,
+provide.
+(3) Where the genuineness of any document is not disputed, such document may be
+read in evidence in any inquiry, trial or other proceeding under this Sanhita without proof of
+the signature of the person by whom it purports to be signed:
+Provided that the Court may, in its discretion, require such signature to be proved.
+331. When any application is made to any Court in the course of any inquiry, trial or
+other proceeding under this Sanhita, and allegations are made therein respecting any public
+servant, the applicant may give evidence of the facts alleged in the application by affidavit,
+and the Court may, if it thinks fit, order that evidence relating to such facts be so given.
+332. (1) The evidence of any person whose evidence is of a formal character may be
+given by affidavit and may, subject to all just exceptions, be read in evidence in any inquiry,
+trial or other proceeding under this Sanhita.
+(2) The Court may, if it thinks fit, and shall, on the application of the prosecution or
+the accused, summon and examine any such person as to the facts contained in his affidavit.
+Reports of
+certain
+Government
+scientific
+experts.
+No formal
+proof of
+certain
+documents.
+Evidence of
+formal
+character on
+affidavit.
+Affidavit in
+proof of
+conduct of
+public
+servants.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+99
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">f940d7fd-8aa1-4435-ae63-7b1fad4e66a3</span>
+            <span class="chunk-src">bsa.pdf p.11</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.364</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">12.54</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0308</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.006</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">5</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">75f89c5e-adef-4a70-8640-06e33b087b11</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">812</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1894 (1894 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">from day to day, and indicating that the ship was not taken out of her proper course. A may
+prove these statements, because they would be admissible between third parties, if he were
+dead, under clause (b) of section 26.
+(c)Ais accused of a crime committed by him at Kolkata. He produces a letter written
+by himself and dated at Chennai on that day, and bearing the Chennai post-mark of that day.
+The statement in the date of the letter is admissible, because, if A were dead, it would be
+admissible under clause (b) of section 26.
+(d) A is accused of receiving stolen goods knowing them to be stolen. He offers to
+prove that he refused to sell them below their value.A may prove these statements, though
+they are admissions, because they are explanatory of conduct influenced by facts in issue.
+(e) A is accused of fraudulently having in his possession counterfeit currency which
+he knew to be counterfeit. He offers to prove that he asked a skilful person to examine the
+currency as he doubted whether it was counterfeit or not, and that person did examine it
+and told him it was genuine. A may prove these facts.
+20. Oral admissions as to the contents of a document are not relevant, unless and
+until the party proposing to prove them shows that he is entitled to give secondary evidence
+of the contents of such document under the rules hereinafter contained, or unless the
+genuineness of a document produced is in question.
+21. In civil cases no admission is relevant, if it is made either upon an express condition
+that evidence of it is not to be given, or under circumstances from which the Court can infer
+that the parties agreed together that evidence of it should not be given.
+Explanation.—Nothing in this section shall be taken to exempt any advocate from
+giving evidence of any matter of which he may be compelled to give evidence under
+sub-sections (1) and (2) of section 132.
+22.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 1/6 chunks used (17%)</div>
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">2 generated claims are unsupported, but retrieval quality is ambiguous.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace a4a63e58-fa5e-4af6-9a18-d5ea618c6fd5.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Skipping GENERATOR: status is UNKNOWN (insufficient evidence).</li><li>GROUNDING passed (confidence=0.90).</li><li>No failures detected. Pipeline is healthy or all evidence is UNKNOWN.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.920</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>1/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.750</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">3 / 4</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">A document is in proper custody if it is in the place in which, and looked after by the person with whom, such document is required to be kept -- though the Explanation notes some custody can still be considered proper even if not strictly meeting that description (see the Explanation to sections 80/92).</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A document is in proper custody if it is in the place in which such document is required to be kept.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.997</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under the BSA (Bharatiya Sakshya Adhiniyam), a document is regarded as being in **proper custody** for the purpose of the presumption of genuineness when:
+
+- It is kept **in the place where it is required to be kept**, and  
+- It is **looked after by the person with whom such document is required to be kept**.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">A document is in proper custody if it is looked after by the person with whom such document is required to be kept.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.994</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under the BSA (Bharatiya Sakshya Adhiniyam), a document is regarded as being in **proper custody** for the purpose of the presumption of genuineness when:
+
+- It is kept **in the place where it is required to be kept**, and  
+- It is **looked after by the person with whom such document is required to be kept**.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The Explanation notes that some custody can still be considered proper even if not strictly meeting that description.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.002</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Additionally, custody will not be considered improper if it can be shown that the document **had a legitimate origin**, or if the circumstances of the case make that origin probable.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">There is an Explanation to sections 80/92.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.993</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">This definition is provided in the Explanation to the relevant section (see the passage discussing sections 80 and 92)【f940d7fd-8aa1-4435-ae63-7b1fad4e66a3】.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.668</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNKNOWN</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.914</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val hi mono">0.750</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val hi mono">1.000</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace a4a63e58-fa5e-4af6-9a18-d5ea618c6fd5 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

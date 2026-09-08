@@ -1,0 +1,228 @@
+{
+    "framework_metadata": {
+        "trace_id": "55a5f753-37d8-4784-a432-9aa1e647d11b",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T20:01:03.346216Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for abetting the suicide of a child, a person of unsound mind, a delirious person, or a person in a state of intoxication?",
+        "generated_answer": "The punishment for abetting the suicide of a child, a person of unsound mind, a delirious person, or a person in a state of intoxication is:\n\n- **Death** or **imprisonment for life**, **or** imprisonment for a term not exceeding **ten years**;  \n- In addition, the offender is **liable to a fine**.  \n\n[Chunk-ID: 13c9bef0-00e1-4778-ab87-e705bfe68f76]",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 13,
+        "total_claims": 13,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3102211356163025,
+                    "pool_size": 63
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9956150054931641,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9956150054931641
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 13,
+        "supported_claims": 13,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.9936886659035316,
+        "retrieval_latency_ms": 732.0239543914795,
+        "generation_latency_ms": 2239.9744987487793,
+        "verification_latency_ms": 26689.030647277832
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 55a5f753-37d8-4784-a432-9aa1e647d11b.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "8f056863-7c36-499f-a22b-ce63aef4c16c",
+            "claim_text": "The punishment for abetting the suicide of a child includes death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "3e9e53fb-8095-453f-94e0-75d3a9efaa4f",
+            "claim_text": "The punishment for abetting the suicide of a child includes imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "66683506-7480-4c3e-b372-8e6367c8e1f5",
+            "claim_text": "The punishment for abetting the suicide of a child includes imprisonment for a term not exceeding ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "6eca7dd1-8b7e-44a6-82e0-50e8a81f9b76",
+            "claim_text": "The punishment for abetting the suicide of a person of unsound mind includes death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "2712084c-48a9-446c-8391-d41cad69e499",
+            "claim_text": "The punishment for abetting the suicide of a person of unsound mind includes imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "b35a2094-55fe-484a-8f10-20ee340ec89f",
+            "claim_text": "The punishment for abetting the suicide of a person of unsound mind includes imprisonment for a term not exceeding ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "0349e619-7fcb-42bb-bd4a-ae8bb25554c6",
+            "claim_text": "The punishment for abetting the suicide of a delirious person includes death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "42e034d5-ea1e-4b8b-b955-aa937d06b8ec",
+            "claim_text": "The punishment for abetting the suicide of a delirious person includes imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "bb1594a4-de6a-4dbb-b91f-902106134aa4",
+            "claim_text": "The punishment for abetting the suicide of a delirious person includes imprisonment for a term not exceeding ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "bcd3bcb2-0ce0-4f7f-a320-c8b8068a3f59",
+            "claim_text": "The punishment for abetting the suicide of a person in a state of intoxication includes death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "7ebfec5f-c7b6-4c86-845d-d76687384fe3",
+            "claim_text": "The punishment for abetting the suicide of a person in a state of intoxication includes imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "d1481479-ae8c-45f8-a06f-e6b4053c8d2d",
+            "claim_text": "The punishment for abetting the suicide of a person in a state of intoxication includes imprisonment for a term not exceeding ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "98907550-dabc-478d-9815-7f2ca672815c",
+            "claim_text": "The offender is liable to a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "129a451f-fb92-4ecb-a1ef-c9e449d8e8f3",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Whoever, in a state of intoxication, appears in any public place, or in any place\nwhich it is a trespass in him to enter, and there conducts himself in such a manner as to cause\nannoyance to any person, shall be punished with simple imprisonment for a term which may\nextend to twenty-four hours, or with fine which may extend to one thousand rupees, or with\nboth or with community service."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T20:01:03.346304Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

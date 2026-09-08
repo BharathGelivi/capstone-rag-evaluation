@@ -1,0 +1,205 @@
+{
+    "framework_metadata": {
+        "trace_id": "1574e499-8369-4ad9-9768-7e943a22dd39",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T13:30:45.849762Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, are facts inconsistent with a fact in issue, or that make the existence of a fact in issue highly probable or improbable, relevant even if not otherwise relevant?",
+        "generated_answer": "Facts not otherwise relevant are relevant if they are inconsistent with any fact in issue or relevant fact, or if by themselves or in connection with other facts they make the existence or non-existence of any fact in issue or relevant fact highly probable or improbable [Chunk-ID: c7f24256-eb8d-45c6-8e7a-df902fac4ba9].",
+        "overall_health_score": 0.9444444444444444,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 8,
+        "total_claims": 9,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.22541427612304688,
+                    "pool_size": 33
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.99383544921875,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.2,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.99383544921875
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 9,
+        "supported_claims": 8,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.9444444444444444,
+        "evidence_coverage": 0.2,
+        "average_entailment": 0.8634890450371636,
+        "retrieval_latency_ms": 1136.3942623138428,
+        "generation_latency_ms": 12652.884483337402,
+        "verification_latency_ms": 1368532.236814499
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 1574e499-8369-4ad9-9768-7e943a22dd39.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "109f9da3-1d17-4575-828d-902549b74eb2",
+            "claim_text": "Facts not otherwise relevant are relevant",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "328384d9-44b3-48d5-bdbc-de1c06a3d030",
+            "claim_text": "Facts not otherwise relevant are relevant if they are inconsistent with any fact in issue",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "223cab1c-29ca-4810-80eb-868ea590a4ac",
+            "claim_text": "Facts not otherwise relevant are relevant if they are inconsistent with any fact in issue or relevant fact",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "e7e1a509-2b0a-4a46-8ba4-f785e3a85566",
+            "claim_text": "Facts not otherwise relevant are relevant if they make the existence of any fact in issue highly probable",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "31cd88c5-1522-4f0c-86f4-2892e6d5593b",
+            "claim_text": "Facts not otherwise relevant are relevant if they make the non-existence of any fact in issue highly probable",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The fact that, near the time\nwhen the crime was committed, A was at a distance from the place where it was\ncommitted, which would render it highly improbable, though not impossible, that he\ncommitted it, is relevant.\n(b) The question is, whether A committed a crime."
+        },
+        {
+            "claim_id": "acf5a30e-ac21-4346-8ddc-241aa5637d9f",
+            "claim_text": "Facts not otherwise relevant are relevant if they make the existence of any relevant fact highly probable",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        },
+        {
+            "claim_id": "c5f29624-986c-460f-9b9d-d921205d4bf5",
+            "claim_text": "Facts not otherwise relevant are relevant if they make the non-existence of any relevant fact highly probable",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The fact that, near the time\nwhen the crime was committed, A was at a distance from the place where it was\ncommitted, which would render it highly improbable, though not impossible, that he\ncommitted it, is relevant.\n(b) The question is, whether A committed a crime."
+        },
+        {
+            "claim_id": "436c314e-5644-481f-85c2-d005f6e0ec0f",
+            "claim_text": "Facts not otherwise relevant are relevant if they make the existence of any fact in issue or relevant fact highly improbable",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "The fact that, near the time\nwhen the crime was committed, A was at a distance from the place where it was\ncommitted, which would render it highly improbable, though not impossible, that he\ncommitted it, is relevant.\n(b) The question is, whether A committed a crime."
+        },
+        {
+            "claim_id": "76b74074-c14d-4c88-b179-056bd1cb7841",
+            "claim_text": "Facts not otherwise relevant are relevant if they make the non-existence of any fact in issue or relevant fact highly improbable",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c7f24256-eb8d-45c6-8e7a-df902fac4ba9",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Facts not otherwise relevant are relevant\u2014\n(1) if they are inconsistent with any fact in issue or relevant fact;\n(2) if by themselves or in connection with other facts they make the existence or\nnon-existence of any fact in issue or relevant fact highly probable or improbable."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (20%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/5 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5714285714285714,
+        "total_gold_claims": 7,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T13:30:45.850080Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

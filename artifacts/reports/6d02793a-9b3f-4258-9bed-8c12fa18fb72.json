@@ -1,0 +1,207 @@
+{
+    "framework_metadata": {
+        "trace_id": "6d02793a-9b3f-4258-9bed-8c12fa18fb72",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:08:42.814797Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for abetting the suicide of an ordinary person (not a child or person of unsound mind, delirium, or intoxication)?",
+        "generated_answer": "For abetting the suicide of an ordinary person (i.e., not a child, person of unsound mind, delirious person, or intoxicated person), the law prescribes:\n\n- **Imprisonment of either description for a term which may extend to ten years**, and  \n- **Liability to fine**.  \n\nThis is set out in **Section\u202f108** of the provision, which states:  \n\n> \u201cIf any person commits suicide, whoever abets the commission of such suicide, shall be punished with imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine.\u201d\u30104\u2020L13-L15\u3011\n\n(For comparison, abetting suicide of a child, person of unsound mind, delirious person, or intoxicated person carries a more severe penalty under Section\u202f107\u2014death or life imprisonment, or imprisonment up to ten years, plus fine.)",
+        "overall_health_score": 0.125,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 1,
+        "total_claims": 8,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.33364152908325195,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9611809849739075,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "5 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 5,
+                    "max_score": 0.9611809849739075
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 8,
+        "supported_claims": 1,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 5,
+        "contradicted_claims": 0,
+        "grounding_score": 0.125,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.289684790186584,
+        "retrieval_latency_ms": 610.7573509216309,
+        "generation_latency_ms": 2860.9366416931152,
+        "verification_latency_ms": 31378.897666931152
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 6d02793a-9b3f-4258-9bed-8c12fa18fb72.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 5 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "c312edec-a677-43b9-817f-fc41a38ba1b8",
+            "claim_text": "For abetting the suicide of an ordinary person (i.e., not a child, person of unsound mind, delirious person, or intoxicated person), the law prescribes imprisonment of either description for a term which may extend to ten years.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "17de90df-20c6-4473-b6fb-50ab15fd00cf",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n63\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "ecd63d52-49e5-4468-b28a-5b27454fa6c3",
+            "claim_text": "For abetting the suicide of an ordinary person (i.e., not a child, person of unsound mind, delirious person, or intoxicated person), the law prescribes liability to fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "aef2bc98-c173-418f-aeb2-e8d815ce6cc0",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "12\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "6f043dd5-cbea-4b27-b530-da25ffc1d7e8",
+            "claim_text": "The prescription for abetting suicide of an ordinary person is set out in Section 108 of the provision.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "aef2bc98-c173-418f-aeb2-e8d815ce6cc0",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "12\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "b64528e2-c4b6-4090-9068-51caaff24d56",
+            "claim_text": "Section 108 states: \u201cIf any person commits suicide, whoever abets the commission of such suicide, shall be punished with imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine.\u201d",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "aef2bc98-c173-418f-aeb2-e8d815ce6cc0",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "12\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "76f77aa7-aaf4-4d46-b93f-81dc41678840",
+            "claim_text": "Abetting suicide of a child, person of unsound mind, delirious person, or intoxicated person carries a penalty of death under Section 107.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "91e1dfb3-35c8-4e65-bdd0-ed674d70420c",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n163\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "72ed5dee-860b-4aab-a3f7-af4ce63d2387",
+            "claim_text": "Abetting suicide of a child, person of unsound mind, delirious person, or intoxicated person carries a penalty of life imprisonment under Section 107.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "91e1dfb3-35c8-4e65-bdd0-ed674d70420c",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n163\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "3fb88e49-923d-47b6-85ad-a76bf9b9249e",
+            "claim_text": "Abetting suicide of a child, person of unsound mind, delirious person, or intoxicated person carries a penalty of imprisonment up to ten years under Section 107.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "91e1dfb3-35c8-4e65-bdd0-ed674d70420c",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n163\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "0addc62e-c182-4f0a-a404-576ffa4599c6",
+            "claim_text": "Abetting suicide of a child, person of unsound mind, delirious person, or intoxicated person carries a liability to fine under Section 107.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "91e1dfb3-35c8-4e65-bdd0-ed674d70420c",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n163\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (5 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 5).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:08:42.814884Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

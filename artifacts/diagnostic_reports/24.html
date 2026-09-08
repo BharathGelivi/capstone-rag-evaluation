@@ -1,0 +1,934 @@
+<title>X-RAG Diagnostic Report — 36e044d5-47d5-4dae-8ab8-4bf44922bd0e</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>Under BNSS, if a Magistrate attaches a subject of dispute after finding a case to be one of emergency, when may that Magistrate withdraw the attachment?</h1>
+    <p class="dek">Trace <span class="mono">36e044d5-47d5-4dae-8ab8-4bf44922bd0e</span>, generated 2026-09-06T15:01:08.693113Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">0%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNKNOWN</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">0 / 0</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.000</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">Under BNSS, if a Magistrate attaches a subject of dispute after finding a case to be one of emergency, when may that Magistrate withdraw the attachment?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">Under the Bharatiya Nyaya Sanhita, 2023 (BNSS), a Magistrate who attaches the subject of a dispute after finding the case to be one of emergency may withdraw that attachment **at any time** if he is satisfied that there is no longer any likelihood of a breach of the peace concerning the subject of dispute【6e109610-3ad4-4953-a3d8-9df55d06f072】. This provision is found in the proviso to subsection (1) of section 165 of the BNSS.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 2.01s retrieval + 44.67s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">46.684s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">65</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: de817377-1312-4fef-9c2a-7d8058d9f4a0] ---
+(2) The report of such person may be read as evidence in the case.
+(3) Where the Magistrate summons and examines an expert under section 158, the
+Magistrate may direct by whom the costs of such summoning and examination shall be
+paid.
+160. (1) When an order has been made absolute under section 155 or section 157, the
+Magistrate shall give notice of the same to the person against whom the order was made,
+and shall further require him to perform the act directed by the order within the time to be
+fixed in the notice, and inform him that, in case of disobedience, he shall be liable to the
+penalty provided by section 223 of the Bharatiya Nyaya Sanhita, 2023.
+(2) If such act is not performed within the time fixed, the Magistrate may cause it to be
+performed, and may recover the costs of performing it, either by the sale of any building,
+goods or other property removed by his order, or by the distress and sale of any other
+movable property of such person within or without such Magistrate&#x27;s local jurisdiction, and
+if such other property is without such jurisdiction, the order shall authorise its attachment
+and sale when endorsed by the Magistrate within whose local jurisdiction the property to
+be attached is found.
+(3) No suit shall lie in respect of anything done in good faith under this section.
+161. (1) If a Magistrate making an order under section 152 considers that immediate
+measures should be taken to prevent imminent danger or injury of a serious kind to the
+public, he may issue such an injunction to the person against whom the order was made, as
+is required to obviate or prevent such danger or injury pending the determination of the
+matter.
+Procedure
+where person
+against whom
+order is made
+under section
+152 appears
+to show cause.
+Power of
+Magistrate to
+direct local
+investigation
+and
+examination
+of an expert.
+Power of
+Magistrate to
+furnish written
+instructions,
+etc.
+Procedure on
+order being
+made absolute
+and
+consequences
+of
+disobedience.
+Injunction
+pending
+inquiry.
+
+--- Context chunk 2 [Chunk-ID: 730c01c2-8fec-4add-b4ef-0307b8d809ca] ---
+Explanation.—For the purposes of this sub-section, the expression &quot;land or water&quot;
+has the meaning given to it in sub-section (2) of section 164.
+(2) The Magistrate shall peruse the statements so put in, hear the parties, receive all
+such evidence as may be produced by them respectively, consider the effect of such
+evidence, take such further evidence, if any, as he thinks necessary and, if possible, decide
+whether such right exists; and the provisions of section 164 shall, so far as may be, apply in
+the case of such inquiry.
+(3) If it appears to such Magistrate that such rights exist, he may make an order
+prohibiting any interference with the exercise of such right, including, in a proper case, an
+order for the removal of any obstruction in the exercise of any such right:
+Provided that no such order shall be made where the right is exercisable at all times of
+the year, unless such right has been exercised within three months next before the receipt
+under sub-section (1) of the report of a police officer or other information leading to the
+institution of the inquiry, or where the right is exercisable only at particular seasons or on
+particular occasions, unless the right has been exercised during the last of such seasons or
+on the last of such occasions before such receipt.
+(4) When in any proceedings commenced under sub-section (1) of section 164 the
+Magistrate finds that the dispute is as regards an alleged right of user of land or water, he
+may, after recording his reasons, continue with the proceedings as if they had been
+commenced under sub-section (1), and when in any proceedings commenced under
+sub-section (1) the Magistrate finds that the dispute should be dealt with under
+section 164, he may, after recording his reasons, continue with the proceedings as if they
+had been commenced under sub-section (1) of section 164.
+Power to
+attach subject
+of dispute and
+to appoint
+receiver.
+Dispute
+concerning
+right of use of
+land or water.
+5 of 1908.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+51
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 3 [Chunk-ID: 733e0435-6675-4434-9510-31237855cb71] ---
+jurisdiction to take cognizance of the offence or commit for trial or try the case, for the
+attachment of such property.
+(2) If the Court or the Magistrate has reasons to believe, whether before or after
+taking evidence, that all or any of such properties are proceeds of crime, the Court or the
+Magistrate may issue a notice upon such person calling upon him to show cause within a
+period of fourteen days as to why an order of attachment shall not be made.
+(3) Where the notice issued to any person under sub-section (2) specifies any property
+as being held by any other person on behalf of such person, a copy of the notice shall also
+be served upon such other person.
+(4) The Court or the Magistrate may, after considering the explanation, if any, to the
+show-cause notice issued under sub-section (2) and the material fact available before such
+Court or Magistrate and after giving a reasonable opportunity of being heard to such
+person or persons, may pass an order of attachment, in respect of those properties which
+are found to be the proceeds of crime:
+Provided that if such person does not appear before the Court or the Magistrate or
+represent his case before the Court or Magistrate within a period of fourteen days specified
+in the show-cause notice, the Court or the Magistrate may proceed to pass the ex parte
+order.
+(5) Notwithstanding anything contained in sub-section (2), if the Court or the
+Magistrate is of the opinion that issuance of notice under the said sub-section would
+defeat the object of attachment or seizure, the Court or Magistrate may by an interim order
+passed ex parte direct attachment or seizure of such property, and such order shall remain
+in force till an order under sub-section (6) is passed.
+(6) If the Court or the Magistrate finds the attached or seized properties to be
+the proceeds of crime, the Court or the Magistrate shall by order direct the District
+Magistrate to rateably distribute such proceeds of crime to the persons who are affected by
+such crime.
+(7) On receipt of an order passed under sub-section (6), the District Magistrate shall,
+within a period of sixty days distribute the proceeds of crime either by himself or authorise
+any officer subordinate to him to effect such distribution.
+
+--- Context chunk 4 [Chunk-ID: 11954d31-551b-4509-8c69-0db5461b2ebb] ---
+449. (1) A Sessions Judge may withdraw any case or appeal from, or recall any case or
+appeal which he has made over to a Chief Judicial Magistrate subordinate to him.
+(2) At any time before the trial of the case or the hearing of the appeal has commenced
+before the Additional Sessions Judge, a Sessions Judge may recall any case or appeal
+which he has made over to any Additional Sessions Judge.
+(3) Where a Sessions Judge withdraws or recalls case or appeal under sub-section (1)
+or sub-section (2), he may either try the case in his own Court or hear the appeal himself, or
+make it over in accordance with the provisions of this Sanhita to another Court for trial or
+hearing, as the case may be.
+450. (1) Any Chief Judicial Magistrate may withdraw any case from, or recall any case
+which he has made over to, any Magistrate subordinate to him, and may inquire into or try
+such case himself, or refer it for inquiry or trial to any other such Magistrate competent to
+inquire into or try the same.
+(2) Any Judicial Magistrate may recall any case made over by him under
+sub-section (2) of section 212 to any other Magistrate and may inquire into or try such
+cases himself.
+451. Any District Magistrate or Sub-divisional Magistrate may—
+(a) make over, for disposal, any proceeding which has been started before him,
+to any Magistrate subordinate to him;
+(b) withdraw any case from, or recall any case which he has made over to, any
+Magistrate subordinate to him, and dispose of such proceeding himself or refer it for
+disposal to any other Magistrate.
+Power of
+Sessions Judge
+to transfer
+cases and
+appeals.
+Withdrawal of
+cases and
+appeals by
+Sessions
+Judges.
+Withdrawal of
+cases by
+Judicial
+Magistrates.
+Making over
+or withdrawal
+of cases by
+Executive
+Magistrates.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+137
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: 6b166a27-410e-417f-886c-44921a66d09f] ---
+280. If a complainant, at any time before a final order is passed in any case under this
+Chapter, satisfies the Magistrate that there are sufficient grounds for permitting him to
+withdraw his complaint against the accused, or if there be more than one accused, against
+all or any of them, the Magistrate may permit him to withdraw the same, and shall thereupon
+acquit the accused against whom the complaint is so withdrawn.
+Conviction on
+plea of guilty.
+Conviction on
+plea of guilty
+in absence of
+accused in
+petty cases.
+Procedure
+when not
+convicted.
+Acquittal or
+conviction.
+Non-appearance
+or death of
+complainant.
+Withdrawal of
+complaint.
+88
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 6 [Chunk-ID: 6e109610-3ad4-4953-a3d8-9df55d06f072] ---
+165. (1) If the Magistrate at any time after making the order under sub-section (1) of
+section 164 considers the case to be one of emergency, or if he decides that none of the
+parties was then in such possession as is referred to in section 164, or if he is unable to
+satisfy himself as to which of them was then in such possession of the subject of dispute,
+he may attach the subject of dispute until a competent Court has determined the rights of
+the parties thereto with regard to the person entitled to the possession thereof:
+Provided that such Magistrate may withdraw the attachment at any time if he is
+satisfied that there is no longer any likelihood of breach of the peace with regard to the
+subject of dispute.
+(2) When the Magistrate attaches the subject of dispute, he may, if no receiver in
+relation to such subject of dispute has been appointed by any Civil Court, make such
+arrangements as he considers proper for looking after the property or if he thinks fit,
+appoint a receiver thereof, who shall have, subject to the control of the Magistrate, all the
+powers of a receiver appointed under the Code of Civil Procedure, 1908:
+Provided that in the event of a receiver being subsequently appointed in relation to
+the subject of dispute by any Civil Court, the Magistrate—
+(a) shall order the receiver appointed by him to hand over the possession of the
+subject of dispute to the receiver appointed by the Civil Court and shall thereafter
+discharge the receiver appointed by him;
+(b) may make such other incidental or consequential orders as may be just.
+166. (1) Whenever an Executive Magistrate is satisfied from the report of a police
+officer or upon other information, that a dispute likely to cause a breach of the peace exists
+regarding any alleged right of user of any land or water within his local jurisdiction, whether
+such right be claimed as an easement or otherwise, he shall make an order in writing, stating
+the grounds of his being so satisfied and requiring the parties concerned in such dispute to
+attend his Court in person or by an advocate on a specified date and time and to put in
+written statements of their respective claims.
+
+
+Question: Under BNSS, if a Magistrate attaches a subject of dispute after finding a case to be one of emergency, when may that Magistrate withdraw the attachment?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (0 atomic claims)</div>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">6e109610-3ad4-4953-a3d8-9df55d06f072</span>
+            <span class="chunk-src">bnss.pdf p.51</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.319</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">39.74</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.999</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">df7e3282-da28-4597-9732-e1773aba2700</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">379</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2164 (2164 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">165. (1) If the Magistrate at any time after making the order under sub-section (1) of
+section 164 considers the case to be one of emergency, or if he decides that none of the
+parties was then in such possession as is referred to in section 164, or if he is unable to
+satisfy himself as to which of them was then in such possession of the subject of dispute,
+he may attach the subject of dispute until a competent Court has determined the rights of
+the parties thereto with regard to the person entitled to the possession thereof:
+Provided that such Magistrate may withdraw the attachment at any time if he is
+satisfied that there is no longer any likelihood of breach of the peace with regard to the
+subject of dispute.
+(2) When the Magistrate attaches the subject of dispute, he may, if no receiver in
+relation to such subject of dispute has been appointed by any Civil Court, make such
+arrangements as he considers proper for looking after the property or if he thinks fit,
+appoint a receiver thereof, who shall have, subject to the control of the Magistrate, all the
+powers of a receiver appointed under the Code of Civil Procedure, 1908:
+Provided that in the event of a receiver being subsequently appointed in relation to
+the subject of dispute by any Civil Court, the Magistrate—
+(a) shall order the receiver appointed by him to hand over the possession of the
+subject of dispute to the receiver appointed by the Civil Court and shall thereafter
+discharge the receiver appointed by him;
+(b) may make such other incidental or consequential orders as may be just.
+166. (1) Whenever an Executive Magistrate is satisfied from the report of a police
+officer or upon other information, that a dispute likely to cause a breach of the peace exists
+regarding any alleged right of user of any land or water within his local jurisdiction, whether
+such right be claimed as an easement or otherwise, he shall make an order in writing, stating
+the grounds of his being so satisfied and requiring the parties concerned in such dispute to
+attend his Court in person or by an advocate on a specified date and time and to put in
+written statements of their respective claims.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">6b166a27-410e-417f-886c-44921a66d09f</span>
+            <span class="chunk-src">bnss.pdf p.88</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.361</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.28</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0302</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.528</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">10</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">01f0e73c-007f-4a22-a932-71d9edaf1a54</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">477</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">3554 - 4597 (1043 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">280. If a complainant, at any time before a final order is passed in any case under this
+Chapter, satisfies the Magistrate that there are sufficient grounds for permitting him to
+withdraw his complaint against the accused, or if there be more than one accused, against
+all or any of them, the Magistrate may permit him to withdraw the same, and shall thereupon
+acquit the accused against whom the complaint is so withdrawn.
+Conviction on
+plea of guilty.
+Conviction on
+plea of guilty
+in absence of
+accused in
+petty cases.
+Procedure
+when not
+convicted.
+Acquittal or
+conviction.
+Non-appearance
+or death of
+complainant.
+Withdrawal of
+complaint.
+88
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">11954d31-551b-4509-8c69-0db5461b2ebb</span>
+            <span class="chunk-src">bnss.pdf p.137</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.401</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">13.87</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0234</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.097</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">27</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">24</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">9ecf71cb-d94d-4678-bc9c-7b0aedbefb64</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">595</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2006 - 4171 (2165 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">449. (1) A Sessions Judge may withdraw any case or appeal from, or recall any case or
+appeal which he has made over to a Chief Judicial Magistrate subordinate to him.
+(2) At any time before the trial of the case or the hearing of the appeal has commenced
+before the Additional Sessions Judge, a Sessions Judge may recall any case or appeal
+which he has made over to any Additional Sessions Judge.
+(3) Where a Sessions Judge withdraws or recalls case or appeal under sub-section (1)
+or sub-section (2), he may either try the case in his own Court or hear the appeal himself, or
+make it over in accordance with the provisions of this Sanhita to another Court for trial or
+hearing, as the case may be.
+450. (1) Any Chief Judicial Magistrate may withdraw any case from, or recall any case
+which he has made over to, any Magistrate subordinate to him, and may inquire into or try
+such case himself, or refer it for inquiry or trial to any other such Magistrate competent to
+inquire into or try the same.
+(2) Any Judicial Magistrate may recall any case made over by him under
+sub-section (2) of section 212 to any other Magistrate and may inquire into or try such
+cases himself.
+451. Any District Magistrate or Sub-divisional Magistrate may—
+(a) make over, for disposal, any proceeding which has been started before him,
+to any Magistrate subordinate to him;
+(b) withdraw any case from, or recall any case which he has made over to, any
+Magistrate subordinate to him, and dispose of such proceeding himself or refer it for
+disposal to any other Magistrate.
+Power of
+Sessions Judge
+to transfer
+cases and
+appeals.
+Withdrawal of
+cases and
+appeals by
+Sessions
+Judges.
+Withdrawal of
+cases by
+Judicial
+Magistrates.
+Making over
+or withdrawal
+of cases by
+Executive
+Magistrates.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+137
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">733e0435-6675-4434-9510-31237855cb71</span>
+            <span class="chunk-src">bnss.pdf p.31</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.347</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.33</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0308</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.067</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">8</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">fc0575b3-6fbe-4ec1-af71-5105f2ca80f1</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">327</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2249 (2249 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">jurisdiction to take cognizance of the offence or commit for trial or try the case, for the
+attachment of such property.
+(2) If the Court or the Magistrate has reasons to believe, whether before or after
+taking evidence, that all or any of such properties are proceeds of crime, the Court or the
+Magistrate may issue a notice upon such person calling upon him to show cause within a
+period of fourteen days as to why an order of attachment shall not be made.
+(3) Where the notice issued to any person under sub-section (2) specifies any property
+as being held by any other person on behalf of such person, a copy of the notice shall also
+be served upon such other person.
+(4) The Court or the Magistrate may, after considering the explanation, if any, to the
+show-cause notice issued under sub-section (2) and the material fact available before such
+Court or Magistrate and after giving a reasonable opportunity of being heard to such
+person or persons, may pass an order of attachment, in respect of those properties which
+are found to be the proceeds of crime:
+Provided that if such person does not appear before the Court or the Magistrate or
+represent his case before the Court or Magistrate within a period of fourteen days specified
+in the show-cause notice, the Court or the Magistrate may proceed to pass the ex parte
+order.
+(5) Notwithstanding anything contained in sub-section (2), if the Court or the
+Magistrate is of the opinion that issuance of notice under the said sub-section would
+defeat the object of attachment or seizure, the Court or Magistrate may by an interim order
+passed ex parte direct attachment or seizure of such property, and such order shall remain
+in force till an order under sub-section (6) is passed.
+(6) If the Court or the Magistrate finds the attached or seized properties to be
+the proceeds of crime, the Court or the Magistrate shall by order direct the District
+Magistrate to rateably distribute such proceeds of crime to the persons who are affected by
+such crime.
+(7) On receipt of an order passed under sub-section (6), the District Magistrate shall,
+within a period of sixty days distribute the proceeds of crime either by himself or authorise
+any officer subordinate to him to effect such distribution.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">730c01c2-8fec-4add-b4ef-0307b8d809ca</span>
+            <span class="chunk-src">bnss.pdf p.51</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">19.84</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0154</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.050</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">df7e3282-da28-4597-9732-e1773aba2700</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">380</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2165 - 4543 (2378 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation.—For the purposes of this sub-section, the expression &quot;land or water&quot;
+has the meaning given to it in sub-section (2) of section 164.
+(2) The Magistrate shall peruse the statements so put in, hear the parties, receive all
+such evidence as may be produced by them respectively, consider the effect of such
+evidence, take such further evidence, if any, as he thinks necessary and, if possible, decide
+whether such right exists; and the provisions of section 164 shall, so far as may be, apply in
+the case of such inquiry.
+(3) If it appears to such Magistrate that such rights exist, he may make an order
+prohibiting any interference with the exercise of such right, including, in a proper case, an
+order for the removal of any obstruction in the exercise of any such right:
+Provided that no such order shall be made where the right is exercisable at all times of
+the year, unless such right has been exercised within three months next before the receipt
+under sub-section (1) of the report of a police officer or other information leading to the
+institution of the inquiry, or where the right is exercisable only at particular seasons or on
+particular occasions, unless the right has been exercised during the last of such seasons or
+on the last of such occasions before such receipt.
+(4) When in any proceedings commenced under sub-section (1) of section 164 the
+Magistrate finds that the dispute is as regards an alleged right of user of land or water, he
+may, after recording his reasons, continue with the proceedings as if they had been
+commenced under sub-section (1), and when in any proceedings commenced under
+sub-section (1) the Magistrate finds that the dispute should be dealt with under
+section 164, he may, after recording his reasons, continue with the proceedings as if they
+had been commenced under sub-section (1) of section 164.
+Power to
+attach subject
+of dispute and
+to appoint
+receiver.
+Dispute
+concerning
+right of use of
+land or water.
+5 of 1908.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+51
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">de817377-1312-4fef-9c2a-7d8058d9f4a0</span>
+            <span class="chunk-src">bnss.pdf p.48</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.396</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">12.78</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0221</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.031</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">23</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">39</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">d199c5d4-236f-40ee-8654-502d061a0f2a</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">371</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1536 - 3535 (1999 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) The report of such person may be read as evidence in the case.
+(3) Where the Magistrate summons and examines an expert under section 158, the
+Magistrate may direct by whom the costs of such summoning and examination shall be
+paid.
+160. (1) When an order has been made absolute under section 155 or section 157, the
+Magistrate shall give notice of the same to the person against whom the order was made,
+and shall further require him to perform the act directed by the order within the time to be
+fixed in the notice, and inform him that, in case of disobedience, he shall be liable to the
+penalty provided by section 223 of the Bharatiya Nyaya Sanhita, 2023.
+(2) If such act is not performed within the time fixed, the Magistrate may cause it to be
+performed, and may recover the costs of performing it, either by the sale of any building,
+goods or other property removed by his order, or by the distress and sale of any other
+movable property of such person within or without such Magistrate&#x27;s local jurisdiction, and
+if such other property is without such jurisdiction, the order shall authorise its attachment
+and sale when endorsed by the Magistrate within whose local jurisdiction the property to
+be attached is found.
+(3) No suit shall lie in respect of anything done in good faith under this section.
+161. (1) If a Magistrate making an order under section 152 considers that immediate
+measures should be taken to prevent imminent danger or injury of a serious kind to the
+public, he may issue such an injunction to the person against whom the order was made, as
+is required to obviate or prevent such danger or injury pending the determination of the
+matter.
+Procedure
+where person
+against whom
+order is made
+under section
+152 appears
+to show cause.
+Power of
+Magistrate to
+direct local
+investigation
+and
+examination
+of an expert.
+Power of
+Magistrate to
+furnish written
+instructions,
+etc.
+Procedure on
+order being
+made absolute
+and
+consequences
+of
+disobedience.
+Injunction
+pending
+inquiry.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage unknown">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">Corpus relevance is inconclusive.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">Retrieval evidence does not definitively confirm or refute pipeline success.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          <div class="stage-efficiency">Efficiency: 0/6 chunks used (0%)</div>
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">All generated claims are fully supported by evidence.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">No claims were available to assess grounding.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 36e044d5-47d5-4dae-8ab8-4bf44922bd0e.</li><li>Skipping CORPUS: status is UNKNOWN (insufficient evidence).</li><li>Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>GENERATOR passed (confidence=0.95).</li><li>Skipping GROUNDING: status is UNKNOWN (insufficient evidence).</li><li>No failures detected. Pipeline is healthy or all evidence is UNKNOWN.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.950</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>0/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">1.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">2 / 2</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">The Magistrate may withdraw the attachment at any time if satisfied that there is no longer any likelihood of breach of the peace with regard to the subject of dispute.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The Magistrate may withdraw the attachment at any time.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.985</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under the Bharatiya Nyaya Sanhita, 2023 (BNSS), a Magistrate who attaches the subject of a dispute after finding the case to be one of emergency may withdraw that attachment **at any time** if he is satisfied that there is no longer any likelihood of a breach of the peace concerning the subject of dispute【6e109610-3ad4-4953-a3d8-9df55d06f072】.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The Magistrate may withdraw the attachment if satisfied that there is no longer any likelihood of breach of the peace with regard to the subject of dispute.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.999</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under the Bharatiya Nyaya Sanhita, 2023 (BNSS), a Magistrate who attaches the subject of a dispute after finding the case to be one of emergency may withdraw that attachment **at any time** if he is satisfied that there is no longer any likelihood of a breach of the peace concerning the subject of dispute【6e109610-3ad4-4953-a3d8-9df55d06f072】.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNKNOWN</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.832</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">0.495</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val hi mono">1.000</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 36e044d5-47d5-4dae-8ab8-4bf44922bd0e -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

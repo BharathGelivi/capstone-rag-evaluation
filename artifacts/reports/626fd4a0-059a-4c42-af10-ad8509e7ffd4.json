@@ -1,0 +1,182 @@
+{
+    "framework_metadata": {
+        "trace_id": "626fd4a0-059a-4c42-af10-ad8509e7ffd4",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T13:59:29.377711Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under what four conditions is causing death classified as murder rather than merely culpable homicide, per BNS section 101?",
+        "generated_answer": "According to **BNS\u202f\u00a7\u202f101**, causing death is treated as **murder** (rather than merely culpable homicide) when any of the following four conditions are met:\n\n1. **Intention to cause death** \u2013 the act is done with the intention of causing death.  \n2. **Intention to cause bodily injury known to be likely to cause death** \u2013 the act is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person harmed.  \n3. **Intention to cause bodily injury sufficient in the ordinary course of nature to cause death** \u2013 the act is done with the intention of causing bodily injury, and the injury intended is sufficient, in the ordinary course of nature, to cause death.  \n4. **Knowledge of imminent danger** \u2013 the offender knows that the act is so imminently dangerous that it must, in all probability, cause death (or such bodily injury as is likely to cause death) and commits the act without any excuse for incurring that risk.  \n\nThese four sub\u2011clauses (a)\u2013(d) of \u00a7\u202f101 delineate when culpable homicide escalates to murder.  \n\n*Source: [Chunk-ID: 56cf25b2-4acb-4edd-8e17-5c28dc06cfbb]*",
+        "overall_health_score": 0.8333,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 5,
+        "total_claims": 6,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2934378981590271,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.6950578689575195,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.6950578689575195
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 5,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8333333333333334,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7714015543460846,
+        "retrieval_latency_ms": 494.94385719299316,
+        "generation_latency_ms": 4177.333116531372,
+        "verification_latency_ms": 39935.42528152466
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 626fd4a0-059a-4c42-af10-ad8509e7ffd4.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "41f9b683-6d58-4768-8722-db654b9d514d",
+            "claim_text": "According to BNS \u00a7 101, causing death is treated as murder rather than merely culpable homicide when any of the following four conditions are met.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B is by this provocation excited to violent rage.A, a bystander, intending\nto take advantage of B\u2019s rage, and to cause him to kill Z, puts a knife into B\u2019s hand for that\npurpose."
+        },
+        {
+            "claim_id": "500fd817-d459-42ea-b872-9f86048d66ba",
+            "claim_text": "According to BNS \u00a7 101, causing death is treated as murder rather than merely culpable homicide when the act is done with the intention of causing death.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "d993d0f7-590d-4c61-a1ec-617b6252547d",
+            "claim_text": "According to BNS \u00a7 101, causing death is treated as murder rather than merely culpable homicide when the act is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person harmed.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "45f84432-cf34-4fa6-89e2-b62576b56dcd",
+            "claim_text": "According to BNS \u00a7 101, causing death is treated as murder rather than merely culpable homicide when the act is done with the intention of causing bodily injury, and the injury intended is sufficient, in the ordinary course of nature, to cause death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c0b7ea50-14f9-464a-b79a-bd28b1fab3ba",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "34\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "eddee893-aa1c-4297-87ff-aca98abc3b74",
+            "claim_text": "According to BNS \u00a7 101, causing death is treated as murder rather than merely culpable homicide when the offender knows that the act is so imminently dangerous that it must, in all probability, cause death (or such bodily injury as is likely to cause death) and commits the act without any excuse for incurring that risk.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "1e53830d-39a2-4a50-8649-4377a990d2de",
+            "claim_text": "The four sub-clauses (a)-(d) of BNS \u00a7 101 delineate when culpable homicide escalates to murder.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B is by this provocation excited to violent rage.A, a bystander, intending\nto take advantage of B\u2019s rage, and to cause him to kill Z, puts a knife into B\u2019s hand for that\npurpose."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.25,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T13:59:29.377970Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

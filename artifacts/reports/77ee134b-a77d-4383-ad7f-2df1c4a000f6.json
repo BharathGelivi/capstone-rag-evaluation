@@ -1,0 +1,191 @@
+{
+    "framework_metadata": {
+        "trace_id": "77ee134b-a77d-4383-ad7f-2df1c4a000f6",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T20:22:12.265029Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for abetting the suicide of an ordinary person (not a child or person of unsound mind, delirium, or intoxication)?",
+        "generated_answer": "For abetting the suicide of an **ordinary person** (i.e., not a child, person of unsound mind, delirious person, or intoxicated person), the law prescribes:\n\n- **Imprisonment of either description for a term which may extend to ten years**, and  \n- **Liability to fine**.  \n\nThis is set out in **Section\u202f108** of the relevant provision\u202f[Chunk-ID: 13c9bef0-00e1-4778-ab87-e705bfe68f76].  \n\nAdditional procedural details (from the same enactment) indicate that the offence is **cognizable, non\u2011bailable, and triable by a Court of Session**\u202f[Chunk-ID: 91e1dfb3-35c8-4e65-bdd0-ed674d70420c].  \n\n*Note:* If the person whose suicide is abetted falls under the special categories (child, unsound mind, delirious, or intoxicated), the punishment is more severe (death, life imprisonment, or up to ten years\u2019 imprisonment plus fine) under Section\u202f107\u202f[Chunk-ID: 13c9bef0-00e1-4778-ab87-e705bfe68f76].",
+        "overall_health_score": 0.5,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 6,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.33364152908325195,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9611809849739075,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9611809849739075
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.5,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7016215349237124,
+        "retrieval_latency_ms": 492.617130279541,
+        "generation_latency_ms": 5721.63724899292,
+        "verification_latency_ms": 20746.32501602173
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 77ee134b-a77d-4383-ad7f-2df1c4a000f6.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "c988cac1-5b10-43a4-b24e-d87310ce0326",
+            "claim_text": "An ordinary person, for the purpose of abetting suicide, is defined as not a child, person of unsound mind, delirious person, or intoxicated person.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "91e1dfb3-35c8-4e65-bdd0-ed674d70420c",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n163\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "442d4931-761d-436e-8a8d-b098c1c4259c",
+            "claim_text": "For abetting the suicide of an ordinary person, the law prescribes imprisonment of either description for a term which may extend to ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "fb138e7f-9e6a-4399-bcfb-c63b54085568",
+            "claim_text": "For abetting the suicide of an ordinary person, the law prescribes liability to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "f6c1e3df-d833-4962-aa38-d0f204158ab5",
+            "claim_text": "The punishment for abetting the suicide of an ordinary person is set out in Section\u202f108 of the relevant provision [Chunk-ID: 13c9bef0-00e1-4778-ab87-e705bfe68f76].",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B, acting under\nthis misconception, does not take dishonestly, and therefore does not commit theft."
+        },
+        {
+            "claim_id": "b2ef0a4c-3f84-4147-be12-b0180699ac1c",
+            "claim_text": "The offence of abetting the suicide of an ordinary person is cognizable, non\u2011bailable, and triable by a Court of Session [Chunk-ID: 91e1dfb3-35c8-4e65-bdd0-ed674d70420c].",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B takes the\nproperty out of Z\u2019s possession, in good faith, believing it to beA\u2019s property."
+        },
+        {
+            "claim_id": "bbc97b66-1ca6-4968-a56a-47d1408d64d2",
+            "claim_text": "If the person whose suicide is abetted falls under the special categories (child, unsound mind, delirious, or intoxicated), the punishment is more severe (death, life imprisonment, or up to ten years\u2019 imprisonment plus fine) under Section\u202f107 [Chunk-ID: 13c9bef0-00e1-4778-ab87-e705bfe68f76].",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T20:22:12.265111Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

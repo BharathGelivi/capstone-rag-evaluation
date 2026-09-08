@@ -1,0 +1,179 @@
+{
+    "framework_metadata": {
+        "trace_id": "049e7145-14d1-48cd-ba71-22f23754c5d5",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T15:35:53.829314Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, when is a document considered to be in 'proper custody' for the purposes of the presumption of genuineness?",
+        "generated_answer": "A document is said to be in proper custody if it is in the place in which, and looked after by the person with whom such document is required to be kept; but no custody is improper if it is proved to have had a legitimate origin, or if the circumstances of the particular case are such as to render that origin probable [Chunk-ID: 085db423-3da6-4d5e-aaae-330ff6e11209].",
+        "overall_health_score": 0.8571428571428571,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 6,
+        "total_claims": 7,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.18025743961334229,
+                    "pool_size": 34
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.4099147319793701,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.4,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.4099147319793701
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 7,
+        "supported_claims": 6,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8571428571428571,
+        "evidence_coverage": 0.4,
+        "average_entailment": 0.8379068289484296,
+        "retrieval_latency_ms": 949.8779773712158,
+        "generation_latency_ms": 5656.5492153167725,
+        "verification_latency_ms": 3800154.764652252
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 049e7145-14d1-48cd-ba71-22f23754c5d5.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "375a64df-0faf-4122-b875-05c92c73997b",
+            "claim_text": "A document is said to be in proper custody.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable.\n81."
+        },
+        {
+            "claim_id": "02daa42b-7663-44ea-a302-0667a1dd7d6e",
+            "claim_text": "A document is required to be kept in a place.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable.\n81."
+        },
+        {
+            "claim_id": "45380bd6-f91e-4ce0-b19d-76eca225d5f9",
+            "claim_text": "A document is required to be looked after by a person.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable.\n81."
+        },
+        {
+            "claim_id": "d29bc6e9-3493-4ced-ab62-5812126d54ab",
+            "claim_text": "No custody is improper.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "8b146908-5f0a-4fe5-a4d0-7c920f9c8679",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "The custody shall be proper.\n(c) A, a connection of B, produces deeds relating to lands in B's possession, which\nwere deposited with him by B for safe custody."
+        },
+        {
+            "claim_id": "5485e979-0e3e-41fb-acec-82aea011347f",
+            "claim_text": "Custody can have a legitimate origin.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 93 electronic records are\nsaid to be in proper custody if they are in the place in which, and looked after by the person\nwith whom such document is required to be kept; but no custody is improper if it is proved\nto have had a legitimate origin, or the circumstances of the particular case are such as to\nrender that origin probable.\n82."
+        },
+        {
+            "claim_id": "cd05ad4f-71a3-49e7-8cf8-47d3549bc377",
+            "claim_text": "The origin of custody can be proved.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8b146908-5f0a-4fe5-a4d0-7c920f9c8679",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "The custody shall be proper.\n(c) A, a connection of B, produces deeds relating to lands in B's possession, which\nwere deposited with him by B for safe custody."
+        },
+        {
+            "claim_id": "96920ab1-fbaf-4904-a87e-2504d6eb6edb",
+            "claim_text": "The origin of custody can be probable.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "085db423-3da6-4d5e-aaae-330ff6e11209",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 93 electronic records are\nsaid to be in proper custody if they are in the place in which, and looked after by the person\nwith whom such document is required to be kept; but no custody is improper if it is proved\nto have had a legitimate origin, or the circumstances of the particular case are such as to\nrender that origin probable.\n82."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.75,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T15:35:53.830424Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

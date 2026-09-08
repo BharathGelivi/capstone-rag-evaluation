@@ -1,0 +1,123 @@
+{
+    "framework_metadata": {
+        "trace_id": "28766847-3ff0-4e4b-8da2-4d2b71c5b366",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:38:52.138578Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What must a police officer be satisfied of, in addition to the existence of a reasonable complaint or suspicion, before arresting a person without a warrant for a cognizable offence punishable with imprisonment up to seven years, per BNSS section 35?",
+        "generated_answer": "Under BNSS\u202f\u00a7\u202f35(1)(b), a police officer may arrest without a warrant a person against whom a reasonable complaint, credible information, or reasonable suspicion exists for a cognizable offence punishable with imprisonment up to seven years **only if** the officer is also satisfied that the arrest is **necessary** for one (or more) of the following purposes:\n\n- to prevent the person from committing any further offence;  \n- for the proper investigation of the offence;  \n- to prevent the person from causing the evidence of the offence to disappear or to tamper with such evidence;  \n- to prevent the person from making any inducement, threat, or promise to anyone acquainted with the facts of the case so as to dissuade them from disclosing those facts to the court or police;  \n- to ensure that the person\u2019s presence in court whenever required can be ensured.  \n\nThe officer must record in writing the reasons for being satisfied of this necessity (or, if arrest is not required, the reasons for not arresting)\u30105e158157-c2be-4da0-a502-178c54007990\u3011.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 0,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.22426187992095947,
+                    "pool_size": 67
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9971591234207153,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9971591234207153
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "UNKNOWN",
+                "observation": "No claims were available to assess grounding.",
+                "confidence": "0.5",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 0,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.0,
+        "average_entailment": 0.0,
+        "retrieval_latency_ms": 754.8580169677734,
+        "generation_latency_ms": 16257.939100265503,
+        "verification_latency_ms": 0.06961822509765625
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 28766847-3ff0-4e4b-8da2-4d2b71c5b366.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "Skipping GROUNDING: status is UNKNOWN (insufficient evidence).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.95
+    },
+    "overall_assessment": {
+        "major_strength": "GENERATOR is healthy (confidence=95%): All generated claims are fully supported by evidence.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.25,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:38:52.138638Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

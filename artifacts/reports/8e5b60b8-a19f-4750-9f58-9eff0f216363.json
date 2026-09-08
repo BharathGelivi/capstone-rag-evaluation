@@ -1,0 +1,132 @@
+{
+    "framework_metadata": {
+        "trace_id": "8e5b60b8-a19f-4750-9f58-9eff0f216363",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T04:21:57.272299Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for murder under BNS section 103, and how does it change when a group of five or more persons acting in concert commits murder on grounds such as race, caste, or community?",
+        "generated_answer": "Error generating answer: Unknown model 'meta/llama-3.1-70b-instruct'. Please provide a valid OpenAI model name in: o1, o1-2024-12-17, o1-pro, o1-pro-2025-03-19, o1-preview, o1-preview-2024-09-12, o1-mini, o1-mini-2024-09-12, o3-mini, o3-mini-2025-01-31, o3, o3-2025-04-16, o3-pro, o3-pro-2025-06-10, o4-mini, o4-mini-2025-04-16, gpt-5, gpt-5-2025-08-07, gpt-5-chat, gpt-5-chat-latest, gpt-5-mini, gpt-5-mini-2025-08-07, gpt-5-nano, gpt-5-nano-2025-08-07, gpt-5-pro, gpt-5-pro-2025-10-06, gpt-5.1, gpt-5.1-2025-11-13, gpt-5.1-chat-latest, gpt-5.2, gpt-5.2-2025-12-11, gpt-5.2-chat-latest, gpt-4, gpt-4-32k, gpt-4-1106-preview, gpt-4-0125-preview, gpt-4-turbo-preview, gpt-4-vision-preview, gpt-4-1106-vision-preview, gpt-4-turbo-2024-04-09, gpt-4-turbo, gpt-4o, gpt-4o-audio-preview, gpt-4o-audio-preview-2024-12-17, gpt-4o-audio-preview-2024-10-01, gpt-4o-mini-audio-preview, gpt-4o-mini-audio-preview-2024-12-17, gpt-4o-2024-05-13, gpt-4o-2024-08-06, gpt-4o-2024-11-20, gpt-4.5-preview, gpt-4.5-preview-2025-02-27, chatgpt-4o-latest, gpt-4o-mini, gpt-4o-mini-2024-07-18, gpt-4-0613, gpt-4-32k-0613, gpt-4-0314, gpt-4-32k-0314, gpt-4.1, gpt-4.1-mini, gpt-4.1-nano, gpt-4.1-2025-04-14, gpt-4.1-mini-2025-04-14, gpt-4.1-nano-2025-04-14, gpt-3.5-turbo, gpt-3.5-turbo-16k, gpt-3.5-turbo-0125, gpt-3.5-turbo-1106, gpt-3.5-turbo-0613, gpt-3.5-turbo-16k-0613, gpt-3.5-turbo-0301, text-davinci-003, text-davinci-002, gpt-3.5-turbo-instruct, text-ada-001, text-babbage-001, text-curie-001, ada, babbage, curie, davinci, gpt-35-turbo-16k, gpt-35-turbo, gpt-35-turbo-0125, gpt-35-turbo-1106, gpt-35-turbo-0613, gpt-35-turbo-16k-0613",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 0,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.24799859523773193,
+                    "pool_size": 37
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9983021020889282,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 3
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9983021020889282
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "UNKNOWN",
+                "observation": "No claims were available to assess grounding.",
+                "confidence": "0.5",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 3,
+        "verified_claims": 0,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.0,
+        "average_entailment": 0.0,
+        "retrieval_latency_ms": 1878.0272006988525,
+        "generation_latency_ms": 4.426240921020508,
+        "verification_latency_ms": 0.07653236389160156
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 8e5b60b8-a19f-4750-9f58-9eff0f216363.",
+            "Skipping CORPUS: State is UNKNOWN. Insufficient evidence.",
+            "Skipping RETRIEVER: State is UNKNOWN. Insufficient evidence.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Skipping GROUNDING: State is UNKNOWN. Insufficient evidence.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.95
+    },
+    "overall_assessment": {
+        "major_strength": "N/A",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Requires architectural adjustments."
+    },
+    "evidence_analysis": [],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/3 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.0,
+        "total_gold_claims": 0,
+        "recalled_gold_claims": 0
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T04:21:57.272398Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

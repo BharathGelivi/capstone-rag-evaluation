@@ -1,0 +1,183 @@
+{
+    "framework_metadata": {
+        "trace_id": "274886fa-f7db-420c-b770-c50a5805d2c4",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T09:29:56.755600Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "How does the BNS define 'criminal conspiracy'?",
+        "generated_answer": "The Bharatiya Nyaya Sanhita (BNS) defines **criminal conspiracy** in Section\u202f61(1) as follows:\n\n- When **two or more persons agree** with a **common object** to do, or cause to be done:  \n  1. **an illegal act**; or  \n  2. **an act which is not illegal by illegal means**.  \n\n- Such an agreement is **designated a criminal conspiracy**, **provided** that **no agreement except an agreement to commit an offence shall amount to a criminal conspiracy unless some act besides the agreement is done by one or more parties to the agreement in pursuance thereof**.  \n\n- The **Explanation** clarifies that it is immaterial whether the illegal act is the **ultimate object** of the agreement or merely **incidental** to that object.  \n\n[Chunk-ID: e90a2900-39ef-43f1-b75d-f92a38b2fd93]",
+        "overall_health_score": 0.6,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 5,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.41445720195770264,
+                    "pool_size": 68
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.5643240213394165,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.5643240213394165
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.5899047762155533,
+        "retrieval_latency_ms": 1959.589958190918,
+        "generation_latency_ms": 4021.008014678955,
+        "verification_latency_ms": 17599.920749664307
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 274886fa-f7db-420c-b770-c50a5805d2c4.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "b1ba0f84-badc-4cf2-82a3-d01f67fce42e",
+            "claim_text": "The Bharatiya Nyaya Sanhita (BNS) defines criminal conspiracy in Section\u202f61(1).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "de96a416-2da7-476b-9926-a641796a9f68",
+            "claim_text": "Under BNS Section\u202f61(1), criminal conspiracy occurs when two or more persons agree with a common object to do, or cause to be done, an illegal act.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8fa49a7c-1763-4645-bc8b-0c680064ba32",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n145\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "6bb61069-653e-4b00-ab60-2e45a633a61b",
+            "claim_text": "Under BNS Section\u202f61(1), criminal conspiracy occurs when two or more persons agree with a common object to do, or cause to be done, an act which is not illegal by illegal means.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "e90a2900-39ef-43f1-b75d-f92a38b2fd93",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever, intending to facilitate or knowing it to be likely that he will thereby\nfacilitate the commission of an offence punishable with imprisonment, voluntarily conceals,\nby any act or illegal omission, the existence of a design to commit such offence, or makes any\nrepresentation which he knows to be false respecting such design shall,\u2013\u2013\n(a) if the offence be committed, be punished with imprisonment of the description\nprovided for the offence, for a term which may extend to one-fourth; and\n(b) if the offence be not committed, to one-eighth,\nof the longest term of such imprisonment, or with such fine as is provided for the offence, or\nwith both."
+        },
+        {
+            "claim_id": "6ed10c09-0ea8-49d4-831f-3aabf5f675ef",
+            "claim_text": "For an agreement to be designated a criminal conspiracy under BNS Section\u202f61(1), unless the agreement is to commit an offence, some act besides the agreement must be done by one or more parties to the agreement in pursuance thereof.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8fa49a7c-1763-4645-bc8b-0c680064ba32",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n145\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "ea1b53b1-1f26-47c9-9b50-1c23626c1244",
+            "claim_text": "The Explanation to BNS Section\u202f61(1) clarifies that it is immaterial whether the illegal act is the ultimate object of the agreement or merely incidental to that object.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T09:29:56.756130Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

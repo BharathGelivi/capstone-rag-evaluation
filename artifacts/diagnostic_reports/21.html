@@ -1,0 +1,1050 @@
+<title>X-RAG Diagnostic Report — 28766847-3ff0-4e4b-8da2-4d2b71c5b366</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>What must a police officer be satisfied of, in addition to the existence of a reasonable complaint or suspicion, before arresting a person without a warrant for a cognizable offence punishable with imprisonment up to seven years, per BNSS section 35?</h1>
+    <p class="dek">Trace <span class="mono">28766847-3ff0-4e4b-8da2-4d2b71c5b366</span>, generated 2026-09-06T14:37:44.322448Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">0%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNKNOWN</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">0 / 0</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.000</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">What must a police officer be satisfied of, in addition to the existence of a reasonable complaint or suspicion, before arresting a person without a warrant for a cognizable offence punishable with imprisonment up to seven years, per BNSS section 35?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">Under BNSS § 35(1)(b), a police officer may arrest without a warrant a person against whom a reasonable complaint, credible information, or reasonable suspicion exists for a cognizable offence punishable with imprisonment up to seven years **only if** the officer is also satisfied that the arrest is **necessary** for one (or more) of the following purposes:
+
+- to prevent the person from committing any further offence;  
+- for the proper investigation of the offence;  
+- to prevent the person from causing the evidence of the offence to disappear or to tamper with such evidence;  
+- to prevent the person from making any inducement, threat, or promise to anyone acquainted with the facts of the case so as to dissuade them from disclosing those facts to the court or police;  
+- to ensure that the person’s presence in court whenever required can be ensured.  
+
+The officer must record in writing the reasons for being satisfied of this necessity (or, if arrest is not required, the reasons for not arresting)【5e158157-c2be-4da0-a502-178c54007990】.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 0.75s retrieval + 16.26s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">17.013s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">67</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: 7d1c758f-0e47-4683-a95d-ceda51066aae] ---
+which he is, under any law relating to extradition, or otherwise, liable to be apprehended
+or detained in custody in India; or
+(i) who, being a released convict, commits a breach of any rule made under
+sub-section (5) of section 394; or
+(j) for whose arrest any requisition, whether written or oral, has been received
+from another police officer, provided that the requisition specifies the person to be
+arrested and the offence or other cause for which the arrest is to be made and it
+appears therefrom that the person might lawfully be arrested without a warrant by the
+officer who issued the requisition.
+(2) Subject to the provisions of section 39, no person concerned in a non-cognizable
+offence or against whom a complaint has been made or credible information has been
+received or reasonable suspicion exists of his having so concerned, shall be arrested except
+under a warrant or order of a Magistrate.
+(3) The police officer shall, in all cases where the arrest of a person is not required
+under sub-section (1) issue a notice directing the person against whom a reasonable
+complaint has been made, or credible information has been received, or a reasonable suspicion
+exists that he has committed a cognizable offence, to appear before him or at such other
+place as may be specified in the notice.
+(4) Where such a notice is issued to any person, it shall be the duty of that person to
+comply with the terms of the notice.
+(5) Where such person complies and continues to comply with the notice, he shall
+not be arrested in respect of the offence referred to in the notice unless, for reasons to be
+recorded, the police officer is of the opinion that he ought to be arrested.
+(6) Where such person, at any time, fails to comply with the terms of the notice or is
+unwilling to identify himself, the police officer may, subject to such orders as may have
+been passed by a competent Court in this behalf, arrest him for the offence mentioned in the
+notice.
+
+--- Context chunk 2 [Chunk-ID: d8f3bec8-fd48-44ef-928e-243bd95fd15a] ---
+believing that he has been guilty of an offence punishable with death or imprisonment
+for life;
+(ii) such person shall not be so released if such offence is a cognizable offence
+and he had been previously convicted of an offence punishable with death,
+imprisonment for life or imprisonment for seven years or more, or he had been
+previously convicted on two or more occasions of a cognizable offence punishable
+with imprisonment for three years or more but less than seven years:
+Provided that the Court may direct that a person referred to in clause (i) or clause (ii)
+be released on bail if such person is  a child  or is a woman or is sick or infirm:
+Provided further that the Court may also direct that a person referred to in clause (ii)
+be released on bail if it is satisfied that it is just and proper so to do for any other special
+reason:
+Provided also that the mere fact that an accused person may be required for being
+identified by witnesses during investigation or for police custody beyond the first fifteen
+days shall not be sufficient ground for refusing to grant bail if he is otherwise entitled to be
+released on bail and gives an undertaking that he shall comply with such directions as may
+be given by the Court:
+Provided also that no person shall, if the offence alleged to have been committed by
+him is punishable with death, imprisonment for life, or imprisonment for seven years or
+more, be released on bail by the Court under this sub-section without giving an opportunity
+of hearing to the Public Prosecutor.
+the execution by him of a bond for his appearance as hereinafter provided.
+
+--- Context chunk 3 [Chunk-ID: fbf10720-8304-4e16-a105-08225f80b864] ---
+1
+2
+3
+4
+5
+6
+258
+Commitment for trial or
+Imprisonment for 7 years,
+Non-cognizable.
+Bailable.
+Magistrate of the first
+confinement by a person
+or fine, or both.
+class.
+having authority, who
+knows that he is acting
+contrary to law.
+259(a)
+Intentional omission to
+Imprisonment for 7 years,
+According as the
+Bailable.
+Magistrate of the first
+apprehend on the part of
+with or without fine.
+offence in relation to
+class.
+a public servant bound by
+which such omission
+law to apprehend an
+has been made is
+offender, if the offence
+cognizable or non-
+is punishable with death.
+cognizable.
+259(b)
+If punishable with
+Imprisonment for 3 years,
+Cognizable.
+Bailable.
+Magistrate of the first
+imprisonment for life or
+with or without fine.
+class.
+imprisonment for 10 years.
+259(c)
+If punishable with
+Imprisonment for 2 years,
+Cognizable.
+Bailable.
+Magistrate of the first
+imprisonment for less
+with or without fine.
+class.
+than 10 years.
+260(a)
+Intentional omission to
+Imprisonment for life, or
+Cognizable.
+Non-bailable.
+Court of Session.
+apprehend on the part of a imprisonment for 14 years,
+public servant bound by
+with or without fine.
+law to apprehend person
+under sentence of a Court
+if under sentence of death.
+260(b)
+If under sentence of
+Imprisonment for 7 years,
+Cognizable.
+Non-bailable.
+Magistrate of the first
+imprisonment for life or
+with or without fine.
+class.
+imprisonment for 10 years,
+or upwards.
+260(c)
+If under sentence of
+Imprisonment for 3 years,
+Cognizable.
+Bailable.
+Magistrate of the first
+imprisonment for less than or fine, or both.
+class.
+10 years or lawfully
+committed to custody.
+261
+Escape from confinement
+Simple imprisonment for
+Non-cognizable.
+Bailable.
+Any Magistrate.
+
+--- Context chunk 4 [Chunk-ID: 1c04cf51-afa2-4c57-9362-d2213d408589] ---
+(2) Nothing in sub-section (1) shall affect the power of a police officer to arrest a
+person under section 35.
+56. It shall be the duty of the person having the custody of an accused to take
+reasonable care of the health and safety of the accused.
+57. A police officer making an arrest without warrant shall, without unnecessary
+delay and subject to the provisions herein contained as to bail, take or send the person
+arrested before a Magistrate having jurisdiction in the case, or before the officer in charge
+of a police station.
+58. No police officer shall detain in custody a person arrested without warrant for a
+longer period than under all the circumstances of the case is reasonable, and such period
+shall not, in the absence of a special order of a Magistrate under section 187, exceed
+twenty-four hours exclusive of the time necessary for the journey from the place of arrest to
+the Magistrate&#x27;s Court, whether having jurisdiction or not.
+59. Officers in charge of police stations shall report to the District Magistrate, or, if
+he so directs, to the Sub-divisional Magistrate, the cases of all persons arrested without
+warrant, within the limits of their respective stations, whether such persons have been
+admitted to bail or otherwise.
+Identification
+of person
+arrested.
+Procedure
+when police
+officer deputes
+subordinate to
+arrest without
+warrant.
+Health and
+safety of
+arrested person.
+Person
+arrested to be
+taken before
+Magistrate or
+officer in
+charge of
+police station.
+Person
+arrested not to
+be detained
+more than
+twenty-four
+hours.
+Police to
+report
+apprehensions.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+19
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: 0c21af16-27e7-443a-af98-79c1ed956bda] ---
+or
+(c) against whom credible information has been received that he has committed
+a cognizable offence punishable with imprisonment for a term which may extend to
+more than seven years whether with or without fine or with death sentence and the
+police officer has reason to believe on the basis of that information that such person
+has committed the said offence; or
+(d) who has been proclaimed as an offender either under this Sanhita or by
+order of the State Government; or
+(e) in whose possession anything is found which may reasonably be suspected
+to be stolen property and who may reasonably be suspected of having committed an
+offence with reference to such thing; or
+(f) who obstructs a police officer while in the execution of his duty, or who has
+escaped, or attempts to escape, from lawful custody; or
+(g) who is reasonably suspected of being a deserter from any of the Armed
+Forces of the Union; or
+(h) who has been concerned in, or against whom a reasonable complaint has
+been made, or credible information has been received, or a reasonable suspicion
+exists, of his having been concerned in, any act committed at any place out of India
+which, if committed in India, would have been punishable as an offence, and for
+When police
+may arrest
+without
+warrant.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+13
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 6 [Chunk-ID: 5e158157-c2be-4da0-a502-178c54007990] ---
+CHAPTER V
+ARREST OF PERSONS
+35. (1) Any police officer may without an order from a Magistrate and without a
+warrant, arrest any person—
+(a) who commits, in the presence of a police officer, a cognizable offence; or
+(b) against whom a reasonable complaint has been made, or credible information
+has been received, or a reasonable suspicion exists that he has committed a cognizable
+offence punishable with imprisonment for a term which may be less than seven years
+or which may extend to seven years whether with or without fine, if the following
+conditions are satisfied, namely:—
+(i) the police officer has reason to believe on the basis of such complaint,
+information, or suspicion that such person has committed the said offence;
+(ii) the police officer is satisfied that such arrest is necessary—
+(a) to prevent such person from committing any further offence; or
+(b) for proper investigation of the offence; or
+(c) to prevent such person from causing the evidence of the offence
+to disappear or tampering with such evidence in any manner; or
+(d) to prevent such person from making any inducement, threat or
+promise to any person acquainted with the facts of the case so as to
+dissuade him from disclosing such facts to the Court or to the police
+officer; or
+(e) as unless such person is arrested, his presence in the Court
+whenever required cannot be ensured,
+and the police officer shall record while making such arrest, his reasons in writing:
+Provided that a police officer shall, in all cases where the arrest of a person is
+not required under the provisions of this sub-section, record the reasons in writing
+for not making the arrest; or
+(c) against whom credible information has been received that he has committed
+a cognizable offence punishable with imprisonment for a term which may extend to
+more than seven years whether with or without fine or with death sentence and the
+police officer has reason to believe on the basis of that information that such person
+has committed the said offence; or
+(d) who has been proclaimed as an offender either under this Sanhita or by
+order of the State Government;
+
+
+Question: What must a police officer be satisfied of, in addition to the existence of a reasonable complaint or suspicion, before arresting a person without a warrant for a cognizable offence punishable with imprisonment up to seven years, per BNSS section 35?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (0 atomic claims)</div>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">5e158157-c2be-4da0-a502-178c54007990</span>
+            <span class="chunk-src">bnss.pdf p.13</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.224</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">42.41</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.997</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">2da265ed-d67a-4227-b139-81122aa8d33b</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">284</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2117 (2117 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">CHAPTER V
+ARREST OF PERSONS
+35. (1) Any police officer may without an order from a Magistrate and without a
+warrant, arrest any person—
+(a) who commits, in the presence of a police officer, a cognizable offence; or
+(b) against whom a reasonable complaint has been made, or credible information
+has been received, or a reasonable suspicion exists that he has committed a cognizable
+offence punishable with imprisonment for a term which may be less than seven years
+or which may extend to seven years whether with or without fine, if the following
+conditions are satisfied, namely:—
+(i) the police officer has reason to believe on the basis of such complaint,
+information, or suspicion that such person has committed the said offence;
+(ii) the police officer is satisfied that such arrest is necessary—
+(a) to prevent such person from committing any further offence; or
+(b) for proper investigation of the offence; or
+(c) to prevent such person from causing the evidence of the offence
+to disappear or tampering with such evidence in any manner; or
+(d) to prevent such person from making any inducement, threat or
+promise to any person acquainted with the facts of the case so as to
+dissuade him from disclosing such facts to the Court or to the police
+officer; or
+(e) as unless such person is arrested, his presence in the Court
+whenever required cannot be ensured,
+and the police officer shall record while making such arrest, his reasons in writing:
+Provided that a police officer shall, in all cases where the arrest of a person is
+not required under the provisions of this sub-section, record the reasons in writing
+for not making the arrest; or
+(c) against whom credible information has been received that he has committed
+a cognizable offence punishable with imprisonment for a term which may extend to
+more than seven years whether with or without fine or with death sentence and the
+police officer has reason to believe on the basis of that information that such person
+has committed the said offence; or
+(d) who has been proclaimed as an offender either under this Sanhita or by
+order of the State Government;</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">0c21af16-27e7-443a-af98-79c1ed956bda</span>
+            <span class="chunk-src">bnss.pdf p.13</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.279</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">29.09</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0320</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.910</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">2da265ed-d67a-4227-b139-81122aa8d33b</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">285</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1646 - 3314 (1668 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">or
+(c) against whom credible information has been received that he has committed
+a cognizable offence punishable with imprisonment for a term which may extend to
+more than seven years whether with or without fine or with death sentence and the
+police officer has reason to believe on the basis of that information that such person
+has committed the said offence; or
+(d) who has been proclaimed as an offender either under this Sanhita or by
+order of the State Government; or
+(e) in whose possession anything is found which may reasonably be suspected
+to be stolen property and who may reasonably be suspected of having committed an
+offence with reference to such thing; or
+(f) who obstructs a police officer while in the execution of his duty, or who has
+escaped, or attempts to escape, from lawful custody; or
+(g) who is reasonably suspected of being a deserter from any of the Armed
+Forces of the Union; or
+(h) who has been concerned in, or against whom a reasonable complaint has
+been made, or credible information has been received, or a reasonable suspicion
+exists, of his having been concerned in, any act committed at any place out of India
+which, if committed in India, would have been punishable as an offence, and for
+When police
+may arrest
+without
+warrant.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+13
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">1c04cf51-afa2-4c57-9362-d2213d408589</span>
+            <span class="chunk-src">bnss.pdf p.19</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.297</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">23.80</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0315</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.431</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">4</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">d551cb67-1fd7-4360-82d1-53969b33f72b</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">299</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2477 - 4459 (1982 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) Nothing in sub-section (1) shall affect the power of a police officer to arrest a
+person under section 35.
+56. It shall be the duty of the person having the custody of an accused to take
+reasonable care of the health and safety of the accused.
+57. A police officer making an arrest without warrant shall, without unnecessary
+delay and subject to the provisions herein contained as to bail, take or send the person
+arrested before a Magistrate having jurisdiction in the case, or before the officer in charge
+of a police station.
+58. No police officer shall detain in custody a person arrested without warrant for a
+longer period than under all the circumstances of the case is reasonable, and such period
+shall not, in the absence of a special order of a Magistrate under section 187, exceed
+twenty-four hours exclusive of the time necessary for the journey from the place of arrest to
+the Magistrate&#x27;s Court, whether having jurisdiction or not.
+59. Officers in charge of police stations shall report to the District Magistrate, or, if
+he so directs, to the Sub-divisional Magistrate, the cases of all persons arrested without
+warrant, within the limits of their respective stations, whether such persons have been
+admitted to bail or otherwise.
+Identification
+of person
+arrested.
+Procedure
+when police
+officer deputes
+subordinate to
+arrest without
+warrant.
+Health and
+safety of
+arrested person.
+Person
+arrested to be
+taken before
+Magistrate or
+officer in
+charge of
+police station.
+Person
+arrested not to
+be detained
+more than
+twenty-four
+hours.
+Police to
+report
+apprehensions.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+19
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">fbf10720-8304-4e16-a105-08225f80b864</span>
+            <span class="chunk-src">bnss.pdf p.178</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.326</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">0.00</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0143</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.291</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">10</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">-1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">e76beff6-8767-41ed-9aea-b078adf16a29</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">695</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1685 (1685 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">1
+2
+3
+4
+5
+6
+258
+Commitment for trial or
+Imprisonment for 7 years,
+Non-cognizable.
+Bailable.
+Magistrate of the first
+confinement by a person
+or fine, or both.
+class.
+having authority, who
+knows that he is acting
+contrary to law.
+259(a)
+Intentional omission to
+Imprisonment for 7 years,
+According as the
+Bailable.
+Magistrate of the first
+apprehend on the part of
+with or without fine.
+offence in relation to
+class.
+a public servant bound by
+which such omission
+law to apprehend an
+has been made is
+offender, if the offence
+cognizable or non-
+is punishable with death.
+cognizable.
+259(b)
+If punishable with
+Imprisonment for 3 years,
+Cognizable.
+Bailable.
+Magistrate of the first
+imprisonment for life or
+with or without fine.
+class.
+imprisonment for 10 years.
+259(c)
+If punishable with
+Imprisonment for 2 years,
+Cognizable.
+Bailable.
+Magistrate of the first
+imprisonment for less
+with or without fine.
+class.
+than 10 years.
+260(a)
+Intentional omission to
+Imprisonment for life, or
+Cognizable.
+Non-bailable.
+Court of Session.
+apprehend on the part of a imprisonment for 14 years,
+public servant bound by
+with or without fine.
+law to apprehend person
+under sentence of a Court
+if under sentence of death.
+260(b)
+If under sentence of
+Imprisonment for 7 years,
+Cognizable.
+Non-bailable.
+Magistrate of the first
+imprisonment for life or
+with or without fine.
+class.
+imprisonment for 10 years,
+or upwards.
+260(c)
+If under sentence of
+Imprisonment for 3 years,
+Cognizable.
+Bailable.
+Magistrate of the first
+imprisonment for less than or fine, or both.
+class.
+10 years or lawfully
+committed to custody.
+261
+Escape from confinement
+Simple imprisonment for
+Non-cognizable.
+Bailable.
+Any Magistrate.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">d8f3bec8-fd48-44ef-928e-243bd95fd15a</span>
+            <span class="chunk-src">bnss.pdf p.145</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.308</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">21.64</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0308</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.274</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">4</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">6</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">7f3a653f-76d1-42ab-9f7e-8ee307ec2fd0</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">614</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1609 (1609 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">believing that he has been guilty of an offence punishable with death or imprisonment
+for life;
+(ii) such person shall not be so released if such offence is a cognizable offence
+and he had been previously convicted of an offence punishable with death,
+imprisonment for life or imprisonment for seven years or more, or he had been
+previously convicted on two or more occasions of a cognizable offence punishable
+with imprisonment for three years or more but less than seven years:
+Provided that the Court may direct that a person referred to in clause (i) or clause (ii)
+be released on bail if such person is  a child  or is a woman or is sick or infirm:
+Provided further that the Court may also direct that a person referred to in clause (ii)
+be released on bail if it is satisfied that it is just and proper so to do for any other special
+reason:
+Provided also that the mere fact that an accused person may be required for being
+identified by witnesses during investigation or for police custody beyond the first fifteen
+days shall not be sufficient ground for refusing to grant bail if he is otherwise entitled to be
+released on bail and gives an undertaking that he shall comply with such directions as may
+be given by the Court:
+Provided also that no person shall, if the offence alleged to have been committed by
+him is punishable with death, imprisonment for life, or imprisonment for seven years or
+more, be released on bail by the Court under this sub-section without giving an opportunity
+of hearing to the Public Prosecutor.
+the execution by him of a bond for his appearance as hereinafter provided.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">7d1c758f-0e47-4683-a95d-ceda51066aae</span>
+            <span class="chunk-src">bnss.pdf p.14</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.311</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">29.72</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0315</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.150</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">5</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">d6c6cc8b-350c-4c08-abeb-cb1325eed8a7</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">286</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1961 (1961 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">which he is, under any law relating to extradition, or otherwise, liable to be apprehended
+or detained in custody in India; or
+(i) who, being a released convict, commits a breach of any rule made under
+sub-section (5) of section 394; or
+(j) for whose arrest any requisition, whether written or oral, has been received
+from another police officer, provided that the requisition specifies the person to be
+arrested and the offence or other cause for which the arrest is to be made and it
+appears therefrom that the person might lawfully be arrested without a warrant by the
+officer who issued the requisition.
+(2) Subject to the provisions of section 39, no person concerned in a non-cognizable
+offence or against whom a complaint has been made or credible information has been
+received or reasonable suspicion exists of his having so concerned, shall be arrested except
+under a warrant or order of a Magistrate.
+(3) The police officer shall, in all cases where the arrest of a person is not required
+under sub-section (1) issue a notice directing the person against whom a reasonable
+complaint has been made, or credible information has been received, or a reasonable suspicion
+exists that he has committed a cognizable offence, to appear before him or at such other
+place as may be specified in the notice.
+(4) Where such a notice is issued to any person, it shall be the duty of that person to
+comply with the terms of the notice.
+(5) Where such person complies and continues to comply with the notice, he shall
+not be arrested in respect of the offence referred to in the notice unless, for reasons to be
+recorded, the police officer is of the opinion that he ought to be arrested.
+(6) Where such person, at any time, fails to comply with the terms of the notice or is
+unwilling to identify himself, the police officer may, subject to such orders as may have
+been passed by a competent Court in this behalf, arrest him for the offence mentioned in the
+notice.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage unknown">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">Corpus relevance is inconclusive.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">Retrieval evidence does not definitively confirm or refute pipeline success.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          <div class="stage-efficiency">Efficiency: 0/6 chunks used (0%)</div>
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">All generated claims are fully supported by evidence.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">No claims were available to assess grounding.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 28766847-3ff0-4e4b-8da2-4d2b71c5b366.</li><li>Skipping CORPUS: status is UNKNOWN (insufficient evidence).</li><li>Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>GENERATOR passed (confidence=0.95).</li><li>Skipping GROUNDING: status is UNKNOWN (insufficient evidence).</li><li>No failures detected. Pipeline is healthy or all evidence is UNKNOWN.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.950</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>0/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.250</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">1 / 4</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">The police officer must have reason to believe, based on the complaint, information, or suspicion, that the person committed the offence, and must be satisfied that the arrest is necessary -- for example, to prevent the person from committing any further offence, or for proper investigation of the offence.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The police officer must have reason to believe, based on the complaint, information, or suspicion, that the person committed the offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.165</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under BNSS § 35(1)(b), a police officer may arrest without a warrant a person against whom a reasonable complaint, credible information, or reasonable suspicion exists for a cognizable offence punishable with imprisonment up to seven years **only if** the officer is also satisfied that the arrest is **necessary** for one (or more) of the following purposes:
+
+- to prevent the person from committing any further offence;  
+- for the proper investigation of the offence;  
+- to prevent the person from causing the evidence of the offence to disappear or to tamper with such evidence;  
+- to prevent the person from making any inducement, threat, or promise to anyone acquainted with the facts of the case so as to dissuade them from disclosing those facts to the court or police;  
+- to ensure that the person’s presence in court whenever required can be ensured.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The police officer must be satisfied that the arrest is necessary.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.995</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">The officer must record in writing the reasons for being satisfied of this necessity (or, if arrest is not required, the reasons for not arresting)【5e158157-c2be-4da0-a502-178c54007990】.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The arrest is necessary to prevent the person from committing any further offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.045</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under BNSS § 35(1)(b), a police officer may arrest without a warrant a person against whom a reasonable complaint, credible information, or reasonable suspicion exists for a cognizable offence punishable with imprisonment up to seven years **only if** the officer is also satisfied that the arrest is **necessary** for one (or more) of the following purposes:
+
+- to prevent the person from committing any further offence;  
+- for the proper investigation of the offence;  
+- to prevent the person from causing the evidence of the offence to disappear or to tamper with such evidence;  
+- to prevent the person from making any inducement, threat, or promise to anyone acquainted with the facts of the case so as to dissuade them from disclosing those facts to the court or police;  
+- to ensure that the person’s presence in court whenever required can be ensured.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The arrest is necessary for proper investigation of the offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.017</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under BNSS § 35(1)(b), a police officer may arrest without a warrant a person against whom a reasonable complaint, credible information, or reasonable suspicion exists for a cognizable offence punishable with imprisonment up to seven years **only if** the officer is also satisfied that the arrest is **necessary** for one (or more) of the following purposes:
+
+- to prevent the person from committing any further offence;  
+- for the proper investigation of the offence;  
+- to prevent the person from causing the evidence of the offence to disappear or to tamper with such evidence;  
+- to prevent the person from making any inducement, threat, or promise to anyone acquainted with the facts of the case so as to dissuade them from disclosing those facts to the court or police;  
+- to ensure that the person’s presence in court whenever required can be ensured.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNKNOWN</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.801</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val hi mono">1.000</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 28766847-3ff0-4e4b-8da2-4d2b71c5b366 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

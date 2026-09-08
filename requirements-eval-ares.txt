@@ -1,0 +1,36 @@
+# ares-ai (ARES) needs its OWN Python 3.10 venv, separate from this project's
+# main venv (Python 3.13, where ares-ai's numpy<2.0 pin has no prebuilt wheel,
+# forcing a from-source numpy build that needs a C/C++ compiler) and separate
+# from the ragchecker venv (ragchecker's transitive deps -- newer transformers/
+# scikit-learn/openai -- conflict with ares-ai's exact pins below).
+#
+# Setup (once):
+#   "C:\Users\<you>\AppData\Local\Programs\Python\Python310\python.exe" -m venv venv_eval_ares
+#   venv_eval_ares\Scripts\python.exe -m pip install -r requirements-eval-ares.txt
+#
+# NOTE: this install reliably FAILS on its first run on Windows with an OSError
+# about a jupyterlab static asset path being "not found" (a Windows MAX_PATH /
+# long-path limitation hitting one deeply nested file, not a real problem with
+# any package). Everything up to that point has already downloaded and mostly
+# installed -- just run the same `pip install -r requirements-eval-ares.txt`
+# command a second time and it completes normally using the cached downloads.
+#
+# Why the datasets pin below matters: ares-ai's own code calls the removed
+# `datasets.load_metric` function (dropped in modern `datasets`, replaced by
+# the separate `evaluate` package). datasets==2.19.0 is the last version that
+# still has it. Installing it alongside ares-ai (rather than letting pip pull
+# in whatever `datasets` version it likes) is what actually makes `import ares`
+# succeed.
+ares-ai
+datasets==2.19.0
+
+# ares-ai pins openai==1.14.2 (an older SDK release). Whatever newer httpx
+# version pip resolves alongside it (0.28+) removed the `proxies` kwarg that
+# openai==1.14.2's internal client construction still passes, causing every
+# LLM-judge call to fail with "Client.__init__() got an unexpected keyword
+# argument 'proxies'" (silently retried 5x with 60s sleeps before giving up
+# and returning a score of 0 -- looks like a slow "successful" run, not a
+# crash, unless you check the printed retry warnings). httpx==0.27.2 is the
+# last version that still accepts `proxies`; confirmed this combination
+# actually works end-to-end with a live HF-router smoke test.
+httpx==0.27.2

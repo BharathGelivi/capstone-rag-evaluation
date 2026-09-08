@@ -1,0 +1,123 @@
+{
+    "framework_metadata": {
+        "trace_id": "fb114c64-3ab6-4e67-ac05-43c608722cfc",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T16:44:14.526740Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNS section 105 (culpable homicide not amounting to murder), what specific fine amount applies when the act is done with mere knowledge of likely death rather than intention to cause it?",
+        "generated_answer": "The retrieved excerpts of BNS\u202f\u00a7\u202f105 state that, when the act is done with mere knowledge that it is likely to cause death (but without intention to cause death), the offender is liable to **imprisonment for up to ten years and a fine**\u301001858be4-6a44-4c78-ad2e-9d51a448976b\u3011\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011. However, the passages do **not specify the exact amount of the fine**; they only mention \u201cand fine\u201d without giving a numeric value or range.  \n\nTherefore, I do not have enough information to provide the specific fine amount that applies under this circumstance.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 0,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2782416343688965,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.967172384262085,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.967172384262085
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "UNKNOWN",
+                "observation": "No claims were available to assess grounding.",
+                "confidence": "0.5",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 0,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.0,
+        "average_entailment": 0.0,
+        "retrieval_latency_ms": 690.9215450286865,
+        "generation_latency_ms": 10771.146297454834,
+        "verification_latency_ms": 0.09059906005859375
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace fb114c64-3ab6-4e67-ac05-43c608722cfc.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "Skipping GROUNDING: status is UNKNOWN (insufficient evidence).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.95
+    },
+    "overall_assessment": {
+        "major_strength": "GENERATOR is healthy (confidence=95%): All generated claims are fully supported by evidence.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T16:44:14.526809Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

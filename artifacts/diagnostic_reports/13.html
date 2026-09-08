@@ -1,0 +1,1143 @@
+<title>X-RAG Diagnostic Report — 7b6a264a-72f0-4a4d-8550-fd6a35cdbc8b</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>What is the punishment for culpable homicide not amounting to murder, and how does the punishment differ depending on intention versus mere knowledge of likely death?</h1>
+    <p class="dek">Trace <span class="mono">7b6a264a-72f0-4a4d-8550-fd6a35cdbc8b</span>, generated 2026-09-06T13:41:09.242451Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">67%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNSUPPORTED_GENERATION</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">6 / 9</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.709</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">What is the punishment for culpable homicide not amounting to murder, and how does the punishment differ depending on intention versus mere knowledge of likely death?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">**Punishment for culpable homicide not amounting to murder (Section 105)**  
+
+- **When the act is done with the intention of causing death (or of causing bodily injury likely to cause death):**  
+  - Imprisonment for **life**, **or** imprisonment of either description for a term **not less than five years** but which may extend to **ten years**;  
+  - **Plus** a fine.  
+
+- **When the act is done with the knowledge that it is likely to cause death, but without any intention to cause death (or to cause such bodily injury):**  
+  - Imprisonment of either description for a term which may extend to **ten years**;  
+  - **Plus** a fine.  
+
+In both cases the offence is **cognizable, non‑bailable, and triable by the Court of Session**【ac6c1423-8651-4ff8-9f26-0cf720a5f981】.  
+
+*The context does not specify any additional distinctions (e.g., separate fines or other penalties) beyond those quoted above.*</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 0.47s retrieval + 5.11s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">5.579s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">58</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: f7c9d97a-a007-4c70-b93b-dd1cbfbe46c7] ---
+Explanation.—It is immaterial in such cases which party offers the provocation or
+commits the first assault.
+Exception 5.—Culpable homicide is not murder when the person whose death is caused,
+being above the age of eighteen years, suffers death or takes the risk of death with his own
+consent.
+Illustration.
+A, by instigation, voluntarily causes Z, a child to commit suicide. Here, on account of
+Z’s youth, he was incapable of giving consent to his own death; A has therefore abetted
+murder.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+33
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 2 [Chunk-ID: 01858be4-6a44-4c78-ad2e-9d51a448976b] ---
+Non-bailable.
+Court of Session.
+life and fine.
+103(2)
+Murder by group of five
+Death or with imprisonment
+Cognizable.
+Non-bailable.
+Court of Session.
+or more persons.
+for life and fine.
+104
+Murder by life-convict.
+Death or imprisonment for
+Cognizable.
+Non-bailable.
+Court of Session.
+life, which shall mean the
+remainder of that person&#x27;s
+natural life.
+105
+Culpable homicide not
+Imprisonment for life, or
+Cognizable.
+Non-bailable.
+Court of Session.
+amounting to murder, if act Imprisonment for not less
+by which the death is
+than 5 years but which
+caused is done with
+may extend to 10 years
+intention of causing death,
+and fine.
+etc.
+If act be done with
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Court of Session.
+knowledge that it is
+and with fine.
+likely to cause death, but
+without any intention to
+cause death, etc.
+106(1)
+Causing death by
+Imprisonment for 5 years
+Cognizable.
+Bailable.
+Magistrate of the first
+negligence.
+and fine.
+class.
+Causing death by negligence Imprisonment for 2 years
+Cognizable.
+Bailable.
+Magistrate of the first
+by registered medical
+and fine
+class.
+practitioner.
+106(2)
+Causing death by rash and
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Magistrate of the first
+negligent driving of
+and fine.
+class.
+vehicle and escaping.
+107
+Abetment of suicide of
+Death, or imprisonment
+Cognizable.
+Non-bailable.
+Court of Session.
+child or person of unsound
+for life, or imprisonment
+mind, etc.
+for 10 years and fine.
+108
+Abetment of suicide.
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Court of Session.
+and fine.
+109(1)
+Attempt to murder.
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Court of Session.
+and fine.
+Sec.
+
+--- Context chunk 3 [Chunk-ID: 13c9bef0-00e1-4778-ab87-e705bfe68f76] ---
+(1) Whoever causes death of any person by doing any rash or negligent act not
+amounting to culpable homicide, shall be punished with imprisonment of either description
+for a term which may extend to five years, and shall also be liable to fine; and if such act is
+done by a registered medical practitioner while performing medical procedure, he shall be
+punished with imprisonment of either description for a term which may extend to two years,
+and shall also be liable to fine.
+Explanation.— For the purposes of this sub-section, “registered medical practitioner”
+means a medical practitioner who possesses any medical qualification recognised under the
+National Medical CommissionAct, 2019 and whose name has been entered in the National
+Medical Register or a State Medical Register under that Act.
+(2) Whoever causes death of any person by rash and negligent driving of vehicle not
+amounting to culpable homicide, and escapes without reporting it to a police officer or a
+Magistrate soon after the incident, shall be punished with imprisonment of either description
+of a term which may extend to ten years, and shall also be liable to fine.
+107. If any child, any person of unsound mind, any delirious person or any person in
+a state of intoxication, commits suicide, whoever abets the commission of such suicide, shall
+be punished with death or imprisonment for life, or imprisonment for a term not exceeding ten
+years, and shall also be liable to fine.
+108. If any person commits suicide, whoever abets the commission of such suicide,
+shall be punished with imprisonment of either description for a term which may extend to ten
+years, and shall also be liable to fine.
+109. (1) Whoever does any act with such intention or knowledge, and under such
+circumstances that, if he by that act caused death, he would be guilty of murder, shall be
+punished with imprisonment of either description for a term which may extend to ten years,
+and shall also be liable to fine; and if hurt is caused to any person by such act, the offender
+shall be liable either to imprisonment for life, or to such punishment as is hereinbefore
+mentioned.
+Culpable
+homicide by
+causing death
+of person other
+than person
+whose death
+was intended.
+Punishment
+for murder.
+Punishment
+for murder by
+life-convict.
+
+--- Context chunk 4 [Chunk-ID: 4cca81ab-bd40-478d-be92-056607a2fae0] ---
+Illustration.
+A, on grave and sudden provocation, fires a pistol at Z, under such circumstances that
+if he thereby caused death, he would be guilty of culpable homicide not amounting to
+murder. A has committed the offence defined in this section.
+111. (1) Any continuing unlawful activity including kidnapping, robbery, vehicle
+theft, extortion, land grabbing, contract killing, economic offence, cyber-crimes, trafficking
+of persons, drugs, weapons or illicit goods or services, human trafficking for prostitution or
+ransom, by any person or a group of persons acting in concert, singly or jointly, either as a
+member of an organised crime syndicate or on behalf of such syndicate, by use of violence,
+threat of violence, intimidation, coercion, or by any other unlawful means to obtain direct or
+indirect material benefit including a financial benefit, shall constitute organised crime.
+Explanation.—For the purposes of this sub-section,––
+(i) “organised crime syndicate” means a group of two or more persons who,
+acting either singly or jointly, as a syndicate or gang indulge in any continuing
+unlawful activity;
+(ii) “continuing unlawful activity” means an activity prohibited by law which is
+a cognizable offence punishable with imprisonment of three years or more, undertaken
+by any person, either singly or jointly, as a member of an organised crime syndicate or
+Attempt to
+commit
+culpable
+homicide.
+Organised
+crime.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+35
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: ac6c1423-8651-4ff8-9f26-0cf720a5f981] ---
+102. If a person, by doing anything which he intends or knows to be likely to cause
+death, commits culpable homicide by causing the death of any person, whose death he
+neither intends nor knows himself to be likely to cause, the culpable homicide committed by
+the offender is of the description of which it would have been if he had caused the death of
+the person whose death he intended or knew himself to be likely to cause.
+103. (1) Whoever commits murder shall be punished with death or imprisonment for
+life, and shall also be liable to fine.
+(2) When a group of five or more persons acting in concert commits murder on the
+ground of race, caste or community, sex, place of birth, language, personal belief or any
+other similar ground each member of such group shall be punished with death or with
+imprisonment for life, and shall also be liable to fine.
+104.Whoever, being under sentence of imprisonment for life, commits murder, shall be
+punished with death or with imprisonment for life, which shall mean the remainder of that
+person’s natural life.
+105. Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.
+106. (1) Whoever causes death of any person by doing any rash or negligent act not
+amounting to culpable homicide, shall be punished with imprisonment of either description
+for a term which may extend to five years, and shall also be liable to fine; and if such act is
+done by a registered medical practitioner while performing medical procedure, he shall be
+punished with imprisonment of either description for a term which may extend to two years,
+and shall also be liable to fine.
+
+--- Context chunk 6 [Chunk-ID: c0b7ea50-14f9-464a-b79a-bd28b1fab3ba] ---
+Culpable
+homicide by
+causing death
+of person other
+than person
+whose death
+was intended.
+Punishment
+for murder.
+Punishment
+for murder by
+life-convict.
+Punishment
+for culpable
+homicide not
+amounting to
+murder.
+Causing death
+by negligence.
+Abetment of
+suicide of child
+or person of
+unsound mind.
+Abetment of
+suicide.
+Attempt to
+murder.
+30 of 2019.
+34
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+
+Question: What is the punishment for culpable homicide not amounting to murder, and how does the punishment differ depending on intention versus mere knowledge of likely death?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (9 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">For culpable homicide not amounting to murder committed with the intention of causing death (or of causing bodily injury likely to cause death), one possible punishment is imprisonment for life.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">ad47acfb-ec92-422d-9b40-735ae72cd8d3</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">For culpable homicide not amounting to murder committed with the intention of causing death (or of causing bodily injury likely to cause death), one possible punishment is imprisonment of either description for a term not less than five years but which may extend to ten years.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">883a424c-7f2b-4525-ae85-57e0337c9924</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">For culpable homicide not amounting to murder committed with the intention of causing death (or of causing bodily injury likely to cause death), a fine is also imposed.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">c5d99e86-13c5-4c16-ac3e-d208ad66b3b8</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">For culpable homicide not amounting to murder committed with the knowledge that it is likely to cause death, but without any intention to cause death (or to cause such bodily injury), the punishment is imprisonment of either description for a term which may extend to ten years.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">8505f0d5-3ea9-4b9e-9865-65aa99aaed24</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">For culpable homicide not amounting to murder committed with the knowledge that it is likely to cause death, but without any intention to cause death (or to cause such bodily injury), a fine is also imposed.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">939112ed-50c8-4f98-8167-a549623cee34</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">In both cases, the offence is cognizable.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">d816e5b4-78d7-4110-b2e6-82aa02550d71</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">01858be4-6a44-4c78-ad2e-9d51a448976b</span> (rank 5)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">103(2)
+Murder by group of five
+Death or with imprisonment
+Cognizable.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">In both cases, the offence is non-bailable.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">dcda34c2-26a0-4e66-99b5-380108a7980a</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">01858be4-6a44-4c78-ad2e-9d51a448976b</span> (rank 5)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">for life and fine.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">In both cases, the offence is triable by the Court of Session.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">9c8dcdeb-92e9-4766-bec8-4e62d7b6c01f</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">f7c9d97a-a007-4c70-b93b-dd1cbfbe46c7</span> (rank 6)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+33
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot warn"></span>
+            <span class="claim-status warn">NOT_VERIFIABLE</span>
+            <span class="claim-summary-text">The context does not specify any additional distinctions (e.g., separate fines or other penalties) beyond those quoted above.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">82c60388-06ff-4ffd-b12e-b05294bb27e6</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">f7c9d97a-a007-4c70-b93b-dd1cbfbe46c7</span> (rank 6)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+33
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">c0b7ea50-14f9-464a-b79a-bd28b1fab3ba</span>
+            <span class="chunk-src">bns.pdf p.34</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.272</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">36.14</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.998</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ba51310f-ee90-4a0f-a4f9-a9d1a4aa4261</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">79</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">3883 - 4639 (756 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Culpable
+homicide by
+causing death
+of person other
+than person
+whose death
+was intended.
+Punishment
+for murder.
+Punishment
+for murder by
+life-convict.
+Punishment
+for culpable
+homicide not
+amounting to
+murder.
+Causing death
+by negligence.
+Abetment of
+suicide of child
+or person of
+unsound mind.
+Abetment of
+suicide.
+Attempt to
+murder.
+30 of 2019.
+34
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">ac6c1423-8651-4ff8-9f26-0cf720a5f981</span>
+            <span class="chunk-src">bns.pdf p.34</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.291</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">32.99</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0320</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.984</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ba51310f-ee90-4a0f-a4f9-a9d1a4aa4261</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">77</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2229 (2229 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">102. If a person, by doing anything which he intends or knows to be likely to cause
+death, commits culpable homicide by causing the death of any person, whose death he
+neither intends nor knows himself to be likely to cause, the culpable homicide committed by
+the offender is of the description of which it would have been if he had caused the death of
+the person whose death he intended or knew himself to be likely to cause.
+103. (1) Whoever commits murder shall be punished with death or imprisonment for
+life, and shall also be liable to fine.
+(2) When a group of five or more persons acting in concert commits murder on the
+ground of race, caste or community, sex, place of birth, language, personal belief or any
+other similar ground each member of such group shall be punished with death or with
+imprisonment for life, and shall also be liable to fine.
+104.Whoever, being under sentence of imprisonment for life, commits murder, shall be
+punished with death or with imprisonment for life, which shall mean the remainder of that
+person’s natural life.
+105. Whoever commits culpable homicide not amounting to murder, shall be punished
+with imprisonment for life, or imprisonment of either description for a term which shall not be
+less than five years but which may extend to ten years, and shall also be liable to fine, if the
+act by which the death is caused is done with the intention of causing death, or of causing
+such bodily injury as is likely to cause death; or with imprisonment of either description for
+a term which may extend to ten years and with fine, if the act is done with the knowledge that
+it is likely to cause death, but without any intention to cause death, or to cause such bodily
+injury as is likely to cause death.
+106. (1) Whoever causes death of any person by doing any rash or negligent act not
+amounting to culpable homicide, shall be punished with imprisonment of either description
+for a term which may extend to five years, and shall also be liable to fine; and if such act is
+done by a registered medical practitioner while performing medical procedure, he shall be
+punished with imprisonment of either description for a term which may extend to two years,
+and shall also be liable to fine.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">4cca81ab-bd40-478d-be92-056607a2fae0</span>
+            <span class="chunk-src">bns.pdf p.35</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.395</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">18.64</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0267</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.815</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">15</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">15</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">c8972a42-b75f-4bf1-a53a-1f40b2403a17</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">81</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1725 - 3558 (1833 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustration.
+A, on grave and sudden provocation, fires a pistol at Z, under such circumstances that
+if he thereby caused death, he would be guilty of culpable homicide not amounting to
+murder. A has committed the offence defined in this section.
+111. (1) Any continuing unlawful activity including kidnapping, robbery, vehicle
+theft, extortion, land grabbing, contract killing, economic offence, cyber-crimes, trafficking
+of persons, drugs, weapons or illicit goods or services, human trafficking for prostitution or
+ransom, by any person or a group of persons acting in concert, singly or jointly, either as a
+member of an organised crime syndicate or on behalf of such syndicate, by use of violence,
+threat of violence, intimidation, coercion, or by any other unlawful means to obtain direct or
+indirect material benefit including a financial benefit, shall constitute organised crime.
+Explanation.—For the purposes of this sub-section,––
+(i) “organised crime syndicate” means a group of two or more persons who,
+acting either singly or jointly, as a syndicate or gang indulge in any continuing
+unlawful activity;
+(ii) “continuing unlawful activity” means an activity prohibited by law which is
+a cognizable offence punishable with imprisonment of three years or more, undertaken
+by any person, either singly or jointly, as a member of an organised crime syndicate or
+Attempt to
+commit
+culpable
+homicide.
+Organised
+crime.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+35
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">13c9bef0-00e1-4778-ab87-e705bfe68f76</span>
+            <span class="chunk-src">bns.pdf p.34</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.343</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">32.70</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0312</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.747</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">4</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">4</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ba51310f-ee90-4a0f-a4f9-a9d1a4aa4261</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">78</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1751 - 4033 (2282 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(1) Whoever causes death of any person by doing any rash or negligent act not
+amounting to culpable homicide, shall be punished with imprisonment of either description
+for a term which may extend to five years, and shall also be liable to fine; and if such act is
+done by a registered medical practitioner while performing medical procedure, he shall be
+punished with imprisonment of either description for a term which may extend to two years,
+and shall also be liable to fine.
+Explanation.— For the purposes of this sub-section, “registered medical practitioner”
+means a medical practitioner who possesses any medical qualification recognised under the
+National Medical CommissionAct, 2019 and whose name has been entered in the National
+Medical Register or a State Medical Register under that Act.
+(2) Whoever causes death of any person by rash and negligent driving of vehicle not
+amounting to culpable homicide, and escapes without reporting it to a police officer or a
+Magistrate soon after the incident, shall be punished with imprisonment of either description
+of a term which may extend to ten years, and shall also be liable to fine.
+107. If any child, any person of unsound mind, any delirious person or any person in
+a state of intoxication, commits suicide, whoever abets the commission of such suicide, shall
+be punished with death or imprisonment for life, or imprisonment for a term not exceeding ten
+years, and shall also be liable to fine.
+108. If any person commits suicide, whoever abets the commission of such suicide,
+shall be punished with imprisonment of either description for a term which may extend to ten
+years, and shall also be liable to fine.
+109. (1) Whoever does any act with such intention or knowledge, and under such
+circumstances that, if he by that act caused death, he would be guilty of murder, shall be
+punished with imprisonment of either description for a term which may extend to ten years,
+and shall also be liable to fine; and if hurt is caused to any person by such act, the offender
+shall be liable either to imprisonment for life, or to such punishment as is hereinbefore
+mentioned.
+Culpable
+homicide by
+causing death
+of person other
+than person
+whose death
+was intended.
+Punishment
+for murder.
+Punishment
+for murder by
+life-convict.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">01858be4-6a44-4c78-ad2e-9d51a448976b</span>
+            <span class="chunk-src">bnss.pdf p.163</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.399</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">26.05</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0283</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.747</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">16</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">6</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">a84e0f61-74e0-49f3-be84-08ab04d4a582</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">657</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1367 - 3035 (1668 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Non-bailable.
+Court of Session.
+life and fine.
+103(2)
+Murder by group of five
+Death or with imprisonment
+Cognizable.
+Non-bailable.
+Court of Session.
+or more persons.
+for life and fine.
+104
+Murder by life-convict.
+Death or imprisonment for
+Cognizable.
+Non-bailable.
+Court of Session.
+life, which shall mean the
+remainder of that person&#x27;s
+natural life.
+105
+Culpable homicide not
+Imprisonment for life, or
+Cognizable.
+Non-bailable.
+Court of Session.
+amounting to murder, if act Imprisonment for not less
+by which the death is
+than 5 years but which
+caused is done with
+may extend to 10 years
+intention of causing death,
+and fine.
+etc.
+If act be done with
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Court of Session.
+knowledge that it is
+and with fine.
+likely to cause death, but
+without any intention to
+cause death, etc.
+106(1)
+Causing death by
+Imprisonment for 5 years
+Cognizable.
+Bailable.
+Magistrate of the first
+negligence.
+and fine.
+class.
+Causing death by negligence Imprisonment for 2 years
+Cognizable.
+Bailable.
+Magistrate of the first
+by registered medical
+and fine
+class.
+practitioner.
+106(2)
+Causing death by rash and
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Magistrate of the first
+negligent driving of
+and fine.
+class.
+vehicle and escaping.
+107
+Abetment of suicide of
+Death, or imprisonment
+Cognizable.
+Non-bailable.
+Court of Session.
+child or person of unsound
+for life, or imprisonment
+mind, etc.
+for 10 years and fine.
+108
+Abetment of suicide.
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Court of Session.
+and fine.
+109(1)
+Attempt to murder.
+Imprisonment for 10 years
+Cognizable.
+Non-bailable.
+Court of Session.
+and fine.
+Sec.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">f7c9d97a-a007-4c70-b93b-dd1cbfbe46c7</span>
+            <span class="chunk-src">bns.pdf p.33</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.326</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.38</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0281</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.495</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">22</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">b6731c07-2422-4a7b-8d80-f49c721411dc</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">76</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2995 - 3896 (901 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation.—It is immaterial in such cases which party offers the provocation or
+commits the first assault.
+Exception 5.—Culpable homicide is not murder when the person whose death is caused,
+being above the age of eighteen years, suffers death or takes the risk of death with his own
+consent.
+Illustration.
+A, by instigation, voluntarily causes Z, a child to commit suicide. Here, on account of
+Z’s youth, he was incapable of giving consent to his own death; A has therefore abetted
+murder.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+33
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 2/6 chunks used (33%)</div>
+        </div>
+        <div class="stage fail">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">FAIL</div>
+          <div class="stage-obs">2 generated claims remain unsupported despite high retrieval scores.</div>
+          <div class="stage-conf">confidence 0.85</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 7b6a264a-72f0-4a4d-8550-fd6a35cdbc8b.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.</li><li>GROUNDING passed (confidence=0.90).</li><li>Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).</li><li>Analysis complete. Primary cause: UNSUPPORTED_GENERATION.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.900</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[IMMEDIATE]</span>Lower Sampling Temperature</div>
+          <div class="action-desc">Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[SHORT_TERM]</span>Strict Prompt Grounding</div>
+          <div class="action-desc">Inject systemic instructions forcing the LLM to output &#x27;I don&#x27;t know&#x27; if context is insufficient.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>The LLM guesses when retrieved context is irrelevant.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>2/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">0 / 0</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">Imprisonment for life, or imprisonment of either description for a term not less than five years but which may extend to ten years, plus fine, if the act was done with the intention of causing death or such bodily injury as is likely to cause death; or imprisonment of either description for a term which may extend to ten years plus fine, if the act was done merely with the knowledge that it was likely to cause death but without any such intention.</pre>
+    
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.709</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNSUPPORTED_GENERATION</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.767</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">0.450</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.308</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val mid mono">0.692</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 7b6a264a-72f0-4a4d-8550-fd6a35cdbc8b -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

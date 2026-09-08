@@ -1,0 +1,163 @@
+{
+    "framework_metadata": {
+        "trace_id": "284fb904-3393-4bee-bb75-b23862a15431",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T09:05:10.557932Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for attempt to murder under BNS section 109, and how does it change if hurt is actually caused to a person?",
+        "generated_answer": "According to Context chunk 1 [Chunk-ID: d436ff82-2db4-431b-8962-734d59e1cf28], the punishment for attempt to murder is imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine. If hurt is caused to any person by such act, the offender shall be liable either to imprisonment for life, or to such punishment as is hereinbefore mentioned [Chunk-ID: d436ff82-2db4-431b-8962-734d59e1cf28].",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 5,
+        "total_claims": 5,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.22772514820098877,
+                    "pool_size": 37
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9468587636947632,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.75,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 4
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9468587636947632
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 4,
+        "verified_claims": 5,
+        "supported_claims": 5,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.75,
+        "average_entailment": 0.9232139945030212,
+        "retrieval_latency_ms": 7918.159008026123,
+        "generation_latency_ms": 25782.047510147095,
+        "verification_latency_ms": 983717.1201705933
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 284fb904-3393-4bee-bb75-b23862a15431.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "60ed224a-e3a8-45ae-b28c-db0621ee28f1",
+            "claim_text": "The punishment for attempt to murder is imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "6367a450-05e8-458e-9b27-d38370176c3b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Court of Session.\nmurder, if hurt is caused.\nfor life which shall mean\nthe remainder of that\nperson's natural life.\n110\nAttempt to commit culpable Imprisonment for 3 years,\nCognizable."
+        },
+        {
+            "claim_id": "cf4d0f15-fc06-47f9-98c2-d16762d00b4a",
+            "claim_text": "The imprisonment may extend to ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine.\n109. (1) Whoever does any act with such intention or knowledge, and under such\ncircumstances that, if he by that act caused death, he would be guilty of murder, shall be\npunished with imprisonment of either description for a term which may extend to ten years,\nand shall also be liable to fine; and if hurt is caused to any person by such act, the offender\nshall be liable either to imprisonment for life, or to such punishment as is hereinbefore\nmentioned."
+        },
+        {
+            "claim_id": "2fa300e9-4adc-4b1c-865c-31e72dbb3bae",
+            "claim_text": "The offender shall also be liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "f69e6aef-3594-43c8-86e9-415389ec638f",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "If B had murdered Z, he\nwould have been subject to the punishment of death or imprisonment for life.Therefore, Ais\nliable to imprisonment for a term which may extend to seven years and also to a fine; and if\nany hurt be done to Z in consequence of the abetment, he will be liable to imprisonment for\na term which may extend to fourteen years, and to fine.\n56."
+        },
+        {
+            "claim_id": "5baec077-73a6-495b-b190-3bb32c7e3bc6",
+            "claim_text": "If hurt is caused to any person by such act, the offender shall be liable to imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine.\n109. (1) Whoever does any act with such intention or knowledge, and under such\ncircumstances that, if he by that act caused death, he would be guilty of murder, shall be\npunished with imprisonment of either description for a term which may extend to ten years,\nand shall also be liable to fine; and if hurt is caused to any person by such act, the offender\nshall be liable either to imprisonment for life, or to such punishment as is hereinbefore\nmentioned."
+        },
+        {
+            "claim_id": "fa10be69-1989-46ce-9801-6a31bfd4c0f5",
+            "claim_text": "The offender shall be liable to such punishment as is hereinbefore mentioned.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 5,
+        "recalled_gold_claims": 5
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T09:05:10.559055Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

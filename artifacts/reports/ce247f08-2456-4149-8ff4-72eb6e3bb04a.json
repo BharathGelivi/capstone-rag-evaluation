@@ -1,0 +1,132 @@
+{
+    "framework_metadata": {
+        "trace_id": "ce247f08-2456-4149-8ff4-72eb6e3bb04a",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T13:54:14.808953Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment applies to abetment of an offence when the Sanhita makes no express provision for punishing that specific abetment?",
+        "generated_answer": "When the Bharatiya Nyaya Sanhita (BNS) contains **no express provision** for punishing a particular act of abetment, the punishment is determined by the following rules (as set out in the Sanhita):\n\n| Situation | Punishment (when no express provision for abetment) | Source |\n|-----------|------------------------------------------------------|--------|\n| **The act abetted is actually committed** (i.e., the offence occurs because of the abetment) | The abettor receives **the same punishment as the principal offender** for that offence. |\u202f[e3cfd376-1174-46eb-9573-2b6cafe0dbc6] \u2013\u202f\u00a7\u202f49 |\n| **The offence is punishable with death or imprisonment for life** and the offence **is not committed** as a result of the abetment | Imprisonment of either description for a term **up to seven years**, **plus fine**.<br>If, in consequence of the abetment, any hurt is caused to a person, the term may extend to **fourteen years**, **plus fine**. |\u202f[320c1526-fed5-4985-ae85-e16910f24ab6] \u2013\u202f\u00a7\u202f55 (and its illustration) |\n| **The offence is punishable with imprisonment** (but not death or life) and the offence **is not committed** as a result of the abetment | Imprisonment of any description provided for that offence for a term **up to one\u2011fourth of the longest term** prescribed for the offence, **or fine, or both**.<br>If the abettor (or the person abetted) is a public servant whose duty is to prevent such offence, the term may extend to **one\u2011half of the longest term** (or fine, or both). |\u202f[a90a5461-96e5-4ff3-b754-c6e6c504fe4e] \u2013\u202f\u00a7\u202f56 |\n| **If the act abetted is done with a different intention or knowledge** (but still constitutes the offence) | The abettor is punished **as if the act had been done with the abettor\u2019s intention or knowledge** (i.e., the punishment for the offence that would have resulted). |\u202f[e3cfd376-1174-46eb-9573-2b6cafe0dbc6] \u2013\u202f\u00a7\u202f50 |\n| **If a different act is done** (but is a probable consequence of the abetment) | The abettor is liable for the act actually done, **in the same manner and to the same extent** as if he had directly abetted that act. |\u202f[e3cfd376-1174-46eb-9573-2b6cafe0dbc6] \u2013\u202f\u00a7\u202f51 |\n\n**In short:**  \n- When the abetted offence **occurs**, the abettor gets the **same punishment** as the offender.  \n- When it **does not occur**, the punishment scales with the seriousness of the offence: up to 7\u202fyears (or 14\u202fyears if hurt results) for death/life\u2011imprisonment offences; up to one\u2011fourth (or one\u2011half for public servants) of the maximum imprisonment term for other imprisonable offences, plus any applicable fine.  \n\nThese rules are drawn directly from sections\u202f49,\u202f50,\u202f51,\u202f55, and\u202f56 of the Bharatiya Nyaya Sanhita, 2023 as shown in the cited context chunks.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 1,
+        "total_claims": 1,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.28121012449264526,
+                    "pool_size": 65
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9981046915054321,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9981046915054321
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 1,
+        "supported_claims": 1,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.9648898839950562,
+        "retrieval_latency_ms": 584.1822624206543,
+        "generation_latency_ms": 14745.753526687622,
+        "verification_latency_ms": 8202.335834503174
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace ce247f08-2456-4149-8ff4-72eb6e3bb04a.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "d7be6cca-9ec4-4a9a-a496-109cccc31577",
+            "claim_text": "When the Bharatiya Nyaya Sanhita (BNS) contains no express provision for punishing a particular act of abetment, the punishment is determined by the following rules (as set out in the Sanhita).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e3cfd376-1174-46eb-9573-2b6cafe0dbc6",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever abets any offence shall, if the act abetted is committed in consequence of\nthe abetment, and no express provision is made by this Sanhita for the punishment of such\nabetment, be punished with the punishment provided for the offence."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T13:54:14.809163Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

@@ -1,0 +1,174 @@
+{
+    "framework_metadata": {
+        "trace_id": "52e65f24-2e1f-4fa3-badd-a155028961d5",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T00:05:47.640623Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, when are facts relevant because they are consistent or inconsistent with the opinions of experts?",
+        "generated_answer": "Under the Bharatiya Sakshya Adhiniyam (BSA), a fact that is not otherwise relevant becomes relevant **when it either supports or is inconsistent with the opinion of an expert**, provided that the expert\u2019s opinion itself is relevant to the issue at hand.  \n\nThis rule is set out in **Section\u202f40** of the BSA:\n\n> **40. Facts, not otherwise relevant, are relevant if they support or are inconsistent with the opinions of experts, when such opinions are relevant.**  \n\nThe section is illustrated with two examples:\n\n1. **Illustration (a)** \u2013 In a poisoning case, the fact that other persons who were poisoned by the same poison exhibited certain symptoms (which experts affirm or deny to be the symptoms of that poison) is relevant.  \n2. **Illustration (b)** \u2013 In a harbour\u2011obstruction case, the fact that other similarly situated harbours without the alleged sea\u2011wall began to be obstructed at about the same time is relevant.  \n\nThus, under the BSA, facts are admitted on the basis of their **consistency or inconsistency with expert opinion** whenever the expert\u2019s opinion is pertinent to the matter in issue.  \n\n*Source: Chunk\u202f6 (Section\u202f40 and its illustrations).* [Chunk-ID: 25a797b4-63c0-45a3-9cc8-c711c4ed193b]",
+        "overall_health_score": 0.8,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 5,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3898223042488098,
+                    "pool_size": 55
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9858500361442566,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9858500361442566
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8,
+        "evidence_coverage": 0.6666666666666666,
+        "average_entailment": 0.7413280978798866,
+        "retrieval_latency_ms": 562.0331764221191,
+        "generation_latency_ms": 3987.0951175689697,
+        "verification_latency_ms": 10158.821821212769
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 52e65f24-2e1f-4fa3-badd-a155028961d5.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "f9ef7e9b-28a2-4a09-8154-a56e94da9eda",
+            "claim_text": "Under the Bharatiya Sakshya Adhiniyam (BSA), a fact that is not otherwise relevant becomes relevant when it either supports or is inconsistent with the opinion of an expert, provided that the expert\u2019s opinion itself is relevant to the issue at hand.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "2472cd89-b739-49c2-93f6-ad3a3a3896d5",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "When the Court has to form an opinion as to the relationship of one person to\nanother, the opinion, expressed by conduct, as to the existence of such relationship, of any\nperson who, as a member of the family or otherwise, has special means of knowledge on the\nsubject, is a relevant fact:\nProvided that such opinion shall not be sufficient to prove a marriage in proceedings\nunder the Divorce Act, 1869, or in prosecution under sections 82 and 84 of the Bharatiya\nNyaya Sanhita, 2023."
+        },
+        {
+            "claim_id": "ab5c0543-b053-4d5c-92d1-a0a7be856241",
+            "claim_text": "Section 40 of the BSA states: \"Facts, not otherwise relevant, are relevant if they support or are inconsistent with the opinions of experts, when such opinions are relevant.\"",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a79fdaaa-8913-4eb8-9594-74391511bc01",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "4\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "49366ce1-b57c-47b5-97ff-9cd5074cf24f",
+            "claim_text": "In a poisoning case, the fact that other persons who were poisoned by the same poison exhibited certain symptoms (which experts affirm or deny to be the symptoms of that poison) is relevant.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "96e2ba22-b62e-462f-8be1-fe69edadd515",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "The opinions of experts upon the question whether the\nsymptoms exhibited by A commonly show unsoundness of mind, and whether such\nunsoundness of mind usually renders persons incapable of knowing the nature of the acts\nwhich they do, or of knowing that what they do is either wrong or contrary to law, are\nrelevant."
+        },
+        {
+            "claim_id": "eccbd16c-3437-4914-b1bf-669578323651",
+            "claim_text": "In a harbour\u2011obstruction case, the fact that other similarly situated harbours without the alleged sea\u2011wall began to be obstructed at about the same time is relevant.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a79fdaaa-8913-4eb8-9594-74391511bc01",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "The\ngoods were delivered to several intermediate persons successively."
+        },
+        {
+            "claim_id": "f79f4bac-2dd6-4904-ac60-db100af3fb9e",
+            "claim_text": "Under the BSA, facts are admitted on the basis of their consistency or inconsistency with expert opinion whenever the expert\u2019s opinion is pertinent to the matter in issue.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "20b5e412-e216-400b-b057-91f0c36033da",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n7\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 0
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T00:05:47.640706Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

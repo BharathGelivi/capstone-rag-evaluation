@@ -1,0 +1,156 @@
+{
+    "framework_metadata": {
+        "trace_id": "585adf6c-37e7-40a1-bbd5-478683bb0804",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T02:38:41.528187Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the exact fine amount prescribed for murder under BNS section 103?",
+        "generated_answer": "The Bharatiya Nyaya Sanhita,\u202f2023\u202fsection\u202f103(1) states that whoever commits murder \u201cshall be punished with death or imprisonment for life, and shall also be liable to fine\u201d\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011. The text does not specify an exact monetary amount for the fine; it only imposes liability to a fine without stating a particular sum. Therefore, the exact fine amount is not provided in the retrieved context.",
+        "overall_health_score": 0.75,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 3,
+        "total_claims": 4,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.338614284992218,
+                    "pool_size": 68
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.46947041153907776,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "UNKNOWN",
+                "observation": "1 generated claims are unsupported, but retrieval quality is ambiguous.",
+                "confidence": "0.5",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.46947041153907776
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 4,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.75,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7858284190297127,
+        "retrieval_latency_ms": 598.3936786651611,
+        "generation_latency_ms": 3412.456274032593,
+        "verification_latency_ms": 9319.966077804565
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 585adf6c-37e7-40a1-bbd5-478683bb0804.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Skipping GENERATOR: status is UNKNOWN (insufficient evidence).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.92
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "6a46e030-9c14-4d16-a232-ffbcca77d4f7",
+            "claim_text": "The Bharatiya Nyaya Sanhita, 2023 section 103(1) states that whoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "1ee1d3cc-b4bb-441e-b965-5b4f35f19230",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "Thirdly\u2014That you, on or about the........................................................................day\nof.............................................., at.............................................., committed theft, having made\npreparation for causing restraint to a person in order to the effecting of your escape after the\nSec."
+        },
+        {
+            "claim_id": "f12a0346-dc8b-4855-bd45-d8358e6e63af",
+            "claim_text": "The text does not specify an exact monetary amount for the fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46c92824-056b-4a70-8452-ad2b84728aa2",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Whoever refuses to sign any statement made by him, when required to sign\nthat statement by a public servant legally competent to require that he shall sign that\nstatement, shall be punished with simple imprisonment for a term which may extend to\nthree months, or with fine which may extend to three thousand rupees, or with both."
+        },
+        {
+            "claim_id": "924ff8fb-015b-471c-a006-532deb06d7b6",
+            "claim_text": "The text only imposes liability to a fine without stating a particular sum.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b4c67a5d-e560-4aa9-ba82-88c5c8a93dcf",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "68\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "e81784c5-0935-436e-8576-977251e2adea",
+            "claim_text": "The exact fine amount is not provided in the retrieved context.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b4c67a5d-e560-4aa9-ba82-88c5c8a93dcf",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Fraudulently\nobtaining\ndecree for sum\nnot due."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.3333333333333333,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T02:38:41.528269Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

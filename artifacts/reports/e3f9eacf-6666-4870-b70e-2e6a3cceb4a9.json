@@ -1,0 +1,171 @@
+{
+    "framework_metadata": {
+        "trace_id": "e3f9eacf-6666-4870-b70e-2e6a3cceb4a9",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T10:35:53.543548Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for organised crime under BNS section 111 if the offence results in the death of a person, versus if it does not?",
+        "generated_answer": "According to Context chunk 2 [Chunk-ID: bcdc305b-1d7b-4563-a110-b7d4f035f12e], the punishment for organised crime under section 111 is as follows: \n\nIf the offence results in the death of a person, the punishment is death or imprisonment for life, and a fine of not less than ten lakh rupees [Chunk-ID: bcdc305b-1d7b-4563-a110-b7d4f035f12e]. \n\nIf the offence does not result in the death of a person, the punishment is imprisonment for a term of not less than five years but which may extend to imprisonment for life, and a fine of not less than five lakh rupees [Chunk-ID: bcdc305b-1d7b-4563-a110-b7d4f035f12e].",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 6,
+        "total_claims": 6,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2273445725440979,
+                    "pool_size": 35
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.6578977108001709,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.4,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.6578977108001709
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 6,
+        "supported_claims": 6,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.4,
+        "average_entailment": 0.9065645833810171,
+        "retrieval_latency_ms": 1769.7696685791016,
+        "generation_latency_ms": 9880.312204360962,
+        "verification_latency_ms": 1214854.739665985
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace e3f9eacf-6666-4870-b70e-2e6a3cceb4a9.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "9e117b83-643c-479d-9fe2-20ba5ebe482a",
+            "claim_text": "The punishment for organised crime under section 111 is death or imprisonment for life, and a fine of not less than ten lakh rupees.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "5dc9aa68-4ccb-48d7-8ff8-018d2255e840",
+            "claim_text": "The punishment for organised crime under section 111 is imprisonment for a term of not less than five years but which may extend to imprisonment for life, and a fine of not less than five lakh rupees.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "32c44902-0dce-445b-9403-1da594a68554",
+            "claim_text": "The offence resulting in death of a person is punishable by death or imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "423905af-0bbb-44ab-bfdc-de925e9fd621",
+            "claim_text": "The offence not resulting in death of a person is punishable by imprisonment for a term of not less than five years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c48aba18-cb24-43ce-9681-62615a8fc7f0",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this sub-section \"theft\" includes trick theft, theft\nfrom vehicle, dwelling house or business premises, cargo theft, pick pocketing, theft through\ncard skimming, shoplifting and theft ofAutomated Teller Machine.\n(2) Whoever commits any petty organised crime shall be punished with imprisonment\nfor a term which shall not be less than one year but which may extend to seven years, and\nshall also be liable to fine."
+        },
+        {
+            "claim_id": "991918f3-3302-4345-97cf-1cf53724f52c",
+            "claim_text": "The offence not resulting in death of a person is punishable by a fine of not less than five lakh rupees.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        },
+        {
+            "claim_id": "bc73bfbe-787c-4b2d-b691-dd51ed1c9665",
+            "claim_text": "The offence resulting in death of a person is punishable by a fine of not less than ten lakh rupees.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "bcdc305b-1d7b-4563-a110-b7d4f035f12e",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "on behalf of such syndicate in respect of which more than one charge-sheets have\nbeen filed before a competent Court within the preceding period of ten years and that\nCourt has taken cognizance of such offence, and includes economic offence;\n(iii) \u201ceconomic offence\u201d includes criminal breach of trust, forgery, counterfeiting\nof currency-notes, bank-notes and Government stamps, hawala transaction,\nmass-marketing fraud or running any scheme to defraud several persons or doing any\nact in any manner with a view to defraud any bank or financial institution or any other\ninstitution or organisation for obtaining monetary benefits in any form.\n(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees.\n(3) Whoever abets, attempts, conspires or knowingly facilitates the commission of an\norganised crime, or otherwise engages in any act preparatory to an organised crime, shall be\npunished with imprisonment for a term which shall not be less than five years but which\nmay extend to imprisonment for life, and shall also be liable to fine which shall not be less\nthan five lakh rupees.\n(4) Any person who is a member of an organised crime syndicate shall be punished\nwith imprisonment for a term which shall not be less than five years but which may extend\nto imprisonment for life, and shall also be liable to fine which shall not be less than five lakh\nrupees.\n(5) Whoever, intentionally, harbours or conceals any person who has committed the\noffence of an organised crime shall be punished with imprisonment for a term which shall\nnot be less than three years but which may extend to imprisonment for life, and shall also be\nliable to fine which shall not be less than five lakh rupees:\nProvided that this sub-section shall not apply to any case in which the harbour or\nconcealment is by the spouse of the offender."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.8333333333333334,
+        "total_gold_claims": 6,
+        "recalled_gold_claims": 5
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T10:35:53.543808Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

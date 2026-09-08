@@ -1,0 +1,162 @@
+{
+    "framework_metadata": {
+        "trace_id": "62518efa-43f5-4033-87b4-3f8767975345",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T03:17:15.080309Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Given that BNS section 103 caps the punishment for murder at ten years' imprisonment, what additional fine is imposed on top of that ten-year term?",
+        "generated_answer": "According to the retrieved text, **BNS\u202f\u00a7\u202f103(1)** states that a person who commits murder \u201cshall be punished with death or imprisonment for life, **and shall also be liable to fine**.\u201d\u202f[ac6c1423-8651-4ff8-9f26-0cf720a5f981]  \n\nThe provision does **not specify a particular amount** for the fine; it merely imposes a fine in addition to the imprisonment term. Therefore, while the imprisonment may be capped at ten years (as you noted), the accompanying penalty is a fine whose exact quantum is not detailed in the supplied context.",
+        "overall_health_score": 0.8333,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 5,
+        "total_claims": 6,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3581114411354065,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.5079852342605591,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.5079852342605591
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 5,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8333333333333334,
+        "evidence_coverage": 0.6666666666666666,
+        "average_entailment": 0.7747435931426784,
+        "retrieval_latency_ms": 633.1639289855957,
+        "generation_latency_ms": 5351.286172866821,
+        "verification_latency_ms": 18708.669662475586
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 62518efa-43f5-4033-87b4-3f8767975345.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "23fd6549-9dd1-499f-b0c6-eb478fd98351",
+            "claim_text": "BNS \u00a7 103(1) states that a person who commits murder shall be punished with death or imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Explanation.\u2014 For the purposes of this sub-section, \u201cregistered medical practitioner\u201d\nmeans a medical practitioner who possesses any medical qualification recognised under the\nNational Medical CommissionAct, 2019 and whose name has been entered in the National\nMedical Register or a State Medical Register under that Act."
+        },
+        {
+            "claim_id": "f40e2737-5c55-49bd-a621-de2ad05852b2",
+            "claim_text": "BNS \u00a7 103(1) states that a person who commits murder shall also be liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "01858be4-6a44-4c78-ad2e-9d51a448976b",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "amounting to murder, if act Imprisonment for not less\nby which the death is\nthan 5 years but which\ncaused is done with\nmay extend to 10 years\nintention of causing death,\nand fine."
+        },
+        {
+            "claim_id": "f1716c84-93db-460f-b100-a16c05e8b566",
+            "claim_text": "The provision (BNS \u00a7 103(1)) does not specify a particular amount for the fine.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "d4bff920-e034-45f1-8324-29439a355f08",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "263."
+        },
+        {
+            "claim_id": "760f78a4-c385-446d-8bba-181be8f50700",
+            "claim_text": "The provision imposes a fine in addition to the imprisonment term.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Whoever commits murder shall be punished with death or imprisonment for\nlife, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "7472dc2a-1d43-4b9f-8c26-4541f0ef0ca7",
+            "claim_text": "The imprisonment may be capped at ten years (as you noted).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "01858be4-6a44-4c78-ad2e-9d51a448976b",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "amounting to murder, if act Imprisonment for not less\nby which the death is\nthan 5 years but which\ncaused is done with\nmay extend to 10 years\nintention of causing death,\nand fine."
+        },
+        {
+            "claim_id": "88ef8f32-4703-48cc-8f39-4fc20c049db5",
+            "claim_text": "The accompanying penalty is a fine whose exact quantum is not detailed in the supplied context.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "01858be4-6a44-4c78-ad2e-9d51a448976b",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "amounting to murder, if act Imprisonment for not less\nby which the death is\nthan 5 years but which\ncaused is done with\nmay extend to 10 years\nintention of causing death,\nand fine."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T03:17:15.080398Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

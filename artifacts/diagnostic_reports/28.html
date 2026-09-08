@@ -1,0 +1,1081 @@
+<title>X-RAG Diagnostic Report — efac92eb-f908-4fff-8db4-69a50fea7613</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>Under the BSA, when are facts relevant because they are consistent or inconsistent with the opinions of experts?</h1>
+    <p class="dek">Trace <span class="mono">efac92eb-f908-4fff-8db4-69a50fea7613</span>, generated 2026-09-06T15:36:22.151520Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">71%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNSUPPORTED_GENERATION</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">5 / 7</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.763</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">Under the BSA, when are facts relevant because they are consistent or inconsistent with the opinions of experts?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">Under the Bharatiya Sakshya Adhiniyam (BSA), a fact that is not otherwise relevant becomes relevant **when it either supports or is inconsistent with the opinion of an expert**, provided that the expert’s opinion itself is relevant to the issue at hand.  
+
+This rule is set out in **Section 40** of the BSA:
+
+&gt; **40. Facts, not otherwise relevant, are relevant if they support or are inconsistent with the opinions of experts, when such opinions are relevant.**  
+
+The section is illustrated with two examples:
+
+1. **Poisoning case** – The fact that other persons who were poisoned by the same poison exhibited certain symptoms (which experts affirm or deny to be the symptoms of that poison) is relevant.  
+2. **Harbour obstruction** – The fact that other harbours similarly situated, but without a particular sea‑wall, began to be obstructed at about the same time is relevant to the opinion about whether the sea‑wall caused the obstruction.  
+
+Thus, under the BSA, facts are admitted on the basis of their **consistency or inconsistency with expert opinion** whenever the expert’s opinion is pertinent to the matter in issue.  
+
+*Sources: Section 40 and its illustrations in the retrieved context (Chunk 6: 25a797b4-63c0-45a3-9cc8-c711c4ed193b).*</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 1.01s retrieval + 8.00s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">9.014s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">55</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: 2472cd89-b739-49c2-93f6-ad3a3a3896d5] ---
+(ii) the constitution and governance of any religious or charitable
+foundation; or
+(iii) the meaning of words or terms used in particular districts or by particular
+classes of people,
+the opinions of persons having special means of knowledge thereon, are relevant facts.
+44. When the Court has to form an opinion as to the relationship of one person to
+another, the opinion, expressed by conduct, as to the existence of such relationship, of any
+person who, as a member of the family or otherwise, has special means of knowledge on the
+subject, is a relevant fact:
+Provided that such opinion shall not be sufficient to prove a marriage in proceedings
+under the Divorce Act, 1869, or in prosecution under sections 82 and 84 of the Bharatiya
+Nyaya Sanhita, 2023.
+Illustrations.
+(a) The question is, whether A and B were married. The fact that they were usually
+received and treated by their friends as husband and wife, is relevant.
+(b) The question is, whetherAwas the legitimate son of B. The fact thatAwas always
+treated as such by members of the family, is relevant.
+45. Whenever the opinion of any living person is relevant, the grounds on which
+such opinion is based are also relevant.
+Illustration.
+An expert may give an account of experiments performed by him for the purpose of
+forming his opinion.
+Character when relevant
+46. In civil cases the fact that the character of any person concerned is such as to
+render probable or improbable any conduct imputed to him, is irrelevant, except in so far as
+such character appears from facts otherwise relevant.
+47. In criminal proceedings the fact that the person accused is of a good character, is
+relevant.
+48.
+
+--- Context chunk 2 [Chunk-ID: a79fdaaa-8913-4eb8-9594-74391511bc01] ---
+(d) The question is, whether certain goods ordered from B were delivered to A. The
+goods were delivered to several intermediate persons successively. Each delivery is a
+relevant fact.
+5. Facts which are the occasion, cause or effect, immediate or otherwise, of relevant
+facts, or facts in issue, or which constitute the state of things under which they happened,
+or which afforded an opportunity for their occurrence or transaction, are relevant.
+Illustrations.
+(a) The question is, whether A robbed B. The facts that, shortly before the robbery,
+B went to a fair with money in his possession, and that he showed it, or mentioned the fact
+that he had it, to third persons, are relevant.
+(b) The question is, whether A murdered B. Marks on the ground, produced by a
+struggle at or near the place where the murder was committed, are relevant facts.
+(c) The question is, whetherApoisoned B. The state of B&#x27;s health before the symptoms
+ascribed to poison, and habits of B, known to A, which afforded an opportunity for the
+administration of poison, are relevant facts.
+6. (1) Any fact is relevant which shows or constitutes a motive or preparation for any
+fact in issue or relevant fact.
+Relevancy of
+facts forming
+part of same
+transaction.
+Facts which are
+occasion, cause
+or
+effect
+of
+facts in issue or
+relevant facts.
+Motive,
+preparation
+and previous
+or subsequent
+conduct.
+5 of 1908.
+4
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________
+
+--- Context chunk 3 [Chunk-ID: 20b5e412-e216-400b-b057-91f0c36033da] ---
+Illustration.
+The question is, whether A has a right to a fishery. A deed conferring the fishery on
+A&#x27;s ancestors, a mortgage of the fishery by A&#x27;s father, a subsequent grant of the fishery by
+A&#x27;s father, irreconcilable with the mortgage, particular instances in whichA&#x27;s father exercised
+the right, or in which the exercise of the right was stopped by A&#x27;s neighbours, are relevant
+facts.
+12. Facts showing the existence of any state of mind, such as intention, knowledge,
+good faith, negligence, rashness, ill-will or goodwill towards any particular person, or
+showing the existence of any state of body or bodily feeling, are relevant, when the existence
+of any such state of mind or body or bodily feeling is in issue or relevant.
+Explanation 1.—A fact relevant as showing the existence of a relevant state of mind
+must show that the state of mind exists, not generally, but in reference to the particular
+matter in question.
+Explanation 2.—But where, upon the trial of a person accused of an offence, the
+previous commission by the accused of an offence is relevant within the meaning of this
+section, the previous conviction of such person shall also be a relevant fact.
+When facts
+not otherwise
+relevant
+become
+relevant.
+Facts tending
+to enable Court
+to
+determine
+amount
+are
+relevant in suits
+for damages.
+Facts relevant
+when right or
+custom is in
+question.
+Facts showing
+existence of
+state of mind,
+or of body or
+bodily feeling.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+7
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________
+
+--- Context chunk 4 [Chunk-ID: 96e2ba22-b62e-462f-8be1-fe69edadd515] ---
+38. Any party to a suit or other proceeding may show that any judgment, order or
+decree which is relevant under section 34, 35 or 36, and which has been proved by the
+adverse party, was delivered by a Court not competent to deliver it, or was obtained by
+fraud or collusion.
+Opinions of third persons when relevant
+39. (1) When the Court has to form an opinion upon a point of foreign law or of
+science or art, or any other field, or as to identity of handwriting or finger impressions, the
+opinions upon that point of persons specially skilled in such foreign law, science or art, or
+any other field, or in questions as to identity of handwriting or finger impressions are
+relevant facts and such persons are called experts.
+Illustrations.
+(a) The question is, whether the death of A was caused by poison. The opinions of
+experts as to the symptoms produced by the poison by which A is supposed to have died,
+are relevant.
+(b) The question is, whether A, at the time of doing a certain act, was, by reason of
+unsoundness of mind, incapable of knowing the nature of the act, or that he was doing what
+was either wrong or contrary to law. The opinions of experts upon the question whether the
+symptoms exhibited by A commonly show unsoundness of mind, and whether such
+unsoundness of mind usually renders persons incapable of knowing the nature of the acts
+which they do, or of knowing that what they do is either wrong or contrary to law, are
+relevant.
+(c) The question is, whether a certain document was written byA.Another document
+is produced which is proved or admitted to have been written byA. The opinions of experts
+Judgments,
+etc., other
+than those
+mentioned in
+sections 34, 35
+and 36 when
+relevant.
+Fraud or
+collusion in
+obtaining
+judgment, or
+incompetency
+of Court, may
+be proved.
+Opinions of
+experts.
+16
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: 1f44cb03-d12a-41ef-940b-49a1848dd6ec] ---
+G at Singapore the money which C had collected at Kolkata, and the contents of a letter
+written by H giving an account of the conspiracy, are each relevant, both to prove the
+existence of the conspiracy, and to prove A&#x27;s complicity in it, although he may have been
+ignorant of all of them, and although the persons by whom they were done were strangers
+to him, and although they may have taken place before he joined the conspiracy or after he
+left it.
+9. Facts not otherwise relevant are relevant—
+(1) if they are inconsistent with any fact in issue or relevant fact;
+(2) if by themselves or in connection with other facts they make the existence or
+non-existence of any fact in issue or relevant fact highly probable or improbable.
+Illustrations.
+(a) The question is, whether A committed a crime at Chennai on a certain day.
+The fact that, on that day, A was at Ladakh is relevant. The fact that, near the time
+when the crime was committed, A was at a distance from the place where it was
+committed, which would render it highly improbable, though not impossible, that he
+committed it, is relevant.
+(b) The question is, whether A committed a crime. The circumstances are such
+that the crime must have been committed either by A, B, C or D. Every fact which
+shows that the crime could have been committed by no one else, and that it was not
+committed by either B, C or D, is relevant.
+10. In suits in which damages are claimed, any fact which will enable the Court to
+determine the amount of damages which ought to be awarded, is relevant.
+11. Where the question is as to the existence of any right or custom, the following
+facts are relevant—
+(a) any transaction by which the right or custom in question was created,
+claimed, modified, recognised, asserted or denied, or which was inconsistent with its
+existence;
+(b) particular instances in which the right or custom was claimed, recognised
+or exercised, or in which its exercise was disputed, asserted or departed from.
+Illustration.
+The question is, whether A has a right to a fishery.
+
+--- Context chunk 6 [Chunk-ID: 25a797b4-63c0-45a3-9cc8-c711c4ed193b] ---
+on the question whether the two documents were written by the same person or by different
+persons, are relevant.
+(2) When in a proceeding, the court has to form an opinion on any matter relating to
+any information transmitted or stored in any computer resource or any other electronic or
+digital form, the opinion of the Examiner of Electronic Evidence referred to in section 79A of
+the Information Technology Act, 2000, is a relevant fact.
+Explanation.—For the purposes of this sub-section, an Examiner of Electronic Evidence
+shall be an expert.
+40. Facts, not otherwise relevant, are relevant if they support or are inconsistent
+with the opinions of experts, when such opinions are relevant.
+Illustrations.
+(a) The question is, whether A was poisoned by a certain poison. The fact that other
+persons, who were poisoned by that poison, exhibited certain symptoms which experts
+affirm or deny to be the symptoms of that poison, is relevant.
+(b) The question is, whether an obstruction to a harbour is caused by a certain
+sea-wall. The fact that other harbours similarly situated in other respects, but where there
+were no such sea-walls, began to be obstructed at about the same time, is relevant.
+41. (1) When the Court has to form an opinion as to the person by whom any document
+was written or signed, the opinion of any person acquainted with the handwriting of the
+person by whom it is supposed to be written or signed that it was or was not written or
+signed by that person, is a relevant fact.
+Explanation.—A person is said to be acquainted with the handwriting of another
+person when he has seen that person write, or when he has received documents purporting
+to be written by that person in answer to documents written by himself or under his authority
+and addressed to that person, or when, in the ordinary course of business, documents
+purporting to be written by that person have been habitually submitted to him.
+Illustration.
+The question is, whether a given letter is in the handwriting of A, a merchant in
+Itanagar. B is a merchant in Bengaluru, who has written letters addressed toAand received
+letters purporting to be written by him. C, is B&#x27;s clerk whose duty it was to examine and file
+B&#x27;s correspondence.
+
+
+Question: Under the BSA, when are facts relevant because they are consistent or inconsistent with the opinions of experts?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (7 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Under the Bharatiya Sakshya Adhiniyam (BSA), a fact that is not otherwise relevant becomes relevant when it either supports or is inconsistent with the opinion of an expert, provided that the expert’s opinion itself is relevant to the issue at hand.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">18ea38c1-c877-4ee5-a679-c093a07c2f26</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">2472cd89-b739-49c2-93f6-ad3a3a3896d5</span> (rank 6)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">When the Court has to form an opinion as to the relationship of one person to
+another, the opinion, expressed by conduct, as to the existence of such relationship, of any
+person who, as a member of the family or otherwise, has special means of knowledge on the
+subject, is a relevant fact:
+Provided that such opinion shall not be sufficient to prove a marriage in proceedings
+under the Divorce Act, 1869, or in prosecution under sections 82 and 84 of the Bharatiya
+Nyaya Sanhita, 2023.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot warn"></span>
+            <span class="claim-status warn">NOT_VERIFIABLE</span>
+            <span class="claim-summary-text">Section 40 of the BSA states that facts, not otherwise relevant, are relevant if they support or are inconsistent with the opinions of experts, when such opinions are relevant.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">991db976-5f29-466b-91a3-2b65844cba60</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a79fdaaa-8913-4eb8-9594-74391511bc01</span> (rank 5)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">4
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">In a poisoning case, the fact that other persons who were poisoned by the same poison exhibited certain symptoms is relevant.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">5d3ab3fa-17bb-4da9-a0e4-dd571b4d7729</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">25a797b4-63c0-45a3-9cc8-c711c4ed193b</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">The fact that other
+persons, who were poisoned by that poison, exhibited certain symptoms which experts
+affirm or deny to be the symptoms of that poison, is relevant.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Experts affirm or deny that those certain symptoms are the symptoms of that poison.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">aa5bcfc4-ac49-4261-be66-e17c989cf8bf</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">25a797b4-63c0-45a3-9cc8-c711c4ed193b</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">The fact that other
+persons, who were poisoned by that poison, exhibited certain symptoms which experts
+affirm or deny to be the symptoms of that poison, is relevant.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">In a harbour obstruction case, the fact that other harbours similarly situated but without a particular sea‑wall began to be obstructed at about the same time is relevant to the opinion about whether the sea‑wall caused the obstruction.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">39233209-5961-4729-8408-60ec75932a80</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">20b5e412-e216-400b-b057-91f0c36033da</span> (rank 4)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+7
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">Under the BSA, facts are admitted on the basis of their consistency or inconsistency with expert opinion whenever the expert’s opinion is pertinent to the matter in issue.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">51d2b670-8693-4886-9621-048acdd83e70</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">20b5e412-e216-400b-b057-91f0c36033da</span> (rank 4)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+7
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The source of the information is Section 40 and its illustrations in the retrieved context (Chunk 6: 25a797b4-63c0-45a3-9cc8-c711c4ed193b).</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">0aaa2466-b127-4a90-b0e4-ef0954ea2ca5</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">20b5e412-e216-400b-b057-91f0c36033da</span> (rank 4)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+7
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">25a797b4-63c0-45a3-9cc8-c711c4ed193b</span>
+            <span class="chunk-src">bsa.pdf p.17</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.399</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">28.37</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0323</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.986</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">755259ee-a8a8-45f1-9f71-dee4b518b8f5</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">826</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2226 (2226 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">on the question whether the two documents were written by the same person or by different
+persons, are relevant.
+(2) When in a proceeding, the court has to form an opinion on any matter relating to
+any information transmitted or stored in any computer resource or any other electronic or
+digital form, the opinion of the Examiner of Electronic Evidence referred to in section 79A of
+the Information Technology Act, 2000, is a relevant fact.
+Explanation.—For the purposes of this sub-section, an Examiner of Electronic Evidence
+shall be an expert.
+40. Facts, not otherwise relevant, are relevant if they support or are inconsistent
+with the opinions of experts, when such opinions are relevant.
+Illustrations.
+(a) The question is, whether A was poisoned by a certain poison. The fact that other
+persons, who were poisoned by that poison, exhibited certain symptoms which experts
+affirm or deny to be the symptoms of that poison, is relevant.
+(b) The question is, whether an obstruction to a harbour is caused by a certain
+sea-wall. The fact that other harbours similarly situated in other respects, but where there
+were no such sea-walls, began to be obstructed at about the same time, is relevant.
+41. (1) When the Court has to form an opinion as to the person by whom any document
+was written or signed, the opinion of any person acquainted with the handwriting of the
+person by whom it is supposed to be written or signed that it was or was not written or
+signed by that person, is a relevant fact.
+Explanation.—A person is said to be acquainted with the handwriting of another
+person when he has seen that person write, or when he has received documents purporting
+to be written by that person in answer to documents written by himself or under his authority
+and addressed to that person, or when, in the ordinary course of business, documents
+purporting to be written by that person have been habitually submitted to him.
+Illustration.
+The question is, whether a given letter is in the handwriting of A, a merchant in
+Itanagar. B is a merchant in Bengaluru, who has written letters addressed toAand received
+letters purporting to be written by him. C, is B&#x27;s clerk whose duty it was to examine and file
+B&#x27;s correspondence.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">1f44cb03-d12a-41ef-940b-49a1848dd6ec</span>
+            <span class="chunk-src">bsa.pdf p.7</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.437</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">19.60</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0289</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.466</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">14</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">79743afd-3f42-4dc2-9209-5798c2fc6847</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">802</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2040 (2040 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">G at Singapore the money which C had collected at Kolkata, and the contents of a letter
+written by H giving an account of the conspiracy, are each relevant, both to prove the
+existence of the conspiracy, and to prove A&#x27;s complicity in it, although he may have been
+ignorant of all of them, and although the persons by whom they were done were strangers
+to him, and although they may have taken place before he joined the conspiracy or after he
+left it.
+9. Facts not otherwise relevant are relevant—
+(1) if they are inconsistent with any fact in issue or relevant fact;
+(2) if by themselves or in connection with other facts they make the existence or
+non-existence of any fact in issue or relevant fact highly probable or improbable.
+Illustrations.
+(a) The question is, whether A committed a crime at Chennai on a certain day.
+The fact that, on that day, A was at Ladakh is relevant. The fact that, near the time
+when the crime was committed, A was at a distance from the place where it was
+committed, which would render it highly improbable, though not impossible, that he
+committed it, is relevant.
+(b) The question is, whether A committed a crime. The circumstances are such
+that the crime must have been committed either by A, B, C or D. Every fact which
+shows that the crime could have been committed by no one else, and that it was not
+committed by either B, C or D, is relevant.
+10. In suits in which damages are claimed, any fact which will enable the Court to
+determine the amount of damages which ought to be awarded, is relevant.
+11. Where the question is as to the existence of any right or custom, the following
+facts are relevant—
+(a) any transaction by which the right or custom in question was created,
+claimed, modified, recognised, asserted or denied, or which was inconsistent with its
+existence;
+(b) particular instances in which the right or custom was claimed, recognised
+or exercised, or in which its exercise was disputed, asserted or departed from.
+Illustration.
+The question is, whether A has a right to a fishery.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">96e2ba22-b62e-462f-8be1-fe69edadd515</span>
+            <span class="chunk-src">bsa.pdf p.16</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.454</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">30.50</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0279</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.447</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">27</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">107556ad-d53a-40b8-a82a-07fdcf6e252e</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">825</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1325 - 3542 (2217 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">38. Any party to a suit or other proceeding may show that any judgment, order or
+decree which is relevant under section 34, 35 or 36, and which has been proved by the
+adverse party, was delivered by a Court not competent to deliver it, or was obtained by
+fraud or collusion.
+Opinions of third persons when relevant
+39. (1) When the Court has to form an opinion upon a point of foreign law or of
+science or art, or any other field, or as to identity of handwriting or finger impressions, the
+opinions upon that point of persons specially skilled in such foreign law, science or art, or
+any other field, or in questions as to identity of handwriting or finger impressions are
+relevant facts and such persons are called experts.
+Illustrations.
+(a) The question is, whether the death of A was caused by poison. The opinions of
+experts as to the symptoms produced by the poison by which A is supposed to have died,
+are relevant.
+(b) The question is, whether A, at the time of doing a certain act, was, by reason of
+unsoundness of mind, incapable of knowing the nature of the act, or that he was doing what
+was either wrong or contrary to law. The opinions of experts upon the question whether the
+symptoms exhibited by A commonly show unsoundness of mind, and whether such
+unsoundness of mind usually renders persons incapable of knowing the nature of the acts
+which they do, or of knowing that what they do is either wrong or contrary to law, are
+relevant.
+(c) The question is, whether a certain document was written byA.Another document
+is produced which is proved or admitted to have been written byA. The opinions of experts
+Judgments,
+etc., other
+than those
+mentioned in
+sections 34, 35
+and 36 when
+relevant.
+Fraud or
+collusion in
+obtaining
+judgment, or
+incompetency
+of Court, may
+be proved.
+Opinions of
+experts.
+16
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">20b5e412-e216-400b-b057-91f0c36033da</span>
+            <span class="chunk-src">bsa.pdf p.7</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.441</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">11.00</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0258</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.121</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">15</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">20</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">79743afd-3f42-4dc2-9209-5798c2fc6847</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">803</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1974 - 3811 (1837 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustration.
+The question is, whether A has a right to a fishery. A deed conferring the fishery on
+A&#x27;s ancestors, a mortgage of the fishery by A&#x27;s father, a subsequent grant of the fishery by
+A&#x27;s father, irreconcilable with the mortgage, particular instances in whichA&#x27;s father exercised
+the right, or in which the exercise of the right was stopped by A&#x27;s neighbours, are relevant
+facts.
+12. Facts showing the existence of any state of mind, such as intention, knowledge,
+good faith, negligence, rashness, ill-will or goodwill towards any particular person, or
+showing the existence of any state of body or bodily feeling, are relevant, when the existence
+of any such state of mind or body or bodily feeling is in issue or relevant.
+Explanation 1.—A fact relevant as showing the existence of a relevant state of mind
+must show that the state of mind exists, not generally, but in reference to the particular
+matter in question.
+Explanation 2.—But where, upon the trial of a person accused of an offence, the
+previous commission by the accused of an offence is relevant within the meaning of this
+section, the previous conviction of such person shall also be a relevant fact.
+When facts
+not otherwise
+relevant
+become
+relevant.
+Facts tending
+to enable Court
+to
+determine
+amount
+are
+relevant in suits
+for damages.
+Facts relevant
+when right or
+custom is in
+question.
+Facts showing
+existence of
+state of mind,
+or of body or
+bodily feeling.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+7
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">a79fdaaa-8913-4eb8-9594-74391511bc01</span>
+            <span class="chunk-src">bsa.pdf p.4</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.443</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">13.96</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0267</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.072</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">18</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">12</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">7c22e67a-af84-43b2-b5d0-12ebcf90990e</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">795</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1714 - 3500 (1786 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(d) The question is, whether certain goods ordered from B were delivered to A. The
+goods were delivered to several intermediate persons successively. Each delivery is a
+relevant fact.
+5. Facts which are the occasion, cause or effect, immediate or otherwise, of relevant
+facts, or facts in issue, or which constitute the state of things under which they happened,
+or which afforded an opportunity for their occurrence or transaction, are relevant.
+Illustrations.
+(a) The question is, whether A robbed B. The facts that, shortly before the robbery,
+B went to a fair with money in his possession, and that he showed it, or mentioned the fact
+that he had it, to third persons, are relevant.
+(b) The question is, whether A murdered B. Marks on the ground, produced by a
+struggle at or near the place where the murder was committed, are relevant facts.
+(c) The question is, whetherApoisoned B. The state of B&#x27;s health before the symptoms
+ascribed to poison, and habits of B, known to A, which afforded an opportunity for the
+administration of poison, are relevant facts.
+6. (1) Any fact is relevant which shows or constitutes a motive or preparation for any
+fact in issue or relevant fact.
+Relevancy of
+facts forming
+part of same
+transaction.
+Facts which are
+occasion, cause
+or
+effect
+of
+facts in issue or
+relevant facts.
+Motive,
+preparation
+and previous
+or subsequent
+conduct.
+5 of 1908.
+4
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">2472cd89-b739-49c2-93f6-ad3a3a3896d5</span>
+            <span class="chunk-src">bsa.pdf p.18</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.390</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">18.39</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0315</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.069</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">6</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">1521bf17-26d5-443f-8bae-903293c67d00</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">828</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1663 (1663 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(ii) the constitution and governance of any religious or charitable
+foundation; or
+(iii) the meaning of words or terms used in particular districts or by particular
+classes of people,
+the opinions of persons having special means of knowledge thereon, are relevant facts.
+44. When the Court has to form an opinion as to the relationship of one person to
+another, the opinion, expressed by conduct, as to the existence of such relationship, of any
+person who, as a member of the family or otherwise, has special means of knowledge on the
+subject, is a relevant fact:
+Provided that such opinion shall not be sufficient to prove a marriage in proceedings
+under the Divorce Act, 1869, or in prosecution under sections 82 and 84 of the Bharatiya
+Nyaya Sanhita, 2023.
+Illustrations.
+(a) The question is, whether A and B were married. The fact that they were usually
+received and treated by their friends as husband and wife, is relevant.
+(b) The question is, whetherAwas the legitimate son of B. The fact thatAwas always
+treated as such by members of the family, is relevant.
+45. Whenever the opinion of any living person is relevant, the grounds on which
+such opinion is based are also relevant.
+Illustration.
+An expert may give an account of experiments performed by him for the purpose of
+forming his opinion.
+Character when relevant
+46. In civil cases the fact that the character of any person concerned is such as to
+render probable or improbable any conduct imputed to him, is irrelevant, except in so far as
+such character appears from facts otherwise relevant.
+47. In criminal proceedings the fact that the person accused is of a good character, is
+relevant.
+48.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 3/6 chunks used (50%)</div>
+        </div>
+        <div class="stage fail">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">FAIL</div>
+          <div class="stage-obs">1 generated claims remain unsupported despite high retrieval scores.</div>
+          <div class="stage-conf">confidence 0.85</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace efac92eb-f908-4fff-8db4-69a50fea7613.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.</li><li>GROUNDING passed (confidence=0.90).</li><li>Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).</li><li>Analysis complete. Primary cause: UNSUPPORTED_GENERATION.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.900</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[IMMEDIATE]</span>Lower Sampling Temperature</div>
+          <div class="action-desc">Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[SHORT_TERM]</span>Strict Prompt Grounding</div>
+          <div class="action-desc">Inject systemic instructions forcing the LLM to output &#x27;I don&#x27;t know&#x27; if context is insufficient.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>The LLM guesses when retrieved context is irrelevant.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">0 / 2</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">Under section 40, facts not otherwise relevant are relevant if they support or are inconsistent with the opinions of experts, when such expert opinions are themselves relevant.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">Under section 40, facts not otherwise relevant are relevant if they support the opinions of experts, when such expert opinions are themselves relevant.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.010</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">2.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">Under section 40, facts not otherwise relevant are relevant if they are inconsistent with the opinions of experts, when such expert opinions are themselves relevant.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.003</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Under the Bharatiya Sakshya Adhiniyam (BSA), a fact that is not otherwise relevant becomes relevant **when it either supports or is inconsistent with the opinion of an expert**, provided that the expert’s opinion itself is relevant to the issue at hand.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.763</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNSUPPORTED_GENERATION</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val mid mono">0.627</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.091</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val hi mono">0.909</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace efac92eb-f908-4fff-8db4-69a50fea7613 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

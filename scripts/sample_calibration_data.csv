@@ -1,0 +1,11 @@
+claim_text,evidence_text,gold_label
+The punishment for murder is death or life imprisonment.,"Whoever commits murder shall be punished with death, or imprisonment for life.",SUPPORTED
+The offender is liable to a fine.,The offender shall also be liable to fine.,SUPPORTED
+Adverse possession requires ten years of continuous possession.,Adverse possession requires continuous possession for a period of twelve years.,NOT_SUPPORTED
+A contract with a minor is void from the start.,A contract with a minor is voidable at the minor's discretion.,NOT_SUPPORTED
+The statute of frauds requires certain contracts to be in writing.,"The statute of frauds requires certain types of contracts, including those for the sale of real estate, to be in writing.",SUPPORTED
+Strict liability applies regardless of intent.,"In strict liability, the defendant is liable for damages regardless of intent or negligence.",SUPPORTED
+Insider trading carries a maximum sentence of five years.,"Insider trading is punishable by up to 20 years in prison, and fines of up to $5 million.",NOT_SUPPORTED
+Necessities contracts with minors are generally binding.,"Contracts for necessities, such as food, clothing, and shelter, are often binding to ensure minors can obtain essential goods.",SUPPORTED
+The Securities Exchange Act does not cover corporate fines.,"Corporations can be fined up to $25 million under the Securities Exchange Act.",NOT_SUPPORTED
+Adverse possession must be hostile and open.,"The possession must be continuous, hostile, open, notorious, and exclusive for the statutory period.",SUPPORTED

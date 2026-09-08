@@ -1,0 +1,123 @@
+{
+    "framework_metadata": {
+        "trace_id": "a8f03fe5-d398-49e8-9ceb-8a3c9987d0ae",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T12:29:37.083827Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment does section 69 of the BNS prescribe for having sexual intercourse with a woman by deceitful means or a false promise of marriage, where it does not amount to rape?",
+        "generated_answer": "Section\u202f69 of the BNS prescribes that a person who obtains sexual intercourse with a woman by deceitful means or by a false promise of marriage (where the act does **not** amount to rape) shall be punished with **imprisonment of either description for a term which may extend to ten years**, and shall also be **liable to fine**\u30100cee2e02-a397-440c-bad1-9c6390a5a1f2\u3011.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 0,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2851024270057678,
+                    "pool_size": 60
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9980373978614807,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9980373978614807
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "UNKNOWN",
+                "observation": "No claims were available to assess grounding.",
+                "confidence": "0.5",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 0,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.0,
+        "average_entailment": 0.0,
+        "retrieval_latency_ms": 932.4357509613037,
+        "generation_latency_ms": 4326.712846755981,
+        "verification_latency_ms": 0.2772808074951172
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace a8f03fe5-d398-49e8-9ceb-8a3c9987d0ae.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "Skipping GROUNDING: status is UNKNOWN (insufficient evidence).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.95
+    },
+    "overall_assessment": {
+        "major_strength": "GENERATOR is healthy (confidence=95%): All generated claims are fully supported by evidence.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T12:29:37.084033Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

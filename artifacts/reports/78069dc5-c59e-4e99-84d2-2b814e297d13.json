@@ -1,0 +1,206 @@
+{
+    "framework_metadata": {
+        "trace_id": "78069dc5-c59e-4e99-84d2-2b814e297d13",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T21:26:29.326588Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for organised crime under BNS section 111 if the offence results in the death of a person, versus if it does not?",
+        "generated_answer": "Under **BNS\u202f\u00a7\u202f111**, the punishment for organised crime differs depending on whether the offence caused a death:\n\n- **If the organised\u2011crime offence results in the death of any person**  \n  - Punishment: **death** *or* **imprisonment for life**  \n  - Fine: **not less than ten lakh rupees**  \n  - Source:\u202f[ee0db94b-c9d9-4de0-ad87-74357bd021d1] (subsection\u202f2\u202f(a))\n\n- **In any other case (no death caused)**  \n  - Punishment: **imprisonment for a term not less than five years**, which may extend to **imprisonment for life**  \n  - Fine: **not less than five lakh rupees**  \n  - Source:\u202f[ee0db94b-c9d9-4de0-ad87-74357bd021d1] (subsection\u202f2\u202f(b)); also reflected in the tables of\u202f[92ec40d2-b449-4649-86e6-b0fd40e6bea8] and\u202f[9af8732c-d5d4-44cc-9420-e7005a176a01].\n\nThus, the presence of a death elevates the minimum penalty to death or life imprisonment with a higher fine (\u2265\u202f10\u202flakhs), whereas without death the minimum is five years\u2019 imprisonment with a fine of \u2265\u202f5\u202flakhs.",
+        "overall_health_score": 0.7778,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 7,
+        "total_claims": 9,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.30007851123809814,
+                    "pool_size": 67
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.7354975342750549,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.7354975342750549
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 9,
+        "supported_claims": 7,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.7777777777777778,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7579453471634123,
+        "retrieval_latency_ms": 511.8551254272461,
+        "generation_latency_ms": 7798.515796661377,
+        "verification_latency_ms": 21298.627614974976
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 78069dc5-c59e-4e99-84d2-2b814e297d13.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "136df332-494f-4da4-b31f-4c6a089e9af7",
+            "claim_text": "Under BNS \u00a7 111, the punishment for organised crime differs depending on whether the offence caused a death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "92ec40d2-b449-4649-86e6-b0fd40e6bea8",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "111(2)(a) Organised crime resulting\nDeath or imprisonment for\nCognizable."
+        },
+        {
+            "claim_id": "e89e42aa-34a2-4a0d-81af-89cf6f8c5999",
+            "claim_text": "If the organised\u2011crime offence results in the death of any person, the punishment is death or imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ee0db94b-c9d9-4de0-ad87-74357bd021d1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees."
+        },
+        {
+            "claim_id": "84c05fe1-618e-4e57-af0b-4e34902f2fce",
+            "claim_text": "If the organised\u2011crime offence results in the death of any person, the fine is not less than ten lakh rupees.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ee0db94b-c9d9-4de0-ad87-74357bd021d1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees."
+        },
+        {
+            "claim_id": "a0913da9-30b3-47d7-a37b-db533e354d4f",
+            "claim_text": "The source for the punishment and fine when death occurs is [ee0db94b-c9d9-4de0-ad87-74357bd021d1] (subsection\u202f2\u202f(a)).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "36\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "c55b2709-56db-45c2-81d2-eebd06bb242c",
+            "claim_text": "In any other case (no death caused), the punishment is imprisonment for a term not less than five years, which may extend to imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ee0db94b-c9d9-4de0-ad87-74357bd021d1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees."
+        },
+        {
+            "claim_id": "be14d8ea-a32f-4f37-85ab-d18f08bed494",
+            "claim_text": "In any other case (no death caused), the fine is not less than five lakh rupees.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ee0db94b-c9d9-4de0-ad87-74357bd021d1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(2) Whoever commits organised crime shall,\u2014\n(a) if such offence has resulted in the death of any person, be punished with\ndeath or imprisonment for life, and shall also be liable to fine which shall not be less\nthan ten lakh rupees;\n(b) in any other case, be punished with imprisonment for a term which shall not\nbe less than five years but which may extend to imprisonment for life, and shall also\nbe liable to fine which shall not be less than five lakh rupees."
+        },
+        {
+            "claim_id": "e8575a05-5d3d-4ebc-8c50-c632e94481a1",
+            "claim_text": "The source for the punishment and fine when no death is caused is [ee0db94b-c9d9-4de0-ad87-74357bd021d1] (subsection\u202f2\u202f(b)).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "36\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "3064b22d-4acc-4abe-bf3f-49c336ed23f3",
+            "claim_text": "The tables of [92ec40d2-b449-4649-86e6-b0fd40e6bea8] also reflect the punishment and fine for the case with no death caused.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "36\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "a4fa3940-d92e-412d-88c2-ca991eb69d39",
+            "claim_text": "The tables of [9af8732c-d5d4-44cc-9420-e7005a176a01] also reflect the punishment and fine for the case with no death caused.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "18e6f797-50fd-45ba-a10e-a34cc9bee7a3",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "36\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T21:26:29.326680Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

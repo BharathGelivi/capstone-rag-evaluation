@@ -1,0 +1,167 @@
+{
+    "framework_metadata": {
+        "trace_id": "ea1fc059-8144-41e3-bee6-1382d2d491ab",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T09:49:21.228395Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment does section 69 of the BNS prescribe for having sexual intercourse with a woman by deceitful means or a false promise of marriage, where it does not amount to rape?",
+        "generated_answer": "Section\u202f69 of the BNS states that a person who obtains sexual intercourse with a woman by deceitful means or by a false promise of marriage (where the act does **not** amount to rape) shall be punished with **imprisonment of either description for a term which may extend to ten years**, and shall also be **liable to fine**\u30100cee2e02-a397-440c-bad1-9c6390a5a1f2\u3011.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 0,
+        "total_claims": 3,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2851024270057678,
+                    "pool_size": 60
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9980373978614807,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9980373978614807
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 3,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.45676523447036743,
+        "retrieval_latency_ms": 1561.5313053131104,
+        "generation_latency_ms": 2376.3046264648438,
+        "verification_latency_ms": 12922.065734863281
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace ea1fc059-8144-41e3-bee6-1382d2d491ab.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.88
+    },
+    "overall_assessment": {
+        "major_strength": "GROUNDING is healthy (confidence=90%): No claims are contradicted by retrieved evidence.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "3403879c-ea66-4d5a-8d96-23d4ac94ae30",
+            "claim_text": "Section 69 of the BNS states that a person who obtains sexual intercourse with a woman by deceitful means or by a false promise of marriage (where the act does not amount to rape) shall be punished with imprisonment of either description.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "647ead3c-f12a-488a-bd16-8a4c396e3dcb",
+            "claim_text": "Section 69 of the BNS states that a person who obtains sexual intercourse with a woman by deceitful means or by a false promise of marriage (where the act does not amount to rape) shall be punished with a term which may extend to ten years.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "667c117c-6041-4fa8-9dce-3fa42ec3f357",
+            "claim_text": "Section 69 of the BNS states that a person who obtains sexual intercourse with a woman by deceitful means or by a false promise of marriage (where the act does not amount to rape) shall also be liable to fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "62c90ae8-ee58-4944-ad6d-2026e1da8769",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n25\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T09:49:21.228990Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

@@ -1,0 +1,346 @@
+{
+    "framework_metadata": {
+        "trace_id": "2af4ab45-3777-473c-a973-20c211e3bb44",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T03:39:43.232383Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Given that BNS section 65(2) prescribes life imprisonment as the maximum possible punishment for raping a woman under twelve years of age, why does the law show leniency in this specific case?",
+        "generated_answer": "The BNS\u202f\u00a7\u202f65(2) prescribes that a person who rapes a girl under twelve years of age may be punished with:\n\n* rigorous imprisonment for **not less than twenty years**, which may be extended to **imprisonment for life** (i.e., imprisonment for the remainder of the offender\u2019s natural life); **or**\n* **death**; and\n* a **fine** that must be just and reasonable to meet the victim\u2019s medical expenses and rehabilitation, with the fine paid to the victim.  \n\n[See\u202f\u00a7\u202f65(2) in\u202fChunk\u202f5a2785f1\u20119102\u20114356\u2011aacd\u2011a2f8dc9694b0 and the summary in\u202fChunk\u202fb966e79f\u2011bd52\u201148f3\u20119378\u2011359bb43b85e7].\n\nThe law shows leniency in this specific case because:\n\n1. **Death is not mandatory** \u2013 the statute offers death only as an *alternative* punishment; the court may instead impose life imprisonment (or a lesser term of not less than twenty years).  \n2. **A fine is permitted** \u2013 the offender can be fined (in addition to or instead of imprisonment), and the fine is earmarked for the victim\u2019s medical and rehabilitative needs, providing a restorative element rather than purely punitive severity.  \n3. **Judicial discretion** \u2013 by allowing a range from a minimum of twenty years\u2019 rigorous imprisonment up to life imprisonment (or death), the legislature leaves the exact sentence to the judge\u2019s discretion, reflecting a more lenient, flexible approach compared with a fixed, mandatory death penalty.\n\nThus, the leniency stems from the statutory provision of alternative, non\u2011capital punishments and the inclusion of a victim\u2011oriented fine, rather than imposing a mandatory death sentence for rape of a minor under twelve.",
+        "overall_health_score": 0.72,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 18,
+        "total_claims": 25,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.22638744115829468,
+                    "pool_size": 64
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9152672290802002,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 1.0,
+                    "chunks_used": 6,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "5 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 5,
+                    "max_score": 0.9152672290802002
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "FAIL",
+                "observation": "1 claim(s) are actively contradicted by retrieved evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "contradicted_count": 1
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 25,
+        "supported_claims": 18,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 5,
+        "contradicted_claims": 1,
+        "grounding_score": 0.72,
+        "evidence_coverage": 1.0,
+        "average_entailment": 0.7247118862776551,
+        "retrieval_latency_ms": 625.0972747802734,
+        "generation_latency_ms": 7730.879068374634,
+        "verification_latency_ms": 40502.35962867737
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [
+            "GROUNDING_FAILURE"
+        ],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 2af4ab45-3777-473c-a973-20c211e3bb44.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 5 generated claims remain unsupported despite high retrieval scores.",
+            "Failure at GROUNDING: GROUNDING_FAILURE (confidence=0.95). Observation: 1 claim(s) are actively contradicted by retrieved evidence.",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Secondary effect (propagated from GENERATOR): GROUNDING_FAILURE at GROUNDING (confidence=0.95).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.91
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "123eb542-2419-4e01-909a-42883603225c",
+            "claim_text": "BNS \u00a7 65(2) prescribes punishment for a person who rapes a girl under twelve years of age.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Explanation.\u2014\u201cdeceitful means\u201d shall include inducement for, or false promise of\nemployment or promotion, or marrying by suppressing identity."
+        },
+        {
+            "claim_id": "5b771472-fcc6-4e03-baed-940aaf7fcf44",
+            "claim_text": "The punishment may include rigorous imprisonment for not less than twenty years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "5a2785f1-9102-4356-aacd-a2f8dc9694b0",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever, commits an offence punishable under sub-section (1) or sub-section (2)\nof section 64 and in the course of such commission inflicts an injury which causes the death\nof the woman or causes the woman to be in a persistent vegetative state, shall be punished\nwith rigorous imprisonment for a term which shall not be less than twenty years, but which\nmay extend to imprisonment for life, which shall mean imprisonment for the remainder of that\nperson\u2019s natural life, or with death."
+        },
+        {
+            "claim_id": "5045bd41-4bc5-4f4e-a809-6308e48a676b",
+            "claim_text": "The rigorous imprisonment may be extended to imprisonment for life (i.e., imprisonment for the remainder of the offender\u2019s natural life).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(1) Where a woman is raped by one or more persons constituting a group or acting\nin furtherance of a common intention, each of those persons shall be deemed to have committed\nthe offence of rape and shall be punished with rigorous imprisonment for a term which shall\nnot be less than twenty years, but which may extend to imprisonment for life which shall\nmean imprisonment for the remainder of that person\u2019s natural life, and with fine:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "1239428c-6418-4845-b288-d7678f568135",
+            "claim_text": "The punishment may include death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "9924428a-d8d2-49db-8ecb-aeb111a8b7e9",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "which shall mean\nimprisonment for the\nremainder of that person's\nnatural life or with death."
+        },
+        {
+            "claim_id": "2504dfbb-5a32-47f6-b991-a88ba312af0e",
+            "claim_text": "The punishment may include a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "9924428a-d8d2-49db-8ecb-aeb111a8b7e9",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "may extend to 7 years\nand fine."
+        },
+        {
+            "claim_id": "2e21c8b1-d497-4f27-9ad8-545c35fdcea4",
+            "claim_text": "The fine must be just and reasonable to meet the victim\u2019s medical expenses and rehabilitation.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(2) Where a woman under eighteen years of age is raped by one or more persons\nconstituting a group or acting in furtherance of a common intention, each of those persons\nshall be deemed to have committed the offence of rape and shall be punished with\nimprisonment for life, which shall mean imprisonment for the remainder of that person\u2019s\nnatural life, and with fine, or with death:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "44e8a6ce-e21f-484a-9dd8-61a340f87d2f",
+            "claim_text": "The fine must be paid to the victim.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(2) Where a woman under eighteen years of age is raped by one or more persons\nconstituting a group or acting in furtherance of a common intention, each of those persons\nshall be deemed to have committed the offence of rape and shall be punished with\nimprisonment for life, which shall mean imprisonment for the remainder of that person\u2019s\nnatural life, and with fine, or with death:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "4193e005-401e-46dd-8769-0033cef14a99",
+            "claim_text": "See \u00a7 65(2) in Chunk 5a2785f1\u20119102\u20114356\u2011aacd\u2011a2f8dc9694b0 and the summary in Chunk b966e79f\u2011bd52\u201148f3\u20119378\u2011359bb43b85e7.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "134a1c9b-2af1-449a-96d4-701b7d4d26c2",
+            "claim_text": "Death is not mandatory under BNS \u00a7 65(2) for rape of a girl under twelve.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b966e79f-bd52-48f3-9378-359bb43b85e7",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "husband upon his wife\nless than 2 years but\non the complaint\nduring separation."
+        },
+        {
+            "claim_id": "33467d98-c62c-4c1f-bd97-a81a2ff38447",
+            "claim_text": "The statute offers death only as an alternative punishment.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "1b096316-65c8-40d7-b75a-616773b3f019",
+            "claim_text": "The court may impose life imprisonment as an alternative to death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(2) Where a woman under eighteen years of age is raped by one or more persons\nconstituting a group or acting in furtherance of a common intention, each of those persons\nshall be deemed to have committed the offence of rape and shall be punished with\nimprisonment for life, which shall mean imprisonment for the remainder of that person\u2019s\nnatural life, and with fine, or with death:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "f6825284-26f7-4b58-a3f2-4817ac9391f7",
+            "claim_text": "The court may impose a lesser term of not less than twenty years as an alternative to death.",
+            "verification_status": "CONTRADICTED",
+            "supporting_chunk_id": "5a2785f1-9102-4356-aacd-a2f8dc9694b0",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) Whoever, commits rape on a woman under twelve years of age shall be punished\nwith rigorous imprisonment for a term which shall not be less than twenty years, but which\nmay extend to imprisonment for life, which shall mean imprisonment for the remainder of that\nperson\u2019s natural life, and with fine or with death:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "6fb90cbc-7315-4ae5-9cff-b3e3c7c497a3",
+            "claim_text": "A fine is permitted under BNS \u00a7 65(2) for rape of a girl under twelve.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Explanation.\u2014\u201cdeceitful means\u201d shall include inducement for, or false promise of\nemployment or promotion, or marrying by suppressing identity."
+        },
+        {
+            "claim_id": "326b76a1-0ffd-49bf-8b1e-b2eb3572a4a0",
+            "claim_text": "The offender can be fined in addition to imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "7937a6aa-8828-4c6c-9ca5-ade3b3984772",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "Whoever, by any means whatsoever, induces any child to go from any place or to\ndo any act with intent that such child may be, or knowing that it is likely that such child will\nbe, forced or seduced to illicit intercourse with another person shall be punishable with\nimprisonment which may extend to ten years, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "e81bcb66-8317-4f5b-ad0e-731bbf8fb26f",
+            "claim_text": "The offender can be fined instead of imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "9924428a-d8d2-49db-8ecb-aeb111a8b7e9",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "5 years and fine."
+        },
+        {
+            "claim_id": "01d176c2-7999-4e9b-8210-86ba6c72fee9",
+            "claim_text": "The fine is earmarked for the victim\u2019s medical and rehabilitative needs.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(2) Where a woman under eighteen years of age is raped by one or more persons\nconstituting a group or acting in furtherance of a common intention, each of those persons\nshall be deemed to have committed the offence of rape and shall be punished with\nimprisonment for life, which shall mean imprisonment for the remainder of that person\u2019s\nnatural life, and with fine, or with death:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "cdd15b73-52c4-40bb-aa3f-2f9dc886d7b2",
+            "claim_text": "The fine provides a restorative element rather than purely punitive severity.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(2) Where a woman under eighteen years of age is raped by one or more persons\nconstituting a group or acting in furtherance of a common intention, each of those persons\nshall be deemed to have committed the offence of rape and shall be punished with\nimprisonment for life, which shall mean imprisonment for the remainder of that person\u2019s\nnatural life, and with fine, or with death:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "a44e12e7-3317-4c74-8359-682175469b99",
+            "claim_text": "The statute allows a minimum sentence of twenty years\u2019 rigorous imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "5a2785f1-9102-4356-aacd-a2f8dc9694b0",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever, commits an offence punishable under sub-section (1) or sub-section (2)\nof section 64 and in the course of such commission inflicts an injury which causes the death\nof the woman or causes the woman to be in a persistent vegetative state, shall be punished\nwith rigorous imprisonment for a term which shall not be less than twenty years, but which\nmay extend to imprisonment for life, which shall mean imprisonment for the remainder of that\nperson\u2019s natural life, or with death."
+        },
+        {
+            "claim_id": "ce3ac215-205a-4650-bc5a-b82c1e0c6ad9",
+            "claim_text": "The statute allows a maximum sentence of life imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "0cee2e02-a397-440c-bad1-9c6390a5a1f2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(1) Where a woman is raped by one or more persons constituting a group or acting\nin furtherance of a common intention, each of those persons shall be deemed to have committed\nthe offence of rape and shall be punished with rigorous imprisonment for a term which shall\nnot be less than twenty years, but which may extend to imprisonment for life which shall\nmean imprisonment for the remainder of that person\u2019s natural life, and with fine:\nProvided that such fine shall be just and reasonable to meet the medical expenses and\nrehabilitation of the victim:\nProvided further that any fine imposed under this sub-section shall be paid to the\nvictim."
+        },
+        {
+            "claim_id": "f372be63-a589-4b2e-9dd4-2cb428dd095d",
+            "claim_text": "The statute allows a maximum sentence of death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "5a2785f1-9102-4356-aacd-a2f8dc9694b0",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever, commits an offence punishable under sub-section (1) or sub-section (2)\nof section 64 and in the course of such commission inflicts an injury which causes the death\nof the woman or causes the woman to be in a persistent vegetative state, shall be punished\nwith rigorous imprisonment for a term which shall not be less than twenty years, but which\nmay extend to imprisonment for life, which shall mean imprisonment for the remainder of that\nperson\u2019s natural life, or with death."
+        },
+        {
+            "claim_id": "b2c6923a-2977-4013-acd3-93547462fc28",
+            "claim_text": "The legislature leaves the exact sentence to the judge\u2019s discretion.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "a682e543-7c79-435f-b3f8-92c48791bd81",
+            "claim_text": "The legislature\u2019s approach reflects a more lenient, flexible approach compared with a fixed, mandatory death penalty.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "43ce6b97-fa76-4abe-b978-82427a46b8b2",
+            "claim_text": "The leniency stems from the statutory provision of alternative, non\u2011capital punishments.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "24de1632-8411-4e06-81b4-c1a6e0d6a0c7",
+            "claim_text": "The leniency stems from the inclusion of a victim\u2011oriented fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "28a592f8-2844-45e2-8a5c-792acd80f859",
+            "claim_text": "The leniency is rather than imposing a mandatory death sentence for rape of a minor under twelve.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "0395e3be-39f6-43b5-b3d2-677dd2c6f302",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n23\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (5 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 5).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "experimental",
+            "title": "Require Explicit Citations",
+            "description": "Force the LLM to append [Chunk-ID] to every sentence it generates.",
+            "observed_evidence": "LLM struggles to maintain factual fidelity across long generation spans (1 contradicted claim(s) observed).",
+            "expected_improvement": "Self-correction during generation ensures every fact is linked to evidence.",
+            "success_metric": "100% of claims map cleanly to a cited chunk (currently 1 contradicted).",
+            "tradeoff": "Increases output token length and adds parsing overhead."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 5,
+        "recalled_gold_claims": 5
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T03:39:43.232484Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

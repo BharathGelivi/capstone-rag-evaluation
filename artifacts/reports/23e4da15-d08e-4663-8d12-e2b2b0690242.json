@@ -1,0 +1,151 @@
+{
+    "framework_metadata": {
+        "trace_id": "23e4da15-d08e-4663-8d12-e2b2b0690242",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T13:19:04.504241Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for murder under BNS section 103, and how does it change when a group of five or more persons acting in concert commits murder on grounds such as race, caste, or community?",
+        "generated_answer": "**Punishment for murder under BNS\u202f\u00a7\u202f103**\n\n- **\u00a7\u202f103(1)** \u2013 Whoever commits murder shall be punished with **death or imprisonment for life**, and shall also be liable to a fine.  \n\n**When a group of five or more persons acting in concert commits murder on specified grounds**\n\n- **\u00a7\u202f103(2)** \u2013 If a group of five or more persons, acting together, commits murder on the ground of race, caste, community, sex, place of birth, language, personal belief, or any other similar ground, **each member of the group** shall be punished with **death or imprisonment for life**, and shall also be liable to a fine.  \n\nThus, the prescribed punishment for murder does not differ between an individual offender and a group of five or more acting in concert on those grounds; both attract the death penalty or life imprisonment plus a fine.  \n\n*Source: BNS\u202f\u00a7\u202f103(1) and (2) as reproduced in the retrieved text*\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 0,
+        "total_claims": 1,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.34029054641723633,
+                    "pool_size": 62
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9983077049255371,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9983077049255371
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 1,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.12202218919992447,
+        "retrieval_latency_ms": 581.1498165130615,
+        "generation_latency_ms": 7587.633371353149,
+        "verification_latency_ms": 3927.0882606506348
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 23e4da15-d08e-4663-8d12-e2b2b0690242.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.88
+    },
+    "overall_assessment": {
+        "major_strength": "GROUNDING is healthy (confidence=90%): No claims are contradicted by retrieved evidence.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "a67ca7a6-e587-4459-b5d0-044e6fb017b3",
+            "claim_text": "The previous response was not valid JSON.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "e7effe1e-f49e-4fe8-885e-f4815d90e7fe",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "A, intending of knowing himself to be likely permanently to disfigure Z\u2019s face, gives\nZ a blow which does not permanently disfigure Z\u2019s face, but which causes Z to suffer severe\nbodily pain for the space of fifteen days."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T13:19:04.504314Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

@@ -1,0 +1,148 @@
+{
+    "framework_metadata": {
+        "trace_id": "944b31c4-56d2-4e4e-b814-63095d984dff",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T13:57:48.123339Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What additional punishment applies under BNS section 106(2) if a person causes death by rash and negligent driving and then escapes without reporting the incident to police or a Magistrate?",
+        "generated_answer": "Under BNS\u202f\u00a7\u202f106(2), a person who causes death by rash and negligent driving of a vehicle (not amounting to culpable homicide) **and then escapes without reporting the incident to a police officer or a Magistrate** shall be punished with:\n\n- **Imprisonment of either description for a term which may extend to ten years**, and  \n- **Liable to fine**\u301013c9bef0-00e1-4778-ab87-e705bfe68f76\u3011.  \n\nThis is the additional punishment prescribed for the escape\u2011without\u2011reporting element of the offence.",
+        "overall_health_score": 0.8333,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 2,
+        "total_claims": 3,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.30610841512680054,
+                    "pool_size": 72
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9967595934867859,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9967595934867859
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 3,
+        "supported_claims": 2,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8333333333333334,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.7240096926689148,
+        "retrieval_latency_ms": 960.1497650146484,
+        "generation_latency_ms": 5645.250082015991,
+        "verification_latency_ms": 6579.902410507202
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 944b31c4-56d2-4e4e-b814-63095d984dff.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "0c465f61-5c58-4b93-8e6b-8cdb2ad4acf9",
+            "claim_text": "Under BNS \u00a7 106(2), a person who causes death by rash and negligent driving of a vehicle (not amounting to culpable homicide) and then escapes without reporting the incident to a police officer or a Magistrate shall be punished with imprisonment of either description for a term which may extend to ten years.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014 For the purposes of this sub-section, \u201cregistered medical practitioner\u201d\nmeans a medical practitioner who possesses any medical qualification recognised under the\nNational Medical CommissionAct, 2019 and whose name has been entered in the National\nMedical Register or a State Medical Register under that Act."
+        },
+        {
+            "claim_id": "43a3b146-646b-459d-8604-42b7bf1f17b5",
+            "claim_text": "Under BNS \u00a7 106(2), a person who causes death by rash and negligent driving of a vehicle (not amounting to culpable homicide) and then escapes without reporting the incident to a police officer or a Magistrate shall be punished with liability to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014 For the purposes of this sub-section, \u201cregistered medical practitioner\u201d\nmeans a medical practitioner who possesses any medical qualification recognised under the\nNational Medical CommissionAct, 2019 and whose name has been entered in the National\nMedical Register or a State Medical Register under that Act."
+        },
+        {
+            "claim_id": "b46bb4a3-dddf-48fe-a401-43fe7a7d5fa2",
+            "claim_text": "This is the additional punishment prescribed for the escape\u2011without\u2011reporting element of the offence.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) Whoever causes death of any person by rash and negligent driving of vehicle not\namounting to culpable homicide, and escapes without reporting it to a police officer or a\nMagistrate soon after the incident, shall be punished with imprisonment of either description\nof a term which may extend to ten years, and shall also be liable to fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T13:57:48.123566Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

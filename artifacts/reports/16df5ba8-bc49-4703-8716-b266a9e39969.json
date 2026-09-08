@@ -1,0 +1,199 @@
+{
+    "framework_metadata": {
+        "trace_id": "16df5ba8-bc49-4703-8716-b266a9e39969",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T15:49:57.235444Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, what must be true of a document for the Court to presume it is the Official Gazette, a newspaper, or a journal, and thereby presume its genuineness?",
+        "generated_answer": "Under the Bharatiya Sakshya Adhiniyam (BSA), the Court will presume a document to be the Official Gazette, a newspaper, or a journal\u2014and therefore presume its genuineness\u2014**only if**:\n\n1. The document is **kept substantially in the form required by law**; and  \n2. It is **produced from proper custody** (i.e., it is in the place where, and looked after by the person with whom, the document is required to be kept, or its origin is shown to be legitimate or probable under the circumstances).  \n\nThis is set out in Section\u202f80 of the BSA, which states that the Court shall presume the genuineness of every document purporting to be the Official Gazette, a newspaper, or a journal **if such document is kept substantially in the form required by law and is produced from proper custody**\u3010a895513d-dd0a-4ee4-9d0c-af9a2d72375f\u3011. The accompanying explanation clarifies what constitutes \u201cproper custody.\u201d",
+        "overall_health_score": 0.6429,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 7,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3052869439125061,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9874187111854553,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9874187111854553
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 7,
+        "supported_claims": 4,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 2,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6428571428571429,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.6980378698956754,
+        "retrieval_latency_ms": 1580.282211303711,
+        "generation_latency_ms": 4548.175811767578,
+        "verification_latency_ms": 20170.817375183105
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 16df5ba8-bc49-4703-8716-b266a9e39969.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "9c94b917-6823-4e94-b415-618344511307",
+            "claim_text": "Under the BSA, the Court will presume a document to be the Official Gazette, a newspaper, or a journal\u2014and therefore presume its genuineness\u2014only if the document is kept substantially in the form required by law and is produced from proper custody.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "1bd0daa4-aa34-4be8-a470-3b1427b0c7e4",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "26\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "ece1ae0d-cf24-479d-a6c8-f7591e0e4ee4",
+            "claim_text": "Under the BSA, for the Court to presume a document to be the Official Gazette, a newspaper, or a journal, the document must be kept substantially in the form required by law.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "1bd0daa4-aa34-4be8-a470-3b1427b0c7e4",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "26\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "79d45b5d-722a-4f90-9a99-9d85b264aa3d",
+            "claim_text": "Under the BSA, for the Court to presume a document to be the Official Gazette, a newspaper, or a journal, the document must be produced from proper custody.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "1bd0daa4-aa34-4be8-a470-3b1427b0c7e4",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "26\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "e28ce2a6-7538-4b71-a4d8-01e51a5eba34",
+            "claim_text": "This is set out in Section 80 of the BSA.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ec154b2e-2cbe-4fcf-b58d-20cd7958076b",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "(1) Where\u2014\n(a) any newspaper, or book; or\n(b) any document,\nwherever printed, appears to the State Government to contain any matter the publication\nof which is punishable under section 152 or section 196 or section 197 or section 294 or\nsection 295 or section 299 of the Bharatiya Nyaya Sanhita, 2023, the State Government may,\nby notification, stating the grounds of its opinion, declare every copy of the issue of the\nnewspaper containing such matter, and every copy of such book or other document to be\nforfeited to Government, and thereupon any police officer may seize the same wherever\nfound in India and any Magistrate may by warrant authorise any police officer not below\nthe rank of sub-inspector to enter upon and search for the same in any premises where any\ncopy of such issue, or any such book or other document may be or may be reasonably\nsuspected to be."
+        },
+        {
+            "claim_id": "b5881bc9-a9b7-4b15-8d44-7f0a950e0880",
+            "claim_text": "Section 80 of the BSA states that the Court shall presume the genuineness of every document purporting to be the Official Gazette, a newspaper, or a journal if such document is kept substantially in the form required by law and is produced from proper custody.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ec154b2e-2cbe-4fcf-b58d-20cd7958076b",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "28\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "180edfc9-5686-4fd3-a2eb-0076434b831d",
+            "claim_text": "The accompanying explanation clarifies what constitutes 'proper custody.'",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a895513d-dd0a-4ee4-9d0c-af9a2d72375f",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 93 electronic records are\nsaid to be in proper custody if they are in the place in which, and looked after by the person\nwith whom such document is required to be kept; but no custody is improper if it is proved\nto have had a legitimate origin, or the circumstances of the particular case are such as to\nrender that origin probable."
+        },
+        {
+            "claim_id": "b9c95162-d14f-40d0-9948-3ef5754bb259",
+            "claim_text": "Proper custody means that the document is in the place where, and looked after by the person with whom, the document is required to be kept, or its origin is shown to be legitimate or probable under the circumstances.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a895513d-dd0a-4ee4-9d0c-af9a2d72375f",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014For the purposes of this section and section 92, document is said to\nbe in proper custody if it is in the place in which, and looked after by the person with whom\nsuch document is required to be kept; but no custody is improper if it is proved to have had\na legitimate origin, or if the circumstances of the particular case are such as to render that\norigin probable."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 6,
+        "recalled_gold_claims": 6
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T15:49:57.236223Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

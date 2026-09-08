@@ -1,0 +1,132 @@
+{
+    "framework_metadata": {
+        "trace_id": "a32d6a3a-7276-4525-945c-59a1f1907629",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T07:59:09.158638Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under what circumstances does the right of private defence of the body NOT extend to voluntarily causing the assailant's death?",
+        "generated_answer": "The right of private defence of the body **does not** extend to voluntarily causing the assailant\u2019s death in the following situations:\n\n- **When the offence is not one of the specific descriptions listed in \u00a7\u202f38** \u2013 i.e., when the assault does **not** reasonably cause apprehension of death or grievous hurt, and is not:  \n  - an assault with intent to commit rape,  \n  - an assault with intent to gratify unnatural lust,  \n  - an assault with intent to kidnap or abduct,  \n  - an assault with intent to wrongfully confine a person under circumstances where the person cannot resort to public authorities, or  \n  - an act of throwing/administering acid that may reasonably cause apprehension of grievous hurt.  \n  *(See \u00a7\u202f39: \u201cIf the offence be not of any of the descriptions specified in section\u202f38, the right of private defence of the body does not extend to the voluntary causing of death \u2026\u201d)*\u301090f8747a-7f40-4ae3-b114-2b216129f432\u3011\n\n- **When the act does not reasonably cause apprehension of death or grievous hurt** \u2013 even if the act is an offence, the right to cause death is unavailable. This is reinforced by the general limitation in \u00a7\u202f37(2) that the right never extends to inflicting more harm than necessary for defence.  \n  *(See \u00a7\u202f37(2): \u201cThe right of private defence in no case extends to the inflicting of more harm than it is necessary to inflict for the purpose of defence.\u201d)*\u30106f639d07-62fa-48e0-a811-5492ff51880e\u3011\n\n- **When the act is done by a public servant (or under his direction) in good faith and does not reasonably cause apprehension of death or grievous hurt** \u2013 \u00a7\u202f37(1)(a) and (b) expressly deny the right of private defence in such cases.  \n  *(See \u00a7\u202f37(1)(a)\u2013(b) in the context of public\u2011servant acts.)*\u301069db30c9-72ad-48eb-b310-9e3137806fa2\u3011\n\n- **When there is time to seek protection from the public authorities** \u2013 \u00a7\u202f37(1)(c) removes the right of private defence if the defender could have recourse to public protection.  \n  *(See \u00a7\u202f37(1)(c).)*\u301069db30c9-72ad-48eb-b310-9e3137806fa2\u3011\n\nIn summary, the right to voluntarily cause death is unavailable unless the assault falls under one of the grave categories enumerated in \u00a7\u202f38 (death, grievous hurt, rape, unnatural lust, kidnapping, wrongful confinement without recourse, or acid\u2011attack causing apprehension of grievous hurt) and the other restrictions of \u00a7\u202f37 (necessity, no public\u2011servant good\u2011faith exception, and availability of public authorities) are satisfied. If any of those conditions is missing, the right extends only to causing non\u2011lethal harm.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 1,
+        "total_claims": 1,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.21580976247787476,
+                    "pool_size": 61
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9986571073532104,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9986571073532104
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 1,
+        "supported_claims": 1,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.9983705878257751,
+        "retrieval_latency_ms": 1819.2696571350098,
+        "generation_latency_ms": 9450.446128845215,
+        "verification_latency_ms": 2482.106924057007
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace a32d6a3a-7276-4525-945c-59a1f1907629.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "6bae32a7-9ac1-462a-9975-67af18db1f40",
+            "claim_text": "The right of private defence of the body does not extend to voluntarily causing the assailant\u2019s death when the offence is not one of the specific descriptions listed in \u00a7\u202f38.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "90f8747a-7f40-4ae3-b114-2b216129f432",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If the offence be not of any of the descriptions specified in section 38, the right of\nprivate defence of the body does not extend to the voluntary causing of death to the\nassailant, but does extend, under the restrictions specified in section 37, to the voluntary\ncausing to the assailant of any harm other than death."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T07:59:09.159274Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

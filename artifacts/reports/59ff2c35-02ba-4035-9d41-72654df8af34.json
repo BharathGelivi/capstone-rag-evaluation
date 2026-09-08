@@ -1,0 +1,123 @@
+{
+    "framework_metadata": {
+        "trace_id": "59ff2c35-02ba-4035-9d41-72654df8af34",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-07T09:24:21.068461Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment applies to abetment of an offence when the Sanhita makes no express provision for punishing that specific abetment?",
+        "generated_answer": "When the Bharatiya Nyaya Sanhita,\u202f2023 contains **no express provision** for punishing a particular act of abetment, the law falls back on the following rules (as set out in the Sanhita itself):\n\n| Situation | Punishment (when no express provision exists) | Source |\n|-----------|-----------------------------------------------|--------|\n| **The act abetted is actually committed** (i.e., the offence occurs because of the abetment) | The abettor receives **the same punishment as the principal offender** for that offence. |\u202fSection\u202f49 \u2013 \u201cWhoever abets any offence shall, if the act abetted is committed in consequence of the abetment, \u2026 be punished with the punishment provided for the offence.\u201d\u3010e3cfd376-1174-46eb-9573-2b6cafe0dbc6\u3011 |\n| **The offence punishable with death or imprisonment for life is *not* committed** (abetment only) | Imprisonment of either description for a term **up to seven years**, **plus fine**.<br>If, in consequence of the abetment, any hurt is caused to a person, the term may extend to **fourteen years**, **plus fine**. |\u202fSection\u202f55 (illustrated in the text) \u2013 \u201cWhoever abets the commission of an offence punishable with death or imprisonment for life \u2026 shall be punished with imprisonment \u2026 which may extend to seven years \u2026 and if any hurt be done \u2026 imprisonment \u2026 which may extend to fourteen years \u2026 and shall also be liable to fine.\u201d\u3010320c1526-fed5-4985-ae85-e16910f24ab6\u3011 |\n| **The offence is punishable with imprisonment (but not death or life)** and is *not* committed | Imprisonment of any description provided for that offence, for a term **up to one\u2011fourth of the longest term** prescribed for the offence, **or** such fine as is provided for the offence, **or both**.<br>If the abettor (or the person abetted) is a public servant whose duty it is to prevent the offence, the term may extend to **one\u2011half** of the longest term (instead of one\u2011fourth), with the same fine option. |\u202fSection\u202f56 \u2013 \u201cWhoever abets an offence punishable with imprisonment \u2026 shall be punished with imprisonment \u2026 for a term which may extend to one\u2011fourth part of the longest term \u2026; \u2026 if the abettor \u2026 is a public servant \u2026 imprisonment \u2026 for a term which may extend to one\u2011half of the longest term \u2026.\u201d\u3010a90a5461-96e5-4ff3-b754-c6e6c504fe4e\u3011 |\n\n**In short:**  \n- If the abetted act actually happens \u2192 punishment mirrors that of the offence.  \n- If it does **not** happen \u2192 the Sanhita prescribes a reduced term (7\u202fyears\u202f/\u202f14\u202fyears if hurt for death/life\u2011imprisonment offences; one\u2011fourth of the maximum term, or one\u2011half for public servants, for ordinary imprisonment offences), together with a fine where applicable.  \n\nThese rules apply whenever the Sanhita lacks a specific punishment clause for the particular abetment.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 0,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.28121012449264526,
+                    "pool_size": 65
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9981046915054321,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9981046915054321
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "UNKNOWN",
+                "observation": "No claims were available to assess grounding.",
+                "confidence": "0.5",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 0,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.0,
+        "average_entailment": 0.0,
+        "retrieval_latency_ms": 3583.781957626343,
+        "generation_latency_ms": 32962.38422393799,
+        "verification_latency_ms": 0.2868175506591797
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 59ff2c35-02ba-4035-9d41-72654df8af34.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "Skipping GROUNDING: status is UNKNOWN (insufficient evidence).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.95
+    },
+    "overall_assessment": {
+        "major_strength": "GENERATOR is healthy (confidence=95%): All generated claims are fully supported by evidence.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-07T09:24:21.068745Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

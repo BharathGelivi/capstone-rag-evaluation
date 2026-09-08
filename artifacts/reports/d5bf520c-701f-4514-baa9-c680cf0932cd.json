@@ -1,0 +1,157 @@
+{
+    "framework_metadata": {
+        "trace_id": "d5bf520c-701f-4514-baa9-c680cf0932cd",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T11:09:46.835081Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS, whose powers and duties may be exercised by a successor-in-office, and who resolves doubt about who that successor is?",
+        "generated_answer": "According to the provided context chunk 1 [Chunk-ID: b3061d3b-bd16-4687-a2a6-efd109d41c36], the powers and duties of a Judge or Magistrate may be exercised or performed by his successor-in-office [Chunk-ID: b3061d3b-bd16-4687-a2a6-efd109d41c36]. In case of doubt about who the successor-in-office is, the Sessions Judge shall determine by order in writing for Judges, and the Chief Judicial Magistrate or the District Magistrate shall determine by order in writing for Magistrates [Chunk-ID: b3061d3b-bd16-4687-a2a6-efd109d41c36].",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 3,
+        "total_claims": 3,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.36437761783599854,
+                    "pool_size": 38
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9039369225502014,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 3
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9039369225502014
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 3,
+        "verified_claims": 3,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.9317346413930258,
+        "retrieval_latency_ms": 684.1044425964355,
+        "generation_latency_ms": 38707.57579803467,
+        "verification_latency_ms": 227414.18480873108
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace d5bf520c-701f-4514-baa9-c680cf0932cd.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "758f2251-743d-4be0-b602-ca1b6d40e39c",
+            "claim_text": "The powers and duties of a Judge or Magistrate may be exercised or performed by his successor-in-office.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b3061d3b-bd16-4687-a2a6-efd109d41c36",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "nature, within a like local area under the same State Government, he shall, unless the High\nCourt or the State Government, as the case may be, otherwise directs, or has otherwise\ndirected, exercise the same powers in the local area in which he is so appointed.\n28. (1) The High Court or the State Government, as the case may be, may withdraw all\nor any of the powers conferred by it under this Sanhita on any person or by any officer\nsubordinate to it.\n(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate\nmay be withdrawn by the respective Magistrate by whom such powers were conferred.\n29. (1) Subject to the other provisions of this Sanhita, the powers and duties of a\nJudge or Magistrate may be exercised or performed by his successor-in-office.\n(2) When there is any doubt as to who is the successor-in-office, the Sessions Judge\nshall determine by order in writing the Judge who shall, for the purposes of this Sanhita or\nof any proceedings or order thereunder, be deemed to be the successor-in-office.\n(3) When there is any doubt as to who is the successor-in-office of any Magistrate,\nthe Chief Judicial Magistrate, or the District Magistrate, as the case may be, shall determine\nby order in writing the Magistrate who shall, for the purpose of this Sanhita or of any\nproceedings or order thereunder, be deemed to be the successor-in-office of such Magistrate."
+        },
+        {
+            "claim_id": "40e1ee7c-5c16-4867-acec-a905c34f72e5",
+            "claim_text": "In case of doubt about who the successor-in-office is, the Sessions Judge shall determine by order in writing for Judges.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b3061d3b-bd16-4687-a2a6-efd109d41c36",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "nature, within a like local area under the same State Government, he shall, unless the High\nCourt or the State Government, as the case may be, otherwise directs, or has otherwise\ndirected, exercise the same powers in the local area in which he is so appointed.\n28. (1) The High Court or the State Government, as the case may be, may withdraw all\nor any of the powers conferred by it under this Sanhita on any person or by any officer\nsubordinate to it.\n(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate\nmay be withdrawn by the respective Magistrate by whom such powers were conferred.\n29. (1) Subject to the other provisions of this Sanhita, the powers and duties of a\nJudge or Magistrate may be exercised or performed by his successor-in-office.\n(2) When there is any doubt as to who is the successor-in-office, the Sessions Judge\nshall determine by order in writing the Judge who shall, for the purposes of this Sanhita or\nof any proceedings or order thereunder, be deemed to be the successor-in-office.\n(3) When there is any doubt as to who is the successor-in-office of any Magistrate,\nthe Chief Judicial Magistrate, or the District Magistrate, as the case may be, shall determine\nby order in writing the Magistrate who shall, for the purpose of this Sanhita or of any\nproceedings or order thereunder, be deemed to be the successor-in-office of such Magistrate."
+        },
+        {
+            "claim_id": "f24801f5-dd6c-47a9-a298-6d9beacc2eac",
+            "claim_text": "The Chief Judicial Magistrate or the District Magistrate shall determine by order in writing for Magistrates.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b3061d3b-bd16-4687-a2a6-efd109d41c36",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "nature, within a like local area under the same State Government, he shall, unless the High\nCourt or the State Government, as the case may be, otherwise directs, or has otherwise\ndirected, exercise the same powers in the local area in which he is so appointed.\n28. (1) The High Court or the State Government, as the case may be, may withdraw all\nor any of the powers conferred by it under this Sanhita on any person or by any officer\nsubordinate to it.\n(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate\nmay be withdrawn by the respective Magistrate by whom such powers were conferred.\n29. (1) Subject to the other provisions of this Sanhita, the powers and duties of a\nJudge or Magistrate may be exercised or performed by his successor-in-office.\n(2) When there is any doubt as to who is the successor-in-office, the Sessions Judge\nshall determine by order in writing the Judge who shall, for the purposes of this Sanhita or\nof any proceedings or order thereunder, be deemed to be the successor-in-office.\n(3) When there is any doubt as to who is the successor-in-office of any Magistrate,\nthe Chief Judicial Magistrate, or the District Magistrate, as the case may be, shall determine\nby order in writing the Magistrate who shall, for the purpose of this Sanhita or of any\nproceedings or order thereunder, be deemed to be the successor-in-office of such Magistrate."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/3 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.6666666666666666,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T11:09:46.835181Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

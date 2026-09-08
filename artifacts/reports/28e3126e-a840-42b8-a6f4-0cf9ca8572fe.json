@@ -1,0 +1,175 @@
+{
+    "framework_metadata": {
+        "trace_id": "28e3126e-a840-42b8-a6f4-0cf9ca8572fe",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:54:01.470665Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS, whose powers and duties may be exercised by a successor-in-office, and who resolves doubt about who that successor is?",
+        "generated_answer": "Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), **the powers and duties of a Judge or Magistrate may be exercised or performed by his successor\u2011in\u2011office**\u3010ff466593-e128-4b78-b947-3bf56cc05525\u3011.  \n\nIf there is any doubt about who that successor\u2011in\u2011office is:\n\n- For a **Judge**, the **Sessions Judge** determines, by written order, who shall be deemed the successor\u2011in\u2011office.  \n- For a **Magistrate** (including a Chief Judicial Magistrate or District Magistrate), the **Chief Judicial Magistrate** or the **District Magistrate** (as the case may be) makes that determination by written order.  \n\nThese provisions are found in Section\u202f29 of the BNSS.\u3010ff466593-e128-4b78-b947-3bf56cc05525\u3011",
+        "overall_health_score": 0.75,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 4,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.4485827684402466,
+                    "pool_size": 73
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9023916125297546,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9023916125297546
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 4,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.75,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7473607920474024,
+        "retrieval_latency_ms": 929.6815395355225,
+        "generation_latency_ms": 6408.907175064087,
+        "verification_latency_ms": 3982.6250076293945
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 28e3126e-a840-42b8-a6f4-0cf9ca8572fe.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "aee1f717-f4e2-4d0b-9b24-6075925cd9d0",
+            "claim_text": "Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the powers and duties of a Judge or Magistrate may be exercised or performed by his successor\u2011in\u2011office.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c915250d-039f-455d-a068-4a082cb495ce",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Every warrant for the execution of a sentence may be issued either by the Judge\nor Magistrate who passed the sentence, or by his successor-in-office."
+        },
+        {
+            "claim_id": "bc11e9c7-0274-4c61-890a-c167b412806d",
+            "claim_text": "If there is any doubt about who that successor\u2011in\u2011office is, for a Judge, the Sessions Judge determines, by written order, who shall be deemed the successor\u2011in\u2011office.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) When there is any doubt as to who is the successor-in-office, the Sessions Judge\nshall determine by order in writing the Judge who shall, for the purposes of this Sanhita or\nof any proceedings or order thereunder, be deemed to be the successor-in-office."
+        },
+        {
+            "claim_id": "ee020ad1-b7f4-4e63-ad73-87af6c3fe538",
+            "claim_text": "If there is any doubt about who that successor\u2011in\u2011office is, for a Magistrate (including a Chief Judicial Magistrate or District Magistrate), the Chief Judicial Magistrate or the District Magistrate (as the case may be) makes that determination by written order.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(3) When there is any doubt as to who is the successor-in-office of any Magistrate,\nthe Chief Judicial Magistrate, or the District Magistrate, as the case may be, shall determine\nby order in writing the Magistrate who shall, for the purpose of this Sanhita or of any\nproceedings or order thereunder, be deemed to be the successor-in-office of such Magistrate."
+        },
+        {
+            "claim_id": "6657471f-fc59-467d-b055-708b0fcaf0d5",
+            "claim_text": "These provisions are found in Section 29 of the BNSS.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "fea356f3-9fa2-43e7-a66f-0d37351d4ed2",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n41\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:54:01.471476Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

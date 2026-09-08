@@ -1,0 +1,106 @@
+19:15:42 INFO    Running E2 in live mode (seed=20260801).
+19:15:42 INFO    ======================================================================
+19:15:42 INFO    E2 -- The reranker-window pathology [live]
+19:15:42 INFO    ======================================================================
+19:15:42 INFO    exp02_reranker_window: 0/80 examples already recorded; 80 remaining.
+19:15:42 INFO    Loading registry from 'artifacts/chunk_registry.json'.
+19:15:42 INFO    Successfully loaded 893 record(s) across 398 document(s).
+19:15:42 INFO    Initializing ChromaDB at ./db/chroma with collection 'rag_benchmark_collection'
+19:15:44 INFO    ChromaDB collection initialized successfully.
+19:15:45 INFO    CUDA available: NVIDIA GeForce RTX 4060 Laptop GPU (8.6 GB) — loading models on GPU.
+19:15:45 INFO    Loading shared embedding model BAAI/bge-base-en-v1.5 on cuda.
+19:16:13 INFO    exp02_reranker_window: example 1/80 (live/1/verbatim)
+19:16:17 INFO    exp02_reranker_window: example 2/80 (live/1/keywords)
+19:16:17 INFO    exp02_reranker_window: example 3/80 (live/2/verbatim)
+19:16:18 INFO    exp02_reranker_window: example 4/80 (live/2/keywords)
+19:16:19 INFO    exp02_reranker_window: example 5/80 (live/3/verbatim)
+19:16:19 INFO    exp02_reranker_window: example 6/80 (live/3/keywords)
+19:16:21 INFO    exp02_reranker_window: example 7/80 (live/4/verbatim)
+19:16:22 INFO    exp02_reranker_window: example 8/80 (live/4/keywords)
+19:16:22 INFO    exp02_reranker_window: example 9/80 (live/5/verbatim)
+19:16:23 INFO    exp02_reranker_window: example 10/80 (live/5/keywords)
+19:16:24 INFO    exp02_reranker_window: example 11/80 (live/6/verbatim)
+19:16:25 INFO    exp02_reranker_window: example 12/80 (live/6/keywords)
+19:16:26 INFO    exp02_reranker_window: example 13/80 (live/7/verbatim)
+19:16:27 INFO    exp02_reranker_window: example 14/80 (live/7/keywords)
+19:16:28 INFO    exp02_reranker_window: example 15/80 (live/8/verbatim)
+19:16:29 INFO    exp02_reranker_window: example 16/80 (live/8/keywords)
+19:16:30 INFO    exp02_reranker_window: example 17/80 (live/9/verbatim)
+19:16:31 INFO    exp02_reranker_window: example 18/80 (live/9/keywords)
+19:16:32 INFO    exp02_reranker_window: example 19/80 (live/10/verbatim)
+19:16:33 INFO    exp02_reranker_window: example 20/80 (live/10/keywords)
+19:16:34 INFO    exp02_reranker_window: example 21/80 (live/11/verbatim)
+19:16:35 INFO    exp02_reranker_window: example 22/80 (live/11/keywords)
+19:16:36 INFO    exp02_reranker_window: example 23/80 (live/12/verbatim)
+19:16:37 INFO    exp02_reranker_window: example 24/80 (live/12/keywords)
+19:16:38 INFO    exp02_reranker_window: example 25/80 (live/13/verbatim)
+19:16:38 INFO    exp02_reranker_window: example 26/80 (live/13/keywords)
+19:16:39 INFO    exp02_reranker_window: example 27/80 (live/14/verbatim)
+19:16:40 INFO    exp02_reranker_window: example 28/80 (live/14/keywords)
+19:16:41 INFO    exp02_reranker_window: example 29/80 (live/15/verbatim)
+19:16:42 INFO    exp02_reranker_window: example 30/80 (live/15/keywords)
+19:16:43 INFO    exp02_reranker_window: example 31/80 (live/16/verbatim)
+19:16:44 INFO    exp02_reranker_window: example 32/80 (live/16/keywords)
+19:16:45 INFO    exp02_reranker_window: example 33/80 (live/17/verbatim)
+19:16:46 INFO    exp02_reranker_window: example 34/80 (live/17/keywords)
+19:16:47 INFO    exp02_reranker_window: example 35/80 (live/18/verbatim)
+19:16:48 INFO    exp02_reranker_window: example 36/80 (live/18/keywords)
+19:16:49 INFO    exp02_reranker_window: example 37/80 (live/19/verbatim)
+19:16:50 INFO    exp02_reranker_window: example 38/80 (live/19/keywords)
+19:16:51 INFO    exp02_reranker_window: example 39/80 (live/20/verbatim)
+19:16:52 INFO    exp02_reranker_window: example 40/80 (live/20/keywords)
+19:16:53 INFO    exp02_reranker_window: example 41/80 (live/21/verbatim)
+19:16:54 INFO    exp02_reranker_window: example 42/80 (live/21/keywords)
+19:16:55 INFO    exp02_reranker_window: example 43/80 (live/22/verbatim)
+19:16:55 INFO    exp02_reranker_window: example 44/80 (live/22/keywords)
+19:16:56 INFO    exp02_reranker_window: example 45/80 (live/23/verbatim)
+19:16:57 INFO    exp02_reranker_window: example 46/80 (live/23/keywords)
+19:16:58 INFO    exp02_reranker_window: example 47/80 (live/24/verbatim)
+19:16:59 INFO    exp02_reranker_window: example 48/80 (live/24/keywords)
+19:17:00 INFO    exp02_reranker_window: example 49/80 (live/25/verbatim)
+19:17:01 INFO    exp02_reranker_window: example 50/80 (live/25/keywords)
+19:17:02 INFO    exp02_reranker_window: example 51/80 (live/26/verbatim)
+19:17:03 INFO    exp02_reranker_window: example 52/80 (live/26/keywords)
+19:17:04 INFO    exp02_reranker_window: example 53/80 (live/27/verbatim)
+19:17:05 INFO    exp02_reranker_window: example 54/80 (live/27/keywords)
+19:17:06 INFO    exp02_reranker_window: example 55/80 (live/28/verbatim)
+19:17:07 INFO    exp02_reranker_window: example 56/80 (live/28/keywords)
+19:17:08 INFO    exp02_reranker_window: example 57/80 (live/29/verbatim)
+19:17:09 INFO    exp02_reranker_window: example 58/80 (live/29/keywords)
+19:17:10 INFO    exp02_reranker_window: example 59/80 (live/30/verbatim)
+19:17:11 INFO    exp02_reranker_window: example 60/80 (live/30/keywords)
+19:17:12 INFO    exp02_reranker_window: example 61/80 (live/31/verbatim)
+19:17:13 INFO    exp02_reranker_window: example 62/80 (live/31/keywords)
+19:17:14 INFO    exp02_reranker_window: example 63/80 (live/32/verbatim)
+19:17:15 INFO    exp02_reranker_window: example 64/80 (live/32/keywords)
+19:17:16 INFO    exp02_reranker_window: example 65/80 (live/33/verbatim)
+19:17:17 INFO    exp02_reranker_window: example 66/80 (live/33/keywords)
+19:17:18 INFO    exp02_reranker_window: example 67/80 (live/34/verbatim)
+19:17:19 INFO    exp02_reranker_window: example 68/80 (live/34/keywords)
+19:17:20 INFO    exp02_reranker_window: example 69/80 (live/35/verbatim)
+19:17:21 INFO    exp02_reranker_window: example 70/80 (live/35/keywords)
+19:17:22 INFO    exp02_reranker_window: example 71/80 (live/36/verbatim)
+19:17:23 INFO    exp02_reranker_window: example 72/80 (live/36/keywords)
+19:17:24 INFO    exp02_reranker_window: example 73/80 (live/37/verbatim)
+19:17:25 INFO    exp02_reranker_window: example 74/80 (live/37/keywords)
+19:17:26 INFO    exp02_reranker_window: example 75/80 (live/38/verbatim)
+19:17:32 INFO    exp02_reranker_window: example 76/80 (live/38/keywords)
+19:17:33 INFO    exp02_reranker_window: example 77/80 (live/39/verbatim)
+19:17:35 INFO    exp02_reranker_window: example 78/80 (live/39/keywords)
+19:17:36 INFO    exp02_reranker_window: example 79/80 (live/40/verbatim)
+19:17:37 INFO    exp02_reranker_window: example 80/80 (live/40/keywords)
+19:17:38 INFO    E2 complete in 116.4s -- 80 examples. Summary: artifacts\experiments\exp02_reranker_window\summary.json
+19:17:38 INFO    Suite report written to artifacts\experiments\SUITE_REPORT.md
+
+Experiment suite status  (artifacts\experiments)
+
+#   status       records    mode      key
+------------------------------------------------------------------------
+1   complete     158/158    offline   exp01_fault_injection
+2   complete     80/80      live      exp02_reranker_window
+3   complete     71/71      offline   exp03_refusal_calibration
+4   running      81/200     live      exp04_corpus_quality
+5   complete     66/66      offline   exp05_diagnostic_agreement
+6   complete     638/638    offline   exp06_strategy_ablation
+7   complete     56/56      offline   exp07_generation_ablation
+

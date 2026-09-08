@@ -1,0 +1,165 @@
+{
+    "framework_metadata": {
+        "trace_id": "367c5e5d-f00e-4cfc-ba45-894e51f65955",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T08:45:08.442714Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for abetting the suicide of an ordinary person (not a child or person of unsound mind, delirium, or intoxication)?",
+        "generated_answer": "The punishment for abetting the suicide of an ordinary person is imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine [Chunk-ID: d436ff82-2db4-431b-8962-734d59e1cf28].",
+        "overall_health_score": 0.75,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 3,
+        "total_claims": 4,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.27079248428344727,
+                    "pool_size": 39
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.955708384513855,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 3
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.955708384513855
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 3,
+        "verified_claims": 4,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.75,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.7271773368120193,
+        "retrieval_latency_ms": 6008.305549621582,
+        "generation_latency_ms": 125583.61625671387,
+        "verification_latency_ms": 1440708.6536884308
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 367c5e5d-f00e-4cfc-ba45-894e51f65955.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "N/A",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Requires architectural adjustments."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "a9708749-3494-4818-a1d0-d3c34d553541",
+            "claim_text": "The punishment for abetting the suicide of an ordinary person is imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine.\n109. (1) Whoever does any act with such intention or knowledge, and under such\ncircumstances that, if he by that act caused death, he would be guilty of murder, shall be\npunished with imprisonment of either description for a term which may extend to ten years,\nand shall also be liable to fine; and if hurt is caused to any person by such act, the offender\nshall be liable either to imprisonment for life, or to such punishment as is hereinbefore\nmentioned."
+        },
+        {
+            "claim_id": "69bf7228-4784-40ba-a958-13fb66057f68",
+            "claim_text": "The punishment is imprisonment of either description.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "045dae43-f1dc-4253-80d5-7cb389a28586",
+            "claim_text": "The term of imprisonment may extend to ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine.\n109. (1) Whoever does any act with such intention or knowledge, and under such\ncircumstances that, if he by that act caused death, he would be guilty of murder, shall be\npunished with imprisonment of either description for a term which may extend to ten years,\nand shall also be liable to fine; and if hurt is caused to any person by such act, the offender\nshall be liable either to imprisonment for life, or to such punishment as is hereinbefore\nmentioned."
+        },
+        {
+            "claim_id": "bb174e45-32ed-4258-8aab-16101071af24",
+            "claim_text": "The punishment shall also be liable to fine.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "If any person commits suicide, whoever abets the commission of such suicide,\nshall be punished with imprisonment of either description for a term which may extend to ten\nyears, and shall also be liable to fine.\n109. (1) Whoever does any act with such intention or knowledge, and under such\ncircumstances that, if he by that act caused death, he would be guilty of murder, shall be\npunished with imprisonment of either description for a term which may extend to ten years,\nand shall also be liable to fine; and if hurt is caused to any person by such act, the offender\nshall be liable either to imprisonment for life, or to such punishment as is hereinbefore\nmentioned."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/3 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T08:45:08.444653Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

@@ -1,0 +1,163 @@
+{
+    "framework_metadata": {
+        "trace_id": "8cec710c-863b-4370-b1d4-db395126a513",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T05:46:29.254479Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What additional punishment applies under BNS section 106(2) if a person causes death by rash and negligent driving and then escapes without reporting the incident to police or a Magistrate?",
+        "generated_answer": "Under BNS section 106(2), if a person causes death by rash and negligent driving and then escapes without reporting the incident to police or a Magistrate, the additional punishment is imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine [Chunk-ID: d436ff82-2db4-431b-8962-734d59e1cf28].",
+        "overall_health_score": 0.8,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 4,
+        "total_claims": 5,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.20833301544189453,
+                    "pool_size": 37
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9953820109367371,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.75,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 4
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9953820109367371
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 4,
+        "verified_claims": 5,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8,
+        "evidence_coverage": 0.75,
+        "average_entailment": 0.7446515131741762,
+        "retrieval_latency_ms": 2780.2093029022217,
+        "generation_latency_ms": 6789.548873901367,
+        "verification_latency_ms": 565573.714017868
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 8cec710c-863b-4370-b1d4-db395126a513.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "N/A",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Requires architectural adjustments."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "4958b915-27f6-49ca-8486-63e6fb15f8e1",
+            "claim_text": "A person causes death by rash and negligent driving.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014 For the purposes of this sub-section, \u201cregistered medical practitioner\u201d\nmeans a medical practitioner who possesses any medical qualification recognised under the\nNational Medical CommissionAct, 2019 and whose name has been entered in the National\nMedical Register or a State Medical Register under that Act.\n(2) Whoever causes death of any person by rash and negligent driving of vehicle not\namounting to culpable homicide, and escapes without reporting it to a police officer or a\nMagistrate soon after the incident, shall be punished with imprisonment of either description\nof a term which may extend to ten years, and shall also be liable to fine.\n107."
+        },
+        {
+            "claim_id": "fa07c0ba-4f3e-421f-9df9-f10eea89e548",
+            "claim_text": "The person escapes without reporting the incident to police or a Magistrate.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Explanation.\u2014 For the purposes of this sub-section, \u201cregistered medical practitioner\u201d\nmeans a medical practitioner who possesses any medical qualification recognised under the\nNational Medical CommissionAct, 2019 and whose name has been entered in the National\nMedical Register or a State Medical Register under that Act.\n(2) Whoever causes death of any person by rash and negligent driving of vehicle not\namounting to culpable homicide, and escapes without reporting it to a police officer or a\nMagistrate soon after the incident, shall be punished with imprisonment of either description\nof a term which may extend to ten years, and shall also be liable to fine.\n107."
+        },
+        {
+            "claim_id": "d54e6581-7dce-48b7-b96f-a4baff45dfd9",
+            "claim_text": "The additional punishment is imprisonment of either description.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "0ba0a52a-3379-4db2-bd07-b0815fbc786d",
+            "claim_text": "The term of imprisonment may extend to ten years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "6ee29e0e-1fee-4531-9838-f28eb09d87b3",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Court of Session.\namounting to murder, if act Imprisonment for not less\nby which the death is\nthan 5 years but which\ncaused is done with\nmay extend to 10 years\nintention of causing death,\nand fine.\netc."
+        },
+        {
+            "claim_id": "10f3bc71-d97d-46b2-ae2f-5bb5f15aa8ba",
+            "claim_text": "The person is liable to a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8bf55869-3d53-497b-bbd0-f3d653d3a0f1",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Any Magistrate.\n6 months, or fine of\n10,000 rupees, or both.\n283\nExhibition of a false light,\nImprisonment for 7 years,\nCognizable."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T05:46:29.254641Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

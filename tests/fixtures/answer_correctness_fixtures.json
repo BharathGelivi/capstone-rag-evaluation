@@ -1,0 +1,23 @@
+[
+  {
+    "fixture_id": "trace_a_private_defence_complete",
+    "trace_reference": "84c9b989-e765-4497-b0ee-8797c4782798",
+    "question": "When does the right of private defence of the body commence, and how long does it continue?",
+    "gold_answer": "The right of private defence of the body arises the moment a person reasonably apprehends danger to their body — whether from an actual attempt or merely a threat to commit an offence — even before the offence itself has occurred. This right remains in force for as long as that reasonable apprehension of danger continues, and ends once the danger has passed.",
+    "expected_behavior": "high claim_recall against the generated answer in the source trace"
+  },
+  {
+    "fixture_id": "trace_b_abetment_complete",
+    "trace_reference": "84ef86e7-c4bd-456b-b7fe-a3de73b0efb4",
+    "question": "According to the BNS, what three ways can a person 'abet' the doing of a thing?",
+    "gold_answer": "Under the BNS, a person abets the doing of a thing in one of three ways: first, by instigating another person to do it; second, by conspiring with one or more other persons to do it, provided an act or illegal omission actually takes place in pursuance of and in order to that conspiracy; or third, by intentionally aiding — through an act or illegal omission — the doing of that thing.",
+    "expected_behavior": "high claim_recall against the generated answer in the source trace"
+  },
+  {
+    "fixture_id": "trace_b_abetment_incomplete",
+    "trace_reference": "84ef86e7-c4bd-456b-b7fe-a3de73b0efb4",
+    "question": "According to the BNS, what three ways can a person 'abet' the doing of a thing?",
+    "gold_answer": "Under the BNS, a person abets the doing of a thing by instigating another person to do it, or by intentionally aiding — through an act or illegal omission — the doing of that thing.",
+    "expected_behavior": "claim_recall must be visibly LOWER than trace_b_abetment_complete's, since the conspiracy clause (the second of the three modes) is deliberately omitted here. If recall does not drop, the decomposer/verifier is not sensitive enough and that itself is a finding to report, not a bug to silently patch around."
+  }
+]

@@ -1,0 +1,1419 @@
+{
+  "benchmark_version": "1.0",
+  "seed": 20260820,
+  "chunking_strategy_for_gold": "legal",
+  "n_questions": 58,
+  "by_type": {
+    "exact_citation": 6,
+    "lexical_mismatch": 6,
+    "single_hop": 6,
+    "case_to_case": 6,
+    "case_to_statute": 6,
+    "statute_to_cases": 6,
+    "citation_chain": 4,
+    "contradictory": 6,
+    "temporal": 6,
+    "entity_resolution": 6
+  },
+  "questions": [
+    {
+      "id": "exact_citation_000",
+      "type": "exact_citation",
+      "question": "What was decided in [2021] 2 S.C.R. 677?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2021_2_677_769_EN"
+      ],
+      "gold_chunk_ids": [
+        "4f93e8ac-9da7-4e18-8c2c-3f6db02af636"
+      ],
+      "provenance": {
+        "basis": "document's own reporter citation",
+        "citation": "[2021] 2 S.C.R. 677",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_2_677_769_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "exact_citation_001",
+      "type": "exact_citation",
+      "question": "What was decided in [2023] 8 S.C.R. 152?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2023_8_152_182_EN"
+      ],
+      "gold_chunk_ids": [
+        "a7f66b75-6a9b-46ea-93b4-77e955c6e529",
+        "b47f3f25-7ef8-4cbe-9da4-b9b8a376459b"
+      ],
+      "provenance": {
+        "basis": "document's own reporter citation",
+        "citation": "[2023] 8 S.C.R. 152",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_8_152_182_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "exact_citation_002",
+      "type": "exact_citation",
+      "question": "What was decided in [2024] 6 S.C.R. 287?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_6_287_297_EN"
+      ],
+      "gold_chunk_ids": [
+        "892768ab-bf74-43ad-9c11-9b89fde7351f",
+        "2bfbecb6-921e-4297-9f0b-90c0d6adb427"
+      ],
+      "provenance": {
+        "basis": "document's own reporter citation",
+        "citation": "[2024] 6 S.C.R. 287",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_6_287_297_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "exact_citation_003",
+      "type": "exact_citation",
+      "question": "What was decided in [2022] 12 S.C.R. 124?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2022_12_124_138_EN"
+      ],
+      "gold_chunk_ids": [
+        "269d91f6-8802-403b-83bf-98b096cb55dd",
+        "707dad8a-198d-49b6-81c4-cdd5684de563"
+      ],
+      "provenance": {
+        "basis": "document's own reporter citation",
+        "citation": "[2022] 12 S.C.R. 124",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2022/english/2022_12_124_138_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "exact_citation_004",
+      "type": "exact_citation",
+      "question": "What was decided in [2018] 5 S.C.R. 377?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2018_5_377_397_EN"
+      ],
+      "gold_chunk_ids": [
+        "3a194956-ab7c-45c8-a43a-6391907b4e8b"
+      ],
+      "provenance": {
+        "basis": "document's own reporter citation",
+        "citation": "[2018] 5 S.C.R. 377",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_5_377_397_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "exact_citation_005",
+      "type": "exact_citation",
+      "question": "What was decided in [2015] 15 S.C.R. 499?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2015_15_499_521_EN"
+      ],
+      "gold_chunk_ids": [
+        "fc9515fb-1477-469c-b818-0b4bb6dd4bc8"
+      ],
+      "provenance": {
+        "basis": "document's own reporter citation",
+        "citation": "[2015] 15 S.C.R. 499",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2015/english/2015_15_499_521_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "lexical_mismatch_006",
+      "type": "lexical_mismatch",
+      "question": "High Court, if justified in exercising jurisdiction u/s. 439(1) Cr.P.C for granting regular bail in favour of the accused persons. Headnotes\u2020 Code of Criminal Procedure, 1973 \u2013 s. 439(1) \u2013 Special powers of High Court or -- how did the Supreme Court resolve this?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_575_595_EN"
+      ],
+      "gold_chunk_ids": [
+        "55735871-c37c-4469-8dab-784a254d7377",
+        "3b9106d8-ea29-4af7-837c-568a1fdaed66",
+        "eaefa4df-27c3-4045-8795-f47b47e2e73d"
+      ],
+      "provenance": {
+        "basis": "issue-for-consideration text; answer lies in the judgment body",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_575_595_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "lexical_mismatch_007",
+      "type": "lexical_mismatch",
+      "question": "The High Court facilitated the enforcement of the final Award dated 27.09.2014 issued at Singapore International Arbitration Centre (SIAC). The appellants\u2019 objection to enforcement of the foreign Award, in terms of s.48 -- how did the Supreme Court resolve this?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_3_971_993_EN"
+      ],
+      "gold_chunk_ids": [
+        "ba509b79-6508-44bf-bfb5-6611bb13bbd9",
+        "8958af91-96c5-4624-b7d3-7251483c17ea",
+        "5c8a497b-2373-46f8-bdef-de7c29cecbda"
+      ],
+      "provenance": {
+        "basis": "issue-for-consideration text; answer lies in the judgment body",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_3_971_993_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "lexical_mismatch_008",
+      "type": "lexical_mismatch",
+      "question": "Matter pertains to deposition of power of attorney holder in a suit for specific performance, in place and instead of the plaintiff-principal wherein the plaintiff is required to aver and prove his readiness and willingn -- how did the Supreme Court resolve this?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_612_628_EN"
+      ],
+      "gold_chunk_ids": [
+        "37def8d9-f457-4e3e-8468-6da2e0fbb47d",
+        "9277cfa0-234d-4a02-818c-18641162b7c9",
+        "91bc440c-943c-4b39-a8de-4ebef6ccc518"
+      ],
+      "provenance": {
+        "basis": "issue-for-consideration text; answer lies in the judgment body",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_612_628_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "lexical_mismatch_009",
+      "type": "lexical_mismatch",
+      "question": "Issue arose, if the High Court was justified in convicting and sentencing the husband u/ss. 498A and 306 IPC for subjecting the victim-wife to cruelty and forcing her to commit suicide. Headnotes\u2020 Penal Code, 1860 \u2013 ss.4 -- how did the Supreme Court resolve this?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_10_54_61_EN"
+      ],
+      "gold_chunk_ids": [
+        "3c3d684d-9b76-4fcb-8c91-123398d39ecc",
+        "5b127f6d-3bea-4ba2-9db0-25e364ea4abb",
+        "ad62a7cd-12ea-4780-a456-264d04012de2"
+      ],
+      "provenance": {
+        "basis": "issue-for-consideration text; answer lies in the judgment body",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_54_61_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "lexical_mismatch_010",
+      "type": "lexical_mismatch",
+      "question": "Whether the appellants made out sufficient cause for condonation of delay on the grounds of subsequent change of law brought in by Indore Development Authority v. Shailendra [2018] 2 SCR 1 and Indore Development Authorit -- how did the Supreme Court resolve this?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_1211_1304_EN"
+      ],
+      "gold_chunk_ids": [
+        "96d6bd2d-0424-4de7-9e9d-f7dcaf1c0122",
+        "8f3ad795-2063-4995-9784-fd7756ef15f6",
+        "aad89ac1-6792-42df-b060-207de8bbd43f"
+      ],
+      "provenance": {
+        "basis": "issue-for-consideration text; answer lies in the judgment body",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_1211_1304_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "lexical_mismatch_011",
+      "type": "lexical_mismatch",
+      "question": "The interlocutory applications have been filed seeking direction for payment of rent and other associated benefits in connection with the property which is the subject matter of the dispute. Headnotes\u2020 Rent Control and E -- how did the Supreme Court resolve this?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_859_878_EN"
+      ],
+      "gold_chunk_ids": [
+        "dc86d148-61f8-41bc-8c3d-242d1ec64f9b",
+        "8a9e7963-1ca4-4f8e-80f4-c1783973fceb",
+        "0bf6812f-42ed-4437-8c17-c4c178aac77a"
+      ],
+      "provenance": {
+        "basis": "issue-for-consideration text; answer lies in the judgment body",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_859_878_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "single_hop_012",
+      "type": "single_hop",
+      "question": "In [2017] 13 S.C.R. 477, Bharat Petroleum Corporation Ltd. (BPCL) and Hindustan Petroleum A Corporation Ltd. (HPCL ), who then take the products from the depot of the Corporation situated in Patna and ther -- what did the Court hold?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2017_13_477_507_EN"
+      ],
+      "gold_chunk_ids": [
+        "4e0090be-9af5-4e8c-be1c-3dcdd7646f89"
+      ],
+      "provenance": {
+        "basis": "headnote of a single judgment",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2017/english/2017_13_477_507_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "single_hop_013",
+      "type": "single_hop",
+      "question": "In [2019] 14 S.C.R. 977, Penal Code, 1860: ss.217 and 221 \u2013 Prosecution case was that a group of persons (Accused no.1 to 16) armed with dandas (sticks) and iron rods trespassed into the newspaper office a -- what did the Court hold?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2019_14_977_998_EN"
+      ],
+      "gold_chunk_ids": [
+        "e9b4e9ba-bfee-4aa8-b698-e718148ac58a"
+      ],
+      "provenance": {
+        "basis": "headnote of a single judgment",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2019/english/2019_14_977_998_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "single_hop_014",
+      "type": "single_hop",
+      "question": "In [2022] 15 S.C.R. 104, Kerala General Sales Tax Act,1963 \u2013 s.10 \u2013 Sick Industrial Companies (Special Provisions) Act, 1985 \u2013 ss.17,18, 19 and 20 \u2013 Tax exemption \u2013 The case involves the withdrawal of tax -- what did the Court hold?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2022_15_104_136_EN"
+      ],
+      "gold_chunk_ids": [
+        "e89fea06-fd7d-4565-9ead-edef3333d31e"
+      ],
+      "provenance": {
+        "basis": "headnote of a single judgment",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2022/english/2022_15_104_136_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "single_hop_015",
+      "type": "single_hop",
+      "question": "In [2015] 7 S.C.R. 1054, c Income Tax Act, 1961- s. 32- Unabsorbed Depreciation - Whether the unabsorbed depreciation should be allowed before the allowance of the unabsorbed investment allowance in comput -- what did the Court hold?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2015_7_1054_1072_EN"
+      ],
+      "gold_chunk_ids": [
+        "60cd68b8-28f3-4743-b589-19ffd5d56bef"
+      ],
+      "provenance": {
+        "basis": "headnote of a single judgment",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2015/english/2015_7_1054_1072_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "single_hop_016",
+      "type": "single_hop",
+      "question": "In [2021] 2 S.C.R. 550, A B C D E F G H 560 SUPREME COURT REPORTS [2021] 2 S.C.R. complaint within the prescribed period of limitation under Section 468 CrPC. It is nobody\u2019s case that the offence under Se -- what did the Court hold?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2021_2_550_569_EN"
+      ],
+      "gold_chunk_ids": [
+        "56bb50fc-c3c5-4007-94ef-d6fed42d89ef"
+      ],
+      "provenance": {
+        "basis": "headnote of a single judgment",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_2_550_569_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "single_hop_017",
+      "type": "single_hop",
+      "question": "In [2022] 13 S.C.R. 841, Rajasthan Rent Control Act, 2001 \u2013 Suit for Possession \u2013 Rent Tribunal\u2019s Jurisdiction after the applicability of Act \u2013 Validity of decree passed by the Civil Court \u2013 The appellant\u2019 -- what did the Court hold?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2022_13_841_858_EN"
+      ],
+      "gold_chunk_ids": [
+        "bd93624b-42a0-4276-9588-966af6a988df"
+      ],
+      "provenance": {
+        "basis": "headnote of a single judgment",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2022/english/2022_13_841_858_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_case_018",
+      "type": "case_to_case",
+      "question": "Which judgment in this corpus relies on [2018] 6 S.C.R. 1001, and for what proposition?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2020_13_427_464_EN",
+        "2018_6_1001_1028_EN"
+      ],
+      "gold_chunk_ids": [
+        "754f4670-509e-4921-a202-1e8fd20fb21f",
+        "5b20753e-7c1d-49da-974e-cd2893fd0447",
+        "9b13d3ff-0154-40fd-ac0a-1ce5a4564d60"
+      ],
+      "provenance": {
+        "basis": "citation edge asserted by the reporter",
+        "relation": "CASE_CITES_CASE",
+        "edge_source_text": "[2018] 6 SCR 1001",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_13_427_464_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_6_1001_1028_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_case_019",
+      "type": "case_to_case",
+      "question": "Which judgment in this corpus relies on [2017] 3 S.C.R. 630, and for what proposition?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_5_1211_1304_EN",
+        "2017_3_630_680_EN"
+      ],
+      "gold_chunk_ids": [
+        "3fca062d-8f11-4e1f-b8b1-e160efebac59",
+        "ec7fdb17-6181-404e-a6f0-4d19959b8631",
+        "d2bf31af-a9cb-4a1b-8bf3-264e7f52c359"
+      ],
+      "provenance": {
+        "basis": "citation edge asserted by the reporter",
+        "relation": "CASE_CITES_CASE",
+        "edge_source_text": "[2017] 3 SCR 630",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_1211_1304_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2017/english/2017_3_630_680_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_case_020",
+      "type": "case_to_case",
+      "question": "Which judgment in this corpus relies on [2018] 3 S.C.R. 137, and for what proposition?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2023_16_377_434_EN",
+        "2018_3_137_176_EN"
+      ],
+      "gold_chunk_ids": [
+        "ebac8c1f-27d6-49ef-bd80-565b8559cee1",
+        "9ec06bd3-75a4-4289-b3a9-4047132da7bb"
+      ],
+      "provenance": {
+        "basis": "citation edge asserted by the reporter",
+        "relation": "CASE_CITES_CASE",
+        "edge_source_text": "[2018] 3 SCR 137",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_16_377_434_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_3_137_176_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_case_021",
+      "type": "case_to_case",
+      "question": "Which judgment in this corpus relies on [2021] 8 S.C.R. 167, and for what proposition?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_5_949_1010_EN",
+        "2021_8_167_183_EN"
+      ],
+      "gold_chunk_ids": [
+        "4ff53077-e677-4838-9ccf-49b8759dda26",
+        "09c5781e-3319-4cad-8672-d45628fa3fd2",
+        "23c85555-83de-4143-9a04-97325d6f1211"
+      ],
+      "provenance": {
+        "basis": "citation edge asserted by the reporter",
+        "relation": "CASE_CITES_CASE",
+        "edge_source_text": "[2021] 8 SCR 167",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_949_1010_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_8_167_183_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_case_022",
+      "type": "case_to_case",
+      "question": "Which judgment in this corpus relies on [2020] 10 S.C.R. 135, and for what proposition?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2022_6_1068_1075_EN",
+        "2020_10_135_237_EN"
+      ],
+      "gold_chunk_ids": [
+        "e6209073-232f-43e2-8ba8-8d9e6ee690af",
+        "259bcee8-e1c9-4c87-84a0-f119c122e64c",
+        "29447104-c976-4558-878a-25d018cb06c8",
+        "3b4da486-0e05-4e92-a884-805231caa539"
+      ],
+      "provenance": {
+        "basis": "citation edge asserted by the reporter",
+        "relation": "CASE_CITES_CASE",
+        "edge_source_text": "[2020] 10  SCR 135",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2022/english/2022_6_1068_1075_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_135_237_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_case_023",
+      "type": "case_to_case",
+      "question": "Which judgment in this corpus relies on [2016] 11 S.C.R. 521, and for what proposition?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2020_10_791_856_EN",
+        "2016_11_521_559_EN"
+      ],
+      "gold_chunk_ids": [
+        "5f8b9eca-d27e-4abc-b663-ae33b1f86a10",
+        "cb70aa12-e700-44ce-a7ce-c845229fed05",
+        "211ee9d6-e386-4638-874a-88c3218b475b"
+      ],
+      "provenance": {
+        "basis": "citation edge asserted by the reporter",
+        "relation": "CASE_CITES_CASE",
+        "edge_source_text": "[2016] 11 SCR 521",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_791_856_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_11_521_559_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_statute_024",
+      "type": "case_to_statute",
+      "question": "Which statutory provision did the Court construe in [2020] 10 S.C.R. 791, and with what effect?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2020_10_791_856_EN"
+      ],
+      "gold_chunk_ids": [
+        "5f8b9eca-d27e-4abc-b663-ae33b1f86a10",
+        "cb70aa12-e700-44ce-a7ce-c845229fed05"
+      ],
+      "provenance": {
+        "basis": "interpretation edge from headnote/held section",
+        "statute_node": "section:48",
+        "statute_label": "Section 48",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_791_856_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_statute_025",
+      "type": "case_to_statute",
+      "question": "Which statutory provision did the Court construe in [2016] 5 S.C.R. 683, and with what effect?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2016_5_683_703_EN"
+      ],
+      "gold_chunk_ids": [
+        "da7a807b-3cca-4644-a29a-a621c9f610f1"
+      ],
+      "provenance": {
+        "basis": "interpretation edge from headnote/held section",
+        "statute_node": "section:197",
+        "statute_label": "s. \n197",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_5_683_703_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_statute_026",
+      "type": "case_to_statute",
+      "question": "Which statutory provision did the Court construe in [2023] 1 S.C.R. 1169, and with what effect?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2023_1_1169_1196_EN"
+      ],
+      "gold_chunk_ids": [
+        "3aed6ff6-7f45-41aa-a9c4-bb5f786f9c2d",
+        "a7822737-9773-436b-93a1-49927d0238fd"
+      ],
+      "provenance": {
+        "basis": "interpretation edge from headnote/held section",
+        "statute_node": "article:14",
+        "statute_label": "Article 14",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_1_1169_1196_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_statute_027",
+      "type": "case_to_statute",
+      "question": "Which statutory provision did the Court construe in [2022] 15 S.C.R. 1066, and with what effect?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2022_15_1066_1116_EN"
+      ],
+      "gold_chunk_ids": [
+        "fbe17300-ea53-4f8d-b1d4-d91c53826923"
+      ],
+      "provenance": {
+        "basis": "interpretation edge from headnote/held section",
+        "statute_node": "section:4A",
+        "statute_label": "Section 4A",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2022/english/2022_15_1066_1116_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_statute_028",
+      "type": "case_to_statute",
+      "question": "Which statutory provision did the Court construe in [2021] 12 S.C.R. 371, and with what effect?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2021_12_371_474_EN"
+      ],
+      "gold_chunk_ids": [
+        "eb82e414-f723-487b-99ab-2e7fbcc9ebcb"
+      ],
+      "provenance": {
+        "basis": "interpretation edge from headnote/held section",
+        "statute_node": "section:49",
+        "statute_label": "Section 49",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_12_371_474_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "case_to_statute_029",
+      "type": "case_to_statute",
+      "question": "Which statutory provision did the Court construe in [2021] 15 S.C.R. 96, and with what effect?",
+      "hops": 1,
+      "gold_document_ids": [
+        "2021_15_96_168_EN"
+      ],
+      "gold_chunk_ids": [
+        "88ec35a9-e619-4814-aaf6-8cdd377105c8"
+      ],
+      "provenance": {
+        "basis": "interpretation edge from headnote/held section",
+        "statute_node": "section:51",
+        "statute_label": "Section 51",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_15_96_168_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "statute_to_cases_030",
+      "type": "statute_to_cases",
+      "question": "Which judgments in this corpus apply or construe section \n140?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2016_2_71_79_EN",
+        "2017_2_1_16_EN",
+        "2018_4_503_520_EN",
+        "2020_1_523_541_EN"
+      ],
+      "gold_chunk_ids": [
+        "1a2d4935-04c4-4820-ae07-aa4c1dfcb28e",
+        "820d641a-1b07-412e-aa7e-962853189285",
+        "49c94cf7-3eef-4974-ac85-267a4eac1780",
+        "1605e403-2562-4276-969b-27f912d433ff"
+      ],
+      "provenance": {
+        "basis": "reverse statute edge",
+        "statute_node": "section:140",
+        "n_citing_documents": 4,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_2_71_79_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2017/english/2017_2_1_16_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_4_503_520_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_1_523_541_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "statute_to_cases_031",
+      "type": "statute_to_cases",
+      "question": "Which judgments in this corpus apply or construe Section 235?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2016_5_438_451_EN",
+        "2017_3_630_680_EN",
+        "2018_14_585_626_EN",
+        "2020_10_135_237_EN"
+      ],
+      "gold_chunk_ids": [
+        "e4d72eb5-ccce-465e-b8e0-7ed78dea708a",
+        "ec7fdb17-6181-404e-a6f0-4d19959b8631",
+        "da58f3a7-040f-43c4-a598-9ef1b5977cc9",
+        "29447104-c976-4558-878a-25d018cb06c8"
+      ],
+      "provenance": {
+        "basis": "reverse statute edge",
+        "statute_node": "section:235",
+        "n_citing_documents": 6,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_5_438_451_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2017/english/2017_3_630_680_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_14_585_626_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_135_237_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "statute_to_cases_032",
+      "type": "statute_to_cases",
+      "question": "Which judgments in this corpus apply or construe Section 178?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2023_3_892_911_EN",
+        "2023_9_637_782_EN",
+        "2024_10_1_17_EN",
+        "2024_10_62_78_EN"
+      ],
+      "gold_chunk_ids": [
+        "0440788f-47ec-4427-b49a-b2ab948b9d8f",
+        "92caa3c6-baf6-4653-9824-865621b5723a",
+        "f979f4f5-4a9e-4f8f-b6cd-31a84c887f58",
+        "8c897673-3b82-469b-884a-31b87645b1ed"
+      ],
+      "provenance": {
+        "basis": "reverse statute edge",
+        "statute_node": "section:178",
+        "n_citing_documents": 4,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_3_892_911_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_9_637_782_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_1_17_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_62_78_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "statute_to_cases_033",
+      "type": "statute_to_cases",
+      "question": "Which judgments in this corpus apply or construe Section 364?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2016_8_872_935_EN",
+        "2018_11_720_737_EN",
+        "2019_18_1174_1195_EN",
+        "2024_10_108_125_EN"
+      ],
+      "gold_chunk_ids": [
+        "1d3744e1-bd5c-4e64-ac91-7ff8c01e40fc",
+        "036aca35-a278-495b-b641-208ae397d0b4",
+        "3ae540cd-5e6d-4bbd-9828-350bb12b6a65",
+        "c4345d91-67f7-42aa-8af5-4dbaec5066c7"
+      ],
+      "provenance": {
+        "basis": "reverse statute edge",
+        "statute_node": "section:364",
+        "n_citing_documents": 4,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_8_872_935_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_11_720_737_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2019/english/2019_18_1174_1195_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_108_125_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "statute_to_cases_034",
+      "type": "statute_to_cases",
+      "question": "Which judgments in this corpus apply or construe section 353?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2019_5_638_678_EN",
+        "2023_14_306_319_EN",
+        "2024_5_629_729_EN"
+      ],
+      "gold_chunk_ids": [
+        "802083c8-9a4f-4c4a-bd60-59b52be5d458",
+        "f099e85c-8a46-468e-a74c-f7b234ec3e65",
+        "e270cd91-7383-425b-b85e-688b86b2324a"
+      ],
+      "provenance": {
+        "basis": "reverse statute edge",
+        "statute_node": "section:353",
+        "n_citing_documents": 3,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2019/english/2019_5_638_678_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_14_306_319_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_629_729_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "statute_to_cases_035",
+      "type": "statute_to_cases",
+      "question": "Which judgments in this corpus apply or construe Section 59?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2017_8_177_197_EN",
+        "2019_14_220_231_EN",
+        "2020_9_619_786_EN",
+        "2023_10_936_976_EN"
+      ],
+      "gold_chunk_ids": [
+        "b4428261-6a4e-451d-8f78-183a0766834d",
+        "c1c1099f-f9fa-45b9-b450-22b0f7767d56",
+        "171f541e-f94d-4e57-9784-9ea4cf5939b8",
+        "b88b3091-f1f2-4410-af80-8a2b3baba80c"
+      ],
+      "provenance": {
+        "basis": "reverse statute edge",
+        "statute_node": "section:59",
+        "n_citing_documents": 5,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2017/english/2017_8_177_197_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2019/english/2019_14_220_231_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_9_619_786_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_10_936_976_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "citation_chain_036",
+      "type": "citation_chain",
+      "question": "Starting from [2024] 3 S.C.R. 971: which authority does the case it relies on itself rely on, and what does that authority establish?",
+      "hops": 3,
+      "gold_document_ids": [
+        "2024_3_971_993_EN",
+        "2020_10_791_856_EN",
+        "2016_11_521_559_EN"
+      ],
+      "gold_chunk_ids": [
+        "5135bcba-d968-4008-9247-c0c0adfae732",
+        "5f8b9eca-d27e-4abc-b663-ae33b1f86a10",
+        "211ee9d6-e386-4638-874a-88c3218b475b"
+      ],
+      "provenance": {
+        "basis": "two-hop citation path",
+        "path": [
+          "case:SCR:2024:3:971",
+          "case:SCR:2020:10:791",
+          "case:SCR:2016:11:521"
+        ],
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_3_971_993_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_791_856_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_11_521_559_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "citation_chain_037",
+      "type": "citation_chain",
+      "question": "Starting from [2021] 6 S.C.R. 599: which authority does the case it relies on itself rely on, and what does that authority establish?",
+      "hops": 3,
+      "gold_document_ids": [
+        "2021_6_599_610_EN",
+        "2020_2_1_131_EN",
+        "2018_4_466_476_EN"
+      ],
+      "gold_chunk_ids": [
+        "4f9d2964-d977-4d8e-8152-230f0fb9955a",
+        "7e559262-667d-4020-a42b-592173ba4e85",
+        "0a0ad061-523d-4f1e-96b2-ce7a2d9aa73c"
+      ],
+      "provenance": {
+        "basis": "two-hop citation path",
+        "path": [
+          "case:SCR:2021:6:599",
+          "case:SCR:2020:2:1",
+          "case:SCR:2018:4:466"
+        ],
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_6_599_610_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_2_1_131_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_4_466_476_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "citation_chain_038",
+      "type": "citation_chain",
+      "question": "Starting from [2020] 13 S.C.R. 427: which authority does the case it relies on itself rely on, and what does that authority establish?",
+      "hops": 3,
+      "gold_document_ids": [
+        "2020_13_427_464_EN",
+        "2018_6_1001_1028_EN",
+        "2016_11_521_559_EN"
+      ],
+      "gold_chunk_ids": [
+        "754f4670-509e-4921-a202-1e8fd20fb21f",
+        "5b20753e-7c1d-49da-974e-cd2893fd0447",
+        "211ee9d6-e386-4638-874a-88c3218b475b"
+      ],
+      "provenance": {
+        "basis": "two-hop citation path",
+        "path": [
+          "case:SCR:2020:13:427",
+          "case:SCR:2018:6:1001",
+          "case:SCR:2016:11:521"
+        ],
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_13_427_464_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_6_1001_1028_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_11_521_559_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "citation_chain_039",
+      "type": "citation_chain",
+      "question": "Starting from [2020] 10 S.C.R. 791: which authority does the case it relies on itself rely on, and what does that authority establish?",
+      "hops": 3,
+      "gold_document_ids": [
+        "2020_10_791_856_EN",
+        "2018_6_1001_1028_EN",
+        "2016_11_521_559_EN"
+      ],
+      "gold_chunk_ids": [
+        "5f8b9eca-d27e-4abc-b663-ae33b1f86a10",
+        "5b20753e-7c1d-49da-974e-cd2893fd0447",
+        "211ee9d6-e386-4638-874a-88c3218b475b"
+      ],
+      "provenance": {
+        "basis": "two-hop citation path",
+        "path": [
+          "case:SCR:2020:10:791",
+          "case:SCR:2018:6:1001",
+          "case:SCR:2016:11:521"
+        ],
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_791_856_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_6_1001_1028_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_11_521_559_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "contradictory_040",
+      "type": "contradictory",
+      "question": "Has the view taken in 2023 INSC 809 been doubted, distinguished or overruled by any later judgment in this corpus?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_11_925_940_EN"
+      ],
+      "gold_chunk_ids": [
+        "185ba961-122c-4adf-b912-cd2a6f899ccc"
+      ],
+      "provenance": {
+        "basis": "adverse treatment recorded in a Case Law Reference table",
+        "relation": "CASE_DISTINGUISHES_CASE",
+        "edge_source_text": "[2023] 13 SCR 861 : 2023 INSC 809 \u2013 distinguished.",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_11_925_940_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "contradictory_041",
+      "type": "contradictory",
+      "question": "Has the view taken in [2008] 7 SCR 117 been doubted, distinguished or overruled by any later judgment in this corpus?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_5_949_1010_EN"
+      ],
+      "gold_chunk_ids": [
+        "4ff53077-e677-4838-9ccf-49b8759dda26"
+      ],
+      "provenance": {
+        "basis": "adverse treatment recorded in a Case Law Reference table",
+        "relation": "CASE_DISTINGUISHES_CASE",
+        "edge_source_text": "[2008] 7 SCR 117 : (2008) 7 SCC 38 \u2013 distinguished.",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_949_1010_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "contradictory_042",
+      "type": "contradictory",
+      "question": "Has the view taken in (2021) 15 SCC 401 been doubted, distinguished or overruled by any later judgment in this corpus?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_2_217_241_EN"
+      ],
+      "gold_chunk_ids": [
+        "6bad1f3c-a126-4543-9711-871fc8782b0e",
+        "978d9b77-cfda-4063-81ae-ae82a9da273d"
+      ],
+      "provenance": {
+        "basis": "adverse treatment recorded in a Case Law Reference table",
+        "relation": "CASE_DISTINGUISHES_CASE",
+        "edge_source_text": "SCR 466 : (2021) 15 SCC 401 \u2013 distinguished.",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_2_217_241_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "contradictory_043",
+      "type": "contradictory",
+      "question": "Has the view taken in AIR 1990 SC 1927 been doubted, distinguished or overruled by any later judgment in this corpus?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_10_1931_2182_EN"
+      ],
+      "gold_chunk_ids": [
+        "166ea6b4-69e0-4a82-855c-b92b3b9a6f3e"
+      ],
+      "provenance": {
+        "basis": "adverse treatment recorded in a Case Law Reference table",
+        "relation": "CASE_OVERRULES_CASE",
+        "edge_source_text": "Supp. 1 SCR 623\u00a0: AIR 1990 SC 1927 \u2013 need not be overruled.",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_1931_2182_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "contradictory_044",
+      "type": "contradictory",
+      "question": "Has the view taken in [2023] 13 SCR 861 been doubted, distinguished or overruled by any later judgment in this corpus?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_11_925_940_EN"
+      ],
+      "gold_chunk_ids": [
+        "185ba961-122c-4adf-b912-cd2a6f899ccc"
+      ],
+      "provenance": {
+        "basis": "adverse treatment recorded in a Case Law Reference table",
+        "relation": "CASE_DISTINGUISHES_CASE",
+        "edge_source_text": "[2023] 13 SCR 861 : 2023 INSC 809 \u2013 distinguished.",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_11_925_940_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "contradictory_045",
+      "type": "contradictory",
+      "question": "Has the view taken in (2008) 7 SCC 38 been doubted, distinguished or overruled by any later judgment in this corpus?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2024_5_949_1010_EN"
+      ],
+      "gold_chunk_ids": [
+        "4ff53077-e677-4838-9ccf-49b8759dda26"
+      ],
+      "provenance": {
+        "basis": "adverse treatment recorded in a Case Law Reference table",
+        "relation": "CASE_DISTINGUISHES_CASE",
+        "edge_source_text": "[2008] 7 SCR 117 : (2008) 7 SCC 38 \u2013 distinguished.",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_949_1010_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "temporal_046",
+      "type": "temporal",
+      "question": "How has [2021] 2 S.C.R. 644 been treated by the Supreme Court after 2021?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2021_2_644_676_EN",
+        "2024_3_73_126_EN"
+      ],
+      "gold_chunk_ids": [
+        "93441e2d-bac5-4bde-b67a-247cf813af44",
+        "970dea4f-5f14-4299-858b-ab59ae211661",
+        "88d2a946-650e-4f8d-ace8-6878a9db3d2e",
+        "3b26ce10-05a7-4515-9448-86abdbfdd224"
+      ],
+      "provenance": {
+        "basis": "citation edge with a later citing year",
+        "cited_year": 2021,
+        "citing_year": 2024,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_2_644_676_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_3_73_126_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "temporal_047",
+      "type": "temporal",
+      "question": "How has [2015] 13 S.C.R. 1 been treated by the Supreme Court after 2015?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2015_13_1_1056_EN",
+        "2023_7_26_84_EN"
+      ],
+      "gold_chunk_ids": [
+        "bd8adacb-d4cd-4309-b1fb-2e9c361d3e15",
+        "27b8281a-3515-4290-8a79-11ae21f0afd0"
+      ],
+      "provenance": {
+        "basis": "citation edge with a later citing year",
+        "cited_year": 2015,
+        "citing_year": 2023,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2015/english/2015_13_1_1056_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_7_26_84_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "temporal_048",
+      "type": "temporal",
+      "question": "How has [2023] 7 S.C.R. 599 been treated by the Supreme Court after 2023?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2023_7_599_641_EN",
+        "2024_3_73_126_EN"
+      ],
+      "gold_chunk_ids": [
+        "08a5525f-b801-48eb-bc81-6c8ad8ad83be",
+        "88d2a946-650e-4f8d-ace8-6878a9db3d2e",
+        "3b26ce10-05a7-4515-9448-86abdbfdd224"
+      ],
+      "provenance": {
+        "basis": "citation edge with a later citing year",
+        "cited_year": 2023,
+        "citing_year": 2024,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_7_599_641_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_3_73_126_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "temporal_049",
+      "type": "temporal",
+      "question": "How has [2021] 8 S.C.R. 167 been treated by the Supreme Court after 2021?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2021_8_167_183_EN",
+        "2024_5_949_1010_EN"
+      ],
+      "gold_chunk_ids": [
+        "09c5781e-3319-4cad-8672-d45628fa3fd2",
+        "23c85555-83de-4143-9a04-97325d6f1211",
+        "4ff53077-e677-4838-9ccf-49b8759dda26"
+      ],
+      "provenance": {
+        "basis": "citation edge with a later citing year",
+        "cited_year": 2021,
+        "citing_year": 2024,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2021/english/2021_8_167_183_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_949_1010_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "temporal_050",
+      "type": "temporal",
+      "question": "How has [2016] 11 S.C.R. 521 been treated by the Supreme Court after 2016?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2016_11_521_559_EN",
+        "2020_10_791_856_EN"
+      ],
+      "gold_chunk_ids": [
+        "211ee9d6-e386-4638-874a-88c3218b475b",
+        "5f8b9eca-d27e-4abc-b663-ae33b1f86a10",
+        "cb70aa12-e700-44ce-a7ce-c845229fed05"
+      ],
+      "provenance": {
+        "basis": "citation edge with a later citing year",
+        "cited_year": 2016,
+        "citing_year": 2020,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2016/english/2016_11_521_559_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2020/english/2020_10_791_856_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "temporal_051",
+      "type": "temporal",
+      "question": "How has [2018] 14 S.C.R. 585 been treated by the Supreme Court after 2018?",
+      "hops": 2,
+      "gold_document_ids": [
+        "2018_14_585_626_EN",
+        "2023_8_152_182_EN"
+      ],
+      "gold_chunk_ids": [
+        "da58f3a7-040f-43c4-a598-9ef1b5977cc9",
+        "a7f66b75-6a9b-46ea-93b4-77e955c6e529",
+        "b47f3f25-7ef8-4cbe-9da4-b9b8a376459b"
+      ],
+      "provenance": {
+        "basis": "citation edge with a later citing year",
+        "cited_year": 2018,
+        "citing_year": 2023,
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2018/english/2018_14_585_626_EN.pdf",
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_8_152_182_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "entity_resolution_052",
+      "type": "entity_resolution",
+      "question": "Are [2024] 5 S.C.R. 730 and 2024 INSC 443 the same decision? State what it decided.",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_730_738_EN"
+      ],
+      "gold_chunk_ids": [
+        "6e00f658-12f5-4139-8087-39b71856417d"
+      ],
+      "provenance": {
+        "basis": "two reporter identifiers on one document",
+        "citation": "[2024] 5 S.C.R. 730",
+        "neutral_citation": "2024 INSC 443",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_730_738_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "entity_resolution_053",
+      "type": "entity_resolution",
+      "question": "Are [2024] 5 S.C.R. 1074 and 2024 INSC 436 the same decision? State what it decided.",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_1074_1147_EN"
+      ],
+      "gold_chunk_ids": [
+        "918b76ab-cfa5-4bc2-926a-7575dcc0545b"
+      ],
+      "provenance": {
+        "basis": "two reporter identifiers on one document",
+        "citation": "[2024] 5 S.C.R. 1074",
+        "neutral_citation": "2024 INSC 436",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_1074_1147_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "entity_resolution_054",
+      "type": "entity_resolution",
+      "question": "Are [2024] 10 S.C.R. 384 and 2024 INSC 774 the same decision? State what it decided.",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_10_384_392_EN"
+      ],
+      "gold_chunk_ids": [
+        "3d4b2eab-c48c-4aed-acfd-320ee2718a79"
+      ],
+      "provenance": {
+        "basis": "two reporter identifiers on one document",
+        "citation": "[2024] 10 S.C.R. 384",
+        "neutral_citation": "2024 INSC 774",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_384_392_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "entity_resolution_055",
+      "type": "entity_resolution",
+      "question": "Are [2024] 5 S.C.R. 1056 and 2024 INSC 447 the same decision? State what it decided.",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_5_1056_1073_EN"
+      ],
+      "gold_chunk_ids": [
+        "36088a46-23a9-4701-856e-9d9c3d1a6eed"
+      ],
+      "provenance": {
+        "basis": "two reporter identifiers on one document",
+        "citation": "[2024] 5 S.C.R. 1056",
+        "neutral_citation": "2024 INSC 447",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_5_1056_1073_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "entity_resolution_056",
+      "type": "entity_resolution",
+      "question": "Are [2023] 13 S.C.R. 220 and 2023 INSC 880 the same decision? State what it decided.",
+      "hops": 1,
+      "gold_document_ids": [
+        "2023_13_220_257_EN"
+      ],
+      "gold_chunk_ids": [
+        "b9246d3a-3c12-46f6-98dd-0f45ca04e5e8"
+      ],
+      "provenance": {
+        "basis": "two reporter identifiers on one document",
+        "citation": "[2023] 13 S.C.R. 220",
+        "neutral_citation": "2023 INSC 880",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2023/english/2023_13_220_257_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    },
+    {
+      "id": "entity_resolution_057",
+      "type": "entity_resolution",
+      "question": "Are [2024] 10 S.C.R. 54 and 2024 INSC 717 the same decision? State what it decided.",
+      "hops": 1,
+      "gold_document_ids": [
+        "2024_10_54_61_EN"
+      ],
+      "gold_chunk_ids": [
+        "0acda674-8345-40b3-8a6b-bb7bdad67943"
+      ],
+      "provenance": {
+        "basis": "two reporter identifiers on one document",
+        "citation": "[2024] 10 S.C.R. 54",
+        "neutral_citation": "2024 INSC 717",
+        "source_urls": [
+          "https://indian-supreme-court-judgments.s3.ap-south-1.amazonaws.com/data/pdf/year=2024/english/2024_10_54_61_EN.pdf"
+        ],
+        "construction": "auto-generated from parsed corpus structure",
+        "benchmark_version": "1.0"
+      }
+    }
+  ]
+}

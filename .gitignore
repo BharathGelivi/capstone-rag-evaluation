@@ -1,0 +1,30 @@
+# Environments
+venv/
+venv_eval_*/
+env/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Data and Storage
+data/
+db/
+.cache/
+scratch/
+
+# Docs (internal, not for public repo)
+docs/
+
+# Artifacts - only diagnostic_reports, benchmark_comparison, reports are public
+artifacts/*
+!artifacts/diagnostic_reports/
+!artifacts/benchmark_comparison/
+!artifacts/reports/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,97 @@
+09:57:23 INFO    Running E5 in offline mode (seed=20260801).
+09:57:23 INFO    ======================================================================
+09:57:23 INFO    E5 -- Diagnostic agreement: high score correlation, low cause-level kappa [offline]
+09:57:23 INFO    ======================================================================
+09:57:23 INFO    exp05_diagnostic_agreement: 0/76 examples already recorded; 76 remaining.
+09:57:23 INFO    exp05_diagnostic_agreement: example 1/76 (real/1)
+09:57:23 INFO    exp05_diagnostic_agreement: example 2/76 (real/2)
+09:57:23 INFO    exp05_diagnostic_agreement: example 3/76 (real/3)
+09:57:23 INFO    exp05_diagnostic_agreement: example 4/76 (real/4)
+09:57:23 INFO    exp05_diagnostic_agreement: example 5/76 (real/5)
+09:57:23 INFO    exp05_diagnostic_agreement: example 6/76 (real/6)
+09:57:23 INFO    exp05_diagnostic_agreement: example 7/76 (real/7)
+09:57:23 INFO    exp05_diagnostic_agreement: example 8/76 (real/8)
+09:57:23 INFO    exp05_diagnostic_agreement: example 9/76 (real/9)
+09:57:23 INFO    exp05_diagnostic_agreement: example 10/76 (real/10)
+09:57:23 INFO    exp05_diagnostic_agreement: example 11/76 (real/11)
+09:57:23 INFO    exp05_diagnostic_agreement: example 12/76 (real/12)
+09:57:23 INFO    exp05_diagnostic_agreement: example 13/76 (real/13)
+09:57:23 INFO    exp05_diagnostic_agreement: example 14/76 (real/14)
+09:57:23 INFO    exp05_diagnostic_agreement: example 15/76 (real/15)
+09:57:23 INFO    exp05_diagnostic_agreement: example 16/76 (real/16)
+09:57:23 INFO    exp05_diagnostic_agreement: example 17/76 (real/17)
+09:57:23 INFO    exp05_diagnostic_agreement: example 18/76 (real/18)
+09:57:23 INFO    exp05_diagnostic_agreement: example 19/76 (real/19)
+09:57:23 INFO    exp05_diagnostic_agreement: example 20/76 (real/20)
+09:57:23 INFO    exp05_diagnostic_agreement: example 21/76 (real/21)
+09:57:23 INFO    exp05_diagnostic_agreement: example 22/76 (real/22)
+09:57:23 INFO    exp05_diagnostic_agreement: example 23/76 (real/23)
+09:57:23 INFO    exp05_diagnostic_agreement: example 24/76 (real/24)
+09:57:23 INFO    exp05_diagnostic_agreement: example 25/76 (real/25)
+09:57:23 INFO    exp05_diagnostic_agreement: example 26/76 (real/26)
+09:57:23 INFO    exp05_diagnostic_agreement: example 27/76 (real/27)
+09:57:23 INFO    exp05_diagnostic_agreement: example 28/76 (real/28)
+09:57:23 INFO    exp05_diagnostic_agreement: example 29/76 (real/29)
+09:57:23 INFO    exp05_diagnostic_agreement: example 30/76 (real/30)
+09:57:23 INFO    exp05_diagnostic_agreement: example 31/76 (real/31)
+09:57:23 INFO    exp05_diagnostic_agreement: example 32/76 (real/32)
+09:57:23 INFO    exp05_diagnostic_agreement: example 33/76 (real/33)
+09:57:23 INFO    exp05_diagnostic_agreement: example 34/76 (real/34)
+09:57:23 INFO    exp05_diagnostic_agreement: example 35/76 (real/35)
+09:57:23 INFO    exp05_diagnostic_agreement: example 36/76 (real/36)
+09:57:23 INFO    exp05_diagnostic_agreement: example 37/76 (real/37)
+09:57:23 INFO    exp05_diagnostic_agreement: example 38/76 (real/38)
+09:57:23 INFO    exp05_diagnostic_agreement: example 39/76 (real/39)
+09:57:23 INFO    exp05_diagnostic_agreement: example 40/76 (real/40)
+09:57:23 INFO    exp05_diagnostic_agreement: example 41/76 (injected/NONE/000)
+09:57:23 INFO    exp05_diagnostic_agreement: example 42/76 (injected/REMOVE_GOLD_CHUNK/001)
+09:57:23 INFO    exp05_diagnostic_agreement: example 43/76 (injected/FORCE_BAD_RANK/002)
+09:57:23 INFO    exp05_diagnostic_agreement: example 44/76 (injected/TRUNCATE_AT_BOUNDARY/003)
+09:57:23 INFO    exp05_diagnostic_agreement: example 45/76 (injected/DILUTE_CONTEXT/004)
+09:57:23 INFO    exp05_diagnostic_agreement: example 46/76 (injected/CONTRADICT_EVIDENCE/005)
+09:57:23 INFO    exp05_diagnostic_agreement: example 47/76 (injected/NONE/006)
+09:57:23 INFO    exp05_diagnostic_agreement: example 48/76 (injected/REMOVE_GOLD_CHUNK/007)
+09:57:23 INFO    exp05_diagnostic_agreement: example 49/76 (injected/FORCE_BAD_RANK/008)
+09:57:23 INFO    exp05_diagnostic_agreement: example 50/76 (injected/TRUNCATE_AT_BOUNDARY/009)
+09:57:23 INFO    exp05_diagnostic_agreement: example 51/76 (injected/DILUTE_CONTEXT/010)
+09:57:23 INFO    exp05_diagnostic_agreement: example 52/76 (injected/CONTRADICT_EVIDENCE/011)
+09:57:23 INFO    exp05_diagnostic_agreement: example 53/76 (injected/NONE/012)
+09:57:23 INFO    exp05_diagnostic_agreement: example 54/76 (injected/REMOVE_GOLD_CHUNK/013)
+09:57:23 INFO    exp05_diagnostic_agreement: example 55/76 (injected/FORCE_BAD_RANK/014)
+09:57:23 INFO    exp05_diagnostic_agreement: example 56/76 (injected/TRUNCATE_AT_BOUNDARY/015)
+09:57:23 INFO    exp05_diagnostic_agreement: example 57/76 (injected/DILUTE_CONTEXT/016)
+09:57:23 INFO    exp05_diagnostic_agreement: example 58/76 (injected/CONTRADICT_EVIDENCE/017)
+09:57:23 INFO    exp05_diagnostic_agreement: example 59/76 (injected/NONE/018)
+09:57:23 INFO    exp05_diagnostic_agreement: example 60/76 (injected/REMOVE_GOLD_CHUNK/019)
+09:57:23 INFO    exp05_diagnostic_agreement: example 61/76 (injected/FORCE_BAD_RANK/020)
+09:57:23 INFO    exp05_diagnostic_agreement: example 62/76 (injected/TRUNCATE_AT_BOUNDARY/021)
+09:57:23 INFO    exp05_diagnostic_agreement: example 63/76 (injected/DILUTE_CONTEXT/022)
+09:57:23 INFO    exp05_diagnostic_agreement: example 64/76 (injected/CONTRADICT_EVIDENCE/023)
+09:57:23 INFO    exp05_diagnostic_agreement: example 65/76 (injected/NONE/024)
+09:57:23 INFO    exp05_diagnostic_agreement: example 66/76 (injected/REMOVE_GOLD_CHUNK/025)
+09:57:23 INFO    exp05_diagnostic_agreement: example 67/76 (injected/FORCE_BAD_RANK/026)
+09:57:23 INFO    exp05_diagnostic_agreement: example 68/76 (injected/TRUNCATE_AT_BOUNDARY/027)
+09:57:23 INFO    exp05_diagnostic_agreement: example 69/76 (injected/DILUTE_CONTEXT/028)
+09:57:23 INFO    exp05_diagnostic_agreement: example 70/76 (injected/CONTRADICT_EVIDENCE/029)
+09:57:23 INFO    exp05_diagnostic_agreement: example 71/76 (injected/NONE/030)
+09:57:23 INFO    exp05_diagnostic_agreement: example 72/76 (injected/REMOVE_GOLD_CHUNK/031)
+09:57:23 INFO    exp05_diagnostic_agreement: example 73/76 (injected/FORCE_BAD_RANK/032)
+09:57:23 INFO    exp05_diagnostic_agreement: example 74/76 (injected/TRUNCATE_AT_BOUNDARY/033)
+09:57:23 INFO    exp05_diagnostic_agreement: example 75/76 (injected/DILUTE_CONTEXT/034)
+09:57:23 INFO    exp05_diagnostic_agreement: example 76/76 (injected/CONTRADICT_EVIDENCE/035)
+09:57:23 INFO    E5 complete in 0.3s -- 76 examples. Summary: artifacts\experiments\exp05_diagnostic_agreement\summary.json
+09:57:23 INFO    Suite report written to artifacts\experiments\SUITE_REPORT.md
+
+Experiment suite status  (artifacts\experiments)
+
+#   status       records    mode      key
+------------------------------------------------------------------------
+1   complete     158/158    offline   exp01_fault_injection
+2   complete     80/80      live      exp02_reranker_window
+3   complete     104/104    live      exp03_refusal_calibration
+4   complete     200/200    live      exp04_corpus_quality
+5   complete     76/76      offline   exp05_diagnostic_agreement
+6   complete     638/638    offline   exp06_strategy_ablation
+7   complete     56/56      offline   exp07_generation_ablation
+
+[09:57:24] E5 diagnostic agreement exit=0

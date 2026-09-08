@@ -1,0 +1,138 @@
+{
+    "framework_metadata": {
+        "trace_id": "e2bf7d42-8658-41d4-979a-d6811fea8c6c",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T18:35:07.696045Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment applies if a person already under a sentence of life imprisonment commits murder?",
+        "generated_answer": "If a person who is already serving a sentence of imprisonment for life commits murder, the law prescribes that they shall be punished with **death or with imprisonment for life**, where the life sentence is understood to mean the remainder of that person\u2019s natural life\u3010c915250d-039f-455d-a068-4a082cb495ce\u3011.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 3,
+        "total_claims": 3,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.25245237350463867,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9797616004943848,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9797616004943848
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 3,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.9922804236412048,
+        "retrieval_latency_ms": 630.0485134124756,
+        "generation_latency_ms": 4718.388080596924,
+        "verification_latency_ms": 3628.1323432922363
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace e2bf7d42-8658-41d4-979a-d6811fea8c6c.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "2d13ba57-41e0-40f4-9d8b-aa8ba1fa0cec",
+            "claim_text": "A person who is already serving a sentence of imprisonment for life commits murder.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "104.Whoever, being under sentence of imprisonment for life, commits murder, shall be\npunished with death or with imprisonment for life, which shall mean the remainder of that\nperson\u2019s natural life."
+        },
+        {
+            "claim_id": "83ac97c0-0d2c-4407-a706-f394f5c83c45",
+            "claim_text": "The law prescribes that they shall be punished with death or with imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "cc3b3dd7-7f37-4e35-aaf2-9114d7b0c885",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "The punishments to which offenders are liable under the provisions of this Sanhita\nare\u2014\n(a) Death;\n(b) Imprisonment for life;\n(c) Imprisonment, which is of two descriptions, namely:\u2014\n(1) Rigorous, that is, with hard labour;\n(2) Simple;\n(d) Forfeiture of property;\n(e) Fine;\n(f) Community Service."
+        },
+        {
+            "claim_id": "fcf9d129-ef1e-4740-8d74-618ad66fe7ab",
+            "claim_text": "The life sentence is understood to mean the remainder of that person\u2019s natural life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When any person offending under sub-section (1) is under sentence of imprisonment\nfor life, he may, if hurt is caused, be punished with death or with imprisonment for life, which\nshall mean the remainder of that person\u2019s natural life."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.6666666666666666,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T18:35:07.696130Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

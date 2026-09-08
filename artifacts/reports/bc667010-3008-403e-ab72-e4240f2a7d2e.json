@@ -1,0 +1,215 @@
+{
+    "framework_metadata": {
+        "trace_id": "bc667010-3008-403e-ab72-e4240f2a7d2e",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T13:56:35.722066Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "How does the BNS define 'criminal conspiracy'?",
+        "generated_answer": "The Bharatiya Nyaya Sanhita (BNS) defines **criminal conspiracy** in Section\u202f61(1) as follows:\n\n- When **two or more persons agree** with a **common object** to do, or cause to be done:  \n  1. **an illegal act**; or  \n  2. **an act which is not illegal by illegal means**.  \n\n- Such an agreement is **designated a criminal conspiracy**.  \n\n- **Important proviso:** No agreement *except* an agreement to commit an offence shall amount to a criminal conspiracy **unless** some act **besides the agreement** is done by one or more parties to the agreement in pursuance thereof.  \n\nThus, the BNS requires both an agreement (with a common purpose) and, for non\u2011offence\u2011based agreements, an overt act in furtherance of the conspiracy for it to be punishable as a criminal conspiracy.  \n\n**Sources:**  \n- Definition of criminal conspiracy (agreement to do an illegal act or a legal act by illegal means) \u2013\u202f[Chunk-ID: e90a2900-39ef-43f1-b75d-f92a38b2fd93]  \n- Context discussing criminal conspiracy provisions \u2013\u202f[Chunk-ID: 7cf95fe9-6baf-4512-a24a-45ff6846cde4]",
+        "overall_health_score": 0.5,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 9,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.41445720195770264,
+                    "pool_size": 67
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.5643240213394165,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "4 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 4,
+                    "max_score": 0.5643240213394165
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 9,
+        "supported_claims": 4,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 4,
+        "contradicted_claims": 0,
+        "grounding_score": 0.5,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.49000391198529136,
+        "retrieval_latency_ms": 3786.9489192962646,
+        "generation_latency_ms": 4286.802053451538,
+        "verification_latency_ms": 25572.92127609253
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace bc667010-3008-403e-ab72-e4240f2a7d2e.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 4 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "04e22b68-316e-47d0-8056-d331858720a3",
+            "claim_text": "The Bharatiya Nyaya Sanhita (BNS) defines criminal conspiracy in Section\u202f61(1).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "3268a98b-8da8-4f60-8537-f310d3288b67",
+            "claim_text": "The BNS defines criminal conspiracy as an agreement between two or more persons with a common object to do an illegal act.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "ab6c6ac6-0699-4792-99dc-08ef87c32770",
+            "claim_text": "The BNS defines criminal conspiracy as an agreement between two or more persons with a common object to do an act which is not illegal by illegal means.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "e90a2900-39ef-43f1-b75d-f92a38b2fd93",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever, intending to facilitate or knowing it to be likely that he will thereby\nfacilitate the commission of an offence punishable with imprisonment, voluntarily conceals,\nby any act or illegal omission, the existence of a design to commit such offence, or makes any\nrepresentation which he knows to be false respecting such design shall,\u2013\u2013\n(a) if the offence be committed, be punished with imprisonment of the description\nprovided for the offence, for a term which may extend to one-fourth; and\n(b) if the offence be not committed, to one-eighth,\nof the longest term of such imprisonment, or with such fine as is provided for the offence, or\nwith both."
+        },
+        {
+            "claim_id": "54bf7102-cd93-4fe7-8750-65331ffbdddd",
+            "claim_text": "Such an agreement is designated a criminal conspiracy.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e90a2900-39ef-43f1-b75d-f92a38b2fd93",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) When two or more persons agree with the common object to do, or cause to be\ndone\u2013\u2013\n(a) an illegal act; or\n(b) an act which is not illegal by illegal means, such an agreement is designated\na criminal conspiracy:\nProvided that no agreement except an agreement to commit an offence shall amount to\na criminal conspiracy unless some act besides the agreement is done by one or more parties\nto such agreement in pursuance thereof."
+        },
+        {
+            "claim_id": "668d43a8-a203-4cde-8ddc-ef6dfe431f01",
+            "claim_text": "No agreement except an agreement to commit an offence shall amount to a criminal conspiracy unless some act besides the agreement is done by one or more parties to the agreement in pursuance thereof.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e90a2900-39ef-43f1-b75d-f92a38b2fd93",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) When two or more persons agree with the common object to do, or cause to be\ndone\u2013\u2013\n(a) an illegal act; or\n(b) an act which is not illegal by illegal means, such an agreement is designated\na criminal conspiracy:\nProvided that no agreement except an agreement to commit an offence shall amount to\na criminal conspiracy unless some act besides the agreement is done by one or more parties\nto such agreement in pursuance thereof."
+        },
+        {
+            "claim_id": "e35d526e-1557-4b62-a1c2-a5e9338e1178",
+            "claim_text": "The BNS requires an agreement with a common purpose for a criminal conspiracy to be punishable.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "fe09d21f-2049-4a4b-98cb-6c8d760e3ac3",
+            "claim_text": "The BNS requires an overt act in furtherance of the conspiracy for non\u2011offence\u2011based agreements to be punishable as a criminal conspiracy.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "6edc7575-1117-4c70-aa93-0bf329ffed9b",
+            "claim_text": "The definition of criminal conspiracy (agreement to do an illegal act or a legal act by illegal means) is sourced from Chunk-ID: e90a2900-39ef-43f1-b75d-f92a38b2fd93.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "5b088d20-7d3b-4be4-b272-d2118a934bb3",
+            "claim_text": "Context discussing criminal conspiracy provisions is sourced from Chunk-ID: 7cf95fe9-6baf-4512-a24a-45ff6846cde4.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Organised\ncrime."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (4 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 4).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T13:56:35.722337Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

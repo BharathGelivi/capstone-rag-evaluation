@@ -1,0 +1,912 @@
+<title>X-RAG Diagnostic Report — 27c29f9f-ae02-49a3-aa2c-38dcc5d2d078</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>According to the BNSS, what is the specific process and timeline for filing a trademark infringement suit?</h1>
+    <p class="dek">Trace <span class="mono">27c29f9f-ae02-49a3-aa2c-38dcc5d2d078</span>, generated 2026-09-06T16:18:36.857343Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">0%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">RETRIEVAL_MISS</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">0 / 1</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.036</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">According to the BNSS, what is the specific process and timeline for filing a trademark infringement suit?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">I do not have enough information to answer this.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 1.17s retrieval + 2.72s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">3.894s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">77</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: 78931bc9-967c-48ea-bf5d-331f90834436] ---
+(3) If the accused applies for the issue of any process for compelling the attendance
+of any witness or the production of any document or thing, the Judge shall issue such
+process unless he considers, for reasons to be recorded, that such application should be
+refused on the ground that it is made for the purpose of vexation or delay or for defeating
+the ends of justice.
+257. When the examination of the witnesses (if any) for the defence is complete, the
+prosecutor shall sum up his case and the accused or his advocate shall be entitled to reply:
+Provided that where any point of law is raised by the accused or his advocate, the
+prosecution may, with the permission of the Judge, make his submissions with regard to
+such point of law.
+258. (1) After hearing arguments and points of law (if any), the Judge shall give a
+judgment in the case, as soon as possible, within a period of thirty days from the date of
+completion of arguments, which may be extended to a period of forty-five days for reasons
+to be recorded in writing.
+(2) If the accused is convicted, the Judge shall, unless he proceeds in accordance
+with the provisions of section 401, hear the accused on the questions of sentence, and then
+pass sentence on him according to law.
+259. In a case where a previous conviction is charged under the provisions of
+sub-section (7) of section 234, and the accused does not admit that he has been previously
+convicted as alleged in the charge, the Judge may, after he has convicted the said accused
+under section 252 or section 258, take evidence in respect of the alleged previous conviction,
+and shall record a finding thereon:
+Conviction on
+plea of guilty.
+Date for
+prosecution
+evidence.
+Evidence for
+prosecution.
+Acquittal.
+Entering upon
+defence.
+Arguments.
+Judgment of
+acquittal or
+conviction.
+Previous
+conviction.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+83
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 2 [Chunk-ID: 2a6630c4-f235-46cc-b835-02ca423067a3] ---
+351. (1) In every inquiry or trial, for the purpose of enabling the accused personally
+to explain any circumstances appearing in the evidence against him, the Court—
+(a) may at any stage, without previously warning the accused put such questions
+to him as the Court considers necessary;
+(b) shall, after the witnesses for the prosecution have been examined and before
+he is called on for his defence, question him generally on the case:
+Provided that in a summons case, where the Court has dispensed with the
+personal attendance of the accused, it may also dispense with his examination under
+clause (b).
+(2) No oath shall be administered to the accused when he is examined under
+sub-section (1).
+(3) The accused shall not render himself liable to punishment by refusing to answer
+such questions, or by giving false answers to them.
+(4) The answers given by the accused may be taken into consideration in such
+inquiry or trial, and put in evidence for or against him in any other inquiry into, or trial for,
+any other offence which such answers may tend to show he has committed.
+(5) The Court may take help of Prosecutor and Defence Counsel in preparing relevant
+questions which are to be put to the accused and the Court may permit filing of written
+statement by the accused as sufficient compliance of this section.
+352. (1) Any party to a proceeding may, as soon as may be, after the close of his
+evidence, address concise oral arguments, and may, before he concludes the oral arguments,
+if any, submit a memorandum to the Court setting forth concisely and under distinct headings,
+the arguments in support of his case and every such memorandum shall form part of the
+record.
+(2) A copy of every such memorandum shall be simultaneously furnished to the
+opposite party.
+(3) No adjournment of the proceedings shall be granted for the purpose of filing the
+written arguments unless the Court, for reasons to be recorded in writing, considers it
+necessary to grant such adjournment.
+(4) The Court may, if it is of opinion that the oral arguments are not concise or
+relevant, regulate such arguments.
+353.
+
+--- Context chunk 3 [Chunk-ID: 4a051196-d494-4463-9e89-daf8fa2ea57c] ---
+32. When the Court has to form an opinion as to a law of any country, any statement
+of such law contained in a book purporting to be printed or published including in electronic
+or digital form under the authority of the Government of such country and to contain any
+such law, and any report of a ruling of the Courts of such country contained in a book
+including in electronic or digital form purporting to be a report of such rulings, is relevant.
+How much of a statement is to be proved
+33. When any statement of which evidence is given forms part of a longer statement,
+or of a conversation or part of an isolated document, or is contained in a document which
+forms part of a book, or is contained in part of electronic record or of a connected series of
+letters or papers, evidence shall be given of so much and no more of the statement,
+conversation, document, electronic record, book or series of letters or papers as the Court
+considers necessary in that particular case to the full understanding of the nature and effect
+of the statement, and of the circumstances under which it was made.
+Judgments of Courts when relevant
+34. The existence of any judgment, order or decree which by law prevents any Court
+from taking cognizance of a suit or holding a trial, is a relevant fact when the question is
+whether such Court ought to take cognizance of such suit or to hold such trial.
+35. (1) A final judgment, order or decree of a competent Court or Tribunal, in the
+exercise of probate, matrimonial, admiralty or insolvency jurisdiction, which confers upon
+or takes away from any person any legal character, or which declares any person to be
+entitled to any such character, or to be entitled to any specific thing, not as against any
+specified person but absolutely, is relevant when the existence of any such legal character,
+or the title of any such person to any such thing, is relevant.
+
+--- Context chunk 4 [Chunk-ID: e59e3e59-a4d5-44d3-8888-8c3eb7e22c06] ---
+86. The Court may, on the written request from a police officer not below the rank of
+the Superintendent of Police or Commissioner of Police, initiate the process of requesting
+assistance from a Court or an authority in the contracting State for identification, attachment
+and forfeiture of property belonging to a proclaimed person in accordance with the procedure
+provided in Chapter VIII.
+87. (1) If any claim is preferred to, or objection made to the attachment of, any
+property attached under section 85, within six months from the date of such attachment, by
+any person other than the proclaimed person, on the ground that the claimant or objector
+has an interest in such property, and that such interest is not liable to attachment under
+section 85, the claim or objection shall be inquired into, and may be allowed or disallowed in
+whole or in part:
+Provided that any claim preferred or objection made within the period allowed by this
+sub-section may, in the event of the death of the claimant or objector, be continued by his
+legal representative.
+(2) Claims or objections under sub-section (1) may be preferred or made in the Court
+by which the order of attachment is issued, or, if the claim or objection is in respect of
+property attached under an order endorsed under sub-section (2) of section 85, in the Court
+of the Chief Judicial Magistrate of the district in which the attachment is made.
+(3) Every such claim or objection shall be inquired into by the Court in which it is
+preferred or made:
+Provided that, if it is preferred or made in the Court of a Chief Judicial Magistrate, he
+may make it over for disposal to any Magistrate subordinate to him.
+(4) Any person whose claim or objection has been disallowed in whole or in part by an
+order under sub-section (1) may, within a period of one year from the date of such order,
+institute a suit to establish the right which he claims in respect of the property in dispute;
+but subject to the result of such suit, if any, the order shall be conclusive.
+88. (1) If the proclaimed person appears within the time specified in the proclamation,
+the Court shall make an order releasing the property from the attachment.
+
+--- Context chunk 5 [Chunk-ID: 978b2a46-33ae-4f3c-a9ad-cc1e3e88c0bf] ---
+242. Whoever falsely personates another, and in such assumed character makes
+any admission or statement, or confesses judgment, or causes any process to be issued or
+becomes bail or security, or does any other act in any suit or criminal prosecution, shall be
+punished with imprisonment of either description for a term which may extend to three
+years, or with fine, or with both.
+243. Whoever fraudulently removes, conceals, transfers or delivers to any person
+any property or any interest therein, intending thereby to prevent that property or interest
+therein from being taken as a forfeiture or in satisfaction of a fine, under a sentence which
+has been pronounced, or which he knows to be likely to be pronounced, by a Court or
+other competent authority, or from being taken in execution of a decree or order which has
+been made, or which he knows to be likely to be made by a Court in a civil suit, shall be
+punished with imprisonment of either description for a term which may extend to three
+years, or with fine which may extend to five thousand rupees, or with both.
+244. Whoever fraudulently accepts, receives or claims any property or any interest
+therein, knowing that he has no right or rightful claim to such property or interest, or
+practises any deception touching any right to any property or any interest therein,
+intending thereby to prevent that property or interest therein from being taken as a forfeiture
+or in satisfaction of a fine, under a sentence which has been pronounced, or which he
+knows to be likely to be pronounced by a Court or other competent authority, or from
+being taken in execution of a decree or order which has been made, or which he knows to
+be likely to be made by a Court in a civil suit, shall be punished with imprisonment of
+either description for a term which may extend to two years, or with fine, or with both.
+245.
+
+--- Context chunk 6 [Chunk-ID: 4f62a62d-4ba4-48a3-9bcb-a9cf23c37e8d] ---
+specified date and time, and to put in written statements of their respective claims as
+respects the fact of actual possession of the subject of dispute.
+(2) For the purposes of this section, the expression &quot;land or water&quot; includes buildings,
+markets, fisheries, crops or other produce of land, and the rents or profits of any such
+property.
+(3) A copy of the order shall be served in the manner provided by this Sanhita for the
+service of summons upon such person or persons as the Magistrate may direct, and at least
+one copy shall be published by being affixed to some conspicuous place at or near the
+subject of dispute.
+(4) The Magistrate shall, without reference to the merits or the claims of any of the
+parties to a right to possess the subject of dispute, peruse the statements so put in, hear the
+parties, receive all such evidence as may be produced by them, take such further evidence,
+if any, as he thinks necessary, and, if possible, decide whether any and which of the parties
+was, at the date of the order made by him under sub-section (1), in possession of the
+subject of dispute:
+Provided that if it appears to the Magistrate that any party has been forcibly and
+wrongfully dispossessed within two months next before the date on which the report of a
+police officer or other information was received by the Magistrate, or after that date and
+before the date of his order under sub-section (1), he may treat the party so dispossessed
+as if that party had been in possession on the date of his order under sub-section (1).
+(5) Nothing in this section shall preclude any party so required to attend, or any other
+person interested, from showing that no such dispute as aforesaid exists or has existed; and
+in such case the Magistrate shall cancel his said order, and all further proceedings thereon
+shall be stayed, but, subject to such cancellation, the order of the Magistrate under
+sub-section (1) shall be final.
+
+
+Question: According to the BNSS, what is the specific process and timeline for filing a trademark infringement suit?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (1 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">I do not have enough information to answer this.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">4d288ca0-31a6-4330-9fd6-ad74fa7f8802</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">78931bc9-967c-48ea-bf5d-331f90834436</span> (rank 6)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+83
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">4f62a62d-4ba4-48a3-9bcb-a9cf23c37e8d</span>
+            <span class="chunk-src">bnss.pdf p.50</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.486</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">0.00</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0159</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.005</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">-1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">b2b98a5e-addd-4334-8362-d930fc69fe01</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">376</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1931 (1931 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">specified date and time, and to put in written statements of their respective claims as
+respects the fact of actual possession of the subject of dispute.
+(2) For the purposes of this section, the expression &quot;land or water&quot; includes buildings,
+markets, fisheries, crops or other produce of land, and the rents or profits of any such
+property.
+(3) A copy of the order shall be served in the manner provided by this Sanhita for the
+service of summons upon such person or persons as the Magistrate may direct, and at least
+one copy shall be published by being affixed to some conspicuous place at or near the
+subject of dispute.
+(4) The Magistrate shall, without reference to the merits or the claims of any of the
+parties to a right to possess the subject of dispute, peruse the statements so put in, hear the
+parties, receive all such evidence as may be produced by them, take such further evidence,
+if any, as he thinks necessary, and, if possible, decide whether any and which of the parties
+was, at the date of the order made by him under sub-section (1), in possession of the
+subject of dispute:
+Provided that if it appears to the Magistrate that any party has been forcibly and
+wrongfully dispossessed within two months next before the date on which the report of a
+police officer or other information was received by the Magistrate, or after that date and
+before the date of his order under sub-section (1), he may treat the party so dispossessed
+as if that party had been in possession on the date of his order under sub-section (1).
+(5) Nothing in this section shall preclude any party so required to attend, or any other
+person interested, from showing that no such dispute as aforesaid exists or has existed; and
+in such case the Magistrate shall cancel his said order, and all further proceedings thereon
+shall be stayed, but, subject to such cancellation, the order of the Magistrate under
+sub-section (1) shall be final.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">978b2a46-33ae-4f3c-a9ad-cc1e3e88c0bf</span>
+            <span class="chunk-src">bns.pdf p.67</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">7.94</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0159</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.002</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">f862ccef-b527-44a7-a4d6-76780b0539bc</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">162</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1471 - 3339 (1868 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">242. Whoever falsely personates another, and in such assumed character makes
+any admission or statement, or confesses judgment, or causes any process to be issued or
+becomes bail or security, or does any other act in any suit or criminal prosecution, shall be
+punished with imprisonment of either description for a term which may extend to three
+years, or with fine, or with both.
+243. Whoever fraudulently removes, conceals, transfers or delivers to any person
+any property or any interest therein, intending thereby to prevent that property or interest
+therein from being taken as a forfeiture or in satisfaction of a fine, under a sentence which
+has been pronounced, or which he knows to be likely to be pronounced, by a Court or
+other competent authority, or from being taken in execution of a decree or order which has
+been made, or which he knows to be likely to be made by a Court in a civil suit, shall be
+punished with imprisonment of either description for a term which may extend to three
+years, or with fine which may extend to five thousand rupees, or with both.
+244. Whoever fraudulently accepts, receives or claims any property or any interest
+therein, knowing that he has no right or rightful claim to such property or interest, or
+practises any deception touching any right to any property or any interest therein,
+intending thereby to prevent that property or interest therein from being taken as a forfeiture
+or in satisfaction of a fine, under a sentence which has been pronounced, or which he
+knows to be likely to be pronounced by a Court or other competent authority, or from
+being taken in execution of a decree or order which has been made, or which he knows to
+be likely to be made by a Court in a civil suit, shall be punished with imprisonment of
+either description for a term which may extend to two years, or with fine, or with both.
+245.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">e59e3e59-a4d5-44d3-8888-8c3eb7e22c06</span>
+            <span class="chunk-src">bnss.pdf p.25</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">6.76</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0152</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.001</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">6</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">1aef7a63-3b88-4f9c-ac4b-6739b5fc321e</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">313</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1183 - 3364 (2181 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">86. The Court may, on the written request from a police officer not below the rank of
+the Superintendent of Police or Commissioner of Police, initiate the process of requesting
+assistance from a Court or an authority in the contracting State for identification, attachment
+and forfeiture of property belonging to a proclaimed person in accordance with the procedure
+provided in Chapter VIII.
+87. (1) If any claim is preferred to, or objection made to the attachment of, any
+property attached under section 85, within six months from the date of such attachment, by
+any person other than the proclaimed person, on the ground that the claimant or objector
+has an interest in such property, and that such interest is not liable to attachment under
+section 85, the claim or objection shall be inquired into, and may be allowed or disallowed in
+whole or in part:
+Provided that any claim preferred or objection made within the period allowed by this
+sub-section may, in the event of the death of the claimant or objector, be continued by his
+legal representative.
+(2) Claims or objections under sub-section (1) may be preferred or made in the Court
+by which the order of attachment is issued, or, if the claim or objection is in respect of
+property attached under an order endorsed under sub-section (2) of section 85, in the Court
+of the Chief Judicial Magistrate of the district in which the attachment is made.
+(3) Every such claim or objection shall be inquired into by the Court in which it is
+preferred or made:
+Provided that, if it is preferred or made in the Court of a Chief Judicial Magistrate, he
+may make it over for disposal to any Magistrate subordinate to him.
+(4) Any person whose claim or objection has been disallowed in whole or in part by an
+order under sub-section (1) may, within a period of one year from the date of such order,
+institute a suit to establish the right which he claims in respect of the property in dispute;
+but subject to the result of such suit, if any, the order shall be conclusive.
+88. (1) If the proclaimed person appears within the time specified in the proclamation,
+the Court shall make an order releasing the property from the attachment.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">4a051196-d494-4463-9e89-daf8fa2ea57c</span>
+            <span class="chunk-src">bsa.pdf p.15</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">8.53</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0161</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.001</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">8780ed08-83a3-4492-a96e-79c37cd6add1</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">822</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1896 (1896 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">32. When the Court has to form an opinion as to a law of any country, any statement
+of such law contained in a book purporting to be printed or published including in electronic
+or digital form under the authority of the Government of such country and to contain any
+such law, and any report of a ruling of the Courts of such country contained in a book
+including in electronic or digital form purporting to be a report of such rulings, is relevant.
+How much of a statement is to be proved
+33. When any statement of which evidence is given forms part of a longer statement,
+or of a conversation or part of an isolated document, or is contained in a document which
+forms part of a book, or is contained in part of electronic record or of a connected series of
+letters or papers, evidence shall be given of so much and no more of the statement,
+conversation, document, electronic record, book or series of letters or papers as the Court
+considers necessary in that particular case to the full understanding of the nature and effect
+of the statement, and of the circumstances under which it was made.
+Judgments of Courts when relevant
+34. The existence of any judgment, order or decree which by law prevents any Court
+from taking cognizance of a suit or holding a trial, is a relevant fact when the question is
+whether such Court ought to take cognizance of such suit or to hold such trial.
+35. (1) A final judgment, order or decree of a competent Court or Tribunal, in the
+exercise of probate, matrimonial, admiralty or insolvency jurisdiction, which confers upon
+or takes away from any person any legal character, or which declares any person to be
+entitled to any such character, or to be entitled to any specific thing, not as against any
+specified person but absolutely, is relevant when the existence of any such legal character,
+or the title of any such person to any such thing, is relevant.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">2a6630c4-f235-46cc-b835-02ca423067a3</span>
+            <span class="chunk-src">bnss.pdf p.106</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">5.80</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0141</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.001</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">11</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">042c404c-708e-403e-957a-219cb2597fab</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">519</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2104 (2104 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">351. (1) In every inquiry or trial, for the purpose of enabling the accused personally
+to explain any circumstances appearing in the evidence against him, the Court—
+(a) may at any stage, without previously warning the accused put such questions
+to him as the Court considers necessary;
+(b) shall, after the witnesses for the prosecution have been examined and before
+he is called on for his defence, question him generally on the case:
+Provided that in a summons case, where the Court has dispensed with the
+personal attendance of the accused, it may also dispense with his examination under
+clause (b).
+(2) No oath shall be administered to the accused when he is examined under
+sub-section (1).
+(3) The accused shall not render himself liable to punishment by refusing to answer
+such questions, or by giving false answers to them.
+(4) The answers given by the accused may be taken into consideration in such
+inquiry or trial, and put in evidence for or against him in any other inquiry into, or trial for,
+any other offence which such answers may tend to show he has committed.
+(5) The Court may take help of Prosecutor and Defence Counsel in preparing relevant
+questions which are to be put to the accused and the Court may permit filing of written
+statement by the accused as sufficient compliance of this section.
+352. (1) Any party to a proceeding may, as soon as may be, after the close of his
+evidence, address concise oral arguments, and may, before he concludes the oral arguments,
+if any, submit a memorandum to the Court setting forth concisely and under distinct headings,
+the arguments in support of his case and every such memorandum shall form part of the
+record.
+(2) A copy of every such memorandum shall be simultaneously furnished to the
+opposite party.
+(3) No adjournment of the proceedings shall be granted for the purpose of filing the
+written arguments unless the Court, for reasons to be recorded in writing, considers it
+necessary to grant such adjournment.
+(4) The Court may, if it is of opinion that the oral arguments are not concise or
+relevant, regulate such arguments.
+353.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">78931bc9-967c-48ea-bf5d-331f90834436</span>
+            <span class="chunk-src">bnss.pdf p.83</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.505</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">6.82</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0270</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.001</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">26</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">a3d2ddfe-5512-4dba-873b-7dd2c72ad894</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">464</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1828 - 4056 (2228 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(3) If the accused applies for the issue of any process for compelling the attendance
+of any witness or the production of any document or thing, the Judge shall issue such
+process unless he considers, for reasons to be recorded, that such application should be
+refused on the ground that it is made for the purpose of vexation or delay or for defeating
+the ends of justice.
+257. When the examination of the witnesses (if any) for the defence is complete, the
+prosecutor shall sum up his case and the accused or his advocate shall be entitled to reply:
+Provided that where any point of law is raised by the accused or his advocate, the
+prosecution may, with the permission of the Judge, make his submissions with regard to
+such point of law.
+258. (1) After hearing arguments and points of law (if any), the Judge shall give a
+judgment in the case, as soon as possible, within a period of thirty days from the date of
+completion of arguments, which may be extended to a period of forty-five days for reasons
+to be recorded in writing.
+(2) If the accused is convicted, the Judge shall, unless he proceeds in accordance
+with the provisions of section 401, hear the accused on the questions of sentence, and then
+pass sentence on him according to law.
+259. In a case where a previous conviction is charged under the provisions of
+sub-section (7) of section 234, and the accused does not admit that he has been previously
+convicted as alleged in the charge, the Judge may, after he has convicted the said accused
+under section 252 or section 258, take evidence in respect of the alleged previous conviction,
+and shall record a finding thereon:
+Conviction on
+plea of guilty.
+Date for
+prosecution
+evidence.
+Evidence for
+prosecution.
+Acquittal.
+Entering upon
+defence.
+Arguments.
+Judgment of
+acquittal or
+conviction.
+Previous
+conviction.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+83
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage unknown">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">Corpus relevance is inconclusive.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage fail">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">FAIL</div>
+          <div class="stage-obs">No retrieved chunks provide support, and retrieval scores strongly indicate a lack of useful evidence.</div>
+          <div class="stage-conf">confidence 0.85</div>
+          <div class="stage-efficiency">Efficiency: 0/6 chunks used (0%)</div>
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">1 generated claims are unsupported, but retrieval quality is ambiguous.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 27c29f9f-ae02-49a3-aa2c-38dcc5d2d078.</li><li>Skipping CORPUS: status is UNKNOWN (insufficient evidence).</li><li>Failure at RETRIEVER: RETRIEVAL_MISS (confidence=0.85). Observation: No retrieved chunks provide support, and retrieval scores strongly indicate a lack of useful evidence.</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Skipping GENERATOR: status is UNKNOWN (insufficient evidence).</li><li>GROUNDING passed (confidence=0.90).</li><li>Primary root cause: RETRIEVAL_MISS at RETRIEVER (earliest upstream failure, confidence=0.85).</li><li>Analysis complete. Primary cause: RETRIEVAL_MISS.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.880</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[IMMEDIATE]</span>Increase Retrieval Top-K</div>
+          <div class="action-desc">Increase the number of retrieved documents before providing context to the LLM.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>Ground truth or highly relevant chunks are present but ranked lower than current Top-K (observed max retrieval score: 0.005, threshold: 0.500).</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[SHORT_TERM]</span>Implement Hybrid Search (Dense + Sparse)</div>
+          <div class="action-desc">Add BM25 lexical search and combine with semantic vector search using Reciprocal Rank Fusion.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>Queries containing specific IDs, acronyms, or names fail semantic retrieval.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[EXPERIMENTAL]</span>Deploy Cross-Encoder Reranker</div>
+          <div class="action-desc">Pass the Top-N results through a Cross-Encoder to re-score query-document relevance.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>Bi-encoder returns top-k chunks that share vocabulary but lack true semantic relevance to the question.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>0/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">0 / 6</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">Not covered -- the BNSS governs criminal procedure and does not address trademark law or intellectual property infringement suits, which fall under separate civil/IP legislation not included in this corpus.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot warn"></span>
+            <span class="claim-status warn">NOT_VERIFIABLE</span>
+            <span class="claim-summary-text">BNSS governs criminal procedure.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.156</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">BNSS does not address trademark law.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.003</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">BNSS does not address intellectual property infringement suits.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.002</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">Trademark law falls under separate civil/IP legislation.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.000</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">Intellectual property infringement suits fall under separate civil/IP legislation.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.000</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The separate civil/IP legislation is not included in this corpus.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.003</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.036</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">RETRIEVAL_MISS</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">0.267</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">0.115</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val mid mono">0.000</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.000</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 27c29f9f-ae02-49a3-aa2c-38dcc5d2d078 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

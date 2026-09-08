@@ -1,0 +1,195 @@
+{
+    "framework_metadata": {
+        "trace_id": "ab1d8cab-68f1-4534-91ab-a33ec4921a02",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T14:09:31.923638Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for murder under BNS section 103, and how does it change when a group of five or more persons acting in concert commits murder on grounds such as race, caste, or community?",
+        "generated_answer": "**Murder \u2013 BNS\u202f\u00a7\u202f103**\n\n- **\u00a7\u202f103(1)** \u2013 Whoever commits murder shall be punished with **death or imprisonment for life**, and shall also be **liable to a fine**\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011.  \n\n- **\u00a7\u202f103(2)** \u2013 When a **group of five or more persons acting in concert** commits murder **on the ground of race, caste, community, sex, place of birth, language, personal belief or any other similar ground**, **each member of such group** shall be punished with **death or imprisonment for life**, and shall also be **liable to a fine**\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011.  \n\n**Effect of the group provision:** The punishment does **not become more severe**; it remains the same as for an individual murderer\u2014death or life imprisonment plus a fine\u2014but the provision extends that penalty to **every participant** in the qualifying group.  \n\n*No other changes to the penalty are specified in the retrieved context.*",
+        "overall_health_score": 0.6,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 5,
+        "number_of_corrective_actions": 4,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.34029054641723633,
+                    "pool_size": 62
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9983077049255371,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9983077049255371
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "FAIL",
+                "observation": "1 claim(s) are actively contradicted by retrieved evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "contradicted_count": 1
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 1,
+        "grounding_score": 0.6,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.6377602532505989,
+        "retrieval_latency_ms": 1005.3935050964355,
+        "generation_latency_ms": 8350.171089172363,
+        "verification_latency_ms": 63237.46967315674
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [
+            "GROUNDING_FAILURE"
+        ],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace ab1d8cab-68f1-4534-91ab-a33ec4921a02.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "Failure at GROUNDING: GROUNDING_FAILURE (confidence=0.95). Observation: 1 claim(s) are actively contradicted by retrieved evidence.",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Secondary effect (propagated from GENERATOR): GROUNDING_FAILURE at GROUNDING (confidence=0.95).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.91
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "9e747727-ac5f-498a-abdb-14e820dfbdb3",
+            "claim_text": "Whoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Whoever commits murder shall be punished with death or imprisonment for\nlife, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "3132d752-8fc1-4882-94ee-e3106d7fae52",
+            "claim_text": "When a group of five or more persons acting in concert commits murder on the ground of race, caste, community, sex, place of birth, language, personal belief or any other similar ground, each member of such group shall be punished with death or imprisonment for life, and shall also be liable to a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) When a group of five or more persons acting in concert commits murder on the\nground of race, caste or community, sex, place of birth, language, personal belief or any\nother similar ground each member of such group shall be punished with death or with\nimprisonment for life, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "2b365218-b37d-49ce-b3db-10ee40604bce",
+            "claim_text": "The punishment for murder under the group provision does not become more severe; it remains the same as for an individual murderer\u2014death or life imprisonment plus a fine.",
+            "verification_status": "CONTRADICTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "5122b2e7-60a1-4dd1-9b16-e98de7d7cbbf",
+            "claim_text": "The group provision extends the penalty of death or life imprisonment plus a fine to every participant in the qualifying group.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) When a group of five or more persons acting in concert commits murder on the\nground of race, caste or community, sex, place of birth, language, personal belief or any\nother similar ground each member of such group shall be punished with death or with\nimprisonment for life, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "c98b2a69-6975-415b-9dee-5a3ec9a8c653",
+            "claim_text": "No other changes to the penalty are specified in the retrieved context.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "1ee1d3cc-b4bb-441e-b965-5b4f35f19230",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n223\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "experimental",
+            "title": "Require Explicit Citations",
+            "description": "Force the LLM to append [Chunk-ID] to every sentence it generates.",
+            "observed_evidence": "LLM struggles to maintain factual fidelity across long generation spans (1 contradicted claim(s) observed).",
+            "expected_improvement": "Self-correction during generation ensures every fact is linked to evidence.",
+            "success_metric": "100% of claims map cleanly to a cited chunk (currently 1 contradicted).",
+            "tradeoff": "Increases output token length and adds parsing overhead."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 4
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T14:09:31.925121Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

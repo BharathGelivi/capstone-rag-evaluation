@@ -1,0 +1,215 @@
+{
+    "framework_metadata": {
+        "trace_id": "a0b97a2b-b3c1-40f1-bb79-563eb4df1192",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T18:58:27.491824Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for culpable homicide not amounting to murder, and how does the punishment differ depending on intention versus mere knowledge of likely death?",
+        "generated_answer": "**Punishment for culpable homicide not amounting to murder**\n\n- **When the act is done with the intention of causing death (or of causing bodily injury likely to cause death):**  \n  - Imprisonment for life **or** imprisonment of either description for a term **not less than five years but which may extend to ten years**;  \n  - **and** liable to fine.  \n\n- **When the act is done with the knowledge that it is likely to cause death, but **without any intention** to cause death (or to cause such bodily injury):**  \n  - Imprisonment of either description for a term **which may extend to ten years** (no statutory minimum);  \n  - **and** liable to fine.  \n\nThese provisions are set out in Section\u202f105 of the penal code, which distinguishes the punishment based on whether the offender acted with intent to cause death or merely with knowledge that death was likely.  \n\n*Source: Section\u202f105, \u201cWhoever commits culpable homicide not amounting to murder\u2026\u201d (see [Chunk-ID: ac6c1423-8651-4ff8-9f26-0cf720a5f981]).*",
+        "overall_health_score": 0.6111,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 5,
+        "total_claims": 9,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2718071937561035,
+                    "pool_size": 58
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9979839324951172,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9979839324951172
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 9,
+        "supported_claims": 5,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6111111111111112,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.6584478800909387,
+        "retrieval_latency_ms": 604.7885417938232,
+        "generation_latency_ms": 5529.801845550537,
+        "verification_latency_ms": 21104.99906539917
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace a0b97a2b-b3c1-40f1-bb79-563eb4df1192.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "c4d60f5f-c84e-44a9-b5e2-8eb590cd51b8",
+            "claim_text": "The provisions regarding punishment for culpable homicide not amounting to murder are set out in Section 105 of the penal code.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "f7c9d97a-a007-4c70-b93b-dd1cbfbe46c7",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n33\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "f4978e42-47f7-438d-9335-8f0f24092ed0",
+            "claim_text": "Section 105 distinguishes the punishment based on whether the offender acted with intent to cause death or merely with knowledge that death was likely.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "ba8430f6-a21b-4715-b5b7-943688e726f9",
+            "claim_text": "When the act is done with the intention of causing death (or of causing bodily injury likely to cause death), imprisonment for life is a possible punishment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When a group of five or more persons acting in concert commits murder on the\nground of race, caste or community, sex, place of birth, language, personal belief or any\nother similar ground each member of such group shall be punished with death or with\nimprisonment for life, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "23f490ab-698e-4683-8e8b-68614e9471c9",
+            "claim_text": "When the act is done with the intention of causing death (or of causing bodily injury likely to cause death), imprisonment of either description for a term not less than five years but which may extend to ten years is a possible punishment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "71e95c73-4e22-4022-8c7f-d9e26cc92c71",
+            "claim_text": "When the act is done with the intention of causing death (or of causing bodily injury likely to cause death), liability to fine is a possible punishment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When a group of five or more persons acting in concert commits murder on the\nground of race, caste or community, sex, place of birth, language, personal belief or any\nother similar ground each member of such group shall be punished with death or with\nimprisonment for life, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "24066ca0-710a-4ab4-bc95-b92c8813531f",
+            "claim_text": "When the act is done with the knowledge that it is likely to cause death, but without any intention to cause death (or to cause such bodily injury), imprisonment of either description for a term which may extend to ten years is a possible punishment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "11c09cfc-2df2-49b4-83f3-e9fbcd6be8df",
+            "claim_text": "When the act is done with the knowledge that it is likely to cause death, but without any intention to cause death (or to cause such bodily injury), liability to fine is a possible punishment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "4bf9d551-6de4-407f-9a04-b45feb39c95d",
+            "claim_text": "When the act is done with the knowledge that it is likely to cause death, but without any intention to cause death (or to cause such bodily injury), there is no statutory minimum term of imprisonment.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "24a0bb7b-49f8-4043-8f55-bec421e2f4b1",
+            "claim_text": "The source of the information is Section 105, \u201cWhoever commits culpable homicide not amounting to murder\u2026\u201d (see [Chunk-ID: ac6c1423-8651-4ff8-9f26-0cf720a5f981]).",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "01858be4-6a44-4c78-ad2e-9d51a448976b",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "105\nCulpable homicide not\nImprisonment for life, or\nCognizable."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T18:58:27.491911Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

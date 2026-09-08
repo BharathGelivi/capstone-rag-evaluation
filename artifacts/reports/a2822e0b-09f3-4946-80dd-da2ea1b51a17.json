@@ -1,0 +1,219 @@
+{
+    "framework_metadata": {
+        "trace_id": "a2822e0b-09f3-4946-80dd-da2ea1b51a17",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:16:25.448557Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for attempt to murder under BNS section 109, and how does it change if hurt is actually caused to a person?",
+        "generated_answer": "**Attempt to murder under BNS\u202f\u00a7\u202f109**\n\n- **Basic offence (no hurt caused):**\u202fImprisonment for life (the maximum term prescribed for the attempt).  \n  *[Source: the table entry for \u00a7\u202f109 in the retrieved context, which lists the punishment as \u201cImprisonment for life, or \u2026\u201d]*\n\n- **If hurt is caused to any person:**\u202fThe punishment is enhanced to **death** or **imprisonment for life** (where life imprisonment means imprisonment for the remainder of that person\u2019s natural life).  \n  *[Source: the sub\u2011section\u202f\u00a7\u202f109(2) entry: \u201cAttempt by life\u2011convict to murder, if hurt is caused \u2013 Death, or imprisonment for life which shall mean the remainder of that person\u2019s natural life.\u201d]*\n\nThus, the presence of actual hurt upgrades the sanction from a straight life\u2011sentence to the possibility of death (or life imprisonment).",
+        "overall_health_score": 0.5,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 8,
+        "number_of_corrective_actions": 4,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.32216376066207886,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9078429937362671,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9078429937362671
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "FAIL",
+                "observation": "1 claim(s) are actively contradicted by retrieved evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "contradicted_count": 1
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 8,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 1,
+        "grounding_score": 0.5,
+        "evidence_coverage": 0.6666666666666666,
+        "average_entailment": 0.5337502037873492,
+        "retrieval_latency_ms": 673.2041835784912,
+        "generation_latency_ms": 11895.72286605835,
+        "verification_latency_ms": 6909.5094203948975
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [
+            "GROUNDING_FAILURE"
+        ],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace a2822e0b-09f3-4946-80dd-da2ea1b51a17.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "Failure at GROUNDING: GROUNDING_FAILURE (confidence=0.95). Observation: 1 claim(s) are actively contradicted by retrieved evidence.",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Secondary effect (propagated from GENERATOR): GROUNDING_FAILURE at GROUNDING (confidence=0.95).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.91
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "a7183b5a-06e1-48c0-bb81-c691a1f6af52",
+            "claim_text": "Attempt to murder is an offence under BNS \u00a7 109.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "92ec40d2-b449-4649-86e6-b0fd40e6bea8",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "109(2)\nAttempt by life-convict to Death, or imprisonment\nCognizable."
+        },
+        {
+            "claim_id": "da9a2b92-c5a4-40cf-9dd1-8ae9ca4c19d1",
+            "claim_text": "For the basic offence of attempt to murder under BNS \u00a7 109 where no hurt is caused, the punishment is imprisonment for life.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ecfce8ef-071a-4b11-9a6a-64a659fdcbfb",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "B, in consequence,\nresists that distress."
+        },
+        {
+            "claim_id": "00563afa-2697-4699-b39c-1d909f31b526",
+            "claim_text": "Imprisonment for life is the maximum term prescribed for the attempt of murder under BNS \u00a7 109 when no hurt is caused.",
+            "verification_status": "CONTRADICTED",
+            "supporting_chunk_id": "ecfce8ef-071a-4b11-9a6a-64a659fdcbfb",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "When an act is abetted with the intention on the part of the abettor of causing a\nparticular effect, and an act for which the abettor is liable in consequence of the abetment,\ncauses a different effect from that intended by the abettor, the abettor is liable for the effect\ncaused, in the same manner and to the same extent as if he had abetted the act with the\nintention of causing that effect, provided he knew that the act abetted was likely to cause\nthat effect."
+        },
+        {
+            "claim_id": "47215bbb-a6cd-437a-90a7-cca4ec6da0d9",
+            "claim_text": "The table entry for \u00a7 109 in the retrieved context lists the punishment as 'Imprisonment for life, or \u2026'.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "92ec40d2-b449-4649-86e6-b0fd40e6bea8",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "1\n2\n3\n4\n5\n6\nIf such act causes hurt to\nImprisonment for life, or\nCognizable."
+        },
+        {
+            "claim_id": "4bc2d0c4-1051-41ba-9da9-c73d0a5b77c3",
+            "claim_text": "If hurt is caused to any person in the offence of attempt to murder under BNS \u00a7 109, the punishment is enhanced to death or imprisonment for life.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Illustrations."
+        },
+        {
+            "claim_id": "fabe7138-e324-44af-a260-25d9688fab0f",
+            "claim_text": "Life imprisonment means imprisonment for the remainder of that person\u2019s natural life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When any person offending under sub-section (1) is under sentence of imprisonment\nfor life, he may, if hurt is caused, be punished with death or with imprisonment for life, which\nshall mean the remainder of that person\u2019s natural life."
+        },
+        {
+            "claim_id": "28e01ac2-00cf-4890-9436-ff234abe55b9",
+            "claim_text": "The sub-section \u00a7 109(2) entry states: 'Attempt by life\u2011convict to murder, if hurt is caused \u2013 Death, or imprisonment for life which shall mean the remainder of that person\u2019s natural life.'",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "e7effe1e-f49e-4fe8-885e-f4815d90e7fe",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Illustration."
+        },
+        {
+            "claim_id": "4f7f7940-90a7-4827-85c3-1c6257c6eb6a",
+            "claim_text": "The presence of actual hurt upgrades the sanction from a straight life\u2011sentence to the possibility of death or life imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When any person offending under sub-section (1) is under sentence of imprisonment\nfor life, he may, if hurt is caused, be punished with death or with imprisonment for life, which\nshall mean the remainder of that person\u2019s natural life."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "experimental",
+            "title": "Require Explicit Citations",
+            "description": "Force the LLM to append [Chunk-ID] to every sentence it generates.",
+            "observed_evidence": "LLM struggles to maintain factual fidelity across long generation spans (1 contradicted claim(s) observed).",
+            "expected_improvement": "Self-correction during generation ensures every fact is linked to evidence.",
+            "success_metric": "100% of claims map cleanly to a cited chunk (currently 1 contradicted).",
+            "tradeoff": "Increases output token length and adds parsing overhead."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.2,
+        "total_gold_claims": 5,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:16:25.448645Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

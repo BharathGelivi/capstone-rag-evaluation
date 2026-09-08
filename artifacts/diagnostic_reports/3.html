@@ -1,0 +1,996 @@
+<title>X-RAG Diagnostic Report — fb9c9052-93e0-43cb-b58a-037d8bd6f028</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>When does the right of private defence of the body commence, and how long does it continue?</h1>
+    <p class="dek">Trace <span class="mono">fb9c9052-93e0-43cb-b58a-037d8bd6f028</span>, generated 2026-09-06T11:47:52.478643Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">100%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNKNOWN</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">3 / 3</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.997</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">When does the right of private defence of the body commence, and how long does it continue?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">The right of private defence of the body **commences** as soon as a **reasonable apprehension of danger to the body** arises from an **attempt or threat to commit an offence** (the offence itself need not have been committed yet). It **continues** for as long as that reasonable apprehension of danger to the body persists.  
+
+[Chunk-ID: 90f8747a-7f40-4ae3-b114-2b216129f432]</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 1.40s retrieval + 8.14s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">9.545s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">66</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: b25092df-b297-4a67-b4c8-ecc4d509893a] ---
+exercise that right without risk of harm to an innocent person, his right of private defence
+extends to the running of that risk.
+Illustration.
+A is attacked by a mob who attempt to murder him. He cannot effectually exercise his
+right of private defence without firing on the mob, and he cannot fire without risk of harming
+young children who are mingled with the mob.Acommits no offence if by so firing he harms
+any of the children.
+CHAPTERIV
+OF ABETMENT, CRIMINAL CONSPIRACY AND ATTEMPT
+of abetment
+45. A person abets the doing of a thing, who—
+(a) instigates any person to do that thing; or
+(b) engages with one or more other person or persons in any conspiracy for the
+doing of that thing, if an act or illegal omission takes place in pursuance of that
+conspiracy, and in order to the doing of that thing; or
+(c) intentionally aids, by any act or illegal omission, the doing of that thing.
+Explanation 1.—A person who, by wilful misrepresentation, or by wilful concealment
+of a material fact which he is bound to disclose, voluntarily causes or procures, or attempts
+to cause or procure, a thing to be done, is said to instigate the doing of that thing.
+Illustration.
+A, a public officer, is authorised by a warrant from a Court to apprehend Z. B, knowing
+that fact and also that C is not Z, wilfully represents toAthat C is Z, and thereby intentionally
+causes A to apprehend C. Here B abets by instigation the apprehension of C.
+Explanation 2.—Whoever, either prior to or at the time of the commission of an act,
+does anything in order to facilitate the commission of that act, and thereby facilitates the
+commission thereof, is said to aid the doing of that act.
+46. A person abets an offence, who abets either the commission of an offence, or the
+commission of an act which would be an offence, if committed by a person capable by law of
+committing an offence with the same intention or knowledge as that of the abettor.
+
+--- Context chunk 2 [Chunk-ID: 13609d07-4b5c-46ae-b3b3-82b26460bc1f] ---
+33. Nothing is an offence by reason that it causes, or that it is intended to cause, or
+that it is known to be likely to cause, any harm, if that harm is so slight that no person of
+ordinary sense and temper would complain of such harm.
+Of  right  of  private defence
+34. Nothing is an offence which is done in the exercise of the right of private defence.
+35. Every person has a right, subject to the restrictions contained in section 37, to
+defend—
+(a) his own body, and the body of any other person, against any offence affecting
+the human body;
+(b) the property, whether movable or immovable, of himself or of any other
+Communication
+made in good
+faith.
+Act to which a
+person is
+compelled by
+threats.
+Act causing
+slight harm.
+Things done
+in private
+defence.
+Right of
+private
+defence of
+body and of
+property.
+14
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 3 [Chunk-ID: 69db30c9-72ad-48eb-b310-9e3137806fa2] ---
+person, against any act which is an offence falling under the definition of theft, robbery,
+mischief or criminal trespass, or which is an attempt to commit theft, robbery, mischief
+or criminal trespass.
+36. When an act, which would otherwise be a certain offence, is not that offence, by
+reason of the youth, the want of maturity of understanding, the unsoundness of mind or the
+intoxication of the person doing that act, or by reason of any misconception on the part of
+that person, every person has the same right of private defence against that act which he
+would have if the act were that offence.
+Illustrations.
+(a) Z, a person of unsound mind, attempts to killA; Z is guilty of no offence. ButAhas
+the same right of private defence which he would have if Z were sane.
+(b) A enters by night a house which he is legally entitled to enter. Z, in good faith,
+taking A for a house-breaker, attacks A. Here Z, by attacking A under this misconception,
+commits no offence. ButA has the same right of private defence against Z, which he would
+have if Z were not acting under that misconception.
+37. (1) There is no right of private defence,––
+(a) against an act which does not reasonably cause the apprehension of death
+or of grievous hurt, if done, or attempted to be done, by a public servant acting in good
+faith under colour of his office, though that act, may not be strictly justifiable by law;
+(b) against an act which does not reasonably cause the apprehension of death
+or of grievous hurt, if done, or attempted to be done, by the direction of a public
+servant acting in good faith under colour of his office, though that direction may not
+be strictly justifiable by law;
+(c) in cases in which there is time to have recourse to the protection of the public
+authorities.
+(2) The right of private defence in no case extends to the inflicting of more harm than
+it is necessary to inflict for the purpose of defence.
+
+--- Context chunk 4 [Chunk-ID: 6f639d07-62fa-48e0-a811-5492ff51880e] ---
+(2) The right of private defence in no case extends to the inflicting of more harm than
+it is necessary to inflict for the purpose of defence.
+Explanation 1.—A person is not deprived of the right of private defence against an act
+done, or attempted to be done, by a public servant, as such, unless he knows or has reason
+to believe, that the person doing the act is such public servant.
+Explanation 2.—A person is not deprived of the right of private defence against an act
+done, or attempted to be done, by the direction of a public servant, unless he knows, or has
+reason to believe, that the person doing the act is acting by such direction, or unless such
+person states the authority under which he acts, or if he has authority in writing, unless he
+produces such authority, if demanded.
+38. The right of private defence of the body extends, under the restrictions specified in
+section 37, to the voluntary causing of death or of any other harm to the assailant, if the
+offence which occasions the exercise of the right be of any of the descriptions hereinafter
+enumerated, namely:—
+(a) such an assault as may reasonably cause the apprehension that death will
+otherwise be the consequence of such assault;
+(b) such an assault as may reasonably cause the apprehension that grievous
+hurt will otherwise be the consequence of such assault;
+(c) an assault with the intention of committing rape;
+(d) an assault with the intention of gratifying unnatural lust;
+(e) an assault with the intention of kidnapping or abducting;
+Right of
+private
+defence
+against act of
+a person of
+unsound mind,
+etc.
+Acts against
+which there is
+no right of
+private
+defence.
+When right of
+private
+defence of
+body extends
+to causing
+death.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+15
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: 56f0f9d9-31e6-4e2e-a2ae-c5b3ce707d02] ---
+42. If the offence, the committing of which, or the attempting to commit which occasions
+the exercise of the right of private defence, be theft, mischief, or criminal trespass, not of any
+of the descriptions specified in section 41, that right does not extend to the voluntary
+causing of death, but does extend, subject to the restrictions specified in section 37, to the
+voluntary causing to the wrong-doer of any harm other than death.
+43. The right of private defence of property,––
+(a) commences when a reasonable apprehension of danger to the property
+commences;
+(b) against theft continues till the offender has effected his retreat with the
+property or either the assistance of the public authorities is obtained, or the property
+has been recovered;
+(c) against robbery continues as long as the offender causes or attempts to
+cause to any person death or hurt or wrongful restraint or as long as the fear of instant
+death or of instant hurt or of instant personal restraint continues;
+(d) against criminal trespass or mischief continues as long as the offender
+continues in the commission of criminal trespass or mischief;
+(e) against house-breaking after sunset and before sunrise continues as long as
+the house-trespass which has been begun by such house-breaking continues.
+44. If in the exercise of the right of private defence against an assault which reasonably
+causes the apprehension of death, the defender be so situated that he cannot effectually
+When such
+right extends
+to causing any
+harm other
+than death.
+Commencement
+and
+continuance of
+right of private
+defence of
+body.
+When right of
+private
+defence of
+property
+extends to
+causing death.
+When such
+right extends
+to causing any
+harm other
+than death.
+Commencement
+and
+continuance
+of right of
+private
+defence of
+property.
+Right of private
+defence against
+deadly assault
+when there is
+risk of harm to
+innocent person.
+16
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 6 [Chunk-ID: 90f8747a-7f40-4ae3-b114-2b216129f432] ---
+(f) an assault with the intention of wrongfully confining a person, under
+circumstances which may reasonably cause him to apprehend that he will be unable to
+have recourse to the public authorities for his release;
+(g) an act of throwing or administering acid or an attempt to throw or administer
+acid which may reasonably cause the apprehension that grievous hurt will otherwise
+be the consequence of such act.
+39. If the offence be not of any of the descriptions specified in section 38, the right of
+private defence of the body does not extend to the voluntary causing of death to the
+assailant, but does extend, under the restrictions specified in section 37, to the voluntary
+causing to the assailant of any harm other than death.
+40. The right of private defence of the body commences as soon as a reasonable
+apprehension of danger to the body arises from an attempt or threat to commit the offence
+though the offence may not have been committed; and it continues as long as such
+apprehension of danger to the body continues.
+41. The right of private defence of property extends, under the restrictions specified in
+section 37, to the voluntary causing of death or of any other harm to the wrong-doer, if the
+offence, the committing of which, or the attempting to commit which, occasions the exercise
+of the right, be an offence of any of the descriptions hereinafter enumerated, namely:—
+(a) robbery;
+(b) house-breaking after sunset and before sunrise;
+(c) mischief by fire or any explosive substance committed on any building, tent
+or vessel, which building, tent or vessel is used as a human dwelling, or as a place for
+the custody of property;
+(d) theft, mischief, or house-trespass, under such circumstances as may
+reasonably cause apprehension that death or grievous hurt will be the consequence,
+if such right of private defence is not exercised.
+42.
+
+
+Question: When does the right of private defence of the body commence, and how long does it continue?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (3 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The right of private defence of the body commences as soon as a reasonable apprehension of danger to the body arises from an attempt or threat to commit an offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">fd845a4c-8b9f-4a85-9277-6af6b5ccf286</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">90f8747a-7f40-4ae3-b114-2b216129f432</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">The right of private defence of the body commences as soon as a reasonable
+apprehension of danger to the body arises from an attempt or threat to commit the offence
+though the offence may not have been committed; and it continues as long as such
+apprehension of danger to the body continues.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The offence need not have been committed yet for the right of private defence of the body to commence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">40b860a0-b594-419e-8c4c-6548ea609179</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">90f8747a-7f40-4ae3-b114-2b216129f432</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">The right of private defence of the body commences as soon as a reasonable
+apprehension of danger to the body arises from an attempt or threat to commit the offence
+though the offence may not have been committed; and it continues as long as such
+apprehension of danger to the body continues.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The right of private defence of the body continues for as long as that reasonable apprehension of danger to the body persists.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">e6279697-d1e4-49c3-b8ed-6260dd26d60d</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">90f8747a-7f40-4ae3-b114-2b216129f432</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">The right of private defence of the body commences as soon as a reasonable
+apprehension of danger to the body arises from an attempt or threat to commit the offence
+though the offence may not have been committed; and it continues as long as such
+apprehension of danger to the body continues.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">90f8747a-7f40-4ae3-b114-2b216129f432</span>
+            <span class="chunk-src">bns.pdf p.16</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.366</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">25.88</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0318</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.859</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">4</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">12eb9c04-fcf6-4bf9-aaa1-a104dcbc35ba</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">34</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1863 (1863 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(f) an assault with the intention of wrongfully confining a person, under
+circumstances which may reasonably cause him to apprehend that he will be unable to
+have recourse to the public authorities for his release;
+(g) an act of throwing or administering acid or an attempt to throw or administer
+acid which may reasonably cause the apprehension that grievous hurt will otherwise
+be the consequence of such act.
+39. If the offence be not of any of the descriptions specified in section 38, the right of
+private defence of the body does not extend to the voluntary causing of death to the
+assailant, but does extend, under the restrictions specified in section 37, to the voluntary
+causing to the assailant of any harm other than death.
+40. The right of private defence of the body commences as soon as a reasonable
+apprehension of danger to the body arises from an attempt or threat to commit the offence
+though the offence may not have been committed; and it continues as long as such
+apprehension of danger to the body continues.
+41. The right of private defence of property extends, under the restrictions specified in
+section 37, to the voluntary causing of death or of any other harm to the wrong-doer, if the
+offence, the committing of which, or the attempting to commit which, occasions the exercise
+of the right, be an offence of any of the descriptions hereinafter enumerated, namely:—
+(a) robbery;
+(b) house-breaking after sunset and before sunrise;
+(c) mischief by fire or any explosive substance committed on any building, tent
+or vessel, which building, tent or vessel is used as a human dwelling, or as a place for
+the custody of property;
+(d) theft, mischief, or house-trespass, under such circumstances as may
+reasonably cause apprehension that death or grievous hurt will be the consequence,
+if such right of private defence is not exercised.
+42.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">56f0f9d9-31e6-4e2e-a2ae-c5b3ce707d02</span>
+            <span class="chunk-src">bns.pdf p.16</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.316</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">29.68</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0325</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.681</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">2</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">12eb9c04-fcf6-4bf9-aaa1-a104dcbc35ba</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">35</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1860 - 4157 (2297 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">42. If the offence, the committing of which, or the attempting to commit which occasions
+the exercise of the right of private defence, be theft, mischief, or criminal trespass, not of any
+of the descriptions specified in section 41, that right does not extend to the voluntary
+causing of death, but does extend, subject to the restrictions specified in section 37, to the
+voluntary causing to the wrong-doer of any harm other than death.
+43. The right of private defence of property,––
+(a) commences when a reasonable apprehension of danger to the property
+commences;
+(b) against theft continues till the offender has effected his retreat with the
+property or either the assistance of the public authorities is obtained, or the property
+has been recovered;
+(c) against robbery continues as long as the offender causes or attempts to
+cause to any person death or hurt or wrongful restraint or as long as the fear of instant
+death or of instant hurt or of instant personal restraint continues;
+(d) against criminal trespass or mischief continues as long as the offender
+continues in the commission of criminal trespass or mischief;
+(e) against house-breaking after sunset and before sunrise continues as long as
+the house-trespass which has been begun by such house-breaking continues.
+44. If in the exercise of the right of private defence against an assault which reasonably
+causes the apprehension of death, the defender be so situated that he cannot effectually
+When such
+right extends
+to causing any
+harm other
+than death.
+Commencement
+and
+continuance of
+right of private
+defence of
+body.
+When right of
+private
+defence of
+property
+extends to
+causing death.
+When such
+right extends
+to causing any
+harm other
+than death.
+Commencement
+and
+continuance
+of right of
+private
+defence of
+property.
+Right of private
+defence against
+deadly assault
+when there is
+risk of harm to
+innocent person.
+16
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">6f639d07-62fa-48e0-a811-5492ff51880e</span>
+            <span class="chunk-src">bns.pdf p.15</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.306</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">23.14</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0320</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.227</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">4</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">c5fe1f77-47df-4394-8ca7-b8eb18871b47</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">33</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1776 - 3897 (2121 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) The right of private defence in no case extends to the inflicting of more harm than
+it is necessary to inflict for the purpose of defence.
+Explanation 1.—A person is not deprived of the right of private defence against an act
+done, or attempted to be done, by a public servant, as such, unless he knows or has reason
+to believe, that the person doing the act is such public servant.
+Explanation 2.—A person is not deprived of the right of private defence against an act
+done, or attempted to be done, by the direction of a public servant, unless he knows, or has
+reason to believe, that the person doing the act is acting by such direction, or unless such
+person states the authority under which he acts, or if he has authority in writing, unless he
+produces such authority, if demanded.
+38. The right of private defence of the body extends, under the restrictions specified in
+section 37, to the voluntary causing of death or of any other harm to the assailant, if the
+offence which occasions the exercise of the right be of any of the descriptions hereinafter
+enumerated, namely:—
+(a) such an assault as may reasonably cause the apprehension that death will
+otherwise be the consequence of such assault;
+(b) such an assault as may reasonably cause the apprehension that grievous
+hurt will otherwise be the consequence of such assault;
+(c) an assault with the intention of committing rape;
+(d) an assault with the intention of gratifying unnatural lust;
+(e) an assault with the intention of kidnapping or abducting;
+Right of
+private
+defence
+against act of
+a person of
+unsound mind,
+etc.
+Acts against
+which there is
+no right of
+private
+defence.
+When right of
+private
+defence of
+body extends
+to causing
+death.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+15
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">69db30c9-72ad-48eb-b310-9e3137806fa2</span>
+            <span class="chunk-src">bns.pdf p.15</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.399</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">17.20</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0299</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.131</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">9</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">c5fe1f77-47df-4394-8ca7-b8eb18871b47</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">32</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1918 (1918 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">person, against any act which is an offence falling under the definition of theft, robbery,
+mischief or criminal trespass, or which is an attempt to commit theft, robbery, mischief
+or criminal trespass.
+36. When an act, which would otherwise be a certain offence, is not that offence, by
+reason of the youth, the want of maturity of understanding, the unsoundness of mind or the
+intoxication of the person doing that act, or by reason of any misconception on the part of
+that person, every person has the same right of private defence against that act which he
+would have if the act were that offence.
+Illustrations.
+(a) Z, a person of unsound mind, attempts to killA; Z is guilty of no offence. ButAhas
+the same right of private defence which he would have if Z were sane.
+(b) A enters by night a house which he is legally entitled to enter. Z, in good faith,
+taking A for a house-breaker, attacks A. Here Z, by attacking A under this misconception,
+commits no offence. ButA has the same right of private defence against Z, which he would
+have if Z were not acting under that misconception.
+37. (1) There is no right of private defence,––
+(a) against an act which does not reasonably cause the apprehension of death
+or of grievous hurt, if done, or attempted to be done, by a public servant acting in good
+faith under colour of his office, though that act, may not be strictly justifiable by law;
+(b) against an act which does not reasonably cause the apprehension of death
+or of grievous hurt, if done, or attempted to be done, by the direction of a public
+servant acting in good faith under colour of his office, though that direction may not
+be strictly justifiable by law;
+(c) in cases in which there is time to have recourse to the protection of the public
+authorities.
+(2) The right of private defence in no case extends to the inflicting of more harm than
+it is necessary to inflict for the purpose of defence.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">13609d07-4b5c-46ae-b3b3-82b26460bc1f</span>
+            <span class="chunk-src">bns.pdf p.14</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.320</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">23.91</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0317</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.114</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ae4149d2-bff5-4c48-b789-3ff957a582ad</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">31</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2712 - 3934 (1222 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">33. Nothing is an offence by reason that it causes, or that it is intended to cause, or
+that it is known to be likely to cause, any harm, if that harm is so slight that no person of
+ordinary sense and temper would complain of such harm.
+Of  right  of  private defence
+34. Nothing is an offence which is done in the exercise of the right of private defence.
+35. Every person has a right, subject to the restrictions contained in section 37, to
+defend—
+(a) his own body, and the body of any other person, against any offence affecting
+the human body;
+(b) the property, whether movable or immovable, of himself or of any other
+Communication
+made in good
+faith.
+Act to which a
+person is
+compelled by
+threats.
+Act causing
+slight harm.
+Things done
+in private
+defence.
+Right of
+private
+defence of
+body and of
+property.
+14
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">b25092df-b297-4a67-b4c8-ecc4d509893a</span>
+            <span class="chunk-src">bns.pdf p.17</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.376</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">12.68</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0305</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.046</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">5</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">6</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">3ab99971-d196-496a-826a-242b7a530b66</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">36</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1927 (1927 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">exercise that right without risk of harm to an innocent person, his right of private defence
+extends to the running of that risk.
+Illustration.
+A is attacked by a mob who attempt to murder him. He cannot effectually exercise his
+right of private defence without firing on the mob, and he cannot fire without risk of harming
+young children who are mingled with the mob.Acommits no offence if by so firing he harms
+any of the children.
+CHAPTERIV
+OF ABETMENT, CRIMINAL CONSPIRACY AND ATTEMPT
+of abetment
+45. A person abets the doing of a thing, who—
+(a) instigates any person to do that thing; or
+(b) engages with one or more other person or persons in any conspiracy for the
+doing of that thing, if an act or illegal omission takes place in pursuance of that
+conspiracy, and in order to the doing of that thing; or
+(c) intentionally aids, by any act or illegal omission, the doing of that thing.
+Explanation 1.—A person who, by wilful misrepresentation, or by wilful concealment
+of a material fact which he is bound to disclose, voluntarily causes or procures, or attempts
+to cause or procure, a thing to be done, is said to instigate the doing of that thing.
+Illustration.
+A, a public officer, is authorised by a warrant from a Court to apprehend Z. B, knowing
+that fact and also that C is not Z, wilfully represents toAthat C is Z, and thereby intentionally
+causes A to apprehend C. Here B abets by instigation the apprehension of C.
+Explanation 2.—Whoever, either prior to or at the time of the commission of an act,
+does anything in order to facilitate the commission of that act, and thereby facilitates the
+commission thereof, is said to aid the doing of that act.
+46. A person abets an offence, who abets either the commission of an offence, or the
+commission of an act which would be an offence, if committed by a person capable by law of
+committing an offence with the same intention or knowledge as that of the abettor.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 1/6 chunks used (17%)</div>
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">All generated claims are fully supported by evidence.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace fb9c9052-93e0-43cb-b58a-037d8bd6f028.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>GENERATOR passed (confidence=0.95).</li><li>GROUNDING passed (confidence=0.90).</li><li>No failures detected. Pipeline is healthy or all evidence is UNKNOWN.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.930</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>1/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">1.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">3 / 3</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">It commences as soon as a reasonable apprehension of danger to the body arises from an attempt or threat to commit the offence, even though the offence may not yet have been committed, and it continues as long as that apprehension of danger continues.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">It commences as soon as a reasonable apprehension of danger to the body arises from an attempt or threat to commit the offence.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.980</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">The right of private defence of the body **commences** as soon as a **reasonable apprehension of danger to the body** arises from an **attempt or threat to commit an offence** (the offence itself need not have been committed yet).</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The offence may not yet have been committed.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.997</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">The right of private defence of the body **commences** as soon as a **reasonable apprehension of danger to the body** arises from an **attempt or threat to commit an offence** (the offence itself need not have been committed yet).</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">It continues as long as that apprehension of danger continues.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.998</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">It **continues** for as long as that reasonable apprehension of danger to the body persists.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.997</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNKNOWN</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.967</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val mid mono">0.500</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace fb9c9052-93e0-43cb-b58a-037d8bd6f028 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

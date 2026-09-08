@@ -1,0 +1,229 @@
+{
+    "framework_metadata": {
+        "trace_id": "87fa2f86-ac02-413e-9b38-241f05da42f1",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T17:47:49.202200Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?",
+        "generated_answer": "I do not have enough information to answer this.",
+        "overall_health_score": 0.08333333333333333,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 0,
+        "total_claims": 12,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3324800133705139,
+                    "pool_size": 39
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.024083390831947327,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 3
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.024083390831947327
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 3,
+        "verified_claims": 12,
+        "supported_claims": 0,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.08333333333333333,
+        "evidence_coverage": 1.0,
+        "average_entailment": 0.20001075665156046,
+        "retrieval_latency_ms": 5365.04602432251,
+        "generation_latency_ms": 24878.947973251343,
+        "verification_latency_ms": 7617334.8734378815
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 87fa2f86-ac02-413e-9b38-241f05da42f1.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "N/A",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Requires architectural adjustments."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "45acb768-25b6-4f26-a3f2-26cf646eae87",
+            "claim_text": "I do not have enough information",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        },
+        {
+            "claim_id": "05d8b4b7-2170-406c-a974-c55fb3a5ae2e",
+            "claim_text": "I do not have enough information to answer this",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        },
+        {
+            "claim_id": "295bad2c-4f3a-447f-b452-c3e2bc3d0b6c",
+            "claim_text": "I do not have enough",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "a16b94d9-020b-4039-8b96-bc67f74f2c6c",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "A witness or any other person may file a complaint in relation to an offence\nunder section 232 of the Bharatiya Nyaya Sanhita, 2023.\n217. (1) No Court shall take cognizance of\u2014\n(a) any offence punishable under Chapter VII or under section 196, section 299\nor sub-section (1) of section 353 of the Bharatiya Nyaya Sanhita, 2023; or\n(b) a criminal conspiracy to commit such offence; or\n(c) any such abetment, as is described in section 47 of the Bharatiya Nyaya\nSanhita, 2023,\nexcept with the previous sanction of the Central Government or of the State Government.\n(2) No Court shall take cognizance of\u2014\n(a) any offence punishable under section 197 or sub-section (2) or\nsub-section (3) of section 353 of the Bharatiya Nyaya Sanhita, 2023; or\n(b) a criminal conspiracy to commit such offence,\nexcept with the previous sanction of the Central Government or of the State Government or\nof the District Magistrate.\n(3) No Court shall take cognizance of the offence of any criminal conspiracy punishable\nunder sub-section (2) of section 61 of the Bharatiya Nyaya Sanhita, 2023, other than a\ncriminal conspiracy to commit an offence punishable with death, imprisonment for life or\nrigorous imprisonment for a term of two years or upwards, unless the State Government or\nthe District Magistrate has consented in writing to the initiation of the proceedings:\nProcedure for\nwitnesses in\ncase of\nthreatening,\netc."
+        },
+        {
+            "claim_id": "6dc5ff51-6726-4883-a515-e4928f653ff2",
+            "claim_text": "I do not have",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        },
+        {
+            "claim_id": "39c82569-764a-4da1-b840-65414d20796a",
+            "claim_text": "I do not",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        },
+        {
+            "claim_id": "a1122bd7-96a1-47c1-bff8-a96de3a6614b",
+            "claim_text": "I",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "WHEREAS at a Session held on the................................................................day\nof.............................................., 20.......... , ..............................................(name of the prisoner), the\n(1st, 2nd, 3rd, as the case may be), prisoner in case No. ............ of the Calendar for 20.......... ,\nat the said Session, was convicted of the offence of.............................................. , punishable\nunder section..............................................of the Bharatiya Nyaya Sanhita, 2023, and  was\nsentenced to..................... and thereupon committed to your custody; and whereas by the\norder of  the .............................................."
+        },
+        {
+            "claim_id": "1502cc57-156e-4dab-8733-b419edfa1d8d",
+            "claim_text": "have enough information",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        },
+        {
+            "claim_id": "e8eaa571-1860-48b6-82e8-e83e5dc30993",
+            "claim_text": "enough information",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "9d4017b2-1f59-4a23-a900-c00bc16cd22b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "CHARGES  FOR  THEFT  AFTER  PREVIOUS  CONVICTION\nI,..................................................(name and office of Magistrate, etc.) hereby charge you\n..............................................(name of accused person) as follows:\u2014\nThat you, on or about the..............................................day of..............................................,\nat.............................................., committed theft, and thereby committed an offence punishable\nunder section 303(2) of the Bharatiya Nyaya Sanhita, 2023 and within the cognizance of the\nCourt of Session (or Magistrate, as the case may be)."
+        },
+        {
+            "claim_id": "2c34b333-efae-4333-8486-df6fc1b30540",
+            "claim_text": "information to answer this",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        },
+        {
+            "claim_id": "3c8f0489-12ca-4a0b-b9dc-37ee15fc282c",
+            "claim_text": "to answer this",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "9d4017b2-1f59-4a23-a900-c00bc16cd22b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "CHARGES  FOR  THEFT  AFTER  PREVIOUS  CONVICTION\nI,..................................................(name and office of Magistrate, etc.) hereby charge you\n..............................................(name of accused person) as follows:\u2014\nThat you, on or about the..............................................day of..............................................,\nat.............................................., committed theft, and thereby committed an offence punishable\nunder section 303(2) of the Bharatiya Nyaya Sanhita, 2023 and within the cognizance of the\nCourt of Session (or Magistrate, as the case may be)."
+        },
+        {
+            "claim_id": "b4f529f1-c526-415b-bb5f-0e28c6634c4d",
+            "claim_text": "answer this",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "9d4017b2-1f59-4a23-a900-c00bc16cd22b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "CHARGES  FOR  THEFT  AFTER  PREVIOUS  CONVICTION\nI,..................................................(name and office of Magistrate, etc.) hereby charge you\n..............................................(name of accused person) as follows:\u2014\nThat you, on or about the..............................................day of..............................................,\nat.............................................., committed theft, and thereby committed an offence punishable\nunder section 303(2) of the Bharatiya Nyaya Sanhita, 2023 and within the cognizance of the\nCourt of Session (or Magistrate, as the case may be)."
+        },
+        {
+            "claim_id": "d26f1a83-de42-4cec-97ef-bf9d2473f061",
+            "claim_text": "this",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "96bf3df8-723a-4af8-a5e7-6fbf01e02346",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Court of ............................................. order of\nthe  .............................................(a duplicate of which is hereunto annexed) the punishment\nadjudged by the said sentence has been commuted to the punishment of imprisonment for\nlife;\nThis is to authorise and require you safely to keep the said..............................................\n(prisoner's name) in your custody in the said Jail, as by law is required, until he shall be\ndelivered over by you to the proper authority and custody for the purpose of his undergoing\nthe punishment of imprisonment for life under the said order,\nor\nif the mitigated sentence is one of imprisonment, say, after the words \"custody in the said\nJail\", \"and there to carry into execution the punishment of imprisonment under the said order\naccording to law\"."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/3 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.0,
+        "total_gold_claims": 6,
+        "recalled_gold_claims": 0
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T17:47:49.203780Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

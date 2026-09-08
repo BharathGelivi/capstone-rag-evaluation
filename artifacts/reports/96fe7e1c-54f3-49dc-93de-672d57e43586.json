@@ -1,0 +1,167 @@
+{
+    "framework_metadata": {
+        "trace_id": "96fe7e1c-54f3-49dc-93de-672d57e43586",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T23:44:30.166254Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under the BSA, are judgments, orders, or decrees (other than those covered by sections 34-36) generally relevant in other proceedings?",
+        "generated_answer": "Under the Bharatiya Sakshya Adhiniyam (BSA), judgments, orders, or decrees that are **not** covered by sections\u202f34\u201136 are **generally irrelevant** in other proceedings.  \n\nSection\u202f37 states:\n\n> \u201cJudgments or orders or decrees, other than those mentioned in sections\u202f34,\u202f35 and\u202f36, are irrelevant, **unless the existence of such judgment, order or decree is a fact in issue, or is relevant under some other provision of this Adhiniyam**.\u201d\u301038b29cd4-3798-4a9c-9612-53418e213360\u3011\n\nSo, except when the judgment itself is a fact in issue or is made relevant by another provision of the BSA, such judgments, orders, or decrees do not have relevance in other proceedings.",
+        "overall_health_score": 0.6667,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 2,
+        "total_claims": 3,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2951054573059082,
+                    "pool_size": 70
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9958827495574951,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9958827495574951
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 3,
+        "supported_claims": 2,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.6666666666666666,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.6224324169258276,
+        "retrieval_latency_ms": 605.9942245483398,
+        "generation_latency_ms": 7736.343860626221,
+        "verification_latency_ms": 8036.166429519653
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 96fe7e1c-54f3-49dc-93de-672d57e43586.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "f94b2888-72ff-4124-835d-8e7c3f85f707",
+            "claim_text": "Under the Bharatiya Sakshya Adhiniyam (BSA), judgments, orders, or decrees that are not covered by sections 34-36 are generally irrelevant in other proceedings.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "38b29cd4-3798-4a9c-9612-53418e213360",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Judgments or orders or decrees, other than those mentioned in sections 34, 35\nand 36, are irrelevant, unless the existence of such judgment, order or decree is a fact in\nissue, or is relevant under some other provision of this Adhiniyam."
+        },
+        {
+            "claim_id": "777cbf6d-4286-493e-b45d-caf31835b7c5",
+            "claim_text": "Section 37 states that judgments or orders or decrees, other than those mentioned in sections 34, 35 and 36, are irrelevant, unless the existence of such judgment, order or decree is a fact in issue, or is relevant under some other provision of this Adhiniyam.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "2472cd89-b739-49c2-93f6-ad3a3a3896d5",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "When the Court has to form an opinion as to the relationship of one person to\nanother, the opinion, expressed by conduct, as to the existence of such relationship, of any\nperson who, as a member of the family or otherwise, has special means of knowledge on the\nsubject, is a relevant fact:\nProvided that such opinion shall not be sufficient to prove a marriage in proceedings\nunder the Divorce Act, 1869, or in prosecution under sections 82 and 84 of the Bharatiya\nNyaya Sanhita, 2023."
+        },
+        {
+            "claim_id": "618e72b0-686b-426b-a24d-0034b3a99c8e",
+            "claim_text": "Except when the judgment itself is a fact in issue or is made relevant by another provision of the BSA, such judgments, orders, or decrees do not have relevance in other proceedings.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "38b29cd4-3798-4a9c-9612-53418e213360",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Judgments or orders or decrees, other than those mentioned in sections 34, 35\nand 36, are irrelevant, unless the existence of such judgment, order or decree is a fact in\nissue, or is relevant under some other provision of this Adhiniyam."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T23:44:30.166339Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

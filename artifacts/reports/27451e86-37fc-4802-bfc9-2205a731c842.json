@@ -1,0 +1,171 @@
+{
+    "framework_metadata": {
+        "trace_id": "27451e86-37fc-4802-bfc9-2205a731c842",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T05:02:41.709962Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for culpable homicide not amounting to murder, and how does the punishment differ depending on intention versus mere knowledge of likely death?",
+        "generated_answer": "According to Context chunk 2 [Chunk-ID: cb540380-0fc6-40ad-bf08-4db5f0ea2a0a], the punishment for culpable homicide not amounting to murder is as follows: \n\nIf the act by which the death is caused is done with the intention of causing death, or of causing such bodily injury as is likely to cause death, the punishment is imprisonment for life, or imprisonment of either description for a term which shall not be less than five years but which may extend to ten years, and shall also be liable to fine [Chunk-ID: cb540380-0fc6-40ad-bf08-4db5f0ea2a0a]. \n\nIf the act is done with the knowledge that it is likely to cause death, but without any intention to cause death, or to cause such bodily injury as is likely to cause death, the punishment is imprisonment of either description for a term which may extend to ten years and with fine [Chunk-ID: cb540380-0fc6-40ad-bf08-4db5f0ea2a0a].",
+        "overall_health_score": 0.8333333333333334,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 4,
+        "total_claims": 6,
+        "number_of_corrective_actions": 0,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.18081200122833252,
+                    "pool_size": 33
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9979839324951172,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.4,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9979839324951172
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 6,
+        "supported_claims": 4,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8333333333333334,
+        "evidence_coverage": 0.4,
+        "average_entailment": 0.8315168023109436,
+        "retrieval_latency_ms": 1086.7846012115479,
+        "generation_latency_ms": 85637.11404800415,
+        "verification_latency_ms": 1438799.9777793884
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 27451e86-37fc-4802-bfc9-2205a731c842.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Monitor pipeline",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "b9d2974e-7df8-4541-875e-a248175e8ca4",
+            "claim_text": "The punishment for culpable homicide not amounting to murder is imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "cb540380-0fc6-40ad-bf08-4db5f0ea2a0a",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death.\n106."
+        },
+        {
+            "claim_id": "3f2dc458-c2b1-4837-b92a-86df4c4a7961",
+            "claim_text": "The punishment for culpable homicide not amounting to murder is imprisonment of either description for a term which shall not be less than five years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "cb540380-0fc6-40ad-bf08-4db5f0ea2a0a",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death.\n106."
+        },
+        {
+            "claim_id": "be56c2fb-4491-4fab-8f44-428fa791ba55",
+            "claim_text": "The punishment for culpable homicide not amounting to murder is imprisonment of either description for a term which may extend to ten years.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "cb540380-0fc6-40ad-bf08-4db5f0ea2a0a",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death.\n106."
+        },
+        {
+            "claim_id": "2a3d8d1c-aa37-4d3a-bcbe-1bcc4b97b00b",
+            "claim_text": "The punishment for culpable homicide not amounting to murder is also liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63b53cdc-7519-44a9-b89f-c58baebf570b",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Whoever does any act with such intention or knowledge and under such\ncircumstances that, if he by that act caused death, he would be guilty of culpable homicide\nnot amounting to murder, shall be punished with imprisonment of either description for a\nterm which may extend to three years, or with fine, or with both; and, if hurt is caused to any\nperson by such act, shall be punished with imprisonment of either description for a term\nwhich may extend to seven years, or with fine, or with both."
+        },
+        {
+            "claim_id": "70145fa1-5211-4c74-8f22-a94b0c1bcd99",
+            "claim_text": "The punishment for culpable homicide not amounting to murder is imprisonment of either description for a term which may extend to ten years.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "cb540380-0fc6-40ad-bf08-4db5f0ea2a0a",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death.\n106."
+        },
+        {
+            "claim_id": "e0356e5a-2957-46a0-9fd5-8735a1152202",
+            "claim_text": "The punishment for culpable homicide not amounting to murder is also liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63b53cdc-7519-44a9-b89f-c58baebf570b",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "Whoever does any act with such intention or knowledge and under such\ncircumstances that, if he by that act caused death, he would be guilty of culpable homicide\nnot amounting to murder, shall be punished with imprisonment of either description for a\nterm which may extend to three years, or with fine, or with both; and, if hurt is caused to any\nperson by such act, shall be punished with imprisonment of either description for a term\nwhich may extend to seven years, or with fine, or with both."
+        }
+    ],
+    "corrective_actions": [],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 10,
+        "recalled_gold_claims": 10
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T05:02:41.710349Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

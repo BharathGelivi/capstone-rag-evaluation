@@ -1,0 +1,174 @@
+{
+    "framework_metadata": {
+        "trace_id": "3cb62416-5a04-4146-b580-e6040c260638",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T15:08:19.992561Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS section 167, who may be deputed to make a local inquiry necessary under sections 164, 165 or 166, and what may that person be given?",
+        "generated_answer": "Under **BNSS\u202fsection\u202f167(1)**, a **District Magistrate or Sub\u2011divisional Magistrate** may depute **any Magistrate subordinate to him** to carry out a local inquiry required for sections\u202f164,\u202f165 or\u202f166.  \n\nThe deputed Magistrate may be **furnished with written instructions** as may seem necessary for his guidance (and the Magistrate may also declare who shall bear the inquiry\u2019s expenses).  \n\n[Chunk-ID: 2bf32f7f-6ab8-4409-bad7-d9aa5dbbe233]",
+        "overall_health_score": 0.8,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 5,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2865869998931885,
+                    "pool_size": 69
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9996451139450073,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9996451139450073
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7051740071736277,
+        "retrieval_latency_ms": 1740.3042316436768,
+        "generation_latency_ms": 8319.988012313843,
+        "verification_latency_ms": 8861.826419830322
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 3cb62416-5a04-4146-b580-e6040c260638.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "b3b38353-89bc-4927-a201-ee0b4ef5b5e7",
+            "claim_text": "Under BNSS section 167(1), a District Magistrate may depute any Magistrate subordinate to him.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b7ecaaeb-2347-4394-92f6-2ba6bc09973c",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "Exception.\u2014This provision does not extend to the case in which the harbour is given\nby the spouse of the deserter."
+        },
+        {
+            "claim_id": "6b00847c-df30-4037-b268-6175a43d3189",
+            "claim_text": "Under BNSS section 167(1), a Sub-divisional Magistrate may depute any Magistrate subordinate to him.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b7ecaaeb-2347-4394-92f6-2ba6bc09973c",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "Exception.\u2014This provision does not extend to the case in which the harbour is given\nby the spouse of the deserter."
+        },
+        {
+            "claim_id": "8cdf41ca-16d5-4c84-af50-02df2d317179",
+            "claim_text": "Under BNSS section 167(1), the deputed Magistrate may carry out a local inquiry required for sections 164, 165 or 166.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "730c01c2-8fec-4add-b4ef-0307b8d809ca",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n51\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "65dd7554-b476-4a7b-9a3c-9a1b5ec75129",
+            "claim_text": "The deputed Magistrate may be furnished with written instructions as may seem necessary for his guidance.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "2bf32f7f-6ab8-4409-bad7-d9aa5dbbe233",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid."
+        },
+        {
+            "claim_id": "c7873834-1318-4d31-999c-ec4fa1bfb8c9",
+            "claim_text": "The Magistrate may also declare who shall bear the inquiry\u2019s expenses.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "2bf32f7f-6ab8-4409-bad7-d9aa5dbbe233",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Whenever a local inquiry is necessary for the purposes of section 164,\nsection 165 or section 166, a District Magistrate or Sub-divisional Magistrate may depute\nany Magistrate subordinate to him to make the inquiry, and may furnish him with such\nwritten instructions as may seem necessary for his guidance, and may declare by whom the\nwhole or any part of the necessary expenses of the inquiry shall be paid."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T15:08:19.992716Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

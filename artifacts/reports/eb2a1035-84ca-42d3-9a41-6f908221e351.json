@@ -1,0 +1,204 @@
+{
+    "framework_metadata": {
+        "trace_id": "eb2a1035-84ca-42d3-9a41-6f908221e351",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T16:30:07.714633Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What legal consequence follows if someone deliberately sets fire to a dwelling-house after being instigated to do so by another person who has a guilty intention, where the person who set the fire lacked the mental capacity to know the act was wrong?",
+        "generated_answer": "The person who actually set the fire (B) is **not guilty of any offence** because, due to unsoundness of mind, they were incapable of knowing the nature of the act or that it was wrong.  \n\nHowever, the instigator (A), who acted with a guilty intention, is **guilty of abetting the offence of setting fire to a dwelling\u2011house** and is liable to the punishment prescribed for that offence.  \n\nThis follows directly from the illustration in the retrieved context:  \n\n> \u201cA instigates B to set fire to a dwelling\u2011house. B, in consequence of his unsoundness of mind, being incapable of knowing the nature of the act, or that he is doing what is wrong or contrary to law, sets fire to the house in consequence of A\u2019s instigation. B has committed no offence, but A is guilty of abetting the offence of setting fire to a dwelling\u2011house, and is liable to the punishment provided for that offence.\u201d\u301063cb2c24-3b1a-4f5f-bdce-52797e73b527\u3011.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 10,
+        "total_claims": 10,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.271986186504364,
+                    "pool_size": 60
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9365110993385315,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9365110993385315
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 10,
+        "supported_claims": 10,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.9969410121440887,
+        "retrieval_latency_ms": 832.7426910400391,
+        "generation_latency_ms": 45084.39755439758,
+        "verification_latency_ms": 14390.380859375
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace eb2a1035-84ca-42d3-9a41-6f908221e351.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "73d94539-9c39-4ba1-9412-a0acb27bc563",
+            "claim_text": "B actually set the fire.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "B, in consequence of his unsoundness\nof mind, being incapable of knowing the nature of the act, or that he is doing what is wrong\nor contrary to law, sets fire to the house in consequence ofA\u2019s instigation."
+        },
+        {
+            "claim_id": "0e65c388-27dc-4cbc-ba8d-b0ee7f64ec41",
+            "claim_text": "B is not guilty of any offence.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "B has committed\nno offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is\nliable to the punishment provided for that offence."
+        },
+        {
+            "claim_id": "52705d2a-0b09-45df-aa64-00bc8f601a5b",
+            "claim_text": "B was incapable of knowing the nature of the act due to unsoundness of mind.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "B, in consequence of his unsoundness\nof mind, being incapable of knowing the nature of the act, or that he is doing what is wrong\nor contrary to law, sets fire to the house in consequence ofA\u2019s instigation."
+        },
+        {
+            "claim_id": "eb9ec324-e205-4282-87c2-cf34975acb0e",
+            "claim_text": "B was incapable of knowing that the act was wrong due to unsoundness of mind.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "B, in consequence of his unsoundness\nof mind, being incapable of knowing the nature of the act, or that he is doing what is wrong\nor contrary to law, sets fire to the house in consequence ofA\u2019s instigation."
+        },
+        {
+            "claim_id": "7a6906cc-baf6-4b2a-b654-2d76403c9d66",
+            "claim_text": "A is the instigator.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a40b67ca-3a9e-4ada-b318-69dc6a4dda1b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(c)Ainstigates B and C to break into an inhabited house at midnight for the purpose of\nrobbery, and provides them with arms for that purpose."
+        },
+        {
+            "claim_id": "fd9b1623-9519-40c2-a2c9-fcc13466ef4f",
+            "claim_text": "A acted with a guilty intention.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(b) A, with the intention of murdering Z, instigates B, a child under seven years of age,\nto do an act which causes Z\u2019s death."
+        },
+        {
+            "claim_id": "a8d4ba3e-36f7-4d16-950c-7f74c012b3ab",
+            "claim_text": "A instigates B to set fire to a dwelling\u2011house.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(c)Ainstigates B to set fire to a dwelling-house."
+        },
+        {
+            "claim_id": "95e5c7a0-bac8-4c29-8ffc-38b75cc42eab",
+            "claim_text": "B sets fire to the house in consequence of A\u2019s instigation.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a40b67ca-3a9e-4ada-b318-69dc6a4dda1b",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(b) A instigates B to burn Z\u2019s house, B sets fire to the house and at the same time\ncommits theft of property there.A, though guilty of abetting the burning of the house, is not\nguilty of abetting the theft; for the theft was a distinct act, and not a probable consequence\nof the burning."
+        },
+        {
+            "claim_id": "b9e1fecb-9732-4a19-b8e7-896dde174fca",
+            "claim_text": "A is guilty of abetting the offence of setting fire to a dwelling\u2011house.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "B has committed\nno offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is\nliable to the punishment provided for that offence."
+        },
+        {
+            "claim_id": "4061c024-af9d-49f9-82d8-20c8a5cba166",
+            "claim_text": "A is liable to the punishment prescribed for that offence.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "63cb2c24-3b1a-4f5f-bdce-52797e73b527",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "B has committed\nno offence, but A is guilty of abetting the offence of setting fire to a dwelling-house, and is\nliable to the punishment provided for that offence."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.75,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T16:30:07.714906Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

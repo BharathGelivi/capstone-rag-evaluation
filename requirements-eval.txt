@@ -1,0 +1,33 @@
+# Dependencies for the X-RAG vs. RAGAS/RAGChecker/ARES benchmark comparison
+# (scripts/run_baseline_comparison.py and friends). These are heavy and only
+# needed for that comparison, not for running the core X-RAG pipeline -- kept
+# separate from requirements.txt intentionally.
+#
+# IMPORTANT: ragchecker and ares-ai each need their OWN separate Python 3.10
+# venv (not this project's main Python 3.13 venv, and not each other's venv --
+# their pinned dependencies conflict with each other). See
+# requirements-eval-ragchecker.txt and requirements-eval-ares.txt, and the
+# "Optional: Baseline Comparison Benchmark" section of README.md for the exact
+# three-venv setup. No Rust or C/C++ compiler installation is required for any
+# of the three baselines -- see docs/RESEARCH_LOG.md for how each blocker that
+# initially looked like it needed one was actually resolved.
+#
+# This file (requirements-eval.txt) covers ONLY ragas, which installs cleanly
+# into this project's main venv alongside the core pipeline.
+#
+# IMPORTANT -- read before installing:
+# ragas 0.4.x (the current PyPI "latest") hard-imports
+# `langchain_community.chat_models.vertexai.ChatVertexAI` at module load time.
+# That submodule has been fully removed from langchain-community (migrated to
+# the standalone langchain-google-vertexai package), so ragas>=0.4 currently
+# fails to import at all, even with no langchain-community version pin (this
+# is a real upstream packaging break as of 2026-07, not a version mismatch you
+# can fix by re-resolving). Pinning ragas==0.2.15 avoids the broken import
+# path in day-to-day use, but that version still contains the same
+# unconditional import statement, so you additionally need the small local
+# compatibility shim described in docs/RESEARCH_LOG.md (a stub ChatVertexAI
+# class dropped into your venv's langchain_community/chat_models/vertexai.py --
+# see the research log for the exact file content). We never use Vertex AI
+# (Google Cloud) anywhere in this project; the shim exists purely so the
+# import succeeds.
+ragas==0.2.15

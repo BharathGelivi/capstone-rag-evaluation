@@ -1,0 +1,195 @@
+{
+    "framework_metadata": {
+        "trace_id": "f78c3e62-d8bd-429d-834a-3e5defbacbd1",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T16:50:32.289591Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Given that BNS section 103 caps the punishment for murder at ten years' imprisonment, what additional fine is imposed on top of that ten-year term?",
+        "generated_answer": "According to the retrieved text, **BNS\u202f\u00a7\u202f103(1)** states that whoever commits murder \u201cshall be punished with death or imprisonment for life, **and shall also be liable to fine**\u201d\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011.  \n\nThe passage does **not specify a monetary amount or any upper limit for the fine**; it only notes that a fine is imposed in addition to the term of imprisonment. Therefore, the additional penalty is a fine (the exact quantum of which is not detailed in the provided context).",
+        "overall_health_score": 0.4,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 2,
+        "total_claims": 5,
+        "number_of_corrective_actions": 4,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3581114411354065,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.5079852342605591,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.5079852342605591
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "FAIL",
+                "observation": "1 claim(s) are actively contradicted by retrieved evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "contradicted_count": 1
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 2,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 1,
+        "grounding_score": 0.4,
+        "evidence_coverage": 0.8333333333333334,
+        "average_entailment": 0.5075478387996555,
+        "retrieval_latency_ms": 1132.7548027038574,
+        "generation_latency_ms": 13368.20912361145,
+        "verification_latency_ms": 19397.675275802612
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [
+            "GROUNDING_FAILURE"
+        ],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace f78c3e62-d8bd-429d-834a-3e5defbacbd1.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "Failure at GROUNDING: GROUNDING_FAILURE (confidence=0.95). Observation: 1 claim(s) are actively contradicted by retrieved evidence.",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Secondary effect (propagated from GENERATOR): GROUNDING_FAILURE at GROUNDING (confidence=0.95).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.91
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "a1e57b82-7010-4546-81e2-4d10611cab62",
+            "claim_text": "BNS \u00a7 103(1) states that whoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Explanation.\u2014 For the purposes of this sub-section, \u201cregistered medical practitioner\u201d\nmeans a medical practitioner who possesses any medical qualification recognised under the\nNational Medical CommissionAct, 2019 and whose name has been entered in the National\nMedical Register or a State Medical Register under that Act."
+        },
+        {
+            "claim_id": "e6b2b919-9dcf-402e-9bf4-e4e75d3892d8",
+            "claim_text": "The passage does not specify a monetary amount for the fine.",
+            "verification_status": "CONTRADICTED",
+            "supporting_chunk_id": "b4c67a5d-e560-4aa9-ba82-88c5c8a93dcf",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "249."
+        },
+        {
+            "claim_id": "c6c74384-0fa7-449b-8d56-98c47cff99ae",
+            "claim_text": "The passage does not specify any upper limit for the fine.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4adc2125-5e14-45d5-80a0-70a9649ec4ca",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Illustration."
+        },
+        {
+            "claim_id": "e661f496-ea99-4833-b261-3a7b9a2a1675",
+            "claim_text": "The passage notes that a fine is imposed in addition to the term of imprisonment.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Whoever commits murder shall be punished with death or imprisonment for\nlife, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "0dd40d9e-9a5e-4e0b-ad37-6999b3cb14da",
+            "claim_text": "The exact quantum of the fine is not detailed in the provided context.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "01858be4-6a44-4c78-ad2e-9d51a448976b",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "amounting to murder, if act Imprisonment for not less\nby which the death is\nthan 5 years but which\ncaused is done with\nmay extend to 10 years\nintention of causing death,\nand fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "experimental",
+            "title": "Require Explicit Citations",
+            "description": "Force the LLM to append [Chunk-ID] to every sentence it generates.",
+            "observed_evidence": "LLM struggles to maintain factual fidelity across long generation spans (1 contradicted claim(s) observed).",
+            "expected_improvement": "Self-correction during generation ensures every fact is linked to evidence.",
+            "success_metric": "100% of claims map cleanly to a cited chunk (currently 1 contradicted).",
+            "tradeoff": "Increases output token length and adds parsing overhead."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T16:50:32.290004Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

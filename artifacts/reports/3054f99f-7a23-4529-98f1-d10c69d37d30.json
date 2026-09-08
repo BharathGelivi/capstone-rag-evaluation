@@ -1,0 +1,194 @@
+{
+    "framework_metadata": {
+        "trace_id": "3054f99f-7a23-4529-98f1-d10c69d37d30",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T15:35:24.617781Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment applies to abetment of an offence when the Sanhita makes no express provision for punishing that specific abetment?",
+        "generated_answer": "When the Bharatiya Nyaya Sanhita,\u202f2023 contains **no express provision** for punishing a particular act of abetment, the law falls back on the general rules laid down in Sections\u202f49,\u202f55 and\u202f56.  \n\n**Section\u202f49** \u2013 *Abetment when the act is committed*  \n> \u201cWhoever abets any offence shall, if the act abetted is committed in consequence of the abetment, and no express provision is made by this Sanhita for the punishment of such abetment, be punished with the punishment provided for the offence.\u201d  \n> *[Chunk\u202f6: e3cfd376-1174-46eb-9573-2b6cafe0dbc6]*  \n\n**Section\u202f55** \u2013 *Abetment of an offence punishable with death or imprisonment for life (offence not committed)*  \n> \u201cWhoever abets the commission of an offence punishable with death or imprisonment for life, shall, if that offence be not committed in consequence of the abetment, and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of either description for a term which may extend to **seven years**, and shall also be liable to fine; and if any act \u2026 which causes hurt to any person, is done, the abettor shall be liable to imprisonment of either description for a term which may extend to **fourteen years**, and shall also be liable to fine.\u201d  \n> *[Chunk\u202f2: 320c1526-fed5-4985-ae85-e16910f24ab6]*  \n\n**Section\u202f56** \u2013 *Abetment of an offence punishable with imprisonment (offence not committed)*  \n> \u201cWhoever abets an offence punishable with imprisonment shall, if that offence be not committed in consequence of the abetment, and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of any description provided for that offence, for a term which may extend to **one\u2011fourth part of the longest term** provided for that offence; or with such fine as is provided for that offence, or with both; and if the abettor or the person abetted is a public servant \u2026 the abettor shall be punished with imprisonment \u2026 for a term which may extend to **one\u2011half of the longest term** provided for that offence, or with such fine \u2026 or with both.\u201d  \n> *[Chunk\u202f3: a90a5461-96e5-4ff3-b754-c6e6c504fe4e]*  \n\n### Summary of the punishment when no express provision exists\n| Situation | Punishment (if no express provision) |\n|-----------|--------------------------------------|\n| **Abetted act actually committed** | Same punishment as the principal offence (Sec\u202f49). |\n| **Offence not committed \u2013 punishable with death or life imprisonment** | Imprisonment up to **7\u202fyears** (or up to **14\u202fyears** if hurt caused) + fine (Sec\u202f55). |\n| **Offence not committed \u2013 punishable with imprisonment** | Imprisonment up to **\u00bc of the maximum term** (or up to **\u00bd** if abettor/abetted is a public servant) + fine (Sec\u202f56). |\n\nThese provisions collectively govern the punishment for abetment when the Sanhita does not specify a separate penalty for that particular abetment.",
+        "overall_health_score": 0.8333,
+        "primary_issue": "CHUNK_BOUNDARY",
+        "supported_claims": 4,
+        "total_claims": 6,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.28121012449264526,
+                    "pool_size": 65
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9981046915054321,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "FAIL",
+                "observation": "2 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+                "confidence": "0.8",
+                "metadata": {
+                    "boundary_claim_ids": [
+                        "8582d183-6661-4d2f-a17d-367258e6a540",
+                        "f8836a5f-277c-4f06-afd4-4a48c9ca39e2"
+                    ]
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9981046915054321
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 4,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8333333333333334,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.6958344678084055,
+        "retrieval_latency_ms": 10062.576532363892,
+        "generation_latency_ms": 19185.18376350403,
+        "verification_latency_ms": 297614.9513721466
+    },
+    "root_cause_analysis": {
+        "primary_cause": "CHUNK_BOUNDARY",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 3054f99f-7a23-4529-98f1-d10c69d37d30.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Failure at CHUNKING: CHUNK_BOUNDARY (confidence=0.80). Observation: 2 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: CHUNK_BOUNDARY at CHUNKING (earliest upstream failure, confidence=0.80).",
+            "Analysis complete. Primary cause: CHUNK_BOUNDARY."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "CHUNK_BOUNDARY",
+        "next_priority": "Increase Chunk Overlap",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "8582d183-6661-4d2f-a17d-367258e6a540",
+            "claim_text": "When the Bharatiya Nyaya Sanhita, 2023 contains no express provision for punishing a particular act of abetment, the law falls back on the general rules laid down in Sections 49, 55 and 56.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "06d7cc3d-d780-4142-8463-cddc13acf593",
+            "claim_text": "Under Section 49 of the Bharatiya Nyaya Sanhita, 2023, whoever abets any offence shall, if the act abetted is committed in consequence of the abetment and no express provision is made by this Sanhita for the punishment of such abetment, be punished with the punishment provided for the offence.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "a22bbd7a-4441-4a88-a074-eb61bbe06038",
+            "claim_text": "Under Section 55 of the Bharatiya Nyaya Sanhita, 2023, whoever abets the commission of an offence punishable with death or imprisonment for life shall, if that offence is not committed in consequence of the abetment and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of either description for a term which may extend to seven years and shall also be liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "f8836a5f-277c-4f06-afd4-4a48c9ca39e2",
+            "claim_text": "Under Section 55 of the Bharatiya Nyaya Sanhita, 2023, if any act which causes hurt to any person is done in the course of abetment of an offence punishable with death or imprisonment for life, the abettor shall be liable to imprisonment of either description for a term which may extend to fourteen years and shall also be liable to fine.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "7c1413a6-7530-4d7c-91b9-7457a9548592",
+            "claim_text": "Under Section 56 of the Bharatiya Nyaya Sanhita, 2023, whoever abets an offence punishable with imprisonment shall, if that offence is not committed in consequence of the abetment and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of any description provided for that offence, for a term which may extend to one\u2011fourth part of the longest term provided for that offence; or with such fine as is provided for that offence; or with both.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "664b2322-2afe-4158-a09e-7767a348317d",
+            "claim_text": "Under Section 56 of the Bharatiya Nyaya Sanhita, 2023, if the abettor or the person abetted is a public servant, the abettor shall be punished with imprisonment of any description provided for that offence, for a term which may extend to one\u2011half of the longest term provided for that offence; or with such fine as is provided for that offence; or with both.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Increase Chunk Overlap",
+            "description": "Adjust text splitter to increase overlap between adjacent chunks by 10-20%.",
+            "observed_evidence": "LLM answers partially but misses critical context that was split into the next unretrieved chunk (2 partially supported claim(s) affected).",
+            "expected_improvement": "Context is preserved across chunks.",
+            "success_metric": "Reduction in 'Partially Supported' claims (currently 2).",
+            "tradeoff": "Increases total chunk count, redundancy, and storage."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.6666666666666666,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T15:35:24.619805Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

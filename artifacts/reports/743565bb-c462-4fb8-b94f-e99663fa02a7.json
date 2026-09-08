@@ -1,0 +1,175 @@
+{
+    "framework_metadata": {
+        "trace_id": "743565bb-c462-4fb8-b94f-e99663fa02a7",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T13:58:14.463004Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What two types of conduct constitute the offence of 'stalking' under BNS section 78?",
+        "generated_answer": "Under **BNS section\u202f78(1)**, the offence of stalking is constituted by either of the following two types of conduct:\n\n1. **Following a woman and contacting (or attempting to contact) her to foster personal interaction repeatedly, despite a clear indication of disinterest by the woman**  \n2. **Monitoring the use by a woman of the internet, e\u2011mail, or any other form of electronic communication**  \n\nThese are the two distinct behaviours that, when committed by a man, amount to stalking under the Bharatiya Nyaya Sanhita, 2023\u3010c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77\u3011.",
+        "overall_health_score": 0.75,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 4,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2514246702194214,
+                    "pool_size": 68
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.7363428473472595,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.7363428473472595
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 4,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.75,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.7277560941874981,
+        "retrieval_latency_ms": 920.2921390533447,
+        "generation_latency_ms": 4944.46063041687,
+        "verification_latency_ms": 9740.503072738647
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 743565bb-c462-4fb8-b94f-e99663fa02a7.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "87822ce5-a8e7-4e48-805c-5a2b3bb313fc",
+            "claim_text": "Under BNS section 78(1), the offence of stalking is constituted by either of two types of conduct.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "3d3d46c6-ce1c-4bd3-b4dc-06c4e4ad9cbb",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "An expert may give an account of experiments performed by him for the purpose of\nforming his opinion."
+        },
+        {
+            "claim_id": "f7b907b8-fc5a-45d0-9db0-fcddb7fca84a",
+            "claim_text": "One type of conduct constituting stalking under BNS section 78(1) is following a woman and contacting (or attempting to contact) her to foster personal interaction repeatedly, despite a clear indication of disinterest by the woman.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Any man who\u2014\n(i) follows a woman and contacts, or attempts to contact such woman to foster\npersonal interaction repeatedly despite a clear indication of disinterest by such woman; or\n(ii) monitors the use by a woman of the internet, e-mail or any other form of\nelectronic communication,\ncommits the offence of stalking:\nProvided that such conduct shall not amount to stalking if the man who pursued it\nproves that\u2014\n(i) it was pursued for the purpose of preventing or detecting crime and the man\naccused of stalking had been entrusted with the responsibility of prevention and\ndetection of crime by the State; or\n(ii) it was pursued under any law or to comply with any condition or requirement\nimposed by any person under any law; or\n(iii) in the particular circumstances such conduct was reasonable and justified."
+        },
+        {
+            "claim_id": "b74b76f9-b48e-4fd5-a7be-3ae9490092df",
+            "claim_text": "Another type of conduct constituting stalking under BNS section 78(1) is monitoring the use by a woman of the internet, e\u2011mail, or any other form of electronic communication.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) Any man who\u2014\n(i) follows a woman and contacts, or attempts to contact such woman to foster\npersonal interaction repeatedly despite a clear indication of disinterest by such woman; or\n(ii) monitors the use by a woman of the internet, e-mail or any other form of\nelectronic communication,\ncommits the offence of stalking:\nProvided that such conduct shall not amount to stalking if the man who pursued it\nproves that\u2014\n(i) it was pursued for the purpose of preventing or detecting crime and the man\naccused of stalking had been entrusted with the responsibility of prevention and\ndetection of crime by the State; or\n(ii) it was pursued under any law or to comply with any condition or requirement\nimposed by any person under any law; or\n(iii) in the particular circumstances such conduct was reasonable and justified."
+        },
+        {
+            "claim_id": "dba3e076-8d7e-49dc-881a-d84d7724df3f",
+            "claim_text": "These two behaviours, when committed by a man, amount to stalking under the Bharatiya Nyaya Sanhita, 2023.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "a2040826-543b-4f20-992e-225b2769d0a6",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n161\n___________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T13:58:14.463258Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

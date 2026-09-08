@@ -1,0 +1,1016 @@
+<title>X-RAG Diagnostic Report — 6dcb2133-1a02-4e79-9fb2-04ca8e861e82</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?</h1>
+    <p class="dek">Trace <span class="mono">6dcb2133-1a02-4e79-9fb2-04ca8e861e82</span>, generated 2026-09-06T16:07:35.545869Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">0%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">RETRIEVAL_MISS</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">0 / 1</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.020</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">I do not have enough information to answer this.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 1.07s retrieval + 6.23s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">7.301s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">59</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: e74df2c5-1ab3-4196-900c-6af280bd1ea2] ---
+and the substance thereof shall be entered in a book to be kept by such officer in such form
+as the State Government may by rules prescribe in this behalf:
+Provided that if the information is given by the woman against whom an offence
+under section 64, section 65, section 66, section 67, section 68, section 69, section 70,
+section 71, section 74, section 75, section 76, section 77, section 78, section 79 or
+section 124 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or
+attempted, then such information shall be recorded, by a woman police officer or any
+woman officer:
+Provided further that—
+(a) in the event that the person against whom an offence under section 64,
+section 65, section 66, section 67, section 68, section 69, section 70, section 71,
+section 74, section 75, section 76, section 77, section 78, section 79   or section 124 of
+the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, is
+temporarily or permanently mentally or physically disabled, then such information
+shall be recorded by a police officer, at the residence of the person seeking to report
+such offence or at a convenient place of such person&#x27;s choice, in the presence of an
+interpreter or a special educator, as the case may be;
+(b) the recording of such information shall be videographed;
+(c) the police officer shall get the statement of the person recorded by a
+Magistrate under clause (a) of sub-section (6) of section 183 as soon as possible.
+(2) A copy of the information as recorded under sub-section (1) shall be given forthwith,
+free of cost, to the informant or the victim.
+
+--- Context chunk 2 [Chunk-ID: e8250414-8e89-495a-bf8f-5a7ce5d02e93] ---
+Explanation.—For the purposes of this section, &quot;cruelty&quot; shall have the same meaning
+as in section 86 of the Bharatiya Nyaya Sanhita, 2023.
+118. When the question is whether a person has committed the dowry death of a
+woman and it is shown that soon before her death, such woman had been subjected by
+such person to cruelty or harassment for, or in connection with, any demand for dowry, the
+Court shall presume that such person had caused the dowry death.
+Explanation.—For the purposes of this section, &quot;dowry death&quot; shall have the same
+meaning as in section 80 of the Bharatiya Nyaya Sanhita, 2023.
+119. (1) The Court may presume the existence of any fact which it thinks likely to have
+happened, regard being had to the common course of natural events, human conduct and
+public and private business, in their relation to the facts of the particular case.
+Illustrations.
+The Court may presume that—
+(a) a man who is in possession of stolen goods soon, after the theft is either the
+thief or has received the goods knowing them to be stolen, unless he can account for
+his possession;
+(b) an accomplice is unworthy of credit, unless he is corroborated in material
+particulars;
+Presumption
+as to certain
+offences.
+Birth during
+marriage,
+conclusive
+proof of
+legitimacy.
+Presumption
+as to abetment
+of suicide by a
+married
+woman.
+Presumption
+as to dowry
+death.
+Court may
+presume
+existence of
+certain facts.
+34
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________
+
+--- Context chunk 3 [Chunk-ID: 023d85f2-117a-4a45-b114-36fda724230c] ---
+(2) The offences punishable under the sections of the Bharatiya Nyaya Sanhita, 2023
+specified in the first two columns of the Table next following may, with the permission of the
+Court before which any prosecution for such offence is pending, be compounded by the
+persons mentioned in the third column of that Table:—
+Table
+Offence
+Section of the Bharatiya
+Person by whom offence
+Nyaya Sanhita applicable
+may be compounded
+1
+2
+3
+Word, gesture or act
+79
+The woman whom it was
+intended to insult the
+intended to insult or whose
+modesty of a woman.
+privacy was intruded upon.
+Marrying again during the
+82(1)
+The husband or wife of the
+life-time of a husband or wife.
+person so marrying.
+Causing miscarriage.
+88
+The woman to whom
+miscarriage is caused.
+Voluntarily causing grievous
+117(2)
+The person to whom hurt is
+hurt.
+caused.
+Causing hurt by doing an
+125(a)
+The person to whom hurt is
+act so rashly and negligently
+caused.
+as to endanger human life
+or the personal safety of others.
+Causing grievous hurt by
+125(b)
+The person to whom hurt is
+doing an act so rashly and
+caused.
+negligently as to endanger
+human life or the personal
+safety of others.
+Assault or criminal force in
+135
+The person assaulted or to
+attempting wrongfully to
+whom the force was used.
+confine a person.
+Theft, by clerk or servant
+306
+The owner of the property
+of property in possession
+stolen.
+of master.
+Criminal breach of trust.
+316(2)
+The owner of the property in
+respect of which breach of
+trust has been committed.
+Criminal breach of trust by
+316(4)
+The owner of the property in
+a clerk or servant.
+respect of which the breach
+of trust has been committed.
+Cheating a person whose
+318(3)
+The person cheated.
+interest the offender was
+bound, either by law or by
+legal contract, to protect.
+Cheating and dishonestly
+318(4)
+The person cheated.
+inducing delivery of
+property or the making,
+alteration or destruction
+of a valuable security.
+
+--- Context chunk 4 [Chunk-ID: 54f08b17-52c5-4f8a-ba47-842947b437ec] ---
+219. (1) No Court shall take cognizance of an offence punishable under sections 81 to
+84 (both inclusive) of the Bharatiya Nyaya Sanhita, 2023 except upon a complaint made by
+some person aggrieved by the offence:
+Provided that—
+(a) where such person is a child, or is of unsound mind or is having intellectual
+disability requiring higher support needs, or is from sickness or infirmity unable to
+make a complaint, or is a woman who, according to the local customs and manners,
+ought not to be compelled to appear in public, some other person may, with the leave
+of the Court, make a complaint on his or her behalf;
+(b) where such person is the husband and he is serving in any of the Armed
+Forces of the Union under conditions which are certified by his Commanding Officer
+as precluding him from obtaining leave of absence to enable him to make a complaint
+in person, some other person authorised by the husband in accordance with the
+provisions of sub-section (4) may make a complaint on his behalf;
+(c) where the person aggrieved by an offence punishable under section 82 of
+the Bharatiya Nyaya Sanhita, 2023 is the wife, complaint may be made on her behalf
+by her father, mother, brother, sister, son or daughter or by her father&#x27;s or mother&#x27;s
+brother or sister, or, with the leave of the Court, by any other person related to her by
+blood, marriage or adoption.
+(2) For the purposes of sub-section (1), no person other than the husband of the
+woman shall be deemed to be aggrieved by any offence punishable under section 84 of the
+Bharatiya Nyaya Sanhita, 2023.
+
+--- Context chunk 5 [Chunk-ID: b5700dc4-2f70-4dc3-a71e-5b27e4bbeeb1] ---
+(2) Notwithstanding anything contained in this Sanhita, when any offence falling
+under section 356 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed
+against a person who, at the time of such commission, is the President of India, the
+Vice-President of India, the Governor of a State, the Administrator of a Union territory or a
+Minister of the Union or of a State or of a Union territory, or any other public servant
+employed in connection with the affairs of the Union or of a State in respect of his conduct
+in the discharge of his public functions, a Court of Session may take cognizance of such
+offence, without the case being committed to it, upon a complaint in writing made by the
+Public Prosecutor.
+(3) Every complaint referred to in sub-section (2) shall set forth the facts which
+constitute the offence alleged, the nature of such offence and such other particulars as are
+reasonably sufficient to give notice to the accused of the offence alleged to have been
+committed by him.
+(4) No complaint under sub-section (2) shall be made by the Public Prosecutor except
+with the previous sanction—
+(a) of the State Government,—
+(i) in the case of a person who is or has been the Governor of that State or
+a Minister of that Government;
+(ii) in the case of any other public servant employed in connection with
+the affairs of the State;
+(b) of the Central Government, in any other case.
+(5) No Court of Session shall take cognizance of an offence under sub-section (2)
+unless the complaint is made within six months from the date on which the offence is alleged
+to have been committed.
+(6) Nothing in this section shall affect the right of the person against whom the
+offence is alleged to have been committed, to make a complaint in respect of that offence
+before a Magistrate having jurisdiction or the power of such Magistrate to take cognizance
+of the offence upon such complaint.
+Prosecution of
+offences under
+section 85 of
+Bharatiya
+Nyaya
+Sanhita, 2023.
+Cognizance of
+offence.
+Prosecution
+for
+defamation.
+
+--- Context chunk 6 [Chunk-ID: a1ff7927-b969-41ad-bb88-bb05b05b4c9c] ---
+THE BHARATIYA NYAYA SANHITA, 2023
+NO. 45 OF 2023
+[25th December, 2023.]
+An Act to consolidate and amend the provisions relating to offences and for
+matters connected therewithor incidentalthereto.
+BE it enacted by Parliament in the Seventy-fourth Year of the Republic of India as
+follows:––
+CHAPTERI
+PRELIMINARY
+1. (1) ThisAct maybe called the Bharatiya Nyaya Sanhita, 2023.
+(2) It shall come intoforce on such date as the Central Government may, bynotification
+in the Official Gazette, appoint, and different dates maybe appointed for different provisions
+of this Sanhita.
+Short title,
+commencement
+and
+application.
+vlk/kkj.k
+EXTRAORDINARY
+Hkkx II — [k.M 1
+PART II — Section 1
+izkf/kdkj ls izdkf&#x27;kr
+PUBLISHED BY AUTHORITY
+lañ 53]
+ubZ fnYyh] lkseokj] fnlEcj 25] 2023@ikS&quot;k 4] 1945 ¼&#x27;kd½
+No. 53]
+NEW DELHI, MONDAY, DECEMBER 25, 2023/PAUSHA 4, 1945 (SAKA)
+bl Hkkx esa fHkUu i`&quot;B la[;k nh tkrh gS ftlls fd ;g vyx ladyu ds :i esa j[kk tk ldsA
+Separate paging is given to this Part in order that it may be filed as a separate compilation.
+xxxGIDHxxx
+xxxGIDExxx
+jftLVªh lañ Mhñ ,yñ—(,u)04@0007@2003—23
+REGISTERED NO.
+
+
+Question: What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (1 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">I do not have enough information to answer this.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">d7eb8af3-e98f-421a-8421-753c2efe16d7</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">e8250414-8e89-495a-bf8f-5a7ce5d02e93</span> (rank 5)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">34
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">a1ff7927-b969-41ad-bb88-bb05b05b4c9c</span>
+            <span class="chunk-src">bns.pdf p.1</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.395</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">7.81</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0287</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.177</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">21</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">6561a0a5-fd51-49a0-8261-875c7b704d16</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">0</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1110 (1110 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">THE BHARATIYA NYAYA SANHITA, 2023
+NO. 45 OF 2023
+[25th December, 2023.]
+An Act to consolidate and amend the provisions relating to offences and for
+matters connected therewithor incidentalthereto.
+BE it enacted by Parliament in the Seventy-fourth Year of the Republic of India as
+follows:––
+CHAPTERI
+PRELIMINARY
+1. (1) ThisAct maybe called the Bharatiya Nyaya Sanhita, 2023.
+(2) It shall come intoforce on such date as the Central Government may, bynotification
+in the Official Gazette, appoint, and different dates maybe appointed for different provisions
+of this Sanhita.
+Short title,
+commencement
+and
+application.
+vlk/kkj.k
+EXTRAORDINARY
+Hkkx II — [k.M 1
+PART II — Section 1
+izkf/kdkj ls izdkf&#x27;kr
+PUBLISHED BY AUTHORITY
+lañ 53]
+ubZ fnYyh] lkseokj] fnlEcj 25] 2023@ikS&quot;k 4] 1945 ¼&#x27;kd½
+No. 53]
+NEW DELHI, MONDAY, DECEMBER 25, 2023/PAUSHA 4, 1945 (SAKA)
+bl Hkkx esa fHkUu i`&quot;B la[;k nh tkrh gS ftlls fd ;g vyx ladyu ds :i esa j[kk tk ldsA
+Separate paging is given to this Part in order that it may be filed as a separate compilation.
+xxxGIDHxxx
+xxxGIDExxx
+jftLVªh lañ Mhñ ,yñ—(,u)04@0007@2003—23
+REGISTERED NO.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">b5700dc4-2f70-4dc3-a71e-5b27e4bbeeb1</span>
+            <span class="chunk-src">bnss.pdf p.72</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.456</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">7.08</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0266</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.100</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">4</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">31</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">a5dbe91b-82e8-4560-a8be-635c42e069d9</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">433</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1435 - 3468 (2033 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) Notwithstanding anything contained in this Sanhita, when any offence falling
+under section 356 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed
+against a person who, at the time of such commission, is the President of India, the
+Vice-President of India, the Governor of a State, the Administrator of a Union territory or a
+Minister of the Union or of a State or of a Union territory, or any other public servant
+employed in connection with the affairs of the Union or of a State in respect of his conduct
+in the discharge of his public functions, a Court of Session may take cognizance of such
+offence, without the case being committed to it, upon a complaint in writing made by the
+Public Prosecutor.
+(3) Every complaint referred to in sub-section (2) shall set forth the facts which
+constitute the offence alleged, the nature of such offence and such other particulars as are
+reasonably sufficient to give notice to the accused of the offence alleged to have been
+committed by him.
+(4) No complaint under sub-section (2) shall be made by the Public Prosecutor except
+with the previous sanction—
+(a) of the State Government,—
+(i) in the case of a person who is or has been the Governor of that State or
+a Minister of that Government;
+(ii) in the case of any other public servant employed in connection with
+the affairs of the State;
+(b) of the Central Government, in any other case.
+(5) No Court of Session shall take cognizance of an offence under sub-section (2)
+unless the complaint is made within six months from the date on which the offence is alleged
+to have been committed.
+(6) Nothing in this section shall affect the right of the person against whom the
+offence is alleged to have been committed, to make a complaint in respect of that offence
+before a Magistrate having jurisdiction or the power of such Magistrate to take cognizance
+of the offence upon such complaint.
+Prosecution of
+offences under
+section 85 of
+Bharatiya
+Nyaya
+Sanhita, 2023.
+Cognizance of
+offence.
+Prosecution
+for
+defamation.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">54f08b17-52c5-4f8a-ba47-842947b437ec</span>
+            <span class="chunk-src">bnss.pdf p.71</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.502</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">8.45</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0254</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.038</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">23</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">15</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">1073c5cc-d4ed-4a59-95a3-160bd1e3be3e</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">430</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1565 (1565 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">219. (1) No Court shall take cognizance of an offence punishable under sections 81 to
+84 (both inclusive) of the Bharatiya Nyaya Sanhita, 2023 except upon a complaint made by
+some person aggrieved by the offence:
+Provided that—
+(a) where such person is a child, or is of unsound mind or is having intellectual
+disability requiring higher support needs, or is from sickness or infirmity unable to
+make a complaint, or is a woman who, according to the local customs and manners,
+ought not to be compelled to appear in public, some other person may, with the leave
+of the Court, make a complaint on his or her behalf;
+(b) where such person is the husband and he is serving in any of the Armed
+Forces of the Union under conditions which are certified by his Commanding Officer
+as precluding him from obtaining leave of absence to enable him to make a complaint
+in person, some other person authorised by the husband in accordance with the
+provisions of sub-section (4) may make a complaint on his behalf;
+(c) where the person aggrieved by an offence punishable under section 82 of
+the Bharatiya Nyaya Sanhita, 2023 is the wife, complaint may be made on her behalf
+by her father, mother, brother, sister, son or daughter or by her father&#x27;s or mother&#x27;s
+brother or sister, or, with the leave of the Court, by any other person related to her by
+blood, marriage or adoption.
+(2) For the purposes of sub-section (1), no person other than the husband of the
+woman shall be deemed to be aggrieved by any offence punishable under section 84 of the
+Bharatiya Nyaya Sanhita, 2023.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">023d85f2-117a-4a45-b114-36fda724230c</span>
+            <span class="chunk-src">bnss.pdf p.111</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.442</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">6.79</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0260</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.034</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">39</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">8ab323c8-7050-41e3-8a75-cbc78e2fb960</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">529</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1913 (1913 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(2) The offences punishable under the sections of the Bharatiya Nyaya Sanhita, 2023
+specified in the first two columns of the Table next following may, with the permission of the
+Court before which any prosecution for such offence is pending, be compounded by the
+persons mentioned in the third column of that Table:—
+Table
+Offence
+Section of the Bharatiya
+Person by whom offence
+Nyaya Sanhita applicable
+may be compounded
+1
+2
+3
+Word, gesture or act
+79
+The woman whom it was
+intended to insult the
+intended to insult or whose
+modesty of a woman.
+privacy was intruded upon.
+Marrying again during the
+82(1)
+The husband or wife of the
+life-time of a husband or wife.
+person so marrying.
+Causing miscarriage.
+88
+The woman to whom
+miscarriage is caused.
+Voluntarily causing grievous
+117(2)
+The person to whom hurt is
+hurt.
+caused.
+Causing hurt by doing an
+125(a)
+The person to whom hurt is
+act so rashly and negligently
+caused.
+as to endanger human life
+or the personal safety of others.
+Causing grievous hurt by
+125(b)
+The person to whom hurt is
+doing an act so rashly and
+caused.
+negligently as to endanger
+human life or the personal
+safety of others.
+Assault or criminal force in
+135
+The person assaulted or to
+attempting wrongfully to
+whom the force was used.
+confine a person.
+Theft, by clerk or servant
+306
+The owner of the property
+of property in possession
+stolen.
+of master.
+Criminal breach of trust.
+316(2)
+The owner of the property in
+respect of which breach of
+trust has been committed.
+Criminal breach of trust by
+316(4)
+The owner of the property in
+a clerk or servant.
+respect of which the breach
+of trust has been committed.
+Cheating a person whose
+318(3)
+The person cheated.
+interest the offender was
+bound, either by law or by
+legal contract, to protect.
+Cheating and dishonestly
+318(4)
+The person cheated.
+inducing delivery of
+property or the making,
+alteration or destruction
+of a valuable security.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">e8250414-8e89-495a-bf8f-5a7ce5d02e93</span>
+            <span class="chunk-src">bsa.pdf p.34</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.509</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">7.51</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0231</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.032</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">29</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">24</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ec1c9641-e27a-4279-9b88-db32769b1a8d</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">865</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">2032 - 3839 (1807 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation.—For the purposes of this section, &quot;cruelty&quot; shall have the same meaning
+as in section 86 of the Bharatiya Nyaya Sanhita, 2023.
+118. When the question is whether a person has committed the dowry death of a
+woman and it is shown that soon before her death, such woman had been subjected by
+such person to cruelty or harassment for, or in connection with, any demand for dowry, the
+Court shall presume that such person had caused the dowry death.
+Explanation.—For the purposes of this section, &quot;dowry death&quot; shall have the same
+meaning as in section 80 of the Bharatiya Nyaya Sanhita, 2023.
+119. (1) The Court may presume the existence of any fact which it thinks likely to have
+happened, regard being had to the common course of natural events, human conduct and
+public and private business, in their relation to the facts of the particular case.
+Illustrations.
+The Court may presume that—
+(a) a man who is in possession of stolen goods soon, after the theft is either the
+thief or has received the goods knowing them to be stolen, unless he can account for
+his possession;
+(b) an accomplice is unworthy of credit, unless he is corroborated in material
+particulars;
+Presumption
+as to certain
+offences.
+Birth during
+marriage,
+conclusive
+proof of
+legitimacy.
+Presumption
+as to abetment
+of suicide by a
+married
+woman.
+Presumption
+as to dowry
+death.
+Court may
+presume
+existence of
+certain facts.
+34
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">e74df2c5-1ab3-4196-900c-6af280bd1ea2</span>
+            <span class="chunk-src">bnss.pdf p.53</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.502</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">7.08</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0233</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.029</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">22</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">30</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">459494cc-0295-48f2-b50c-c94bafc6f62f</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">383</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1619 (1619 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">and the substance thereof shall be entered in a book to be kept by such officer in such form
+as the State Government may by rules prescribe in this behalf:
+Provided that if the information is given by the woman against whom an offence
+under section 64, section 65, section 66, section 67, section 68, section 69, section 70,
+section 71, section 74, section 75, section 76, section 77, section 78, section 79 or
+section 124 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or
+attempted, then such information shall be recorded, by a woman police officer or any
+woman officer:
+Provided further that—
+(a) in the event that the person against whom an offence under section 64,
+section 65, section 66, section 67, section 68, section 69, section 70, section 71,
+section 74, section 75, section 76, section 77, section 78, section 79   or section 124 of
+the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, is
+temporarily or permanently mentally or physically disabled, then such information
+shall be recorded by a police officer, at the residence of the person seeking to report
+such offence or at a convenient place of such person&#x27;s choice, in the presence of an
+interpreter or a special educator, as the case may be;
+(b) the recording of such information shall be videographed;
+(c) the police officer shall get the statement of the person recorded by a
+Magistrate under clause (a) of sub-section (6) of section 183 as soon as possible.
+(2) A copy of the information as recorded under sub-section (1) shall be given forthwith,
+free of cost, to the informant or the victim.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage unknown">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">Corpus relevance is inconclusive.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage fail">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">FAIL</div>
+          <div class="stage-obs">No retrieved chunks provide support, and retrieval scores strongly indicate a lack of useful evidence.</div>
+          <div class="stage-conf">confidence 0.85</div>
+          <div class="stage-efficiency">Efficiency: 0/6 chunks used (0%)</div>
+        </div>
+        <div class="stage unknown">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">UNKNOWN</div>
+          <div class="stage-obs">1 generated claims are unsupported, but retrieval quality is ambiguous.</div>
+          <div class="stage-conf">confidence 0.5</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 6dcb2133-1a02-4e79-9fb2-04ca8e861e82.</li><li>Skipping CORPUS: status is UNKNOWN (insufficient evidence).</li><li>Failure at RETRIEVER: RETRIEVAL_MISS (confidence=0.85). Observation: No retrieved chunks provide support, and retrieval scores strongly indicate a lack of useful evidence.</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Skipping GENERATOR: status is UNKNOWN (insufficient evidence).</li><li>GROUNDING passed (confidence=0.90).</li><li>Primary root cause: RETRIEVAL_MISS at RETRIEVER (earliest upstream failure, confidence=0.85).</li><li>Analysis complete. Primary cause: RETRIEVAL_MISS.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.880</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[IMMEDIATE]</span>Increase Retrieval Top-K</div>
+          <div class="action-desc">Increase the number of retrieved documents before providing context to the LLM.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>Ground truth or highly relevant chunks are present but ranked lower than current Top-K (observed max retrieval score: 0.177, threshold: 0.500).</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[SHORT_TERM]</span>Implement Hybrid Search (Dense + Sparse)</div>
+          <div class="action-desc">Add BM25 lexical search and combine with semantic vector search using Reciprocal Rank Fusion.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>Queries containing specific IDs, acronyms, or names fail semantic retrieval.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[EXPERIMENTAL]</span>Deploy Cross-Encoder Reranker</div>
+          <div class="action-desc">Pass the Top-N results through a Cross-Encoder to re-score query-document relevance.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>Bi-encoder returns top-k chunks that share vocabulary but lack true semantic relevance to the question.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>0/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">0.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">0 / 3</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">Not covered -- the BNS, BNSS, and BSA (the three source documents in this corpus) do not contain any provisions specifically regulating cryptocurrency exchanges or digital asset custodians.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The BNS, BNSS, and BSA are the three source documents in this corpus.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.007</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The BNS, BNSS, and BSA do not contain any provisions specifically regulating cryptocurrency exchanges.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.001</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The BNS, BNSS, and BSA do not contain any provisions specifically regulating digital asset custodians.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.001</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">I do not have enough information to answer this.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.020</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">RETRIEVAL_MISS</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">0.130</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.500</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val hi mono">1.000</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.000</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 6dcb2133-1a02-4e79-9fb2-04ca8e861e82 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

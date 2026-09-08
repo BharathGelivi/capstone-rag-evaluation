@@ -1,0 +1,176 @@
+{
+    "framework_metadata": {
+        "trace_id": "d89afd4b-94b3-426d-896e-3089613b3e9d",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T16:37:51.349912Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the exact fine amount prescribed for murder under BNS section 103?",
+        "generated_answer": "Under BNS\u202fsection\u202f103(1), a person who commits murder is punishable with death or imprisonment for life **and shall also be liable to fine**. The text does not specify an exact monetary amount for the fine; it only states that the offender is liable to a fine without prescribing a particular sum.  \n\n**Source:** BNS\u202f\u00a7\u202f103(1) \u2013 \u201cWhoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine.\u201d\u3010ac6c1423-8651-4ff8-9f26-0cf720a5f981\u3011.  \n\nThus, the exact fine amount is not provided in the retrieved context.",
+        "overall_health_score": 0.7,
+        "primary_issue": "CHUNK_BOUNDARY",
+        "supported_claims": 3,
+        "total_claims": 5,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.338614284992218,
+                    "pool_size": 68
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.46947041153907776,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.6666666666666666,
+                    "chunks_used": 4,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "FAIL",
+                "observation": "1 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+                "confidence": "0.8",
+                "metadata": {
+                    "boundary_claim_ids": [
+                        "78bb9f8e-f842-45b7-b350-de5458850ab5"
+                    ]
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.46947041153907776
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 3,
+        "partially_supported_claims": 1,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.7,
+        "evidence_coverage": 0.6666666666666666,
+        "average_entailment": 0.6887182794511318,
+        "retrieval_latency_ms": 1088.435173034668,
+        "generation_latency_ms": 10909.12914276123,
+        "verification_latency_ms": 23664.376735687256
+    },
+    "root_cause_analysis": {
+        "primary_cause": "CHUNK_BOUNDARY",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace d89afd4b-94b3-426d-896e-3089613b3e9d.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Failure at CHUNKING: CHUNK_BOUNDARY (confidence=0.80). Observation: 1 partially supported claim(s) have best evidence adjacent to another retrieved chunk from the same document.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: CHUNK_BOUNDARY at CHUNKING (earliest upstream failure, confidence=0.80).",
+            "Analysis complete. Primary cause: CHUNK_BOUNDARY."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "CHUNK_BOUNDARY",
+        "next_priority": "Increase Chunk Overlap",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "67735759-0b52-4b8d-84ec-833f0d477499",
+            "claim_text": "Under BNS section 103(1), a person who commits murder is punishable with death or imprisonment for life and shall also be liable to fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ac6c1423-8651-4ff8-9f26-0cf720a5f981",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Whoever commits culpable homicide not amounting to murder, shall be punished\nwith imprisonment for life, or imprisonment of either description for a term which shall not be\nless than five years but which may extend to ten years, and shall also be liable to fine, if the\nact by which the death is caused is done with the intention of causing death, or of causing\nsuch bodily injury as is likely to cause death; or with imprisonment of either description for\na term which may extend to ten years and with fine, if the act is done with the knowledge that\nit is likely to cause death, but without any intention to cause death, or to cause such bodily\ninjury as is likely to cause death."
+        },
+        {
+            "claim_id": "a694ad95-b937-40b1-8ffc-c8cb3cbe8150",
+            "claim_text": "The text does not specify an exact monetary amount for the fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46c92824-056b-4a70-8452-ad2b84728aa2",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Whoever refuses to sign any statement made by him, when required to sign\nthat statement by a public servant legally competent to require that he shall sign that\nstatement, shall be punished with simple imprisonment for a term which may extend to\nthree months, or with fine which may extend to three thousand rupees, or with both."
+        },
+        {
+            "claim_id": "78bb9f8e-f842-45b7-b350-de5458850ab5",
+            "claim_text": "The text only states that the offender is liable to a fine without prescribing a particular sum.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "6046d3b0-9d82-4959-b01d-e553390b1742",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "than 7 years but which may\nextend to 14 years and fine."
+        },
+        {
+            "claim_id": "00ee8d68-4246-40bd-af5d-3c1c70dd3af6",
+            "claim_text": "The source cited is BNS \u00a7 103(1) \u2013 \u201cWhoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine.\u201d",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "b4c67a5d-e560-4aa9-ba82-88c5c8a93dcf",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Explanation.\u2013\u2013\u201cOffence\u201d in this section includes any act committed at any place\nout of India, which, if committed in India, would be punishable under any of the following\nsections, namely, 103, 105, 307, sub-sections (2), (3) and (4) of section 309, sub-sections (2),\n(3), (4) and (5) of section 310, 311, 312, clauses (f) and (g) of section 326, sub-sections (4),\n(6), (7) and (8) of section 331, clauses (a) and (b) of section 332 and every such act shall,\nfor the purposes of this section, be deemed to be punishable as if the accused person had\nbeen guilty of it in India."
+        },
+        {
+            "claim_id": "da130fb3-4f3a-4c44-9baa-6dd54c1c283f",
+            "claim_text": "Thus, the exact fine amount is not provided in the retrieved context.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b4c67a5d-e560-4aa9-ba82-88c5c8a93dcf",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "Fraudulently\nobtaining\ndecree for sum\nnot due."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Increase Chunk Overlap",
+            "description": "Adjust text splitter to increase overlap between adjacent chunks by 10-20%.",
+            "observed_evidence": "LLM answers partially but misses critical context that was split into the next unretrieved chunk (1 partially supported claim(s) affected).",
+            "expected_improvement": "Context is preserved across chunks.",
+            "success_metric": "Reduction in 'Partially Supported' claims (currently 1).",
+            "tradeoff": "Increases total chunk count, redundancy, and storage."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.3333333333333333,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T16:37:51.350161Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

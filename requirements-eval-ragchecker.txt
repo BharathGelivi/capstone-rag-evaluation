@@ -1,0 +1,22 @@
+# ragchecker needs its OWN Python 3.10 venv, separate from this project's main
+# venv (Python 3.13, where ragchecker's litellm sub-dependency has no prebuilt
+# wheel) and separate from the ARES venv (its own transitive deps -- newer
+# transformers/scikit-learn/openai -- conflict with ares-ai's exact pins; see
+# requirements-eval-ares.txt).
+#
+# Setup (once):
+#   "C:\Users\<you>\AppData\Local\Programs\Python\Python310\python.exe" -m venv venv_eval_ragchecker
+#   venv_eval_ragchecker\Scripts\python.exe -m pip install -r requirements-eval-ragchecker.txt
+#
+# Why the litellm pin below matters: ragchecker -> refchecker -> litellm
+# requires litellm<2.0,>=1.49. Plain `pip install ragchecker` resolves to
+# litellm==1.92.0, the actual current PyPI "latest" -- but that one specific
+# release has NO prebuilt wheel published for any platform (an upstream
+# release gap, not a Python-version problem), so pip tries to build it from
+# source, which pulls in a Rust-based sub-dependency and fails without a Rust
+# toolchain. litellm==1.91.3 (one version back) still satisfies refchecker's
+# constraint and DOES have a wheel. Installing it explicitly first, before
+# ragchecker, makes pip's resolver accept the already-satisfied wheel-based
+# version instead of trying to upgrade to the broken one.
+litellm==1.91.3
+ragchecker

@@ -1,0 +1,188 @@
+{
+    "framework_metadata": {
+        "trace_id": "b06b9adc-2e32-4c3f-b41b-1e8916d705ee",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T13:41:29.267003Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What does the Bharatiya Nyaya Sanhita say about the regulation of cryptocurrency exchanges or digital asset custodians?",
+        "generated_answer": "I do not have enough information to answer this. The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 cover procedural provisions, presumptions, compounding of offences, and related matters, but they do not mention cryptocurrency exchanges, digital asset custodians, or any regulation of such activities.",
+        "overall_health_score": 0.875,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 7,
+        "total_claims": 8,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.39520251750946045,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.1770341843366623,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "UNKNOWN",
+                "observation": "1 generated claims are unsupported, but retrieval quality is ambiguous.",
+                "confidence": "0.5",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.1770341843366623
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 8,
+        "supported_claims": 7,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.875,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.8390550503972918,
+        "retrieval_latency_ms": 1368.1888580322266,
+        "generation_latency_ms": 5311.72251701355,
+        "verification_latency_ms": 24112.951517105103
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace b06b9adc-2e32-4c3f-b41b-1e8916d705ee.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Skipping GENERATOR: status is UNKNOWN (insufficient evidence).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.92
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "aa94f2e1-318b-4bf9-9341-abecb1a73b83",
+            "claim_text": "I do not have enough information to answer this.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "34\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        },
+        {
+            "claim_id": "0a7d1460-2b0a-4a71-82c4-c856284d43bb",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 cover procedural provisions.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "Presumption\nas to abetment\nof suicide by a\nmarried\nwoman."
+        },
+        {
+            "claim_id": "1c21e086-ec63-4307-9568-e3795c07bb69",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 cover presumptions.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "The Court may presume that\u2014\n(a) a man who is in possession of stolen goods soon, after the theft is either the\nthief or has received the goods knowing them to be stolen, unless he can account for\nhis possession;\n(b) an accomplice is unworthy of credit, unless he is corroborated in material\nparticulars;\nPresumption\nas to certain\noffences."
+        },
+        {
+            "claim_id": "318bbfed-d5a9-4d32-9b56-14552e4bdaa7",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 cover compounding of offences.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "The Court may presume that\u2014\n(a) a man who is in possession of stolen goods soon, after the theft is either the\nthief or has received the goods knowing them to be stolen, unless he can account for\nhis possession;\n(b) an accomplice is unworthy of credit, unless he is corroborated in material\nparticulars;\nPresumption\nas to certain\noffences."
+        },
+        {
+            "claim_id": "33332497-b936-404b-b314-5c23a96b88b8",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 cover related matters.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b5700dc4-2f70-4dc3-a71e-5b27e4bbeeb1",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) Notwithstanding anything contained in this Sanhita, when any offence falling\nunder section 356 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed\nagainst a person who, at the time of such commission, is the President of India, the\nVice-President of India, the Governor of a State, the Administrator of a Union territory or a\nMinister of the Union or of a State or of a Union territory, or any other public servant\nemployed in connection with the affairs of the Union or of a State in respect of his conduct\nin the discharge of his public functions, a Court of Session may take cognizance of such\noffence, without the case being committed to it, upon a complaint in writing made by the\nPublic Prosecutor."
+        },
+        {
+            "claim_id": "af499613-cf0d-49b7-a171-9252e7f3a2c5",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 do not mention cryptocurrency exchanges.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "The Court may presume that\u2014\n(a) a man who is in possession of stolen goods soon, after the theft is either the\nthief or has received the goods knowing them to be stolen, unless he can account for\nhis possession;\n(b) an accomplice is unworthy of credit, unless he is corroborated in material\nparticulars;\nPresumption\nas to certain\noffences."
+        },
+        {
+            "claim_id": "40d14fce-6670-4e65-8c2c-0c562f5b5b69",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 do not mention digital asset custodians.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "The Court may presume that\u2014\n(a) a man who is in possession of stolen goods soon, after the theft is either the\nthief or has received the goods knowing them to be stolen, unless he can account for\nhis possession;\n(b) an accomplice is unworthy of credit, unless he is corroborated in material\nparticulars;\nPresumption\nas to certain\noffences."
+        },
+        {
+            "claim_id": "5fb02799-d55a-4390-9596-110a855bee7c",
+            "claim_text": "The retrieved excerpts of the Bharatiya Nyaya Sanhita, 2023 do not mention any regulation of such activities.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "e8250414-8e89-495a-bf8f-5a7ce5d02e93",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "34\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n_________________________________________________________\n_________________________________________________________\n_________________________________________________________\n_______________________________________________________________\n___________________________________________________________\n__________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.6666666666666666,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T13:41:29.267537Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

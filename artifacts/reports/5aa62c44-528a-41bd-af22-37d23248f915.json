@@ -1,0 +1,205 @@
+{
+    "framework_metadata": {
+        "trace_id": "5aa62c44-528a-41bd-af22-37d23248f915",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T10:55:07.724224Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What must a police officer be satisfied of, in addition to the existence of a reasonable complaint or suspicion, before arresting a person without a warrant for a cognizable offence punishable with imprisonment up to seven years, per BNSS section 35?",
+        "generated_answer": "A police officer must be satisfied that the arrest is necessary for one of the following reasons: (i) to prevent the person from committing any further offence; (ii) for proper investigation of the offence; (iii) to prevent the person from causing the evidence of the offence to disappear or tampering with such evidence in any manner; (iv) to prevent the person from making any inducement, threat or promise to any person acquainted with the facts of the case so as to dissuade him from disclosing such facts to the Court or to the police officer; or (v) as unless the person is arrested, his presence in the Court whenever required cannot be ensured [Chunk-ID: 4ff756de-529d-454f-9f08-9421b9fbd6f3].",
+        "overall_health_score": 0.2222222222222222,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 1,
+        "total_claims": 9,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.13607358932495117,
+                    "pool_size": 36
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9975917339324951,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.25,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 4
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9975917339324951
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 4,
+        "verified_claims": 9,
+        "supported_claims": 1,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 0.2222222222222222,
+        "evidence_coverage": 0.25,
+        "average_entailment": 0.3766305512852139,
+        "retrieval_latency_ms": 1001.3518333435059,
+        "generation_latency_ms": 107133.63718986511,
+        "verification_latency_ms": 782601.6464233398
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 5aa62c44-528a-41bd-af22-37d23248f915.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "N/A",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Requires architectural adjustments."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "880d9e1e-e62a-46a2-be7f-3eecb5202aba",
+            "claim_text": "A police officer must be satisfied that the arrest is necessary",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "9a1228f1-c280-40fe-a34a-bfde0a2d3f40",
+            "claim_text": "The arrest is necessary to prevent the person from committing any further offence",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "0750b815-f951-40f3-bf17-121bec632da9",
+            "claim_text": "The arrest is necessary for proper investigation of the offence",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "865eb082-8fae-4539-b9de-6b60ec2d17e0",
+            "claim_text": "The arrest is necessary to prevent the person from causing the evidence of the offence to disappear",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "669c32a9-16d5-4ef5-bb2c-d4a918d43bcf",
+            "claim_text": "The arrest is necessary to prevent the person from tampering with the evidence",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "0046ce05-2755-41a2-944f-c729955942df",
+            "claim_text": "The arrest is necessary to prevent the person from making any inducement, threat or promise",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "2d9228a6-d234-43cc-b20c-0bbea13b9b7a",
+            "claim_text": "The arrest is necessary to prevent the person from dissuading someone from disclosing facts to the Court",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "08f41228-42e5-4de0-8497-33e9bd737b7b",
+            "claim_text": "The arrest is necessary to prevent the person from dissuading someone from disclosing facts to the police officer",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        },
+        {
+            "claim_id": "cebfc3dc-541e-4df2-8899-80bcb87b452c",
+            "claim_text": "The arrest is necessary to ensure the person's presence in the Court",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "4ff756de-529d-454f-9f08-9421b9fbd6f3",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "CHAPTER V\nARREST OF PERSONS\n35. (1) Any police officer may without an order from a Magistrate and without a\nwarrant, arrest any person\u2014\n(a) who commits, in the presence of a police officer, a cognizable offence; or\n(b) against whom a reasonable complaint has been made, or credible information\nhas been received, or a reasonable suspicion exists that he has committed a cognizable\noffence punishable with imprisonment for a term which may be less than seven years\nor which may extend to seven years whether with or without fine, if the following\nconditions are satisfied, namely:\u2014\n(i) the police officer has reason to believe on the basis of such complaint,\ninformation, or suspicion that such person has committed the said offence;\n(ii) the police officer is satisfied that such arrest is necessary\u2014\n(a) to prevent such person from committing any further offence; or\n(b) for proper investigation of the offence; or\n(c) to prevent such person from causing the evidence of the offence\nto disappear or tampering with such evidence in any manner; or\n(d) to prevent such person from making any inducement, threat or\npromise to any person acquainted with the facts of the case so as to\ndissuade him from disclosing such facts to the Court or to the police\nofficer; or\n(e) as unless such person is arrested, his presence in the Court\nwhenever required cannot be ensured,\nand the police officer shall record while making such arrest, his reasons in writing:\nProvided that a police officer shall, in all cases where the arrest of a person is\nnot required under the provisions of this sub-section, record the reasons in writing\nfor not making the arrest; or\n(c) against whom credible information has been received that he has committed\na cognizable offence punishable with imprisonment for a term which may extend to\nmore than seven years whether with or without fine or with death sentence and the\npolice officer has reason to believe on the basis of that information that such person\nhas committed the said offence; or\n(d) who has been proclaimed as an offender either under this Sanhita or by\norder of the State Government;"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (25%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/4 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.42857142857142855,
+        "total_gold_claims": 7,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T10:55:07.724347Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

@@ -1,0 +1,140 @@
+{
+    "framework_metadata": {
+        "trace_id": "7b8d0359-4624-4f58-aaad-3cd9bda74789",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T09:08:23.844957Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten?",
+        "generated_answer": "The punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten, is **imprisonment of either description for a term which may extend to seven years, and also a fine**\u30107aba0fc6-8511-4b01-a382-299b975663a8\u3011.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 2,
+        "total_claims": 2,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.28696775436401367,
+                    "pool_size": 68
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9987360835075378,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9987360835075378
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 2,
+        "supported_claims": 2,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.9979214072227478,
+        "retrieval_latency_ms": 1222.2285270690918,
+        "generation_latency_ms": 1609.525442123413,
+        "verification_latency_ms": 4045.742988586426
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 7b8d0359-4624-4f58-aaad-3cd9bda74789.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "99b27642-34a7-474e-a3e6-c295c0014c1e",
+            "claim_text": "The punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten, is imprisonment of either description for a term which may extend to seven years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "7aba0fc6-8511-4b01-a382-299b975663a8",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever abets the commission of an offence by the public generally or by any\nnumber or class of persons exceeding ten, shall be punished with imprisonment of either\ndescription for a term which may extend to seven years and with fine."
+        },
+        {
+            "claim_id": "52a4ba05-8a67-43d4-ac53-01d9077b35bf",
+            "claim_text": "The punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten, includes a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "7aba0fc6-8511-4b01-a382-299b975663a8",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Whoever abets the commission of an offence by the public generally or by any\nnumber or class of persons exceeding ten, shall be punished with imprisonment of either\ndescription for a term which may extend to seven years and with fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T09:08:23.845209Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

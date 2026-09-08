@@ -1,0 +1,199 @@
+{
+    "framework_metadata": {
+        "trace_id": "e166daaf-9637-4fdb-b5f9-ae9f18740ce1",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T20:45:01.709403Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for attempt to murder under BNS section 109, and how does it change if hurt is actually caused to a person?",
+        "generated_answer": "**Attempt to murder (BNS\u202f\u00a7\u202f109)**  \n- The retrieved excerpt shows **\u00a7\u202f109(2)** \u2013 \u201cAttempt by life\u2011convict to murder, if hurt is caused\u201d \u2013 and states that **if hurt is actually caused to any person, the offender is liable to death or imprisonment for life, which shall mean imprisonment for the remainder of that person\u2019s natural life**\u301092ec40d2-b449-4649-86e6-b0fd40e6bea8\u3011.  \n\n- The context does **not** explicitly state the punishment for an attempt to murder when **no hurt is caused**; it only provides the enhanced penalty under subsection\u202f(2) when hurt occurs. Therefore, based solely on the supplied material, we can confirm the increased penalty for hurt\u2011causing attempts, but the base penalty for a simple attempt to murder under \u00a7\u202f109 is not detailed in the provided chunks.  \n\n*In short:*  \n- **No hurt caused:** punishment not specified in the given context.  \n- **Hurt caused:** death **or** imprisonment for life (remainder of the offender\u2019s natural life)\u301092ec40d2-b449-4649-86e6-b0fd40e6bea8\u3011.",
+        "overall_health_score": 0.5714,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 7,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.32216376066207886,
+                    "pool_size": 66
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9078429937362671,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "3 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 3,
+                    "max_score": 0.9078429937362671
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 7,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 3,
+        "contradicted_claims": 0,
+        "grounding_score": 0.5714285714285714,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.6791323912995202,
+        "retrieval_latency_ms": 655.4102897644043,
+        "generation_latency_ms": 36272.45903015137,
+        "verification_latency_ms": 7084.378719329834
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace e166daaf-9637-4fdb-b5f9-ae9f18740ce1.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 3 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "47d6405e-a408-4faf-82b9-96ba82fb76c9",
+            "claim_text": "The retrieved excerpt shows \u00a7 109(2) \u2013 \"Attempt by life\u2011convict to murder, if hurt is caused\".",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "320c1526-fed5-4985-ae85-e16910f24ab6",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "If B had murdered Z, he\nwould have been subject to the punishment of death or imprisonment for life.Therefore, Ais\nliable to imprisonment for a term which may extend to seven years and also to a fine; and if\nany hurt be done to Z in consequence of the abetment, he will be liable to imprisonment for\na term which may extend to fourteen years, and to fine."
+        },
+        {
+            "claim_id": "7bbceb40-410d-46f5-b9ad-1a445091575b",
+            "claim_text": "The excerpt states that if hurt is actually caused to any person, the offender is liable to death or imprisonment for life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When any person offending under sub-section (1) is under sentence of imprisonment\nfor life, he may, if hurt is caused, be punished with death or with imprisonment for life, which\nshall mean the remainder of that person\u2019s natural life."
+        },
+        {
+            "claim_id": "9ed3cf51-1e02-43a8-8546-8c7418dc4d8b",
+            "claim_text": "Imprisonment for life shall mean imprisonment for the remainder of that person\u2019s natural life.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) When any person offending under sub-section (1) is under sentence of imprisonment\nfor life, he may, if hurt is caused, be punished with death or with imprisonment for life, which\nshall mean the remainder of that person\u2019s natural life."
+        },
+        {
+            "claim_id": "d1b4ff6f-ac7b-4542-8a08-dd37e97b0e99",
+            "claim_text": "The context does not explicitly state the punishment for an attempt to murder when no hurt is caused.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "320c1526-fed5-4985-ae85-e16910f24ab6",
+            "supporting_chunk_rank": 5,
+            "supporting_evidence": "If B had murdered Z, he\nwould have been subject to the punishment of death or imprisonment for life.Therefore, Ais\nliable to imprisonment for a term which may extend to seven years and also to a fine; and if\nany hurt be done to Z in consequence of the abetment, he will be liable to imprisonment for\na term which may extend to fourteen years, and to fine."
+        },
+        {
+            "claim_id": "35c41b11-9ced-45b4-a3b3-e260c37eb384",
+            "claim_text": "The context only provides the enhanced penalty under subsection (2) when hurt occurs.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "8724781a-dcc0-4775-8e72-d277a09d1944",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Illustrations."
+        },
+        {
+            "claim_id": "370b0f6a-7112-4a25-a31f-345c89701342",
+            "claim_text": "Based solely on the supplied material, we can confirm the increased penalty for hurt\u2011causing attempts.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ecfce8ef-071a-4b11-9a6a-64a659fdcbfb",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "B, in consequence,\nresists that distress."
+        },
+        {
+            "claim_id": "9f763f88-709f-42a7-8686-151da9a97a79",
+            "claim_text": "The base penalty for a simple attempt to murder under \u00a7 109 is not detailed in the provided chunks.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "ecfce8ef-071a-4b11-9a6a-64a659fdcbfb",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "B, in consequence,\nresists that distress."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (3 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 3).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.3333333333333333,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T20:45:01.709497Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

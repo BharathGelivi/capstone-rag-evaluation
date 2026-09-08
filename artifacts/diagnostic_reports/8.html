@@ -1,0 +1,1070 @@
+<title>X-RAG Diagnostic Report — b3e95969-1def-4bca-a993-18bf025c81f2</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>What two types of conduct constitute the offence of &#x27;stalking&#x27; under BNS section 78?</h1>
+    <p class="dek">Trace <span class="mono">b3e95969-1def-4bca-a993-18bf025c81f2</span>, generated 2026-09-06T12:38:34.562962Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">75%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNSUPPORTED_GENERATION</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">3 / 4</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.714</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">What two types of conduct constitute the offence of &#x27;stalking&#x27; under BNS section 78?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">Under **BNS section 78(1)**, the offence of stalking is committed by a man who engages in either of the following two types of conduct:
+
+1. **Following a woman and contacting (or attempting to contact) her to foster personal interaction repeatedly, despite a clear indication of her disinterest**  
+2. **Monitoring the woman’s use of the internet, e‑mail, or any other form of electronic communication**  
+
+These are the two distinct behaviours that constitute stalking under the provision.  
+
+*Source: [Chunk-ID: c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77]*</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 0.56s retrieval + 6.24s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">6.795s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">68</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: e74df2c5-1ab3-4196-900c-6af280bd1ea2] ---
+and the substance thereof shall be entered in a book to be kept by such officer in such form
+as the State Government may by rules prescribe in this behalf:
+Provided that if the information is given by the woman against whom an offence
+under section 64, section 65, section 66, section 67, section 68, section 69, section 70,
+section 71, section 74, section 75, section 76, section 77, section 78, section 79 or
+section 124 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or
+attempted, then such information shall be recorded, by a woman police officer or any
+woman officer:
+Provided further that—
+(a) in the event that the person against whom an offence under section 64,
+section 65, section 66, section 67, section 68, section 69, section 70, section 71,
+section 74, section 75, section 76, section 77, section 78, section 79   or section 124 of
+the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, is
+temporarily or permanently mentally or physically disabled, then such information
+shall be recorded by a police officer, at the residence of the person seeking to report
+such offence or at a convenient place of such person&#x27;s choice, in the presence of an
+interpreter or a special educator, as the case may be;
+(b) the recording of such information shall be videographed;
+(c) the police officer shall get the statement of the person recorded by a
+Magistrate under clause (a) of sub-section (6) of section 183 as soon as possible.
+(2) A copy of the information as recorded under sub-section (1) shall be given forthwith,
+free of cost, to the informant or the victim.
+
+--- Context chunk 2 [Chunk-ID: 046da990-1d49-49f9-b427-c5dbbaddd1c7] ---
+section 74, section 75, section 76, section 77, section 78, section 79 or section 124 of the
+Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, shall be
+recorded, by a woman police officer or any woman officer.
+181. (1) No statement made by any person to a police officer in the course of an
+investigation under this Chapter, shall, if reduced to writing, be signed by the person
+making it; nor shall any such statement or any record thereof, whether in a police diary or
+otherwise, or any part of such statement or record, be used for any purpose, save as
+hereinafter provided, at any inquiry or trial in respect of any offence under investigation at
+the time when such statement was made:
+Provided that when any witness is called for the prosecution in such inquiry or trial
+whose statement has been reduced into writing as aforesaid, any part of his statement, if
+duly proved, may be used by the accused, and with the permission of the Court, by the
+prosecution, to contradict such witness in the manner provided by section 148 of the
+Bharatiya Sakshya Adhiniyam, 2023; and when any part of such statement is so used, any
+part thereof may also be used in the re-examination of such witness, but for the purpose
+only of explaining any matter referred to in his cross-examination.
+(2) Nothing in this section shall be deemed to apply to any statement falling within
+the provisions of clause (a) of section 26 of the Bharatiya Sakshya Adhiniyam, 2023; or to
+affect the provisions of the proviso to sub-section (2) of section 23 of that Adhiniyam.
+Explanation.—An omission to state a fact or circumstance in the statement referred
+to in sub-section (1) may amount to contradiction if the same appears to be significant and
+otherwise relevant having regard to the context in which such omission occurs and whether
+any omission amounts to a contradiction in the particular context shall be a question of fact.
+182.
+
+--- Context chunk 3 [Chunk-ID: bb0a49e0-a92a-426b-8d3d-068a8485c650] ---
+Exception.—This sub-section does not extend to any person whose marriage with
+such husband or wife has been declared void by a Court of competent jurisdiction, nor to
+any person who contracts a marriage during the life of a former husband or wife, if such
+husband or wife, at the time of the subsequent marriage, shall have been continually absent
+Stalking.
+Word, gesture
+or act
+intended to
+insult modesty
+of a woman.
+Dowry death.
+Cohabitation
+caused by man
+deceitfully
+inducing
+belief of lawful
+marriage.
+Marrying
+again during
+lifetime of
+husband or
+wife.
+28 of 1961.
+28
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________
+
+--- Context chunk 4 [Chunk-ID: 3d3d46c6-ce1c-4bd3-b4dc-06c4e4ad9cbb] ---
+Illustration.
+An expert may give an account of experiments performed by him for the purpose of
+forming his opinion.
+Character when relevant
+46. In civil cases the fact that the character of any person concerned is such as to
+render probable or improbable any conduct imputed to him, is irrelevant, except in so far as
+such character appears from facts otherwise relevant.
+47. In criminal proceedings the fact that the person accused is of a good character, is
+relevant.
+48. In a prosecution for an offence under section 64, section 65, section 66,
+section 67, section 68, section 69, section 70, section 71, section 74, section 75, section 76,
+section 77 or section 78 of the Bharatiya Nyaya Sanhita, 2023 or for attempt to commit any
+such offence, where the question of consent is in issue, evidence of the character of the
+victim or of such person&#x27;s previous sexual experience with any person shall not be relevant
+on the issue of such consent or the quality of consent.
+49. In criminal proceedings, the fact that the accused has a bad character, is irrelevant,
+unless evidence has been given that he has a good character, in which case it becomes
+relevant.
+Explanation 1.—This section does not apply to cases in which the bad character of
+any person is itself a fact in issue.
+Explanation 2.—A previous conviction is relevant as evidence of bad character.
+Opinion on
+relationship,
+when relevant.
+Grounds of
+opinion, when
+relevant.
+In civil cases
+character to
+prove conduct
+imputed,
+irrelevant.
+In criminal
+cases previous
+good character
+relevant.
+Evidence of
+character or
+previous sexual
+experience not
+relevant in
+certain cases.
+Previous bad
+character not
+relevant,
+except in reply.
+4 of 1869.
+18
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________
+
+--- Context chunk 5 [Chunk-ID: a2040826-543b-4f20-992e-225b2769d0a6] ---
+Non-bailable.
+Court of Session.
+force to woman with intent than 3 years but which
+to disrobe.
+may extend to 7 years
+and fine.
+77
+Voyeurism.
+Imprisonment for not less
+Cognizable.
+Bailable.
+Court of Session.
+than 1 year but which may
+extend to 3 years and fine.
+Second or subsequent
+Imprisonment for not less
+Cognizable.
+Non-bailable.
+Court of Session.
+conviction.
+than 3 years but which may
+extend to 7 years and fine.
+78(2)
+Stalking.
+Imprisonment up to
+Cognizable.
+Bailable.
+Any Magistrate.
+3 years and fine.
+Second or subsequent
+Imprisonment up to
+Cognizable.
+Non-bailable.
+Any Magistrate.
+conviction.
+5 years and fine.
+79
+Uttering any word or
+Simple imprisonment for
+Cognizable.
+Bailable.
+Any Magistrate.
+making any gesture
+3 years and fine.
+intended to insult the
+modesty of a woman, etc.
+80(2)
+Dowry death.
+Imprisonment for not less
+Cognizable.
+Non-bailable.
+Court of Session.
+than 7 years but which
+may extend to imprisonment
+for life.
+81
+A man by deceit causing
+Imprisonment for 10 years
+Non-cognizable.
+Non-bailable.
+Magistrate of the
+a woman not lawfully
+and fine.
+first class.
+married to him to believe,
+that she is lawfully married
+to him and to cohabit with
+him in that belief.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+161
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+
+--- Context chunk 6 [Chunk-ID: c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77] ---
+Explanation 2.—Where the victim consents to the capture of the images or any act,
+but not to their dissemination to third persons and where such image or act is disseminated,
+such dissemination shall be considered an offence under this section.
+78. (1) Any man who—
+(i) follows a woman and contacts, or attempts to contact such woman to foster
+personal interaction repeatedly despite a clear indication of disinterest by such woman; or
+(ii) monitors the use by a woman of the internet, e-mail or any other form of
+electronic communication,
+commits the offence of stalking:
+Provided that such conduct shall not amount to stalking if the man who pursued it
+proves that—
+(i) it was pursued for the purpose of preventing or detecting crime and the man
+accused of stalking had been entrusted with the responsibility of prevention and
+detection of crime by the State; or
+(ii) it was pursued under any law or to comply with any condition or requirement
+imposed by any person under any law; or
+(iii) in the particular circumstances such conduct was reasonable and justified.
+(2) Whoever commits the offence of stalking shall be punished on first conviction with
+imprisonment of either description for a term which may extend to three years, and shall also
+be liable to fine; and be punished on a second or subsequent conviction, with imprisonment
+of either description for a term which may extend to five years, and shall also be liable to fine.
+79. Whoever, intending to insult the modesty of any woman, utters any words, makes
+any sound or gesture, or exhibits any object in any form, intending that such word or sound
+shall be heard, or that such gesture or object shall be seen, by such woman, or intrudes upon
+the privacy of such woman, shall be punished with simple imprisonment for a term which may
+extend to three years, and also with fine.
+Of offences relating to marriage
+80.
+
+
+Question: What two types of conduct constitute the offence of &#x27;stalking&#x27; under BNS section 78?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (4 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Under BNS section 78(1), the offence of stalking is committed by a man who engages in either of the following two types of conduct.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">efddfbe2-5254-4617-b8f5-c63971825ae8</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">3d3d46c6-ce1c-4bd3-b4dc-06c4e4ad9cbb</span> (rank 3)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">An expert may give an account of experiments performed by him for the purpose of
+forming his opinion.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">One type of conduct that constitutes stalking under BNS section 78(1) is following a woman and contacting (or attempting to contact) her to foster personal interaction repeatedly, despite a clear indication of her disinterest.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">6d72c8c5-ca98-46b8-93ae-db1660c52c97</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(1) Any man who—
+(i) follows a woman and contacts, or attempts to contact such woman to foster
+personal interaction repeatedly despite a clear indication of disinterest by such woman; or
+(ii) monitors the use by a woman of the internet, e-mail or any other form of
+electronic communication,
+commits the offence of stalking:
+Provided that such conduct shall not amount to stalking if the man who pursued it
+proves that—
+(i) it was pursued for the purpose of preventing or detecting crime and the man
+accused of stalking had been entrusted with the responsibility of prevention and
+detection of crime by the State; or
+(ii) it was pursued under any law or to comply with any condition or requirement
+imposed by any person under any law; or
+(iii) in the particular circumstances such conduct was reasonable and justified.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Another type of conduct that constitutes stalking under BNS section 78(1) is monitoring the woman’s use of the internet, e‑mail, or any other form of electronic communication.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">aad417d2-6874-4247-b602-3e73702e0541</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(1) Any man who—
+(i) follows a woman and contacts, or attempts to contact such woman to foster
+personal interaction repeatedly despite a clear indication of disinterest by such woman; or
+(ii) monitors the use by a woman of the internet, e-mail or any other form of
+electronic communication,
+commits the offence of stalking:
+Provided that such conduct shall not amount to stalking if the man who pursued it
+proves that—
+(i) it was pursued for the purpose of preventing or detecting crime and the man
+accused of stalking had been entrusted with the responsibility of prevention and
+detection of crime by the State; or
+(ii) it was pursued under any law or to comply with any condition or requirement
+imposed by any person under any law; or
+(iii) in the particular circumstances such conduct was reasonable and justified.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">The two behaviours listed are distinct behaviours that constitute stalking under BNS section 78(1).</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">6c931a55-8fef-49db-805a-95e7bb2df4ef</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a2040826-543b-4f20-992e-225b2769d0a6</span> (rank 2)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+161
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">c9dff0c8-b2f3-4f8c-9bb4-a0f6076a2d77</span>
+            <span class="chunk-src">bns.pdf p.28</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.251</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">20.45</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.736</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">42bd411b-3336-4434-8e14-52c549692f72</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">62</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1877 (1877 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation 2.—Where the victim consents to the capture of the images or any act,
+but not to their dissemination to third persons and where such image or act is disseminated,
+such dissemination shall be considered an offence under this section.
+78. (1) Any man who—
+(i) follows a woman and contacts, or attempts to contact such woman to foster
+personal interaction repeatedly despite a clear indication of disinterest by such woman; or
+(ii) monitors the use by a woman of the internet, e-mail or any other form of
+electronic communication,
+commits the offence of stalking:
+Provided that such conduct shall not amount to stalking if the man who pursued it
+proves that—
+(i) it was pursued for the purpose of preventing or detecting crime and the man
+accused of stalking had been entrusted with the responsibility of prevention and
+detection of crime by the State; or
+(ii) it was pursued under any law or to comply with any condition or requirement
+imposed by any person under any law; or
+(iii) in the particular circumstances such conduct was reasonable and justified.
+(2) Whoever commits the offence of stalking shall be punished on first conviction with
+imprisonment of either description for a term which may extend to three years, and shall also
+be liable to fine; and be punished on a second or subsequent conviction, with imprisonment
+of either description for a term which may extend to five years, and shall also be liable to fine.
+79. Whoever, intending to insult the modesty of any woman, utters any words, makes
+any sound or gesture, or exhibits any object in any form, intending that such word or sound
+shall be heard, or that such gesture or object shall be seen, by such woman, or intrudes upon
+the privacy of such woman, shall be punished with simple imprisonment for a term which may
+extend to three years, and also with fine.
+Of offences relating to marriage
+80.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">a2040826-543b-4f20-992e-225b2769d0a6</span>
+            <span class="chunk-src">bnss.pdf p.161</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">9.81</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0149</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.039</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">7</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">9cedfda1-0464-4e48-bc4b-86ec5420b12d</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">653</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1394 - 2984 (1590 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Non-bailable.
+Court of Session.
+force to woman with intent than 3 years but which
+to disrobe.
+may extend to 7 years
+and fine.
+77
+Voyeurism.
+Imprisonment for not less
+Cognizable.
+Bailable.
+Court of Session.
+than 1 year but which may
+extend to 3 years and fine.
+Second or subsequent
+Imprisonment for not less
+Cognizable.
+Non-bailable.
+Court of Session.
+conviction.
+than 3 years but which may
+extend to 7 years and fine.
+78(2)
+Stalking.
+Imprisonment up to
+Cognizable.
+Bailable.
+Any Magistrate.
+3 years and fine.
+Second or subsequent
+Imprisonment up to
+Cognizable.
+Non-bailable.
+Any Magistrate.
+conviction.
+5 years and fine.
+79
+Uttering any word or
+Simple imprisonment for
+Cognizable.
+Bailable.
+Any Magistrate.
+making any gesture
+3 years and fine.
+intended to insult the
+modesty of a woman, etc.
+80(2)
+Dowry death.
+Imprisonment for not less
+Cognizable.
+Non-bailable.
+Court of Session.
+than 7 years but which
+may extend to imprisonment
+for life.
+81
+A man by deceit causing
+Imprisonment for 10 years
+Non-cognizable.
+Non-bailable.
+Magistrate of the
+a woman not lawfully
+and fine.
+first class.
+married to him to believe,
+that she is lawfully married
+to him and to cohabit with
+him in that belief.
+Sec. 1]
+THE GAZETTE OF INDIA EXTRAORDINARY
+161
+___________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">3d3d46c6-ce1c-4bd3-b4dc-06c4e4ad9cbb</span>
+            <span class="chunk-src">bsa.pdf p.18</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">12.02</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0159</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.031</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">1521bf17-26d5-443f-8bae-903293c67d00</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">829</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1190 - 3291 (2101 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Illustration.
+An expert may give an account of experiments performed by him for the purpose of
+forming his opinion.
+Character when relevant
+46. In civil cases the fact that the character of any person concerned is such as to
+render probable or improbable any conduct imputed to him, is irrelevant, except in so far as
+such character appears from facts otherwise relevant.
+47. In criminal proceedings the fact that the person accused is of a good character, is
+relevant.
+48. In a prosecution for an offence under section 64, section 65, section 66,
+section 67, section 68, section 69, section 70, section 71, section 74, section 75, section 76,
+section 77 or section 78 of the Bharatiya Nyaya Sanhita, 2023 or for attempt to commit any
+such offence, where the question of consent is in issue, evidence of the character of the
+victim or of such person&#x27;s previous sexual experience with any person shall not be relevant
+on the issue of such consent or the quality of consent.
+49. In criminal proceedings, the fact that the accused has a bad character, is irrelevant,
+unless evidence has been given that he has a good character, in which case it becomes
+relevant.
+Explanation 1.—This section does not apply to cases in which the bad character of
+any person is itself a fact in issue.
+Explanation 2.—A previous conviction is relevant as evidence of bad character.
+Opinion on
+relationship,
+when relevant.
+Grounds of
+opinion, when
+relevant.
+In civil cases
+character to
+prove conduct
+imputed,
+irrelevant.
+In criminal
+cases previous
+good character
+relevant.
+Evidence of
+character or
+previous sexual
+experience not
+relevant in
+certain cases.
+Previous bad
+character not
+relevant,
+except in reply.
+4 of 1869.
+18
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+_________________________________________________________
+_________________________________________________________
+_________________________________________________________
+_______________________________________________________________
+___________________________________________________________
+__________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">bb0a49e0-a92a-426b-8d3d-068a8485c650</span>
+            <span class="chunk-src">bns.pdf p.28</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.395</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">8.79</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0249</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.010</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">25</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">16</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">42bd411b-3336-4434-8e14-52c549692f72</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">64</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">3272 - 4251 (979 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Exception.—This sub-section does not extend to any person whose marriage with
+such husband or wife has been declared void by a Court of competent jurisdiction, nor to
+any person who contracts a marriage during the life of a former husband or wife, if such
+husband or wife, at the time of the subsequent marriage, shall have been continually absent
+Stalking.
+Word, gesture
+or act
+intended to
+insult modesty
+of a woman.
+Dowry death.
+Cohabitation
+caused by man
+deceitfully
+inducing
+belief of lawful
+marriage.
+Marrying
+again during
+lifetime of
+husband or
+wife.
+28 of 1961.
+28
+THE GAZETTE OF INDIA EXTRAORDINARY
+[Part II—
+____________________________________________________________
+_____________________________________________________________
+____________________________________________________________
+___________________________________________________________
+________________________________________________________
+_____________________________________________________________</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">046da990-1d49-49f9-b427-c5dbbaddd1c7</span>
+            <span class="chunk-src">bnss.pdf p.56</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.363</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">8.47</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0285</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.005</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">19</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">96645955-b241-4c80-be59-8517c4734838</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">392</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1938 (1938 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">section 74, section 75, section 76, section 77, section 78, section 79 or section 124 of the
+Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, shall be
+recorded, by a woman police officer or any woman officer.
+181. (1) No statement made by any person to a police officer in the course of an
+investigation under this Chapter, shall, if reduced to writing, be signed by the person
+making it; nor shall any such statement or any record thereof, whether in a police diary or
+otherwise, or any part of such statement or record, be used for any purpose, save as
+hereinafter provided, at any inquiry or trial in respect of any offence under investigation at
+the time when such statement was made:
+Provided that when any witness is called for the prosecution in such inquiry or trial
+whose statement has been reduced into writing as aforesaid, any part of his statement, if
+duly proved, may be used by the accused, and with the permission of the Court, by the
+prosecution, to contradict such witness in the manner provided by section 148 of the
+Bharatiya Sakshya Adhiniyam, 2023; and when any part of such statement is so used, any
+part thereof may also be used in the re-examination of such witness, but for the purpose
+only of explaining any matter referred to in his cross-examination.
+(2) Nothing in this section shall be deemed to apply to any statement falling within
+the provisions of clause (a) of section 26 of the Bharatiya Sakshya Adhiniyam, 2023; or to
+affect the provisions of the proviso to sub-section (2) of section 23 of that Adhiniyam.
+Explanation.—An omission to state a fact or circumstance in the statement referred
+to in sub-section (1) may amount to contradiction if the same appears to be significant and
+otherwise relevant having regard to the context in which such omission occurs and whether
+any omission amounts to a contradiction in the particular context shall be a question of fact.
+182.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">e74df2c5-1ab3-4196-900c-6af280bd1ea2</span>
+            <span class="chunk-src">bnss.pdf p.53</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.389</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">11.48</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0281</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.005</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">20</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">4</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">459494cc-0295-48f2-b50c-c94bafc6f62f</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">383</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 1619 (1619 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">and the substance thereof shall be entered in a book to be kept by such officer in such form
+as the State Government may by rules prescribe in this behalf:
+Provided that if the information is given by the woman against whom an offence
+under section 64, section 65, section 66, section 67, section 68, section 69, section 70,
+section 71, section 74, section 75, section 76, section 77, section 78, section 79 or
+section 124 of the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or
+attempted, then such information shall be recorded, by a woman police officer or any
+woman officer:
+Provided further that—
+(a) in the event that the person against whom an offence under section 64,
+section 65, section 66, section 67, section 68, section 69, section 70, section 71,
+section 74, section 75, section 76, section 77, section 78, section 79   or section 124 of
+the Bharatiya Nyaya Sanhita, 2023 is alleged to have been committed or attempted, is
+temporarily or permanently mentally or physically disabled, then such information
+shall be recorded by a police officer, at the residence of the person seeking to report
+such offence or at a convenient place of such person&#x27;s choice, in the presence of an
+interpreter or a special educator, as the case may be;
+(b) the recording of such information shall be videographed;
+(c) the police officer shall get the statement of the person recorded by a
+Magistrate under clause (a) of sub-section (6) of section 183 as soon as possible.
+(2) A copy of the information as recorded under sub-section (1) shall be given forthwith,
+free of cost, to the informant or the victim.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 2/6 chunks used (33%)</div>
+        </div>
+        <div class="stage fail">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">FAIL</div>
+          <div class="stage-obs">1 generated claims remain unsupported despite high retrieval scores.</div>
+          <div class="stage-conf">confidence 0.85</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace b3e95969-1def-4bca-a993-18bf025c81f2.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.</li><li>GROUNDING passed (confidence=0.90).</li><li>Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).</li><li>Analysis complete. Primary cause: UNSUPPORTED_GENERATION.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.900</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[IMMEDIATE]</span>Lower Sampling Temperature</div>
+          <div class="action-desc">Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[SHORT_TERM]</span>Strict Prompt Grounding</div>
+          <div class="action-desc">Inject systemic instructions forcing the LLM to output &#x27;I don&#x27;t know&#x27; if context is insufficient.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>The LLM guesses when retrieved context is irrelevant.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>2/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">1.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">3 / 3</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">(i) Following a woman and contacting or attempting to contact her to foster personal interaction repeatedly despite a clear indication of her disinterest, or (ii) monitoring her use of the internet, e-mail, or any other form of electronic communication.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Following a woman is described.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.999</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">**Following a woman and contacting (or attempting to contact) her to foster personal interaction repeatedly, despite a clear indication of her disinterest**  
+2.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Contacting or attempting to contact her to foster personal interaction repeatedly despite a clear indication of her disinterest is described.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.999</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">**Following a woman and contacting (or attempting to contact) her to foster personal interaction repeatedly, despite a clear indication of her disinterest**  
+2.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Monitoring her use of the internet, e-mail, or any other form of electronic communication is described.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.998</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">**Monitoring the woman’s use of the internet, e‑mail, or any other form of electronic communication**  
+
+These are the two distinct behaviours that constitute stalking under the provision.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.714</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNSUPPORTED_GENERATION</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.955</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.333</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val mid mono">0.667</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val hi mono">0.833</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace b3e95969-1def-4bca-a993-18bf025c81f2 -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

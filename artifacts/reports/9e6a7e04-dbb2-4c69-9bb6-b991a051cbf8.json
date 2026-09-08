@@ -1,0 +1,203 @@
+{
+    "framework_metadata": {
+        "trace_id": "9e6a7e04-dbb2-4c69-9bb6-b991a051cbf8",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T22:06:40.223622Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS, who may withdraw powers conferred by the High Court or State Government on a person or subordinate officer?",
+        "generated_answer": "Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the authority that may withdraw powers conferred by the High Court or the State Government is **the High Court or the State Government itself** (as the case may be).  \n\nSpecifically, section\u202f28(1) states:  \n\n> \u201cThe High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.\u201d\u3010ff466593-e128-4b78-b947-3bf56cc05525\u3011  \n\nAdditionally, if the powers were originally conferred by a Chief Judicial Magistrate or a District Magistrate, those respective magistrates may withdraw the powers they granted\u3010ff466593-e128-4b78-b947-3bf56cc05525\u3011.  \n\nThus, the withdrawing authority mirrors the conferring authority: the High Court or State Government for powers they conferred, and the Chief Judicial Magistrate or District Magistrate for powers they conferred.",
+        "overall_health_score": 0.5,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 6,
+        "number_of_corrective_actions": 4,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3101460337638855,
+                    "pool_size": 72
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9903007745742798,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "2 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 2,
+                    "max_score": 0.9903007745742798
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "FAIL",
+                "observation": "1 claim(s) are actively contradicted by retrieved evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "contradicted_count": 1
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 3,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 2,
+        "contradicted_claims": 1,
+        "grounding_score": 0.5,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.531296556815505,
+        "retrieval_latency_ms": 763.4575366973877,
+        "generation_latency_ms": 3736.4354133605957,
+        "verification_latency_ms": 9997.305631637573
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [
+            "GROUNDING_FAILURE"
+        ],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 9e6a7e04-dbb2-4c69-9bb6-b991a051cbf8.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 2 generated claims remain unsupported despite high retrieval scores.",
+            "Failure at GROUNDING: GROUNDING_FAILURE (confidence=0.95). Observation: 1 claim(s) are actively contradicted by retrieved evidence.",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Secondary effect (propagated from GENERATOR): GROUNDING_FAILURE at GROUNDING (confidence=0.95).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.91
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "73fba37d-10a3-4947-bf8a-4e3fd9d34bb5",
+            "claim_text": "Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the authority that may withdraw powers conferred by the High Court or the State Government is the High Court or the State Government itself.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) The High Court or the State Government, as the case may be, may withdraw all\nor any of the powers conferred by it under this Sanhita on any person or by any officer\nsubordinate to it."
+        },
+        {
+            "claim_id": "7986ac34-5f75-4df1-8f7b-688186305226",
+            "claim_text": "Section 28(1) of the BNSS states that the High Court or the State Government may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "a9c8b9c5-dcb3-4200-9ce8-b46c6afa3a0e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Forms."
+        },
+        {
+            "claim_id": "b4592624-9a0f-49c6-afb9-13fb8008cf7e",
+            "claim_text": "If the powers were originally conferred by a Chief Judicial Magistrate, the Chief Judicial Magistrate may withdraw the powers they granted.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate\nmay be withdrawn by the respective Magistrate by whom such powers were conferred."
+        },
+        {
+            "claim_id": "439d74da-73ce-498c-9daa-662bc6ff19e5",
+            "claim_text": "If the powers were originally conferred by a District Magistrate, the District Magistrate may withdraw the powers they granted.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate\nmay be withdrawn by the respective Magistrate by whom such powers were conferred."
+        },
+        {
+            "claim_id": "60538a88-a031-4888-87c4-ed5f18f7756a",
+            "claim_text": "The withdrawing authority mirrors the conferring authority for powers conferred by the High Court or State Government.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "a9c8b9c5-dcb3-4200-9ce8-b46c6afa3a0e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Forms."
+        },
+        {
+            "claim_id": "1ba75934-a55e-487f-a567-d295528e58c6",
+            "claim_text": "The withdrawing authority mirrors the conferring authority for powers conferred by the Chief Judicial Magistrate or District Magistrate.",
+            "verification_status": "CONTRADICTED",
+            "supporting_chunk_id": "189efb12-520f-4ad3-9bbe-32a25652a651",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "On examining any record under section 438 or otherwise, the High Court or the\nSessions Judge may direct the Chief Judicial Magistrate by himself or by any of the\nMagistrates subordinate to him to make, and the Chief Judicial Magistrate may himself\nmake or direct any subordinate Magistrate to make, further inquiry into any complaint\nwhich has been dismissed under section 226 or sub-section (4) of section 227, or into the\ncase of any person accused of an offence who has been discharged:\nProvided that no Court shall make any direction under this section for inquiry into the\ncase of any person who has been discharged unless such person has had an opportunity of\nshowing cause why such direction should not be made."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (2 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 2).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "experimental",
+            "title": "Require Explicit Citations",
+            "description": "Force the LLM to append [Chunk-ID] to every sentence it generates.",
+            "observed_evidence": "LLM struggles to maintain factual fidelity across long generation spans (1 contradicted claim(s) observed).",
+            "expected_improvement": "Self-correction during generation ensures every fact is linked to evidence.",
+            "success_metric": "100% of claims map cleanly to a cited chunk (currently 1 contradicted).",
+            "tradeoff": "Increases output token length and adds parsing overhead."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T22:06:40.223703Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

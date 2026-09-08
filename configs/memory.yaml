@@ -1,0 +1,38 @@
+# Memory System Configuration for X-RAG
+# =========================================
+
+# Short-term memory: number of recent interactions kept in-memory
+short_memory_size: 10
+
+# Minimum semantic similarity score for memory retrieval (0.0 - 1.0)
+similarity_threshold: 0.4
+
+# Weight of memory context relative to document context (0.0 - 1.0)
+memory_weight: 0.3
+
+# Number of interactions before auto-summarization triggers
+summarization_threshold: 20
+
+# Embedding model for memory vectors (must match the retrieval embedding model)
+embedding_model: "BAAI/bge-base-en-v1.5"
+
+# Directory for persistent memory storage (ChromaDB + JSON metadata)
+persistence_directory: "./db/memory"
+
+# Automatically save every interaction to long-term memory
+auto_save: true
+
+# Automatically summarize when threshold is exceeded
+auto_summary: true
+
+# Master switch to enable/disable the memory system
+enable_memory: true
+
+# Memory ranking weights (must sum to 1.0)
+semantic_weight: 0.5
+recency_weight: 0.2
+frequency_weight: 0.2
+importance_weight: 0.1
+
+# ChromaDB collection name for memory vectors
+collection_name: "xrag_memory"

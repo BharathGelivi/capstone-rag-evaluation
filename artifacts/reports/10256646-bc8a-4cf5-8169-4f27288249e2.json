@@ -1,0 +1,172 @@
+{
+    "framework_metadata": {
+        "trace_id": "10256646-bc8a-4cf5-8169-4f27288249e2",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T12:53:56.269073Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under what four conditions is causing death classified as murder rather than merely culpable homicide, per BNS section 101?",
+        "generated_answer": "According to **BNS\u202f\u00a7\u202f101**, causing death is treated as **murder** (rather than merely culpable homicide) when any of the following four conditions are met:\n\n1. **Intention to cause death** \u2013 the act is done with the intention of causing death.  \n2. **Intention to cause bodily injury known to be likely to cause death** \u2013 the act is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person harmed.  \n3. **Intention to cause bodily injury sufficient in the ordinary course of nature to cause death** \u2013 the act is done with the intention of causing bodily injury, and the injury intended is sufficient in the ordinary course of nature to cause death.  \n4. **Knowledge of imminent danger** \u2013 the offender knows that the act is so imminently dangerous that it must, in all probability, cause death (or such bodily injury as is likely to cause death) and commits the act without any excuse for incurring that risk.  \n\nThese four sub\u2011clauses (a)\u2013(d) delineate when culpable homicide escalates to murder under the provision.  \n\n*Source: [Chunk-ID: 56cf25b2-4acb-4edd-8e17-5c28dc06cfbb]*",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 6,
+        "total_claims": 6,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.2934378981590271,
+                    "pool_size": 59
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.6950578689575195,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.6950578689575195
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 6,
+        "supported_claims": 6,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.9612286488215128,
+        "retrieval_latency_ms": 734.0991497039795,
+        "generation_latency_ms": 3156.2986373901367,
+        "verification_latency_ms": 11358.33191871643
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 10256646-bc8a-4cf5-8169-4f27288249e2.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "538a7fd5-26ca-499e-a87e-294a27cfa2fe",
+            "claim_text": "According to BNS \u00a7 101, causing death is treated as murder (rather than merely culpable homicide) when any of the following four conditions are met.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "B is by this provocation excited to violent rage.A, a bystander, intending\nto take advantage of B\u2019s rage, and to cause him to kill Z, puts a knife into B\u2019s hand for that\npurpose."
+        },
+        {
+            "claim_id": "2ecbf13d-1032-4bf0-a909-8147ec114d7b",
+            "claim_text": "Intention to cause death \u2013 the act is done with the intention of causing death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "(f) Z strikes B."
+        },
+        {
+            "claim_id": "1fbc9566-f462-4786-89ff-0cad2b659327",
+            "claim_text": "Intention to cause bodily injury known to be likely to cause death \u2013 the act is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person harmed.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "46e25ba1-0e58-4426-9701-605d049317c1",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "A is moved to sudden passion by\nthese words, and kills Z."
+        },
+        {
+            "claim_id": "463a92d8-7744-4fa1-b40a-9a273ae39d25",
+            "claim_text": "Intention to cause bodily injury sufficient in the ordinary course of nature to cause death \u2013 the act is done with the intention of causing bodily injury, and the injury intended is sufficient in the ordinary course of nature to cause death.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "56cf25b2-4acb-4edd-8e17-5c28dc06cfbb",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Z dies in consequence."
+        },
+        {
+            "claim_id": "7bed11c3-2978-4271-9717-43f9803f4c17",
+            "claim_text": "Knowledge of imminent danger \u2013 the offender knows that the act is so imminently dangerous that it must, in all probability, cause death (or such bodily injury as is likely to cause death) and commits the act without any excuse for incurring that risk.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "56cf25b2-4acb-4edd-8e17-5c28dc06cfbb",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Except in the cases hereinafter excepted, culpable homicide is murder,\u2013\u2013\n(a) if the act by which the death is caused is done with the intention of causing\ndeath; or\n(b) if the act by which the death is caused is done with the intention of causing\nsuch bodily injury as the offender knows to be likely to cause the death of the person\nto whom the harm is caused; or\n(c) if the act by which the death is caused is done with the intention of causing\nbodily injury to any person and the bodily injury intended to be inflicted is sufficient\nin the ordinary course of nature to cause death; or\n(d) if the person committing the act by which the death is caused, knows that it\nis so imminently dangerous that it must, in all probability, cause death, or such bodily\ninjury as is likely to cause death, and commits such act without any excuse for incurring\nthe risk of causing death or such injury as aforesaid."
+        },
+        {
+            "claim_id": "6217e00e-e99e-409b-81e7-9a1bb6c07c10",
+            "claim_text": "These four sub\u2011clauses (a)\u2013(d) delineate when culpable homicide escalates to murder under the provision.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "56cf25b2-4acb-4edd-8e17-5c28dc06cfbb",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "Except in the cases hereinafter excepted, culpable homicide is murder,\u2013\u2013\n(a) if the act by which the death is caused is done with the intention of causing\ndeath; or\n(b) if the act by which the death is caused is done with the intention of causing\nsuch bodily injury as the offender knows to be likely to cause the death of the person\nto whom the harm is caused; or\n(c) if the act by which the death is caused is done with the intention of causing\nbodily injury to any person and the bodily injury intended to be inflicted is sufficient\nin the ordinary course of nature to cause death; or\n(d) if the person committing the act by which the death is caused, knows that it\nis so imminently dangerous that it must, in all probability, cause death, or such bodily\ninjury as is likely to cause death, and commits such act without any excuse for incurring\nthe risk of causing death or such injury as aforesaid."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.2,
+        "total_gold_claims": 5,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T12:53:56.269155Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

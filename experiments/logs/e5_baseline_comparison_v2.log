@@ -1,0 +1,1291 @@
+2026-09-06 13:05:04,508 - INFO - 0 of 40 examples already done; 40 remaining.
+2026-09-06 13:05:04,510 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:05:04,582 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:05:04,583 - INFO - Initializing ChromaDB at ./db/chroma with collection 'rag_benchmark_collection'
+2026-09-06 13:05:05,168 - INFO - ChromaDB collection initialized successfully.
+2026-09-06 13:05:07,814 - INFO - CUDA available: NVIDIA GeForce RTX 4060 Laptop GPU (8.6 GB) — loading models on GPU.
+2026-09-06 13:05:07,815 - INFO - Loading shared embedding model BAAI/bge-base-en-v1.5 on cuda.
+2026-09-06 13:05:10,263 - INFO - Loading SentenceTransformer model from BAAI/bge-base-en-v1.5.
+2026-09-06 13:05:17,726 - INFO - Loaded 1 prompt with these keys: ['query']
+2026-09-06 13:05:17,731 - INFO - Loading Cross-Encoder Reranker: BAAI/bge-reranker-base on NVIDIA GeForce RTX 4060 Laptop GPU (6.9 / 8.6 GB free)
+2026-09-06 13:05:18,022 - INFO - No modules.json found for BAAI/bge-reranker-base, initializing a new CrossEncoder model.
+2026-09-06 13:05:29,267 - INFO - Building BM25 Index from ChunkRegistry...
+2026-09-06 13:05:29,673 - INFO - BM25 Index built with 893 documents.
+2026-09-06 13:05:29,679 - INFO - Initialising Generator: model=nvidia/nemotron-3-super-120b-a12b
+2026-09-06 13:05:29,680 - INFO - Initialising ClaimDecomposer: model=nvidia/nemotron-3-super-120b-a12b
+2026-09-06 13:05:29,681 - INFO - Loading NLI Verification Model: cross-encoder/nli-deberta-v3-large on NVIDIA GeForce RTX 4060 Laptop GPU (5.8 / 8.6 GB free)
+Device set to use cuda:0
+2026-09-06 13:05:35,359 - INFO - Initialising Generator: model=nvidia/nemotron-3-super-120b-a12b
+2026-09-06 13:05:35,361 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:05:35,432 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:05:35,433 - INFO - Initializing ChromaDB at ./db/chroma with collection 'rag_benchmark_collection'
+2026-09-06 13:05:35,585 - INFO - ChromaDB collection initialized successfully.
+2026-09-06 13:05:35,585 - INFO - Loading Cross-Encoder Reranker: BAAI/bge-reranker-base on NVIDIA GeForce RTX 4060 Laptop GPU (5.0 / 8.6 GB free)
+2026-09-06 13:05:35,943 - INFO - No modules.json found for BAAI/bge-reranker-base, initializing a new CrossEncoder model.
+2026-09-06 13:05:47,056 - INFO - Building BM25 Index from ChunkRegistry...
+2026-09-06 13:05:47,525 - INFO - BM25 Index built with 893 documents.
+2026-09-06 13:05:47,534 - INFO - Processing eval example 1: According to the BNS, what three ways can a person 'abet' the doing of a thing?
+2026-09-06 13:05:47,549 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'According to the BNS, what three ways can a person 'abet' the doing of a thing?'
+2026-09-06 13:05:51,275 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 13:05:52,185 - INFO - Hybrid Retrieval complete in 4.635s. Found 6 chunks.
+2026-09-06 13:05:52,186 - INFO - Generating answer for: 'According to the BNS, what three ways can a person 'abet' the doing of a thing?'
+2026-09-06 13:06:18,541 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:06:18,588 - INFO - Generation complete in 26.402s.
+2026-09-06 13:06:18,589 - INFO - Building RAGTrace...
+2026-09-06 13:06:18,589 - INFO - RAGTrace built successfully: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+2026-09-06 13:06:18,591 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_a89a28a8-9d0d-4e55-94a3-b54de05a3499.json...
+2026-09-06 13:06:18,596 - INFO - RAGTrace saved successfully.
+2026-09-06 13:06:18,596 - src.runner - INFO - Starting pipeline run for Trace ID: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+2026-09-06 13:06:18,596 - INFO - Starting pipeline run for Trace ID: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+2026-09-06 13:06:18,596 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 13:06:18,596 - INFO - Running Claim Decomposer...
+2026-09-06 13:06:18,596 - INFO - Decomposing answer for trace_id: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+2026-09-06 13:06:31,848 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:06:31,852 - INFO - Latencies — Generation: 13.255s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 13.255s
+2026-09-06 13:06:32,957 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 13:06:32,957 - INFO - Running Claim Verifier...
+2026-09-06 13:06:32,959 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:06:33,036 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:06:33,037 - INFO - Starting verification for trace a89a28a8-9d0d-4e55-94a3-b54de05a3499 (5 claims)
+2026-09-06 13:06:40,140 - INFO - Verified claim '1ec5d51e-3720-4abd-aeb8-4a7ece236f63': SUPPORTED (Latency: 7102.7ms)
+2026-09-06 13:06:42,360 - INFO - Verified claim 'b8aef22f-de0c-4bfc-a8cd-0a0fa74895a5': SUPPORTED (Latency: 2220.0ms)
+2026-09-06 13:06:44,839 - INFO - Verified claim '7e8fe587-95ea-4eaf-bbd8-7f404470680e': SUPPORTED (Latency: 2478.5ms)
+2026-09-06 13:06:47,093 - INFO - Verified claim '5bf95829-5bac-4f12-b53d-a8fea33e42fb': SUPPORTED (Latency: 2252.9ms)
+2026-09-06 13:06:49,339 - INFO - Verified claim '9a0693d7-e480-464f-a5b2-5d6158168ba9': UNSUPPORTED (Latency: 2245.7ms)
+2026-09-06 13:06:49,339 - INFO - Completed verification for trace a89a28a8-9d0d-4e55-94a3-b54de05a3499. Supported: 4/5, Contradicted: 0/5
+2026-09-06 13:06:49,341 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 13:06:49,341 - INFO - Running Pipeline State Analyzer...
+2026-09-06 13:06:49,343 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 13:06:49,343 - INFO - Running Root Cause Reasoner...
+2026-09-06 13:06:49,344 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 13:06:49,344 - INFO - Running Corrective Action Engine...
+2026-09-06 13:06:49,346 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 13:06:49,346 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 13:06:49,346 - INFO - Decomposing answer for trace_id: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+2026-09-06 13:07:49,478 - ERROR - LLM generation failed: Request timed out.
+2026-09-06 13:07:49,479 - WARNING - Initial parse and recovery failed. Initiating retry. Error: Empty string provided to JSON parser.
+2026-09-06 13:07:53,155 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:07:53,158 - INFO - Latencies — Generation: 60.133s, Parsing: 0.000s, Retry: 3.678s, Recovery: 0.000s, Total: 63.811s
+2026-09-06 13:07:53,163 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 13:07:53,163 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 13:07:53,163 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:07:53,223 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:07:53,225 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 13:07:53,225 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 13:07:53,225 - src.runner - INFO - Running Report Builder...
+2026-09-06 13:07:53,225 - INFO - Running Report Builder...
+2026-09-06 13:07:53,226 - src.runner - INFO - Pipeline run completed for Trace ID: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+2026-09-06 13:07:53,226 - INFO - Pipeline run completed for Trace ID: a89a28a8-9d0d-4e55-94a3-b54de05a3499
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 13:08:05,138 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:05,854 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:06,878 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:08,414 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:05<00:20,  5.05s/it]2026-09-06 13:08:08,596 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:08,723 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:08,726 - INFO - Retrying request to /chat/completions in 0.426797 seconds
+2026-09-06 13:08:10,052 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:06<00:08,  2.94s/it]2026-09-06 13:08:13,329 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:16,095 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:16,198 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:16,200 - INFO - Retrying request to /chat/completions in 0.444124 seconds
+2026-09-06 13:08:16,813 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:16,815 - INFO - Retrying request to /chat/completions in 0.793381 seconds
+2026-09-06 13:08:17,732 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:18,654 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:18,655 - INFO - Retrying request to /chat/completions in 0.390857 seconds
+2026-09-06 13:08:20,096 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:22,753 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:22,956 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:22,957 - INFO - Retrying request to /chat/completions in 0.394486 seconds
+2026-09-06 13:08:23,466 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:23,468 - INFO - Retrying request to /chat/completions in 0.791834 seconds
+2026-09-06 13:08:24,392 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:25,003 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:25,004 - INFO - Retrying request to /chat/completions in 0.398687 seconds
+2026-09-06 13:08:25,515 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:25,516 - INFO - Retrying request to /chat/completions in 0.873721 seconds
+2026-09-06 13:08:26,539 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:26,746 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:26,747 - INFO - Retrying request to /chat/completions in 0.390610 seconds
+2026-09-06 13:08:27,260 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:27,262 - INFO - Retrying request to /chat/completions in 0.961287 seconds
+2026-09-06 13:08:28,382 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:29,509 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:29,639 - ERROR - Exception raised in Job[0]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  60%|######    | 3/5 [00:26<00:21, 10.54s/it]2026-09-06 13:08:30,636 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:30,637 - INFO - Retrying request to /chat/completions in 0.420240 seconds
+2026-09-06 13:08:31,148 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:31,150 - INFO - Retrying request to /chat/completions in 0.977412 seconds
+2026-09-06 13:08:32,210 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:33,713 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:08:33,814 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:33,815 - INFO - Retrying request to /chat/completions in 0.411317 seconds
+2026-09-06 13:08:34,322 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:34,323 - INFO - Retrying request to /chat/completions in 0.933704 seconds
+2026-09-06 13:08:35,347 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:35,598 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:35,600 - INFO - Retrying request to /chat/completions in 0.475088 seconds
+2026-09-06 13:08:36,167 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:36,168 - INFO - Retrying request to /chat/completions in 0.852143 seconds
+2026-09-06 13:08:38,453 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:38,454 - INFO - Retrying request to /chat/completions in 0.474732 seconds
+2026-09-06 13:08:39,031 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:39,033 - INFO - Retrying request to /chat/completions in 0.867555 seconds
+2026-09-06 13:08:39,989 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:51,116 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  80%|########  | 4/5 [00:47<00:14, 14.94s/it]2026-09-06 13:08:51,936 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:51,937 - INFO - Retrying request to /chat/completions in 0.407918 seconds
+2026-09-06 13:08:52,446 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:52,447 - INFO - Retrying request to /chat/completions in 0.870899 seconds
+2026-09-06 13:08:53,473 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:56,441 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:56,443 - INFO - Retrying request to /chat/completions in 0.445105 seconds
+2026-09-06 13:08:56,954 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:08:56,955 - INFO - Retrying request to /chat/completions in 0.849825 seconds
+2026-09-06 13:08:57,879 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:09:35,460 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:09:35,461 - INFO - Retrying request to /chat/completions in 0.417312 seconds
+2026-09-06 13:09:40,166 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating: 100%|##########| 5/5 [01:36<00:00, 27.17s/it]Evaluating: 100%|##########| 5/5 [01:36<00:00, 19.33s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 13:24:40,691 - WARNING - ragchecker failed for 1: Command '['venv_eval_ragchecker\\Scripts\\python.exe', '-m', 'scripts.baseline_adapters.ragchecker_worker', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpq64m9i6a\\in.json', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpq64m9i6a\\out.json']' timed out after 900 seconds
+2026-09-06 13:27:54,129 - INFO - Diagnostic report for eval 1 written to artifacts/diagnostic_reports\1.html
+2026-09-06 13:27:54,129 - INFO - Processing eval example 2: Under what circumstances does the right of private defence of the body NOT exten
+2026-09-06 13:27:54,132 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'Under what circumstances does the right of private defence of the body NOT extend to voluntarily causing the assailant's death?'
+2026-09-06 13:27:54,566 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 13:27:55,951 - INFO - Hybrid Retrieval complete in 1.819s. Found 6 chunks.
+2026-09-06 13:27:55,952 - INFO - Generating answer for: 'Under what circumstances does the right of private defence of the body NOT extend to voluntarily causing the assailant's death?'
+2026-09-06 13:28:05,393 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:28:05,403 - INFO - Generation complete in 9.450s.
+2026-09-06 13:28:05,404 - INFO - Building RAGTrace...
+2026-09-06 13:28:05,404 - INFO - RAGTrace built successfully: a32d6a3a-7276-4525-945c-59a1f1907629
+2026-09-06 13:28:05,406 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_a32d6a3a-7276-4525-945c-59a1f1907629.json...
+2026-09-06 13:28:05,409 - INFO - RAGTrace saved successfully.
+2026-09-06 13:28:05,410 - src.runner - INFO - Starting pipeline run for Trace ID: a32d6a3a-7276-4525-945c-59a1f1907629
+2026-09-06 13:28:05,410 - INFO - Starting pipeline run for Trace ID: a32d6a3a-7276-4525-945c-59a1f1907629
+2026-09-06 13:28:05,410 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 13:28:05,410 - INFO - Running Claim Decomposer...
+2026-09-06 13:28:05,411 - INFO - Decomposing answer for trace_id: a32d6a3a-7276-4525-945c-59a1f1907629
+2026-09-06 13:28:54,530 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:28:54,651 - INFO - Latencies — Generation: 49.237s, Parsing: 0.002s, Retry: 0.000s, Recovery: 0.000s, Total: 49.240s
+2026-09-06 13:28:55,324 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 13:28:55,324 - INFO - Running Claim Verifier...
+2026-09-06 13:28:55,325 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:28:55,389 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:28:55,391 - INFO - Starting verification for trace a32d6a3a-7276-4525-945c-59a1f1907629 (1 claims)
+2026-09-06 13:28:57,872 - INFO - Verified claim '6bae32a7-9ac1-462a-9975-67af18db1f40': SUPPORTED (Latency: 2480.8ms)
+2026-09-06 13:28:57,873 - INFO - Completed verification for trace a32d6a3a-7276-4525-945c-59a1f1907629. Supported: 1/1, Contradicted: 0/1
+2026-09-06 13:28:57,875 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 13:28:57,875 - INFO - Running Pipeline State Analyzer...
+2026-09-06 13:28:57,876 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 13:28:57,876 - INFO - Running Root Cause Reasoner...
+2026-09-06 13:28:57,877 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 13:28:57,877 - INFO - Running Corrective Action Engine...
+2026-09-06 13:28:57,878 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 13:28:57,878 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 13:28:57,878 - INFO - Decomposing answer for trace_id: a32d6a3a-7276-4525-945c-59a1f1907629
+2026-09-06 13:29:08,057 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:08,061 - INFO - Latencies — Generation: 10.182s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 10.182s
+2026-09-06 13:29:09,097 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 13:29:09,097 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 13:29:09,097 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:29:09,157 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:29:09,157 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 13:29:09,157 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 13:29:09,158 - src.runner - INFO - Running Report Builder...
+2026-09-06 13:29:09,158 - INFO - Running Report Builder...
+2026-09-06 13:29:09,159 - src.runner - INFO - Pipeline run completed for Trace ID: a32d6a3a-7276-4525-945c-59a1f1907629
+2026-09-06 13:29:09,159 - INFO - Pipeline run completed for Trace ID: a32d6a3a-7276-4525-945c-59a1f1907629
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 13:29:09,825 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:09,827 - INFO - Retrying request to /chat/completions in 0.478568 seconds
+2026-09-06 13:29:10,402 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:10,404 - INFO - Retrying request to /chat/completions in 0.979028 seconds
+2026-09-06 13:29:13,723 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:13,782 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:15,250 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:18,091 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:18,188 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:18,189 - INFO - Retrying request to /chat/completions in 0.418016 seconds
+2026-09-06 13:29:18,494 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:08<00:35,  8.98s/it]2026-09-06 13:29:19,622 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:10<00:13,  4.45s/it]2026-09-06 13:29:24,158 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:24,249 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:24,265 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:24,267 - INFO - Retrying request to /chat/completions in 0.383682 seconds
+2026-09-06 13:29:24,380 - ERROR - Exception raised in Job[0]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  60%|######    | 3/5 [00:14<00:09,  4.52s/it]2026-09-06 13:29:24,739 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:24,740 - INFO - Retrying request to /chat/completions in 0.817501 seconds
+2026-09-06 13:29:27,115 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:27,246 - ERROR - Exception raised in Job[4]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  80%|########  | 4/5 [00:17<00:03,  3.86s/it]2026-09-06 13:29:28,937 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:29,040 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:29,041 - INFO - Retrying request to /chat/completions in 0.407651 seconds
+2026-09-06 13:29:29,551 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:29,553 - INFO - Retrying request to /chat/completions in 0.833170 seconds
+2026-09-06 13:29:44,210 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:29:44,308 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:44,309 - INFO - Retrying request to /chat/completions in 0.393928 seconds
+2026-09-06 13:29:44,820 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:44,821 - INFO - Retrying request to /chat/completions in 0.892514 seconds
+2026-09-06 13:29:45,844 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:46,049 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:46,051 - INFO - Retrying request to /chat/completions in 0.496716 seconds
+2026-09-06 13:29:46,663 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:46,664 - INFO - Retrying request to /chat/completions in 0.915684 seconds
+2026-09-06 13:29:47,687 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:49,120 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:49,122 - INFO - Retrying request to /chat/completions in 0.387653 seconds
+2026-09-06 13:29:49,633 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:49,634 - INFO - Retrying request to /chat/completions in 0.937904 seconds
+2026-09-06 13:29:50,771 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:51,270 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:51,271 - INFO - Retrying request to /chat/completions in 0.376139 seconds
+2026-09-06 13:29:51,790 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:51,792 - INFO - Retrying request to /chat/completions in 0.914394 seconds
+2026-09-06 13:29:52,808 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:59,259 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:59,260 - INFO - Retrying request to /chat/completions in 0.376915 seconds
+2026-09-06 13:29:59,770 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:29:59,772 - INFO - Retrying request to /chat/completions in 0.845303 seconds
+2026-09-06 13:30:00,794 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:30:06,358 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:30:06,360 - INFO - Retrying request to /chat/completions in 0.382226 seconds
+2026-09-06 13:30:06,826 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:30:06,828 - INFO - Retrying request to /chat/completions in 0.836350 seconds
+2026-09-06 13:30:13,298 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating: 100%|##########| 5/5 [01:03<00:00, 19.08s/it]Evaluating: 100%|##########| 5/5 [01:03<00:00, 12.76s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 13:45:13,833 - WARNING - ragchecker failed for 2: Command '['venv_eval_ragchecker\\Scripts\\python.exe', '-m', 'scripts.baseline_adapters.ragchecker_worker', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpyuhh8_4n\\in.json', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpyuhh8_4n\\out.json']' timed out after 900 seconds
+2026-09-06 13:49:57,715 - INFO - Diagnostic report for eval 2 written to artifacts/diagnostic_reports\2.html
+2026-09-06 13:49:57,716 - INFO - Processing eval example 3: When does the right of private defence of the body commence, and how long does i
+2026-09-06 13:49:57,717 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'When does the right of private defence of the body commence, and how long does it continue?'
+2026-09-06 13:49:58,054 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 13:49:59,161 - INFO - Hybrid Retrieval complete in 1.443s. Found 6 chunks.
+2026-09-06 13:49:59,162 - INFO - Generating answer for: 'When does the right of private defence of the body commence, and how long does it continue?'
+2026-09-06 13:50:01,756 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:01,767 - INFO - Generation complete in 2.605s.
+2026-09-06 13:50:01,768 - INFO - Building RAGTrace...
+2026-09-06 13:50:01,769 - INFO - RAGTrace built successfully: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+2026-09-06 13:50:01,770 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_6ffdc0b4-a294-4287-bdb3-76acb41332de.json...
+2026-09-06 13:50:01,773 - INFO - RAGTrace saved successfully.
+2026-09-06 13:50:01,774 - src.runner - INFO - Starting pipeline run for Trace ID: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+2026-09-06 13:50:01,774 - INFO - Starting pipeline run for Trace ID: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+2026-09-06 13:50:01,775 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 13:50:01,775 - INFO - Running Claim Decomposer...
+2026-09-06 13:50:01,775 - INFO - Decomposing answer for trace_id: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+2026-09-06 13:50:13,246 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:13,295 - INFO - Latencies — Generation: 11.519s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 11.519s
+2026-09-06 13:50:13,857 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 13:50:13,857 - INFO - Running Claim Verifier...
+2026-09-06 13:50:13,858 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:50:13,923 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:50:13,924 - INFO - Starting verification for trace 6ffdc0b4-a294-4287-bdb3-76acb41332de (3 claims)
+2026-09-06 13:50:16,472 - INFO - Verified claim '629c7c36-d79c-4c4e-b1c3-e8464ed1dd83': SUPPORTED (Latency: 2547.3ms)
+2026-09-06 13:50:18,553 - INFO - Verified claim 'a286e959-c43b-45bb-abea-db506d8d73cd': SUPPORTED (Latency: 2080.7ms)
+You seem to be using the pipelines sequentially on GPU. In order to maximize efficiency please use a dataset
+2026-09-06 13:50:20,652 - INFO - Verified claim 'b99f982a-e996-4e46-881e-1707d0bd7893': SUPPORTED (Latency: 2097.7ms)
+2026-09-06 13:50:20,652 - INFO - Completed verification for trace 6ffdc0b4-a294-4287-bdb3-76acb41332de. Supported: 3/3, Contradicted: 0/3
+2026-09-06 13:50:20,654 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 13:50:20,654 - INFO - Running Pipeline State Analyzer...
+2026-09-06 13:50:20,656 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 13:50:20,656 - INFO - Running Root Cause Reasoner...
+2026-09-06 13:50:20,657 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 13:50:20,657 - INFO - Running Corrective Action Engine...
+2026-09-06 13:50:20,657 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 13:50:20,657 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 13:50:20,658 - INFO - Decomposing answer for trace_id: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+2026-09-06 13:50:25,416 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:25,418 - INFO - Latencies — Generation: 4.760s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 4.760s
+2026-09-06 13:50:26,312 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 13:50:26,312 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 13:50:26,312 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 13:50:26,372 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 13:50:26,373 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 13:50:26,373 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 13:50:26,373 - src.runner - INFO - Running Report Builder...
+2026-09-06 13:50:26,373 - INFO - Running Report Builder...
+2026-09-06 13:50:26,374 - src.runner - INFO - Pipeline run completed for Trace ID: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+2026-09-06 13:50:26,374 - INFO - Pipeline run completed for Trace ID: 6ffdc0b4-a294-4287-bdb3-76acb41332de
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 13:50:26,960 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:26,963 - INFO - Retrying request to /chat/completions in 0.461015 seconds
+2026-09-06 13:50:26,967 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:26,968 - INFO - Retrying request to /chat/completions in 0.397029 seconds
+2026-09-06 13:50:27,136 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 503 Service Unavailable"
+2026-09-06 13:50:27,138 - INFO - Retrying request to /chat/completions in 0.464144 seconds
+2026-09-06 13:50:27,683 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:27,684 - INFO - Retrying request to /chat/completions in 0.930628 seconds
+2026-09-06 13:50:28,688 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:29,175 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:29,177 - INFO - Retrying request to /chat/completions in 0.392695 seconds
+2026-09-06 13:50:32,473 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:32,538 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:32,539 - INFO - Retrying request to /chat/completions in 0.398879 seconds
+2026-09-06 13:50:32,988 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:32,990 - INFO - Retrying request to /chat/completions in 0.955762 seconds
+2026-09-06 13:50:33,325 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:33,350 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:06<00:26,  6.63s/it]2026-09-06 13:50:33,381 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:33,383 - INFO - Retrying request to /chat/completions in 0.406086 seconds
+2026-09-06 13:50:33,840 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:33,841 - INFO - Retrying request to /chat/completions in 0.862642 seconds
+2026-09-06 13:50:33,996 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:34,190 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:34,191 - INFO - Retrying request to /chat/completions in 0.486867 seconds
+2026-09-06 13:50:34,272 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:34,730 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:34,732 - INFO - Retrying request to /chat/completions in 0.954436 seconds
+2026-09-06 13:50:35,386 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:35,468 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:35,472 - INFO - Retrying request to /chat/completions in 0.493073 seconds
+2026-09-06 13:50:35,738 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:36,044 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:36,046 - INFO - Retrying request to /chat/completions in 0.870651 seconds
+2026-09-06 13:50:36,877 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:36,878 - INFO - Retrying request to /chat/completions in 0.382956 seconds
+2026-09-06 13:50:36,965 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:37,309 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:37,311 - INFO - Retrying request to /chat/completions in 0.979760 seconds
+2026-09-06 13:50:37,442 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:37,444 - INFO - Retrying request to /chat/completions in 0.451123 seconds
+2026-09-06 13:50:37,942 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:37,943 - INFO - Retrying request to /chat/completions in 0.902659 seconds
+2026-09-06 13:50:38,346 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:38,419 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:38,482 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:38,483 - INFO - Retrying request to /chat/completions in 0.451699 seconds
+2026-09-06 13:50:38,921 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:38,990 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:38,992 - INFO - Retrying request to /chat/completions in 0.833667 seconds
+2026-09-06 13:50:39,873 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:40,354 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:40,355 - INFO - Retrying request to /chat/completions in 0.403014 seconds
+2026-09-06 13:50:40,435 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:50:40,778 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:40,780 - INFO - Retrying request to /chat/completions in 0.421878 seconds
+2026-09-06 13:50:40,824 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:40,826 - INFO - Retrying request to /chat/completions in 0.972232 seconds
+2026-09-06 13:50:41,256 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:41,258 - INFO - Retrying request to /chat/completions in 0.798581 seconds
+2026-09-06 13:50:41,792 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:41,794 - INFO - Retrying request to /chat/completions in 0.466593 seconds
+2026-09-06 13:50:41,867 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:42,187 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:15<00:24,  8.01s/it]2026-09-06 13:50:42,359 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:42,388 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:42,389 - INFO - Retrying request to /chat/completions in 0.925815 seconds
+2026-09-06 13:50:42,943 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:42,945 - INFO - Retrying request to /chat/completions in 0.408792 seconds
+2026-09-06 13:50:43,383 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:43,406 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:43,408 - INFO - Retrying request to /chat/completions in 0.823045 seconds
+2026-09-06 13:50:43,839 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:43,841 - INFO - Retrying request to /chat/completions in 0.482343 seconds
+2026-09-06 13:50:44,288 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:44,383 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:44,384 - INFO - Retrying request to /chat/completions in 0.933082 seconds
+2026-09-06 13:50:44,805 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:44,807 - INFO - Retrying request to /chat/completions in 0.449698 seconds
+2026-09-06 13:50:45,337 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:45,340 - INFO - Retrying request to /chat/completions in 0.837660 seconds
+2026-09-06 13:50:45,375 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:46,245 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:47,538 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:47,540 - INFO - Retrying request to /chat/completions in 0.448629 seconds
+2026-09-06 13:50:48,067 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:48,071 - INFO - Retrying request to /chat/completions in 0.927819 seconds
+2026-09-06 13:50:48,305 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:48,307 - INFO - Retrying request to /chat/completions in 0.431142 seconds
+2026-09-06 13:50:48,793 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:48,794 - INFO - Retrying request to /chat/completions in 0.790165 seconds
+2026-09-06 13:50:49,070 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:49,641 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:56,110 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:56,112 - INFO - Retrying request to /chat/completions in 0.386658 seconds
+2026-09-06 13:50:56,548 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:56,549 - INFO - Retrying request to /chat/completions in 0.832363 seconds
+2026-09-06 13:50:57,501 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:58,904 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:58,905 - INFO - Retrying request to /chat/completions in 0.408462 seconds
+2026-09-06 13:50:59,369 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:59,370 - INFO - Retrying request to /chat/completions in 0.760314 seconds
+2026-09-06 13:50:59,697 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:50:59,699 - INFO - Retrying request to /chat/completions in 0.376932 seconds
+2026-09-06 13:51:00,153 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:00,154 - INFO - Retrying request to /chat/completions in 0.867561 seconds
+2026-09-06 13:51:00,245 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:01,100 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:05,662 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:05,664 - INFO - Retrying request to /chat/completions in 0.470013 seconds
+2026-09-06 13:51:06,182 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:12,881 - INFO - Retrying request to /chat/completions in 0.976132 seconds
+2026-09-06 13:51:12,998 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:13,000 - INFO - Retrying request to /chat/completions in 0.385177 seconds
+2026-09-06 13:51:13,444 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:13,445 - INFO - Retrying request to /chat/completions in 0.938097 seconds
+2026-09-06 13:51:13,910 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:14,436 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:15,195 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:15,196 - INFO - Retrying request to /chat/completions in 0.411108 seconds
+2026-09-06 13:51:15,657 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:15,658 - INFO - Retrying request to /chat/completions in 0.942966 seconds
+2026-09-06 13:51:18,913 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:18,914 - INFO - Retrying request to /chat/completions in 0.385323 seconds
+2026-09-06 13:51:19,354 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:19,356 - INFO - Retrying request to /chat/completions in 0.956531 seconds
+2026-09-06 13:51:20,357 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:26,043 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:26,044 - INFO - Retrying request to /chat/completions in 0.392618 seconds
+2026-09-06 13:51:26,550 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:51:26,551 - INFO - Retrying request to /chat/completions in 0.938935 seconds
+2026-09-06 13:51:27,063 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  60%|######    | 3/5 [01:00<00:49, 24.88s/it]2026-09-06 13:51:27,677 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:04,953 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:52:12,427 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:12,429 - INFO - Retrying request to /chat/completions in 0.432456 seconds
+2026-09-06 13:52:13,042 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:13,044 - INFO - Retrying request to /chat/completions in 0.959415 seconds
+2026-09-06 13:52:13,143 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:52:13,245 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:13,247 - INFO - Retrying request to /chat/completions in 0.474877 seconds
+2026-09-06 13:52:13,860 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:13,861 - INFO - Retrying request to /chat/completions in 0.996607 seconds
+2026-09-06 13:52:14,990 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:15,706 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:15,807 - INFO - Retrying request to /chat/completions in 0.376505 seconds
+2026-09-06 13:52:21,335 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  80%|########  | 4/5 [01:54<00:36, 36.40s/it]2026-09-06 13:52:22,682 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:52:22,871 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:22,872 - INFO - Retrying request to /chat/completions in 0.492632 seconds
+2026-09-06 13:52:23,486 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 13:52:23,487 - INFO - Retrying request to /chat/completions in 0.976919 seconds
+2026-09-06 13:52:27,991 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 13:52:31,474 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating: 100%|##########| 5/5 [02:04<00:00, 26.93s/it]Evaluating: 100%|##########| 5/5 [02:04<00:00, 24.95s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 14:07:31,826 - WARNING - ragchecker failed for 3: Command '['venv_eval_ragchecker\\Scripts\\python.exe', '-m', 'scripts.baseline_adapters.ragchecker_worker', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpjsce6an6\\in.json', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpjsce6an6\\out.json']' timed out after 900 seconds
+2026-09-06 14:11:46,675 - INFO - Diagnostic report for eval 3 written to artifacts/diagnostic_reports\3.html
+2026-09-06 14:11:46,676 - INFO - Processing eval example 4: What punishment applies to abetment of an offence when the Sanhita makes no expr
+2026-09-06 14:11:46,678 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'What punishment applies to abetment of an offence when the Sanhita makes no express provision for punishing that specific abetment?'
+2026-09-06 14:11:47,069 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 14:11:48,092 - INFO - Hybrid Retrieval complete in 1.413s. Found 6 chunks.
+2026-09-06 14:11:48,093 - INFO - Generating answer for: 'What punishment applies to abetment of an offence when the Sanhita makes no express provision for punishing that specific abetment?'
+2026-09-06 14:12:10,317 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:12:10,326 - INFO - Generation complete in 22.233s.
+2026-09-06 14:12:10,326 - INFO - Building RAGTrace...
+2026-09-06 14:12:10,327 - INFO - RAGTrace built successfully: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+2026-09-06 14:12:10,329 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_12dd5bf2-9a3a-4950-8482-d7f075e74e02.json...
+2026-09-06 14:12:10,333 - INFO - RAGTrace saved successfully.
+2026-09-06 14:12:10,333 - src.runner - INFO - Starting pipeline run for Trace ID: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+2026-09-06 14:12:10,333 - INFO - Starting pipeline run for Trace ID: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+2026-09-06 14:12:10,334 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 14:12:10,334 - INFO - Running Claim Decomposer...
+2026-09-06 14:12:10,334 - INFO - Decomposing answer for trace_id: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+2026-09-06 14:12:49,534 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:12:49,664 - WARNING - Initial parse and recovery failed. Initiating retry. Error: Failed to recover JSON: no valid object boundary found.
+2026-09-06 14:13:04,994 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:13:04,997 - INFO - Latencies — Generation: 39.328s, Parsing: 0.001s, Retry: 15.332s, Recovery: 0.000s, Total: 54.662s
+2026-09-06 14:13:34,121 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 14:13:34,121 - INFO - Running Claim Verifier...
+2026-09-06 14:13:34,123 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 14:13:34,188 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 14:13:34,189 - INFO - Starting verification for trace 12dd5bf2-9a3a-4950-8482-d7f075e74e02 (17 claims)
+2026-09-06 14:13:50,271 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:13:50,278 - INFO - Verified claim '2bdf603d-713b-42c8-832d-cb1f0cae7141': SUPPORTED (Latency: 16087.7ms)
+2026-09-06 14:13:52,773 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:13:52,780 - WARNING - Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+2026-09-06 14:13:57,140 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:13:57,142 - WARNING - LLM judge returned unparseable response, falling back to NLI verdict: 'We need to decide if evidence supports claim: "The default punishment depends on whether the abetted act was actually carried out."\n\nEvidence: "Whenever any person, who is absent would be liable to be punished as an abettor, is present when the act or offence for which he would be punishable in consequence of the abetment is committed, he shall be deemed to have committed such act or offence. Illustrations. Illustrations."\n\nThis seems to be about abettor liability: if absent would be liable as abettor, but present when act is committed, then deemed to have committed act. This suggests punishment depends on presence/absence, not on whether act was actually carried out? Actually it says "when the act or offence ... is committed" - implies act is committed. So if act is not committed, then maybe not? The claim: default punishment depends on whether the abetted act was actually carried out. Evidence: says if person absent would be'
+2026-09-06 14:13:57,143 - INFO - Verified claim '17d5d619-6dcc-4b37-9d2c-164922da812b': NOT_VERIFIABLE (Latency: 6864.0ms)
+2026-09-06 14:13:59,388 - INFO - Verified claim 'b8b5fea4-c0e1-44e5-89d9-00a2b3c5295d': SUPPORTED (Latency: 2245.3ms)
+2026-09-06 14:14:01,526 - INFO - Verified claim 'dab25998-5f97-4cea-b14a-e24b274afba8': SUPPORTED (Latency: 2137.4ms)
+2026-09-06 14:14:03,680 - INFO - Verified claim 'c278b238-782f-4642-ba23-dfcadd82561b': UNSUPPORTED (Latency: 2154.1ms)
+2026-09-06 14:14:05,914 - INFO - Verified claim '5ac8a404-4878-4365-b3f1-3b4e97b534b9': SUPPORTED (Latency: 2233.3ms)
+2026-09-06 14:14:08,196 - INFO - Verified claim 'bb6d5064-7390-4af2-aa96-e7f1c750fcbd': SUPPORTED (Latency: 2282.3ms)
+2026-09-06 14:14:16,852 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:14:16,855 - WARNING - LLM judge returned unparseable response, falling back to NLI verdict: 'We need to compare claim with evidence. Claim: Section 55 of the Bharatiya Nyaya Sanhita, 2023 provides that "Whoever abets the commission of an offence punishable with death or imprisonment for life shall be punished with imprisonment which may extend to seven years and shall also be liable to fine; and if any act which causes hurt is done, imprisonment may extend to fourteen years and shall also be liable to fine."\n\nEvidence: It\'s a snippet from Gazette of India Extraordinary, showing text: "Whoever abets the commission of an offence punishable with death or imprisonment for life, shall, if that offence be not committed in consequence of the abetment, and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of either description for a term which may extend to seven years, and shall also be liable to fine; and if any act for which the abett'
+2026-09-06 14:14:16,855 - INFO - Verified claim '8db96d01-d39f-4c83-bf12-136a41cb42cd': PARTIALLY_SUPPORTED (Latency: 8658.2ms)
+2026-09-06 14:14:19,542 - INFO - Verified claim '8bdba9ed-99e4-494c-8cdd-1ae7f6cb48ba': SUPPORTED (Latency: 2686.7ms)
+2026-09-06 14:14:27,774 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:14:27,777 - WARNING - LLM judge returned unparseable response, falling back to NLI verdict: 'We need to compare claim to evidence.\n\nClaim: "If the offence is not committed offence is not committed, the offence is punishable with imprisonment (but not death or life), and the abettor or the person abetted is a public servant whose duty is to prevent such offence, the abettor is punished with imprisonment of any description provided for that offence for a term up to one-half of the longest term prescribed for the offence, with or without fine."\n\nEvidence: It says: "Whoever abets an offence punishable with imprisonment shall, if that offence be not committed in consequence of the abetment, and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of any description provided for that offence for a term which may extend to one-fourth part of the longest term provided for that offence; or with such fine as is provided for that offence, or with both; and if the abettor'
+2026-09-06 14:14:27,777 - INFO - Verified claim '17b47341-e6be-43d0-ad8a-c019db7ac2ab': PARTIALLY_SUPPORTED (Latency: 8234.9ms)
+2026-09-06 14:14:36,327 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:14:36,329 - WARNING - LLM judge returned unparseable response, falling back to NLI verdict: 'We need to compare claim to evidence. Claim: Section 56 of the Bharatiya Nyaya Sanhita, 2023 provides that "Whoever abets an offence punishable with imprisonment shall be punished with imprisonment for a term which may extend to one-fourth part of the longest term, or with such fine; and if the abettor is a public servant, imprisonment may extend to one-half of the longest term or with such fine."\n\nEvidence: It says: "Whoever abets an offence punishable with imprisonment shall, if that offence be not committed in consequence of the abetment, and no express provision is made under this Sanhita for the punishment of such abetment, be punished with imprisonment of any description provided for that offence for a term which may extend to one-fourth part of the longest term provided for that offence; or with such fine as is provided for that offence, or with both; and if the abettor'
+2026-09-06 14:14:36,330 - INFO - Verified claim '940a15fb-77de-4966-a3bd-5fa8282b4690': PARTIALLY_SUPPORTED (Latency: 8552.0ms)
+2026-09-06 14:14:38,699 - INFO - Verified claim '404af12c-3f9d-4235-ac5c-e5e6895fa5af': SUPPORTED (Latency: 2368.8ms)
+2026-09-06 14:14:42,290 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:14:42,292 - INFO - Verified claim '79e4b161-68e9-4ff0-909e-62e66bc724f3': UNSUPPORTED (Latency: 3593.4ms)
+2026-09-06 14:14:44,449 - INFO - Verified claim '3b3ea4c3-f906-408c-bd44-9fcd16ba1238': SUPPORTED (Latency: 2156.6ms)
+2026-09-06 14:14:46,589 - INFO - Verified claim '354e2184-90c3-4747-b3ee-3c305a458436': UNSUPPORTED (Latency: 2139.3ms)
+2026-09-06 14:14:53,067 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:14:53,069 - INFO - Verified claim '34a36220-cea0-4321-b279-d47dbc7e87fb': SUPPORTED (Latency: 6480.2ms)
+2026-09-06 14:14:55,420 - INFO - Verified claim '53c6c240-7c1b-4792-9bf1-595c8bbb62c6': UNSUPPORTED (Latency: 2350.7ms)
+2026-09-06 14:14:55,421 - INFO - Completed verification for trace 12dd5bf2-9a3a-4950-8482-d7f075e74e02. Supported: 9/17, Contradicted: 0/17
+2026-09-06 14:14:55,421 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 14:14:55,421 - INFO - Running Pipeline State Analyzer...
+2026-09-06 14:14:55,424 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 14:14:55,424 - INFO - Running Root Cause Reasoner...
+2026-09-06 14:14:55,425 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 14:14:55,425 - INFO - Running Corrective Action Engine...
+2026-09-06 14:14:55,427 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 14:14:55,427 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 14:14:55,427 - INFO - Decomposing answer for trace_id: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+2026-09-06 14:14:55,550 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:14:55,552 - WARNING - Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+2026-09-06 14:14:57,602 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:14:57,604 - WARNING - Rate-limited (attempt 2/4), backing off 4.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+2026-09-06 14:15:13,594 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:15:13,597 - INFO - Latencies — Generation: 18.169s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 18.169s
+2026-09-06 14:15:13,933 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 14:15:13,933 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 14:15:13,934 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 14:15:14,021 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 14:15:14,022 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 14:15:14,022 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 14:15:14,022 - src.runner - INFO - Running Report Builder...
+2026-09-06 14:15:14,022 - INFO - Running Report Builder...
+2026-09-06 14:15:14,023 - src.runner - INFO - Pipeline run completed for Trace ID: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+2026-09-06 14:15:14,023 - INFO - Pipeline run completed for Trace ID: 12dd5bf2-9a3a-4950-8482-d7f075e74e02
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 14:15:14,647 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:14,649 - INFO - Retrying request to /chat/completions in 0.481183 seconds
+2026-09-06 14:15:14,669 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:14,671 - INFO - Retrying request to /chat/completions in 0.409906 seconds
+2026-09-06 14:15:14,672 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:14,673 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:14,675 - INFO - Retrying request to /chat/completions in 0.416235 seconds
+2026-09-06 14:15:14,676 - INFO - Retrying request to /chat/completions in 0.442705 seconds
+2026-09-06 14:15:15,130 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:15,133 - INFO - Retrying request to /chat/completions in 0.851365 seconds
+2026-09-06 14:15:15,156 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:15,158 - INFO - Retrying request to /chat/completions in 0.948633 seconds
+2026-09-06 14:15:15,175 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:15,176 - INFO - Retrying request to /chat/completions in 0.853251 seconds
+2026-09-06 14:15:15,184 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:15,185 - INFO - Retrying request to /chat/completions in 0.996862 seconds
+2026-09-06 14:15:16,079 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:16,153 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:16,242 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:16,823 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:16,825 - INFO - Retrying request to /chat/completions in 0.467134 seconds
+2026-09-06 14:15:16,894 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:16,895 - INFO - Retrying request to /chat/completions in 0.398837 seconds
+2026-09-06 14:15:17,359 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:17,360 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:17,361 - INFO - Retrying request to /chat/completions in 0.854576 seconds
+2026-09-06 14:15:17,363 - INFO - Retrying request to /chat/completions in 0.752559 seconds
+2026-09-06 14:15:18,171 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:18,258 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:19,524 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:19,525 - INFO - Retrying request to /chat/completions in 0.488675 seconds
+2026-09-06 14:15:19,658 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:15:20,066 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:20,067 - INFO - Retrying request to /chat/completions in 0.795146 seconds
+2026-09-06 14:15:20,912 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:24,581 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:24,582 - INFO - Retrying request to /chat/completions in 0.436618 seconds
+2026-09-06 14:15:24,916 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:15:25,068 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:25,070 - INFO - Retrying request to /chat/completions in 0.794478 seconds
+2026-09-06 14:15:25,912 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:28,090 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:13<00:54, 13.68s/it]2026-09-06 14:15:31,400 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:17<00:23,  7.68s/it]2026-09-06 14:15:32,752 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:32,753 - INFO - Retrying request to /chat/completions in 0.386530 seconds
+2026-09-06 14:15:33,198 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:33,199 - INFO - Retrying request to /chat/completions in 0.999174 seconds
+2026-09-06 14:15:33,248 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:15:33,377 - ERROR - Exception raised in Job[0]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  60%|######    | 3/5 [00:18<00:09,  4.99s/it]2026-09-06 14:15:34,243 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:37,966 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:37,968 - INFO - Retrying request to /chat/completions in 0.429026 seconds
+2026-09-06 14:15:38,446 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:15:38,447 - INFO - Retrying request to /chat/completions in 0.780399 seconds
+2026-09-06 14:15:39,294 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:06,791 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:16:06,921 - ERROR - Exception raised in Job[4]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  80%|########  | 4/5 [00:52<00:16, 16.26s/it]2026-09-06 14:16:10,509 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:16:10,580 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:10,581 - INFO - Retrying request to /chat/completions in 0.390264 seconds
+2026-09-06 14:16:11,031 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:11,032 - INFO - Retrying request to /chat/completions in 0.955276 seconds
+2026-09-06 14:16:12,031 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:12,261 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:12,262 - INFO - Retrying request to /chat/completions in 0.472984 seconds
+2026-09-06 14:16:12,782 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:12,783 - INFO - Retrying request to /chat/completions in 0.819062 seconds
+2026-09-06 14:16:13,666 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:14,783 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:14,784 - INFO - Retrying request to /chat/completions in 0.405268 seconds
+2026-09-06 14:16:15,244 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:15,245 - INFO - Retrying request to /chat/completions in 0.867677 seconds
+2026-09-06 14:16:16,183 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:20,218 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:20,220 - INFO - Retrying request to /chat/completions in 0.397948 seconds
+2026-09-06 14:16:20,663 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:20,671 - INFO - Retrying request to /chat/completions in 0.883884 seconds
+2026-09-06 14:16:21,604 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:30,447 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:16:30,502 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:30,503 - INFO - Retrying request to /chat/completions in 0.435262 seconds
+2026-09-06 14:16:30,987 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:30,988 - INFO - Retrying request to /chat/completions in 0.756137 seconds
+2026-09-06 14:16:31,789 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:37,400 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:16:37,457 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:37,459 - INFO - Retrying request to /chat/completions in 0.425287 seconds
+2026-09-06 14:16:37,933 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:37,934 - INFO - Retrying request to /chat/completions in 0.984477 seconds
+2026-09-06 14:16:38,972 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:39,767 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:39,768 - INFO - Retrying request to /chat/completions in 0.456238 seconds
+2026-09-06 14:16:40,279 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:40,281 - INFO - Retrying request to /chat/completions in 0.776961 seconds
+2026-09-06 14:16:41,115 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:43,113 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:43,114 - INFO - Retrying request to /chat/completions in 0.417260 seconds
+2026-09-06 14:16:43,583 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:43,584 - INFO - Retrying request to /chat/completions in 0.775355 seconds
+2026-09-06 14:16:44,405 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:44,880 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:44,881 - INFO - Retrying request to /chat/completions in 0.406851 seconds
+2026-09-06 14:16:45,342 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:45,343 - INFO - Retrying request to /chat/completions in 0.913746 seconds
+2026-09-06 14:16:46,305 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:53,764 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:53,766 - INFO - Retrying request to /chat/completions in 0.451198 seconds
+2026-09-06 14:16:54,264 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:16:54,266 - INFO - Retrying request to /chat/completions in 0.799626 seconds
+2026-09-06 14:16:55,113 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:08,412 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:08,414 - INFO - Retrying request to /chat/completions in 0.415233 seconds
+2026-09-06 14:17:08,888 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:08,889 - INFO - Retrying request to /chat/completions in 0.946757 seconds
+2026-09-06 14:17:09,891 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:40,907 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:17:40,966 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:40,967 - INFO - Retrying request to /chat/completions in 0.480665 seconds
+2026-09-06 14:17:41,538 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:41,539 - INFO - Retrying request to /chat/completions in 0.763793 seconds
+2026-09-06 14:17:42,367 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:43,157 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:17:43,159 - INFO - Retrying request to /chat/completions in 0.475093 seconds
+2026-09-06 14:17:50,713 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:18:05,444 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating: 100%|##########| 5/5 [02:51<00:00, 53.14s/it]Evaluating: 100%|##########| 5/5 [02:51<00:00, 34.21s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 14:33:05,840 - WARNING - ragchecker failed for 4: Command '['venv_eval_ragchecker\\Scripts\\python.exe', '-m', 'scripts.baseline_adapters.ragchecker_worker', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpfhrmaohr\\in.json', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpfhrmaohr\\out.json']' timed out after 900 seconds
+2026-09-06 14:37:49,784 - INFO - Diagnostic report for eval 4 written to artifacts/diagnostic_reports\4.html
+2026-09-06 14:37:49,784 - INFO - Processing eval example 5: What is the punishment for abetting the commission of an offence by the public g
+2026-09-06 14:37:49,784 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'What is the punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten?'
+2026-09-06 14:37:50,019 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 14:37:51,007 - INFO - Hybrid Retrieval complete in 1.222s. Found 6 chunks.
+2026-09-06 14:37:51,007 - INFO - Generating answer for: 'What is the punishment for abetting the commission of an offence by the public generally, or by a class of persons exceeding ten?'
+2026-09-06 14:37:52,615 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:37:52,617 - INFO - Generation complete in 1.610s.
+2026-09-06 14:37:52,617 - INFO - Building RAGTrace...
+2026-09-06 14:37:52,617 - INFO - RAGTrace built successfully: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+2026-09-06 14:37:52,619 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_7b8d0359-4624-4f58-aaad-3cd9bda74789.json...
+2026-09-06 14:37:52,622 - INFO - RAGTrace saved successfully.
+2026-09-06 14:37:52,622 - src.runner - INFO - Starting pipeline run for Trace ID: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+2026-09-06 14:37:52,622 - INFO - Starting pipeline run for Trace ID: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+2026-09-06 14:37:52,623 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 14:37:52,623 - INFO - Running Claim Decomposer...
+2026-09-06 14:37:52,623 - INFO - Decomposing answer for trace_id: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+2026-09-06 14:37:57,879 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:37:57,882 - INFO - Latencies — Generation: 5.259s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 5.259s
+2026-09-06 14:37:58,140 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 14:37:58,140 - INFO - Running Claim Verifier...
+2026-09-06 14:37:58,141 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 14:37:58,201 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 14:37:58,202 - INFO - Starting verification for trace 7b8d0359-4624-4f58-aaad-3cd9bda74789 (2 claims)
+2026-09-06 14:38:00,483 - INFO - Verified claim '99b27642-34a7-474e-a3e6-c295c0014c1e': SUPPORTED (Latency: 2280.1ms)
+2026-09-06 14:38:02,248 - INFO - Verified claim '52a4ba05-8a67-43d4-ac53-01d9077b35bf': SUPPORTED (Latency: 1764.6ms)
+2026-09-06 14:38:02,248 - INFO - Completed verification for trace 7b8d0359-4624-4f58-aaad-3cd9bda74789. Supported: 2/2, Contradicted: 0/2
+2026-09-06 14:38:02,251 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 14:38:02,251 - INFO - Running Pipeline State Analyzer...
+2026-09-06 14:38:02,251 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 14:38:02,251 - INFO - Running Root Cause Reasoner...
+2026-09-06 14:38:02,251 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 14:38:02,251 - INFO - Running Corrective Action Engine...
+2026-09-06 14:38:02,252 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 14:38:02,252 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 14:38:02,252 - INFO - Decomposing answer for trace_id: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+2026-09-06 14:38:02,296 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:02,298 - WARNING - Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+2026-09-06 14:38:23,258 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:23,261 - INFO - Latencies — Generation: 21.008s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 21.008s
+2026-09-06 14:38:23,783 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 14:38:23,783 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 14:38:23,784 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 14:38:23,843 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 14:38:23,844 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 14:38:23,844 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 14:38:23,844 - src.runner - INFO - Running Report Builder...
+2026-09-06 14:38:23,844 - INFO - Running Report Builder...
+2026-09-06 14:38:23,845 - src.runner - INFO - Pipeline run completed for Trace ID: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+2026-09-06 14:38:23,845 - INFO - Pipeline run completed for Trace ID: 7b8d0359-4624-4f58-aaad-3cd9bda74789
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 14:38:24,673 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:24,675 - INFO - Retrying request to /chat/completions in 0.432552 seconds
+2026-09-06 14:38:24,680 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:24,682 - INFO - Retrying request to /chat/completions in 0.487095 seconds
+2026-09-06 14:38:25,153 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:25,155 - INFO - Retrying request to /chat/completions in 0.786074 seconds
+2026-09-06 14:38:25,225 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:25,226 - INFO - Retrying request to /chat/completions in 0.801576 seconds
+2026-09-06 14:38:26,080 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:26,659 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:27,394 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:02<00:11,  2.93s/it]2026-09-06 14:38:28,478 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:28,536 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:28,541 - INFO - Retrying request to /chat/completions in 0.462712 seconds
+2026-09-06 14:38:29,055 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:29,057 - INFO - Retrying request to /chat/completions in 0.807869 seconds
+2026-09-06 14:38:29,925 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:30,911 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:30,912 - INFO - Retrying request to /chat/completions in 0.467992 seconds
+2026-09-06 14:38:31,197 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:31,268 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:31,270 - INFO - Retrying request to /chat/completions in 0.390354 seconds
+2026-09-06 14:38:31,712 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:31,714 - INFO - Retrying request to /chat/completions in 0.812274 seconds
+2026-09-06 14:38:32,597 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:33,577 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:33,579 - INFO - Retrying request to /chat/completions in 0.426093 seconds
+2026-09-06 14:38:34,076 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:34,078 - INFO - Retrying request to /chat/completions in 0.774087 seconds
+2026-09-06 14:38:34,878 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:34,932 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:34,935 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:34,937 - INFO - Retrying request to /chat/completions in 0.426969 seconds
+2026-09-06 14:38:35,411 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:35,421 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:35,423 - INFO - Retrying request to /chat/completions in 0.818584 seconds
+2026-09-06 14:38:35,472 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:35,474 - INFO - Retrying request to /chat/completions in 0.456750 seconds
+2026-09-06 14:38:35,511 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:35,512 - INFO - Retrying request to /chat/completions in 0.458985 seconds
+2026-09-06 14:38:35,949 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:35,985 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:35,986 - INFO - Retrying request to /chat/completions in 0.961376 seconds
+2026-09-06 14:38:36,019 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:36,021 - INFO - Retrying request to /chat/completions in 0.973050 seconds
+2026-09-06 14:38:36,298 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:36,997 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:37,045 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:37,234 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:37,236 - INFO - Retrying request to /chat/completions in 0.384238 seconds
+2026-09-06 14:38:37,671 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:37,672 - INFO - Retrying request to /chat/completions in 0.789644 seconds
+2026-09-06 14:38:37,757 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:37,759 - INFO - Retrying request to /chat/completions in 0.456653 seconds
+2026-09-06 14:38:38,268 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:38,270 - INFO - Retrying request to /chat/completions in 0.783274 seconds
+2026-09-06 14:38:38,516 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:38,802 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:14<00:24,  8.01s/it]2026-09-06 14:38:39,104 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:40,375 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:38:40,406 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:40,408 - INFO - Retrying request to /chat/completions in 0.396425 seconds
+2026-09-06 14:38:40,435 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:40,438 - INFO - Retrying request to /chat/completions in 0.441341 seconds
+2026-09-06 14:38:40,868 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:40,872 - INFO - Retrying request to /chat/completions in 0.981164 seconds
+2026-09-06 14:38:40,927 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:40,928 - INFO - Retrying request to /chat/completions in 0.914114 seconds
+2026-09-06 14:38:41,117 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:41,119 - INFO - Retrying request to /chat/completions in 0.403449 seconds
+2026-09-06 14:38:41,574 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:41,576 - INFO - Retrying request to /chat/completions in 0.864302 seconds
+2026-09-06 14:38:41,893 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:41,931 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:42,489 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:42,666 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:42,667 - INFO - Retrying request to /chat/completions in 0.464921 seconds
+2026-09-06 14:38:42,863 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:42,865 - INFO - Retrying request to /chat/completions in 0.489401 seconds
+2026-09-06 14:38:43,180 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:43,182 - INFO - Retrying request to /chat/completions in 0.764894 seconds
+2026-09-06 14:38:43,404 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:43,405 - INFO - Retrying request to /chat/completions in 0.818062 seconds
+2026-09-06 14:38:43,996 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:44,272 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:44,340 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:44,341 - INFO - Retrying request to /chat/completions in 0.497510 seconds
+2026-09-06 14:38:44,894 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:44,896 - INFO - Retrying request to /chat/completions in 0.820295 seconds
+2026-09-06 14:38:44,950 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:44,951 - INFO - Retrying request to /chat/completions in 0.404852 seconds
+2026-09-06 14:38:45,411 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:45,412 - INFO - Retrying request to /chat/completions in 0.810106 seconds
+2026-09-06 14:38:45,765 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:46,273 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:47,322 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:47,324 - INFO - Retrying request to /chat/completions in 0.498718 seconds
+2026-09-06 14:38:47,874 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:47,875 - INFO - Retrying request to /chat/completions in 0.945105 seconds
+2026-09-06 14:38:48,881 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:52,953 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:52,955 - INFO - Retrying request to /chat/completions in 0.494805 seconds
+2026-09-06 14:38:53,143 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:53,144 - INFO - Retrying request to /chat/completions in 0.408240 seconds
+2026-09-06 14:38:53,499 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:53,500 - INFO - Retrying request to /chat/completions in 0.846530 seconds
+2026-09-06 14:38:53,623 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:53,625 - INFO - Retrying request to /chat/completions in 0.832680 seconds
+2026-09-06 14:38:53,780 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:53,782 - INFO - Retrying request to /chat/completions in 0.415433 seconds
+2026-09-06 14:38:54,255 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:54,257 - INFO - Retrying request to /chat/completions in 0.845592 seconds
+2026-09-06 14:38:54,395 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:54,525 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:38:55,152 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:01,939 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:01,940 - INFO - Retrying request to /chat/completions in 0.492528 seconds
+2026-09-06 14:39:02,483 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:02,485 - INFO - Retrying request to /chat/completions in 0.801807 seconds
+2026-09-06 14:39:03,338 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:14,785 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:14,786 - INFO - Retrying request to /chat/completions in 0.398940 seconds
+2026-09-06 14:39:15,235 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:15,236 - INFO - Retrying request to /chat/completions in 0.932726 seconds
+2026-09-06 14:39:16,217 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:16,388 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:16,390 - INFO - Retrying request to /chat/completions in 0.415396 seconds
+2026-09-06 14:39:16,856 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:16,858 - INFO - Retrying request to /chat/completions in 0.826654 seconds
+2026-09-06 14:39:17,772 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:21,306 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:21,307 - INFO - Retrying request to /chat/completions in 0.444582 seconds
+2026-09-06 14:39:21,804 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:21,805 - INFO - Retrying request to /chat/completions in 0.961465 seconds
+2026-09-06 14:39:22,181 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:22,182 - INFO - Retrying request to /chat/completions in 0.444382 seconds
+2026-09-06 14:39:22,689 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:22,690 - INFO - Retrying request to /chat/completions in 0.797275 seconds
+2026-09-06 14:39:22,818 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:23,539 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:32,925 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:32,926 - INFO - Retrying request to /chat/completions in 0.456921 seconds
+2026-09-06 14:39:33,432 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:33,433 - INFO - Retrying request to /chat/completions in 0.899379 seconds
+2026-09-06 14:39:34,392 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:39,043 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:39,044 - INFO - Retrying request to /chat/completions in 0.484461 seconds
+2026-09-06 14:39:39,569 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:39,571 - INFO - Retrying request to /chat/completions in 0.960332 seconds
+2026-09-06 14:39:40,591 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:52,332 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:52,334 - INFO - Retrying request to /chat/completions in 0.398867 seconds
+2026-09-06 14:39:54,712 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:54,714 - INFO - Retrying request to /chat/completions in 0.441276 seconds
+2026-09-06 14:39:55,204 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:55,206 - INFO - Retrying request to /chat/completions in 0.884580 seconds
+2026-09-06 14:39:56,149 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:59,003 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:39:59,061 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:59,062 - INFO - Retrying request to /chat/completions in 0.428959 seconds
+2026-09-06 14:39:59,549 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:39:59,551 - INFO - Retrying request to /chat/completions in 0.814261 seconds
+2026-09-06 14:40:00,416 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:00,516 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:00,518 - INFO - Retrying request to /chat/completions in 0.424782 seconds
+2026-09-06 14:40:00,998 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:01,000 - INFO - Retrying request to /chat/completions in 0.754573 seconds
+2026-09-06 14:40:01,804 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:02,653 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:02,654 - INFO - Retrying request to /chat/completions in 0.472269 seconds
+2026-09-06 14:40:03,199 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:03,200 - INFO - Retrying request to /chat/completions in 0.910763 seconds
+2026-09-06 14:40:04,157 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:05,154 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:05,155 - INFO - Retrying request to /chat/completions in 0.497290 seconds
+2026-09-06 14:40:05,710 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:05,711 - INFO - Retrying request to /chat/completions in 0.941890 seconds
+2026-09-06 14:40:06,697 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:12,065 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:12,067 - INFO - Retrying request to /chat/completions in 0.401088 seconds
+2026-09-06 14:40:12,521 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:12,523 - INFO - Retrying request to /chat/completions in 0.818684 seconds
+2026-09-06 14:40:13,401 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:24,387 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:24,388 - INFO - Retrying request to /chat/completions in 0.487973 seconds
+2026-09-06 14:40:24,928 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:24,929 - INFO - Retrying request to /chat/completions in 0.855959 seconds
+2026-09-06 14:40:25,838 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:26,509 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:26,511 - INFO - Retrying request to /chat/completions in 0.477551 seconds
+2026-09-06 14:40:27,046 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:27,047 - INFO - Retrying request to /chat/completions in 0.891411 seconds
+2026-09-06 14:40:27,998 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:28,006 - ERROR - Exception raised in Job[4]: OpenAIRateLimitError(Error code: 429 - {'status': 429, 'title': 'Too Many Requests'})
+Evaluating:  60%|######    | 3/5 [02:03<01:48, 54.14s/it]2026-09-06 14:40:39,695 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:39,697 - INFO - Retrying request to /chat/completions in 0.480311 seconds
+2026-09-06 14:40:40,230 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:40,231 - INFO - Retrying request to /chat/completions in 0.999590 seconds
+2026-09-06 14:40:41,288 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:48,066 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:40:48,068 - INFO - Retrying request to /chat/completions in 0.410017 seconds
+2026-09-06 14:40:53,334 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  80%|########  | 4/5 [02:28<00:42, 42.77s/it]2026-09-06 14:41:08,458 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 503 Service Unavailable"
+2026-09-06 14:41:08,459 - INFO - Retrying request to /chat/completions in 0.483401 seconds
+2026-09-06 14:41:08,991 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:08,992 - INFO - Retrying request to /chat/completions in 0.890631 seconds
+2026-09-06 14:41:16,798 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:41:16,855 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:16,857 - INFO - Retrying request to /chat/completions in 0.432709 seconds
+2026-09-06 14:41:17,331 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:17,333 - INFO - Retrying request to /chat/completions in 0.899994 seconds
+2026-09-06 14:41:18,297 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:18,758 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:18,760 - INFO - Retrying request to /chat/completions in 0.452845 seconds
+2026-09-06 14:41:19,258 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:19,260 - INFO - Retrying request to /chat/completions in 0.775670 seconds
+2026-09-06 14:41:20,087 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:41:24,486 - ERROR - Exception raised in Job[2]: TimeoutError()
+Evaluating: 100%|##########| 5/5 [03:00<00:00, 38.58s/it]Evaluating: 100%|##########| 5/5 [03:00<00:00, 36.00s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 14:56:25,124 - WARNING - ragchecker failed for 5: Command '['venv_eval_ragchecker\\Scripts\\python.exe', '-m', 'scripts.baseline_adapters.ragchecker_worker', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmp_hxmmtfi\\in.json', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmp_hxmmtfi\\out.json']' timed out after 900 seconds
+2026-09-06 14:58:45,455 - INFO - Diagnostic report for eval 5 written to artifacts/diagnostic_reports\5.html
+2026-09-06 14:58:45,457 - INFO - Processing eval example 6: How does the BNS define 'criminal conspiracy'?
+2026-09-06 14:58:45,460 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'How does the BNS define 'criminal conspiracy'?'
+2026-09-06 14:58:46,163 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 14:58:47,420 - INFO - Hybrid Retrieval complete in 1.960s. Found 6 chunks.
+2026-09-06 14:58:47,421 - INFO - Generating answer for: 'How does the BNS define 'criminal conspiracy'?'
+2026-09-06 14:58:51,428 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:58:51,443 - INFO - Generation complete in 4.021s.
+2026-09-06 14:58:51,443 - INFO - Building RAGTrace...
+2026-09-06 14:58:51,444 - INFO - RAGTrace built successfully: 274886fa-f7db-420c-b770-c50a5805d2c4
+2026-09-06 14:58:51,445 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_274886fa-f7db-420c-b770-c50a5805d2c4.json...
+2026-09-06 14:58:51,449 - INFO - RAGTrace saved successfully.
+2026-09-06 14:58:51,449 - src.runner - INFO - Starting pipeline run for Trace ID: 274886fa-f7db-420c-b770-c50a5805d2c4
+2026-09-06 14:58:51,449 - INFO - Starting pipeline run for Trace ID: 274886fa-f7db-420c-b770-c50a5805d2c4
+2026-09-06 14:58:51,450 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 14:58:51,450 - INFO - Running Claim Decomposer...
+2026-09-06 14:58:51,451 - INFO - Decomposing answer for trace_id: 274886fa-f7db-420c-b770-c50a5805d2c4
+2026-09-06 14:58:51,564 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:58:51,568 - WARNING - Rate-limited (attempt 1/4), backing off 2.0s: Error code: 429 - {'status': 429, 'title': 'Too Many Requests'}
+2026-09-06 14:59:06,380 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:59:06,383 - INFO - Latencies — Generation: 14.931s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 14.931s
+2026-09-06 14:59:08,851 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 14:59:08,851 - INFO - Running Claim Verifier...
+2026-09-06 14:59:08,852 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 14:59:08,921 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 14:59:08,922 - INFO - Starting verification for trace 274886fa-f7db-420c-b770-c50a5805d2c4 (5 claims)
+2026-09-06 14:59:11,846 - INFO - Verified claim 'b1ba0f84-badc-4cf2-82a3-d01f67fce42e': SUPPORTED (Latency: 2923.3ms)
+2026-09-06 14:59:13,742 - INFO - Verified claim 'de96a416-2da7-476b-9926-a641796a9f68': SUPPORTED (Latency: 1895.2ms)
+2026-09-06 14:59:19,764 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:59:19,768 - WARNING - LLM judge returned unparseable response, falling back to NLI verdict: 'We need to decide if evidence supports claim. Claim: Under BNS Section 61(1), criminal conspiracy occurs when two or more persons agree with a common object to do, or cause to be done, an act which is not illegal by illegal means.\n\nWe need to see if evidence mentions BNS Section 61(1) and definition of criminal conspiracy. Evidence given is a paragraph about "Whoever, intending to facilitate or knowing it to be likely that he will thereby facilitate the commission of an offence punishable with imprisonment, voluntarily conceals, by any act or illegal omission, the existence of a design to commit such offence, or makes any representation which he knows to be false respecting such design shall,–– (a) if the offence be committed, be punished with imprisonment ... (b) if the offence be not committed, to one-eighth, of the longest term of such imprisonment, or with such fine as is provided for the offence, or with both.'
+2026-09-06 14:59:19,769 - INFO - Verified claim '6bb61069-653e-4b00-ab60-2e45a633a61b': NOT_VERIFIABLE (Latency: 6026.9ms)
+2026-09-06 14:59:22,063 - INFO - Verified claim '6ed10c09-0ea8-49d4-831f-3aabf5f675ef': SUPPORTED (Latency: 2294.1ms)
+2026-09-06 14:59:26,519 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:59:26,522 - INFO - Verified claim 'ea1b53b1-1f26-47c9-9b50-1c23626c1244': UNSUPPORTED (Latency: 4458.2ms)
+2026-09-06 14:59:26,522 - INFO - Completed verification for trace 274886fa-f7db-420c-b770-c50a5805d2c4. Supported: 3/5, Contradicted: 0/5
+2026-09-06 14:59:26,525 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 14:59:26,525 - INFO - Running Pipeline State Analyzer...
+2026-09-06 14:59:26,527 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 14:59:26,527 - INFO - Running Root Cause Reasoner...
+2026-09-06 14:59:26,528 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 14:59:26,528 - INFO - Running Corrective Action Engine...
+2026-09-06 14:59:26,530 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 14:59:26,530 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 14:59:26,531 - INFO - Decomposing answer for trace_id: 274886fa-f7db-420c-b770-c50a5805d2c4
+2026-09-06 14:59:55,123 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:59:55,246 - INFO - Latencies — Generation: 28.715s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 28.715s
+2026-09-06 14:59:56,692 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 14:59:56,692 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 14:59:56,693 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 14:59:56,752 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 14:59:56,753 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 14:59:56,753 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 14:59:56,753 - src.runner - INFO - Running Report Builder...
+2026-09-06 14:59:56,753 - INFO - Running Report Builder...
+2026-09-06 14:59:56,756 - src.runner - INFO - Pipeline run completed for Trace ID: 274886fa-f7db-420c-b770-c50a5805d2c4
+2026-09-06 14:59:56,756 - INFO - Pipeline run completed for Trace ID: 274886fa-f7db-420c-b770-c50a5805d2c4
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 14:59:57,167 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:59:57,169 - INFO - Retrying request to /chat/completions in 0.447054 seconds
+2026-09-06 14:59:58,871 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 14:59:58,931 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:59:58,932 - INFO - Retrying request to /chat/completions in 0.467820 seconds
+2026-09-06 14:59:59,445 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 14:59:59,446 - INFO - Retrying request to /chat/completions in 0.935821 seconds
+2026-09-06 14:59:59,791 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:00,438 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:02,326 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:09,763 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:09,822 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:09,823 - INFO - Retrying request to /chat/completions in 0.435422 seconds
+2026-09-06 15:00:10,311 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:10,312 - INFO - Retrying request to /chat/completions in 0.868011 seconds
+2026-09-06 15:00:10,868 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:14<00:56, 14.14s/it]2026-09-06 15:00:11,238 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:12,199 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:12,201 - INFO - Retrying request to /chat/completions in 0.418773 seconds
+2026-09-06 15:00:13,547 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:16<00:21,  7.29s/it]2026-09-06 15:00:15,132 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:15,264 - ERROR - Exception raised in Job[0]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  60%|######    | 3/5 [00:18<00:09,  4.74s/it]2026-09-06 15:00:16,056 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:16,116 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:16,117 - INFO - Retrying request to /chat/completions in 0.491662 seconds
+2026-09-06 15:00:16,656 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:16,657 - INFO - Retrying request to /chat/completions in 0.870917 seconds
+2026-09-06 15:00:17,578 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:17,684 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:17,685 - INFO - Retrying request to /chat/completions in 0.496745 seconds
+2026-09-06 15:00:29,025 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:29,080 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:29,082 - INFO - Retrying request to /chat/completions in 0.419670 seconds
+2026-09-06 15:00:29,553 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:29,554 - INFO - Retrying request to /chat/completions in 0.944741 seconds
+2026-09-06 15:00:30,551 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:31,339 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:31,340 - INFO - Retrying request to /chat/completions in 0.408652 seconds
+2026-09-06 15:00:31,797 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:31,798 - INFO - Retrying request to /chat/completions in 0.848823 seconds
+2026-09-06 15:00:32,696 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:33,270 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:33,271 - INFO - Retrying request to /chat/completions in 0.388162 seconds
+2026-09-06 15:00:33,708 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:33,710 - INFO - Retrying request to /chat/completions in 0.917798 seconds
+2026-09-06 15:00:34,683 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:38,276 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:38,277 - INFO - Retrying request to /chat/completions in 0.441976 seconds
+2026-09-06 15:00:38,768 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:38,769 - INFO - Retrying request to /chat/completions in 0.923540 seconds
+2026-09-06 15:00:39,750 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:45,364 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:45,365 - INFO - Retrying request to /chat/completions in 0.416713 seconds
+2026-09-06 15:00:45,827 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:00:45,828 - INFO - Retrying request to /chat/completions in 0.841830 seconds
+2026-09-06 15:00:47,707 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:00:47,835 - ERROR - Exception raised in Job[4]: LLMDidNotFinishException(The LLM generation was not completed. Please increase the max_tokens and try again.)
+Evaluating:  80%|########  | 4/5 [00:50<00:15, 15.73s/it]2026-09-06 15:01:02,792 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:01:02,850 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:01:02,851 - INFO - Retrying request to /chat/completions in 0.439751 seconds
+2026-09-06 15:01:07,075 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating: 100%|##########| 5/5 [01:10<00:00, 17.00s/it]Evaluating: 100%|##########| 5/5 [01:10<00:00, 14.03s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 15:16:07,591 - WARNING - ragchecker failed for 6: Command '['venv_eval_ragchecker\\Scripts\\python.exe', '-m', 'scripts.baseline_adapters.ragchecker_worker', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpqjqstk16\\in.json', 'C:\\Users\\geliv\\AppData\\Local\\Temp\\tmpqjqstk16\\out.json']' timed out after 900 seconds
+2026-09-06 15:18:00,071 - INFO - Diagnostic report for eval 6 written to artifacts/diagnostic_reports\6.html
+2026-09-06 15:18:00,073 - INFO - Processing eval example 7: What punishment does section 69 of the BNS prescribe for having sexual intercour
+2026-09-06 15:18:00,074 - INFO - Retrieval (mode=hybrid, rerank=True) for: 'What punishment does section 69 of the BNS prescribe for having sexual intercourse with a woman by deceitful means or a false promise of marriage, where it does not amount to rape?'
+2026-09-06 15:18:00,509 - INFO - Reranking top 20 RRF candidates using Cross-Encoder...
+2026-09-06 15:18:01,636 - INFO - Hybrid Retrieval complete in 1.562s. Found 6 chunks.
+2026-09-06 15:18:01,636 - INFO - Generating answer for: 'What punishment does section 69 of the BNS prescribe for having sexual intercourse with a woman by deceitful means or a false promise of marriage, where it does not amount to rape?'
+2026-09-06 15:18:04,004 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:18:04,013 - INFO - Generation complete in 2.376s.
+2026-09-06 15:18:04,014 - INFO - Building RAGTrace...
+2026-09-06 15:18:04,014 - INFO - RAGTrace built successfully: ea1fc059-8144-41e3-bee6-1382d2d491ab
+2026-09-06 15:18:04,016 - INFO - Saving RAGTrace to artifacts/rag_traces\2026-09-06\trace_ea1fc059-8144-41e3-bee6-1382d2d491ab.json...
+2026-09-06 15:18:04,020 - INFO - RAGTrace saved successfully.
+2026-09-06 15:18:04,020 - src.runner - INFO - Starting pipeline run for Trace ID: ea1fc059-8144-41e3-bee6-1382d2d491ab
+2026-09-06 15:18:04,020 - INFO - Starting pipeline run for Trace ID: ea1fc059-8144-41e3-bee6-1382d2d491ab
+2026-09-06 15:18:04,021 - src.runner - INFO - Running Claim Decomposer...
+2026-09-06 15:18:04,021 - INFO - Running Claim Decomposer...
+2026-09-06 15:18:04,021 - INFO - Decomposing answer for trace_id: ea1fc059-8144-41e3-bee6-1382d2d491ab
+2026-09-06 15:18:46,428 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:18:46,531 - INFO - Latencies — Generation: 42.509s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 42.509s
+2026-09-06 15:18:47,617 - src.runner - INFO - Running Claim Verifier...
+2026-09-06 15:18:47,617 - INFO - Running Claim Verifier...
+2026-09-06 15:18:47,618 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 15:18:47,686 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 15:18:47,687 - INFO - Starting verification for trace ea1fc059-8144-41e3-bee6-1382d2d491ab (3 claims)
+2026-09-06 15:18:54,127 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:18:54,130 - INFO - Verified claim '3403879c-ea66-4d5a-8d96-23d4ac94ae30': NOT_VERIFIABLE (Latency: 6442.7ms)
+2026-09-06 15:18:58,284 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:18:58,287 - INFO - Verified claim '647ead3c-f12a-488a-bd16-8a4c396e3dcb': NOT_VERIFIABLE (Latency: 4156.3ms)
+2026-09-06 15:19:00,608 - INFO - Verified claim '667c117c-6041-4fa8-9dce-3fa42ec3f357': UNSUPPORTED (Latency: 2321.1ms)
+2026-09-06 15:19:00,609 - INFO - Completed verification for trace ea1fc059-8144-41e3-bee6-1382d2d491ab. Supported: 0/3, Contradicted: 0/3
+2026-09-06 15:19:00,611 - src.runner - INFO - Running Pipeline State Analyzer...
+2026-09-06 15:19:00,611 - INFO - Running Pipeline State Analyzer...
+2026-09-06 15:19:00,613 - src.runner - INFO - Running Root Cause Reasoner...
+2026-09-06 15:19:00,613 - INFO - Running Root Cause Reasoner...
+2026-09-06 15:19:00,614 - src.runner - INFO - Running Corrective Action Engine...
+2026-09-06 15:19:00,614 - INFO - Running Corrective Action Engine...
+2026-09-06 15:19:00,615 - src.runner - INFO - Running Answer Correctness Evaluator...
+2026-09-06 15:19:00,615 - INFO - Running Answer Correctness Evaluator...
+2026-09-06 15:19:00,615 - INFO - Decomposing answer for trace_id: ea1fc059-8144-41e3-bee6-1382d2d491ab
+2026-09-06 15:19:20,644 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:20,646 - INFO - Latencies — Generation: 20.031s, Parsing: 0.000s, Retry: 0.000s, Recovery: 0.000s, Total: 20.031s
+2026-09-06 15:19:21,163 - src.runner - INFO - Running Native RAGAS Evaluator...
+2026-09-06 15:19:21,163 - INFO - Running Native RAGAS Evaluator...
+2026-09-06 15:19:21,164 - INFO - Loading registry from 'artifacts/chunk_registry.json'.
+2026-09-06 15:19:21,226 - INFO - Successfully loaded 893 record(s) across 398 document(s).
+2026-09-06 15:19:21,227 - src.runner - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 15:19:21,227 - WARNING - Native RAGAS evaluation failed: 'dict' object has no attribute 'chunk_id'
+2026-09-06 15:19:21,227 - src.runner - INFO - Running Report Builder...
+2026-09-06 15:19:21,227 - INFO - Running Report Builder...
+2026-09-06 15:19:21,229 - src.runner - INFO - Pipeline run completed for Trace ID: ea1fc059-8144-41e3-bee6-1382d2d491ab
+2026-09-06 15:19:21,229 - INFO - Pipeline run completed for Trace ID: ea1fc059-8144-41e3-bee6-1382d2d491ab
+Evaluating:   0%|          | 0/5 [00:00<?, ?it/s]2026-09-06 15:19:21,604 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:21,606 - INFO - Retrying request to /chat/completions in 0.380101 seconds
+2026-09-06 15:19:23,877 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:24,297 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:24,586 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  20%|##        | 1/5 [00:03<00:12,  3.25s/it]2026-09-06 15:19:25,363 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:27,881 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:28,946 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  40%|####      | 2/5 [00:07<00:12,  4.01s/it]2026-09-06 15:19:32,594 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:32,643 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:32,643 - INFO - Retrying request to /chat/completions in 0.430687 seconds
+2026-09-06 15:19:33,116 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:33,117 - INFO - Retrying request to /chat/completions in 0.920322 seconds
+2026-09-06 15:19:34,079 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:34,706 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:34,706 - INFO - Retrying request to /chat/completions in 0.425905 seconds
+2026-09-06 15:19:35,186 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:35,187 - INFO - Retrying request to /chat/completions in 0.989902 seconds
+2026-09-06 15:19:36,220 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:37,105 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:37,107 - INFO - Retrying request to /chat/completions in 0.397397 seconds
+2026-09-06 15:19:40,489 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:40,549 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:40,551 - INFO - Retrying request to /chat/completions in 0.389971 seconds
+2026-09-06 15:19:40,990 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:40,991 - INFO - Retrying request to /chat/completions in 0.907310 seconds
+2026-09-06 15:19:41,942 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:42,400 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:42,401 - INFO - Retrying request to /chat/completions in 0.484998 seconds
+2026-09-06 15:19:42,942 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:42,944 - INFO - Retrying request to /chat/completions in 0.757281 seconds
+2026-09-06 15:19:43,753 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:45,800 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:45,802 - INFO - Retrying request to /chat/completions in 0.447602 seconds
+2026-09-06 15:19:46,307 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:46,308 - INFO - Retrying request to /chat/completions in 0.957941 seconds
+2026-09-06 15:19:47,324 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:49,065 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:49,067 - INFO - Retrying request to /chat/completions in 0.458733 seconds
+2026-09-06 15:19:49,575 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:49,576 - INFO - Retrying request to /chat/completions in 0.880747 seconds
+2026-09-06 15:19:50,503 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:50,729 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:19:50,791 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:50,792 - INFO - Retrying request to /chat/completions in 0.496321 seconds
+2026-09-06 15:19:51,339 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:51,340 - INFO - Retrying request to /chat/completions in 0.825663 seconds
+2026-09-06 15:19:52,222 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:53,234 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:53,236 - INFO - Retrying request to /chat/completions in 0.463065 seconds
+2026-09-06 15:19:53,330 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:53,331 - INFO - Retrying request to /chat/completions in 0.489820 seconds
+2026-09-06 15:19:53,759 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:53,760 - INFO - Retrying request to /chat/completions in 0.887223 seconds
+2026-09-06 15:19:53,866 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:53,867 - INFO - Retrying request to /chat/completions in 0.890450 seconds
+2026-09-06 15:19:54,706 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:54,818 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:55,423 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:55,424 - INFO - Retrying request to /chat/completions in 0.403209 seconds
+2026-09-06 15:19:55,885 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:55,886 - INFO - Retrying request to /chat/completions in 0.916871 seconds
+2026-09-06 15:19:56,848 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:57,916 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:57,918 - INFO - Retrying request to /chat/completions in 0.473584 seconds
+2026-09-06 15:19:58,438 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:19:58,439 - INFO - Retrying request to /chat/completions in 0.914425 seconds
+2026-09-06 15:19:59,415 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:00,547 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+2026-09-06 15:20:00,627 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:00,629 - INFO - Retrying request to /chat/completions in 0.403817 seconds
+2026-09-06 15:20:00,974 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:00,976 - INFO - Retrying request to /chat/completions in 0.399449 seconds
+2026-09-06 15:20:01,089 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:01,091 - INFO - Retrying request to /chat/completions in 0.924722 seconds
+2026-09-06 15:20:01,427 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:01,429 - INFO - Retrying request to /chat/completions in 0.929426 seconds
+2026-09-06 15:20:02,085 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:02,404 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:02,760 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:02,761 - INFO - Retrying request to /chat/completions in 0.397719 seconds
+2026-09-06 15:20:03,204 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:03,205 - INFO - Retrying request to /chat/completions in 0.989903 seconds
+2026-09-06 15:20:04,250 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:05,087 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:05,088 - INFO - Retrying request to /chat/completions in 0.474382 seconds
+2026-09-06 15:20:05,188 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:05,189 - INFO - Retrying request to /chat/completions in 0.413773 seconds
+2026-09-06 15:20:05,610 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:05,613 - INFO - Retrying request to /chat/completions in 0.914212 seconds
+2026-09-06 15:20:05,728 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:05,729 - INFO - Retrying request to /chat/completions in 0.905144 seconds
+2026-09-06 15:20:06,573 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:06,683 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:07,746 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:07,748 - INFO - Retrying request to /chat/completions in 0.496235 seconds
+2026-09-06 15:20:08,298 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:08,299 - INFO - Retrying request to /chat/completions in 0.998779 seconds
+2026-09-06 15:20:09,349 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:09,636 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:09,637 - INFO - Retrying request to /chat/completions in 0.436403 seconds
+2026-09-06 15:20:10,129 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:10,130 - INFO - Retrying request to /chat/completions in 0.885045 seconds
+2026-09-06 15:20:11,065 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:16,337 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:16,339 - INFO - Retrying request to /chat/completions in 0.476877 seconds
+2026-09-06 15:20:16,895 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:16,896 - INFO - Retrying request to /chat/completions in 0.857747 seconds
+2026-09-06 15:20:17,831 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:18,577 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:18,578 - INFO - Retrying request to /chat/completions in 0.449535 seconds
+2026-09-06 15:20:19,106 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:19,108 - INFO - Retrying request to /chat/completions in 0.972192 seconds
+2026-09-06 15:20:20,127 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:22,511 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:22,512 - INFO - Retrying request to /chat/completions in 0.492491 seconds
+2026-09-06 15:20:23,059 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:23,061 - INFO - Retrying request to /chat/completions in 0.826427 seconds
+2026-09-06 15:20:23,950 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:33,417 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:33,418 - INFO - Retrying request to /chat/completions in 0.488948 seconds
+2026-09-06 15:20:33,960 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:33,961 - INFO - Retrying request to /chat/completions in 0.750964 seconds
+2026-09-06 15:20:34,766 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:41,653 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:41,654 - INFO - Retrying request to /chat/completions in 0.418932 seconds
+2026-09-06 15:20:42,121 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:20:42,122 - INFO - Retrying request to /chat/completions in 0.913187 seconds
+2026-09-06 15:20:43,099 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:05,550 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:05,552 - INFO - Retrying request to /chat/completions in 0.421736 seconds
+2026-09-06 15:21:06,032 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:06,034 - INFO - Retrying request to /chat/completions in 0.896448 seconds
+2026-09-06 15:21:06,978 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:15,166 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:15,167 - INFO - Retrying request to /chat/completions in 0.398930 seconds
+2026-09-06 15:21:15,631 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:15,632 - INFO - Retrying request to /chat/completions in 0.921024 seconds
+2026-09-06 15:21:16,600 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:29,518 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:29,518 - INFO - Retrying request to /chat/completions in 0.417813 seconds
+2026-09-06 15:21:30,012 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:30,012 - INFO - Retrying request to /chat/completions in 0.962946 seconds
+2026-09-06 15:21:31,021 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:32,852 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:32,852 - INFO - Retrying request to /chat/completions in 0.460342 seconds
+2026-09-06 15:21:33,370 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:33,370 - INFO - Retrying request to /chat/completions in 0.926863 seconds
+2026-09-06 15:21:34,348 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:55,521 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  60%|######    | 3/5 [02:34<02:18, 69.02s/it]2026-09-06 15:21:58,683 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:58,683 - INFO - Retrying request to /chat/completions in 0.464702 seconds
+2026-09-06 15:21:59,200 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-09-06 15:21:59,201 - INFO - Retrying request to /chat/completions in 0.781711 seconds
+2026-09-06 15:22:08,564 - INFO - HTTP Request: POST https://integrate.api.nvidia.com/v1/chat/completions "HTTP/1.1 200 OK"
+Evaluating:  80%|########  | 4/5 [02:47<00:47, 47.00s/it]2026-09-06 15:22:21,384 - ERROR - Exception raised in Job[2]: TimeoutError()
+Evaluating: 100%|##########| 5/5 [03:00<00:00, 34.60s/it]Evaluating: 100%|##########| 5/5 [03:00<00:00, 36.01s/it]
+C:\Users\geliv\OneDrive\Desktop\rag_benchmark - Copy\scripts\run_baseline_comparison.py:84: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  f.write(f"[{datetime.utcnow().isoformat()}Z] eval_id={eval_id} baseline={baseline}: {error}\n")
+2026-09-06 15:23:18,605 - WARNING - ragchecker failed for 7: scripts.baseline_adapters.ragchecker_worker exited 143: [32m2026-09-06 15:22:47.279[0m | [1mINFO    [0m | [36mragchecker.evaluator[0m:[36mextract_claims[0m:[36m113[0m - [1mExtracting claims for gt_answer of 1 RAG results.[0m
+
+  0%|          | 0/1 [00:00<?, ?it/s]
+100%|##########| 1/1 [00:19<00:00, 19.95s/it]
+100%|##########| 1/1 [00:19<00:00, 19.95s/it]
+[32m2026-09-06 15:23:07.227[0m | [1mINFO    [0m | [36mragchecker.evaluator[0m:[36mcheck_claims[0m:[36m173[0m - [1mChecking retrieved2answer for 1 RAG results.[0m
+
+  0%|          | 0/2 [00:00<?, ?it/s]
+ 50%|#####     | 1/2 [00:08<00:08,  8.27s/it]

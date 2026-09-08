@@ -1,0 +1,167 @@
+{
+    "framework_metadata": {
+        "trace_id": "7b598013-8917-4ee8-8a0b-c68d2dc0beb4",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T11:58:26.750697Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What punishment applies to abetment of an offence when the Sanhita makes no express provision for punishing that specific abetment?",
+        "generated_answer": "The language model did not respond in time. This is an infrastructure problem, not a limitation of your documents \u2014 please retry.",
+        "overall_health_score": 0.0,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 0,
+        "total_claims": 3,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "UNKNOWN",
+                "observation": "Corpus relevance is inconclusive.",
+                "confidence": "0.5",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.28121012449264526,
+                    "pool_size": 65
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "UNKNOWN",
+                "observation": "Retrieval evidence does not definitively confirm or refute pipeline success.",
+                "confidence": "0.5",
+                "metadata": {
+                    "max_score": 0.9981046915054321,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.0,
+                    "chunks_used": 0,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "3 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 3,
+                    "max_score": 0.9981046915054321
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 3,
+        "supported_claims": 0,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 3,
+        "contradicted_claims": 0,
+        "grounding_score": 0.0,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.25103322226398933,
+        "retrieval_latency_ms": 851.2887954711914,
+        "generation_latency_ms": 448.0855464935303,
+        "verification_latency_ms": 8709.346771240234
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 7b598013-8917-4ee8-8a0b-c68d2dc0beb4.",
+            "Skipping CORPUS: status is UNKNOWN (insufficient evidence).",
+            "Skipping RETRIEVER: status is UNKNOWN (insufficient evidence).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 3 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.88
+    },
+    "overall_assessment": {
+        "major_strength": "GROUNDING is healthy (confidence=90%): No claims are contradicted by retrieved evidence.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "02af3312-d01d-41ce-be05-5bb10c4b7f9a",
+            "claim_text": "The language model did not respond in time.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "a90a5461-96e5-4ff3-b754-c6e6c504fe4e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "20\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "3ba9bf6a-57ae-42d4-80d2-970b04ec9bff",
+            "claim_text": "This is an infrastructure problem.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "e3cfd376-1174-46eb-9573-2b6cafe0dbc6",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "Illustration."
+        },
+        {
+            "claim_id": "cb9ac72b-a11c-4383-b57f-045cceb8e16f",
+            "claim_text": "This is not a limitation of your documents.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "bd49c63d-fc4f-4733-b7e7-874cdd4b73d3",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "22\nTHE GAZETTE OF INDIA EXTRAORDINARY\n[Part II\u2014\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (3 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 3).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (0%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "0/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.3333333333333333,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 1
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T11:58:26.750776Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

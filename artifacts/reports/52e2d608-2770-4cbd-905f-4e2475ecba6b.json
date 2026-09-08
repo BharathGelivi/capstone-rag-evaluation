@@ -1,0 +1,222 @@
+{
+    "framework_metadata": {
+        "trace_id": "52e2d608-2770-4cbd-905f-4e2475ecba6b",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T16:25:57.385120Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "How does the BNS define 'criminal conspiracy'?",
+        "generated_answer": "The Bharatiya Nyaya Sanhita (BNS) defines **criminal conspiracy** in Section\u202f61(1) as:\n\n> *\u201cWhen two or more persons agree with the common object to do, or cause to be done\u2014  \n> (a) an illegal act; or  \n> (b) an act which is not illegal by illegal means, such an agreement is designated a criminal conspiracy.\u201d*  \n\nThe definition is qualified by a proviso: *\u201cno agreement except an agreement to commit an offence shall amount to a criminal conspiracy unless some act besides the agreement is done by one or more parties to such agreement in pursuance thereof.\u201d*  \n\nIn other words, a mere agreement to commit an offence is not enough; there must be an overt act in furtherance of the conspiracy.  \n\n**Punishment** (Section\u202f61(2)) distinguishes two categories:\n\n1. **Conspiracy to commit an offence punishable with death, imprisonment for life, or rigorous imprisonment for two years or upwards** \u2013 punished in the same manner as if the person had abetted that offence.  \n2. **Any other criminal conspiracy** \u2013 punishable with imprisonment of either description for a term not exceeding six months, or with fine, or with both.  \n\nThese provisions are found in the retrieved context:\n\n- The definition and proviso are in **Chunk\u202f6** (e90a2900\u201139ef\u201143f1\u2011b75d\u2011f92a38b2fd93).  \n- The punishment details for the two categories are in **Chunk\u202f2** (7cf95fe9\u20116baf\u20114512\u2011a24a\u201145ff6846cde4), sections\u202f61(2)(a) and\u202f61(2)(b).  \n\nThus, the BNS treats criminal conspiracy as an agreement to pursue an illegal objective (or a legal objective by illegal means), requiring an overt act beyond the agreement, and imposes penalties that mirror abetment for serious conspiracies or a maximum of six months\u2019 imprisonment/fine for lesser ones.",
+        "overall_health_score": 0.3636,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 3,
+        "total_claims": 11,
+        "number_of_corrective_actions": 2,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.41445720195770264,
+                    "pool_size": 67
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.5643240213394165,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.5,
+                    "chunks_used": 3,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "6 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 6,
+                    "max_score": 0.5643240213394165
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 11,
+        "supported_claims": 3,
+        "partially_supported_claims": 2,
+        "unsupported_claims": 6,
+        "contradicted_claims": 0,
+        "grounding_score": 0.36363636363636365,
+        "evidence_coverage": 0.6666666666666666,
+        "average_entailment": 0.43831792067397723,
+        "retrieval_latency_ms": 14444.14758682251,
+        "generation_latency_ms": 14686.945915222168,
+        "verification_latency_ms": 415712.86630630493
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 52e2d608-2770-4cbd-905f-4e2475ecba6b.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 6 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "e0e4f08b-32e6-433a-9ea7-3b71348bcf79",
+            "claim_text": "The Bharatiya Nyaya Sanhita (BNS) defines criminal conspiracy in Section 61(1).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "c428456b-545a-46f0-af4b-a38095fc8eab",
+            "claim_text": "Under BNS Section 61(1), an agreement between two or more persons with a common object to do an illegal act is designated a criminal conspiracy.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "a2e1dff3-b578-4b45-9679-a33775d91a58",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) The offences referred to in sub-section (1) are the following, namely:\u2014\n(a) an offence under section 147, section 148, section 149 or section 150 of the\nBharatiya Nyaya Sanhita, 2023;\n(b) criminal conspiracy or attempt to commit, or abetment of, an offence under\nsection 149 or section 150 of the Bharatiya Nyaya Sanhita, 2023."
+        },
+        {
+            "claim_id": "d04ec5b3-347f-44da-9208-ea1d7b7910eb",
+            "claim_text": "Under BNS Section 61(1), an agreement between two or more persons with a common object to do an act which is not illegal by illegal means is designated a criminal conspiracy.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "c6234f2e-2054-4ab8-a082-498c10e86d11",
+            "claim_text": "The definition of criminal conspiracy in BNS Section 61(1) is qualified by a proviso: no agreement except an agreement to commit an offence shall amount to a criminal conspiracy unless some act besides the agreement is done by one or more parties to such agreement in pursuance thereof.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "99b16993-3cd2-4e6e-be80-ed5539dbb3cd",
+            "claim_text": "A mere agreement to commit an offence is not enough to constitute a criminal conspiracy under BNS; there must be an overt act in furtherance of the conspiracy.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "6b93dbe5-dded-4d66-9472-9b1505080921",
+            "claim_text": "Punishment under BNS Section 61(2) distinguishes two categories of criminal conspiracy.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "a2e1dff3-b578-4b45-9679-a33775d91a58",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "(2) The offences referred to in sub-section (1) are the following, namely:\u2014\n(a) an offence under section 147, section 148, section 149 or section 150 of the\nBharatiya Nyaya Sanhita, 2023;\n(b) criminal conspiracy or attempt to commit, or abetment of, an offence under\nsection 149 or section 150 of the Bharatiya Nyaya Sanhita, 2023."
+        },
+        {
+            "claim_id": "7f28b2e3-c1de-4465-a623-3ecb2e5133bd",
+            "claim_text": "Conspiracy to commit an offence punishable with death, imprisonment for life, or rigorous imprisonment for two years or upwards is punished in the same manner as if the person had abetted that offence under BNS Section 61(2).",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "49ff1b2c-c069-4bea-9695-d67dc88532b2",
+            "claim_text": "Any other criminal conspiracy is punishable with imprisonment of either description for a term not exceeding six months, or with fine, or with both under BNS Section 61(2).",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "8fa49a7c-1763-4645-bc8b-0c680064ba32",
+            "supporting_chunk_rank": 6,
+            "supporting_evidence": "(3) When a person accused or suspected of the commission of an offence punishable\nwith imprisonment which may extend to seven years or more or of an offence under\nChapter VI, Chapter VII or Chapter XVII of the Bharatiya Nyaya Sanhita, 2023 or abetment\nof, or conspiracy or attempt to commit, any such offence, is released on bail under\nsub-section (1), the Court shall impose the conditions,\u2014\n(a) that such person shall attend in accordance with the conditions of the bond\nexecuted under this Chapter;\n(b) that such person shall not commit an offence similar to the offence of which\nhe is accused, or suspected, of the commission of which he is suspected; and\n(c) that such person shall not directly or indirectly make any inducement, threat\nor promise to any person acquainted with the facts of the case so as to dissuade him\nfrom disclosing such facts to the Court or to any police officer or tamper with the\nevidence,\nand may also impose, in the interests of justice, such other conditions as it considers\nnecessary."
+        },
+        {
+            "claim_id": "9e775499-bd57-4d49-9857-762245e85754",
+            "claim_text": "The definition and proviso of criminal conspiracy are located in Chunk 6 (e90a2900\u201139ef\u201143f1\u2011b75d\u2011f92a38b2fd93).",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "f5138bbc-18f9-41c6-806e-7500206d176d",
+            "claim_text": "The punishment details for the two categories of criminal conspiracy are located in Chunk 2 (7cf95fe9\u20116baf\u20114512\u2011a24a\u201145ff6846cde4), specifically sections 61(2)(a) and 61(2)(b).",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "4cca81ab-bd40-478d-be92-056607a2fae0",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n35\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "0ebd641d-c686-418e-a1eb-1431aae95b4e",
+            "claim_text": "The BNS treats criminal conspiracy as an agreement to pursue an illegal objective (or a legal objective by illegal means), requiring an overt act beyond the agreement, and imposes penalties that mirror abetment for serious conspiracies or a maximum of six months\u2019 imprisonment/fine for lesser ones.",
+            "verification_status": "PARTIALLY_SUPPORTED",
+            "supporting_chunk_id": "e90a2900-39ef-43f1-b75d-f92a38b2fd93",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) Whoever is a party to a criminal conspiracy,\u2013\u2013\n(a) to commit an offence punishable with death, imprisonment for life or rigorous\nimprisonment for a term of two years or upwards, shall, where no express provision is\nmade in this Sanhita for the punishment of such a conspiracy, be punished in the same\nmanner as if he had abetted such offence;\n(b) other than a criminal conspiracy to commit an offence punishable as aforesaid\nshall be punished with imprisonment of either description for a term not exceeding six\nmonths, or with fine or with both."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (6 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 6).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T16:25:57.387168Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

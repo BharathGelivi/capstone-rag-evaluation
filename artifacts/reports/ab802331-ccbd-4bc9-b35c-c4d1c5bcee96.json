@@ -1,0 +1,183 @@
+{
+    "framework_metadata": {
+        "trace_id": "ab802331-ccbd-4bc9-b35c-c4d1c5bcee96",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-05T14:19:57.495931Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "According to the BNS, what three ways can a person 'abet' the doing of a thing?",
+        "generated_answer": "According to the BNS (Bharatiya Nyaya Sanhita), a person **abets** the doing of a thing in any of the following three ways:\n\n1. **Instigation** \u2013 instigates any person to do that thing.  \n2. **Conspiracy** \u2013 engages with one or more other persons in a conspiracy for the doing of that thing, provided an act or illegal omission takes place in pursuance of that conspiracy and in order to do the thing.  \n3. **Intentional aid** \u2013 intentionally aids, by any act or illegal omission, the doing of that thing.  \n\nThese three modes are set out in Section\u202f45 of the BNS\u3010b25092df-b297-4a67-b4c8-ecc4d509893a\u3011.",
+        "overall_health_score": 0.8,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 4,
+        "total_claims": 5,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3800920248031616,
+                    "pool_size": 72
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.7798245549201965,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.3333333333333333,
+                    "chunks_used": 2,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.7798245549201965
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 5,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.8,
+        "evidence_coverage": 0.3333333333333333,
+        "average_entailment": 0.7680630698800087,
+        "retrieval_latency_ms": 1542.271375656128,
+        "generation_latency_ms": 4946.484088897705,
+        "verification_latency_ms": 16174.801349639893
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace ab802331-ccbd-4bc9-b35c-c4d1c5bcee96.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires targeted improvements to the primary failure stage."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "ccf0a363-03d1-499e-9263-5d850f5cf84d",
+            "claim_text": "According to the BNS (Bharatiya Nyaya Sanhita), a person abets the doing of a thing in any of the following three ways.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "7812bbd9-f940-47cf-8ee2-ff4b296391d0",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n17\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        },
+        {
+            "claim_id": "944816b2-49c5-4f0c-b158-2b44e3c551d6",
+            "claim_text": "Instigation is a mode of abetment where a person instigates any person to do that thing.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "A person abets the doing of a thing, who\u2014\n(a) instigates any person to do that thing; or\n(b) engages with one or more other person or persons in any conspiracy for the\ndoing of that thing, if an act or illegal omission takes place in pursuance of that\nconspiracy, and in order to the doing of that thing; or\n(c) intentionally aids, by any act or illegal omission, the doing of that thing."
+        },
+        {
+            "claim_id": "5a48f8c1-9785-4ef6-acbb-8386b6a64303",
+            "claim_text": "Conspiracy is a mode of abetment where a person engages with one or more other persons in a conspiracy for the doing of that thing, provided an act or illegal omission takes place in pursuance of that conspiracy and in order to do the thing.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "A person abets the doing of a thing, who\u2014\n(a) instigates any person to do that thing; or\n(b) engages with one or more other person or persons in any conspiracy for the\ndoing of that thing, if an act or illegal omission takes place in pursuance of that\nconspiracy, and in order to the doing of that thing; or\n(c) intentionally aids, by any act or illegal omission, the doing of that thing."
+        },
+        {
+            "claim_id": "80cedf95-e32b-48a5-8338-33a86b698d42",
+            "claim_text": "Intentional aid is a mode of abetment where a person intentionally aids, by any act or illegal omission, the doing of that thing.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "b25092df-b297-4a67-b4c8-ecc4d509893a",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "A person abets the doing of a thing, who\u2014\n(a) instigates any person to do that thing; or\n(b) engages with one or more other person or persons in any conspiracy for the\ndoing of that thing, if an act or illegal omission takes place in pursuance of that\nconspiracy, and in order to the doing of that thing; or\n(c) intentionally aids, by any act or illegal omission, the doing of that thing."
+        },
+        {
+            "claim_id": "b8c9d649-3cb0-4cb4-b0b0-f1e9bda5da97",
+            "claim_text": "The three modes of abetment are set out in Section 45 of the BNS.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "7812bbd9-f940-47cf-8ee2-ff4b296391d0",
+            "supporting_chunk_rank": 2,
+            "supporting_evidence": "1]\nTHE GAZETTE OF INDIA EXTRAORDINARY\n17\n____________________________________________________________\n_____________________________________________________________\n____________________________________________________________\n___________________________________________________________\n________________________________________________________\n_____________________________________________________________"
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (33%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "2/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 3,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-05T14:19:57.496316Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

@@ -1,0 +1,330 @@
+/* X-RAG Explainability Platform — Main Stylesheet
+   =================================================
+   Dark theme with purple accent, glassmorphism elements,
+   and smooth animations. Designed for a premium research platform feel.
+*/
+
+/* ---------------------------------------------------------------------------
+   Root variables / Design tokens
+   --------------------------------------------------------------------------- */
+:root {
+    --bg-primary: #0f0f23;
+    --bg-secondary: #1a1a2e;
+    --bg-card: rgba(26, 26, 46, 0.8);
+    --bg-hover: rgba(124, 58, 237, 0.1);
+    --accent: #7c3aed;
+    --accent-light: #a78bfa;
+    --accent-muted: rgba(124, 58, 237, 0.2);
+    --text-primary: #e5e7eb;
+    --text-secondary: #9ca3af;
+    --text-muted: #6b7280;
+    --border: rgba(255, 255, 255, 0.06);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------------------------------------------------------------------------
+   Global overrides
+   --------------------------------------------------------------------------- */
+.stApp {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    color: var(--text-primary);
+}
+
+/* Hide Streamlit default elements */
+#MainMenu, footer, header {
+    visibility: hidden;
+}
+
+.stDeployButton {
+    display: none !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Sidebar
+   --------------------------------------------------------------------------- */
+[data-testid="stSidebar"] {
+    background: rgba(15, 15, 35, 0.95) !important;
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border);
+}
+
+[data-testid="stSidebar"] .stButton > button {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    font-size: 0.85rem;
+}
+
+[data-testid="stSidebar"] .stButton > button:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent-muted);
+    transform: translateX(2px);
+}
+
+[data-testid="stSidebar"] .stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    border-color: var(--accent);
+    color: white;
+    font-weight: 600;
+}
+
+[data-testid="stSidebar"] .stButton > button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #8b5cf6, var(--accent));
+    transform: translateX(2px);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+}
+
+/* ---------------------------------------------------------------------------
+   Chat messages
+   --------------------------------------------------------------------------- */
+[data-testid="stChatMessage"] {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg) !important;
+    padding: 1rem 1.25rem !important;
+    margin-bottom: 0.75rem !important;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.3s ease-out;
+}
+
+[data-testid="stChatMessage"][data-testid*="user"] {
+    background: rgba(124, 58, 237, 0.08) !important;
+    border-color: rgba(124, 58, 237, 0.15);
+}
+
+[data-testid="stChatMessage"][data-testid*="assistant"] {
+    background: rgba(16, 185, 129, 0.05) !important;
+    border-color: rgba(16, 185, 129, 0.1);
+}
+
+/* Chat input */
+[data-testid="stChatInput"] {
+    border-top: 1px solid var(--border);
+}
+
+[data-testid="stChatInput"] textarea {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--accent-muted) !important;
+    border-radius: var(--radius-lg) !important;
+    color: var(--text-primary) !important;
+    font-size: 0.95rem;
+}
+
+[data-testid="stChatInput"] textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Tabs
+   --------------------------------------------------------------------------- */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.25rem;
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: transparent !important;
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    background: var(--bg-hover) !important;
+    color: var(--accent-light);
+}
+
+.stTabs [aria-selected="true"] {
+    background: var(--accent-muted) !important;
+    color: var(--accent-light) !important;
+    border-bottom: 2px solid var(--accent) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Expanders
+   --------------------------------------------------------------------------- */
+.streamlit-expanderHeader {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-primary) !important;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.streamlit-expanderHeader:hover {
+    background: var(--bg-hover) !important;
+    border-color: var(--accent-muted) !important;
+}
+
+.streamlit-expanderContent {
+    background: rgba(15, 15, 35, 0.5) !important;
+    border: 1px solid var(--border) !important;
+    border-top: none !important;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Metrics
+   --------------------------------------------------------------------------- */
+[data-testid="stMetric"] {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    text-align: center;
+}
+
+[data-testid="stMetric"] label {
+    color: var(--text-secondary) !important;
+    font-size: 0.75rem !important;
+}
+
+[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: var(--accent-light) !important;
+    font-size: 1.5rem !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Buttons
+   --------------------------------------------------------------------------- */
+.stButton > button {
+    transition: var(--transition);
+    border-radius: var(--radius-sm);
+}
+
+.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ---------------------------------------------------------------------------
+   Toggles
+   --------------------------------------------------------------------------- */
+[data-testid="stToggle"] label {
+    color: var(--text-secondary) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Text input
+   --------------------------------------------------------------------------- */
+.stTextInput input {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    color: var(--text-primary) !important;
+}
+
+.stTextInput input:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   JSON viewer
+   --------------------------------------------------------------------------- */
+.stJson {
+    background: rgba(15, 15, 35, 0.7) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Spinner
+   --------------------------------------------------------------------------- */
+.stSpinner > div {
+    border-top-color: var(--accent) !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Dividers
+   --------------------------------------------------------------------------- */
+hr {
+    border-color: var(--border) !important;
+    opacity: 0.5;
+}
+
+/* ---------------------------------------------------------------------------
+   Animations
+   --------------------------------------------------------------------------- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Scrollbar
+   --------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(124, 58, 237, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 58, 237, 0.5);
+}
+
+/* ---------------------------------------------------------------------------
+   Code blocks
+   --------------------------------------------------------------------------- */
+pre, code {
+    background: rgba(15, 15, 35, 0.7) !important;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive adjustments
+   --------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    [data-testid="stChatMessage"] {
+        padding: 0.75rem !important;
+    }
+}

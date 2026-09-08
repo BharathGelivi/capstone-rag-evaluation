@@ -1,0 +1,181 @@
+{
+    "framework_metadata": {
+        "trace_id": "3c38928a-f72a-461a-aa24-28c7d409cec9",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-07-22T05:33:42.739635Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for causing death by a rash or negligent act not amounting to culpable homicide, and how is it different if the person responsible is a registered medical practitioner performing a medical procedure?",
+        "generated_answer": "According to the context chunk 1 [Chunk-ID: d436ff82-2db4-431b-8962-734d59e1cf28], the punishment for causing death by a rash or negligent act not amounting to culpable homicide is imprisonment of either description for a term which may extend to five years, and a fine. However, if the act is done by a registered medical practitioner while performing a medical procedure, the punishment is imprisonment of either description for a term which may extend to two years, and a fine.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 6,
+        "total_claims": 6,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.1285393238067627,
+                    "pool_size": 35
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9991505146026611,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.2,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 5
+                }
+            },
+            {
+                "stage": "CHUNKING",
+                "status": "UNKNOWN",
+                "observation": "Deterministic chunk-boundary evidence is currently unobservable.",
+                "confidence": "1.0",
+                "metadata": {
+                    "boundary_claim_ids": []
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9991505146026611
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 5,
+        "verified_claims": 6,
+        "supported_claims": 6,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.2,
+        "average_entailment": 0.9929015139738718,
+        "retrieval_latency_ms": 4979.465484619141,
+        "generation_latency_ms": 34074.15986061096,
+        "verification_latency_ms": 1489107.1240901947
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 3c38928a-f72a-461a-aa24-28c7d409cec9.",
+            "Assumption Passed at CORPUS. Moving to next stage.",
+            "Assumption Passed at RETRIEVER. Moving to next stage.",
+            "Skipping CHUNKING: State is UNKNOWN. Insufficient evidence.",
+            "Assumption Passed at GENERATOR. Moving to next stage.",
+            "Assumption Passed at GROUNDING. Moving to next stage.",
+            "No failures detected. Pipeline is healthy or evidence is purely UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "Strong evidence grounding.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "667975c4-0f9f-4f39-95e8-c355df4939ec",
+            "claim_text": "The punishment for causing death by a rash or negligent act not amounting to culpable homicide is imprisonment of either description for a term which may extend to five years, and a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "57f1654c-7d0c-4b6a-a29f-9720cbde12b1",
+            "claim_text": "The punishment for causing death by a rash or negligent act not amounting to culpable homicide includes a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "bee80f6a-af2f-4f8c-bbaf-447a56eca3ae",
+            "claim_text": "The punishment for causing death by a rash or negligent act not amounting to culpable homicide includes imprisonment of either description for a term which may extend to five years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "f1b35b79-50ba-4de1-a7be-94255e82a171",
+            "claim_text": "If the act is done by a registered medical practitioner while performing a medical procedure, the punishment is imprisonment of either description for a term which may extend to two years, and a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "49dcf52e-bc2a-44bf-a71e-e14ba726ca39",
+            "claim_text": "If the act is done by a registered medical practitioner while performing a medical procedure, the punishment includes a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        },
+        {
+            "claim_id": "06c45ac8-7b02-438e-bfed-c4f95aaf6d35",
+            "claim_text": "If the act is done by a registered medical practitioner while performing a medical procedure, the punishment includes imprisonment of either description for a term which may extend to two years.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "d436ff82-2db4-431b-8962-734d59e1cf28",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "106. (1) Whoever causes death of any person by doing any rash or negligent act not\namounting to culpable homicide, shall be punished with imprisonment of either description\nfor a term which may extend to five years, and shall also be liable to fine; and if such act is\ndone by a registered medical practitioner while performing medical procedure, he shall be\npunished with imprisonment of either description for a term which may extend to two years,\nand shall also be liable to fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (20%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/5 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.5,
+        "total_gold_claims": 6,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-07-22T05:33:42.741209Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

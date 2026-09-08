@@ -1,0 +1,156 @@
+{
+    "framework_metadata": {
+        "trace_id": "dff35ada-ab49-4a48-912b-d8d16984555e",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:03:16.111559Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "What is the punishment for abetting the suicide of a child, a person of unsound mind, a delirious person, or a person in a state of intoxication?",
+        "generated_answer": "The punishment for abetting the suicide of a child, a person of unsound mind, a delirious person, or a person in a state of intoxication is **death or imprisonment for life, or imprisonment for a term not exceeding ten years, and a fine**\u301013c9bef0-00e1-4778-ab87-e705bfe68f76\u3011.",
+        "overall_health_score": 1.0,
+        "primary_issue": "UNKNOWN",
+        "supported_claims": 4,
+        "total_claims": 4,
+        "number_of_corrective_actions": 1,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3102211356163025,
+                    "pool_size": 63
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9956150054931641,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "PASS",
+                "observation": "All generated claims are fully supported by evidence.",
+                "confidence": "0.95",
+                "metadata": {
+                    "unsupported_count": 0,
+                    "max_score": 0.9956150054931641
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 4,
+        "supported_claims": 4,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 0,
+        "contradicted_claims": 0,
+        "grounding_score": 1.0,
+        "evidence_coverage": 0.16666666666666666,
+        "average_entailment": 0.9980772733688354,
+        "retrieval_latency_ms": 688.8270378112793,
+        "generation_latency_ms": 1811.1140727996826,
+        "verification_latency_ms": 8926.268577575684
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNKNOWN",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace dff35ada-ab49-4a48-912b-d8d16984555e.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "GENERATOR passed (confidence=0.95).",
+            "GROUNDING passed (confidence=0.90).",
+            "No failures detected. Pipeline is healthy or all evidence is UNKNOWN."
+        ],
+        "diagnosis_confidence": 0.93
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNKNOWN",
+        "next_priority": "Review Retrieval Top-K / Reranker Cutoff",
+        "overall_recommendation": "Pipeline is healthy. Monitor for distribution shift."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "57f8cb3a-95c6-4f46-a307-b1438cb1b281",
+            "claim_text": "The punishment for abetting the suicide of a child is death or imprisonment for life, or imprisonment for a term not exceeding ten years, and a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "d9d51b5f-241f-482c-a141-9a09e9f3b7fa",
+            "claim_text": "The punishment for abetting the suicide of a person of unsound mind is death or imprisonment for life, or imprisonment for a term not exceeding ten years, and a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "1ab20c70-6ec2-418b-b81b-891fbf1e76d1",
+            "claim_text": "The punishment for abetting the suicide of a delirious person is death or imprisonment for life, or imprisonment for a term not exceeding ten years, and a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        },
+        {
+            "claim_id": "b66d19be-a64c-4e49-a247-c197009b32f8",
+            "claim_text": "The punishment for abetting the suicide of a person in a state of intoxication is death or imprisonment for life, or imprisonment for a term not exceeding ten years, and a fine.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "13c9bef0-00e1-4778-ab87-e705bfe68f76",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "If any child, any person of unsound mind, any delirious person or any person in\na state of intoxication, commits suicide, whoever abets the commission of such suicide, shall\nbe punished with death or imprisonment for life, or imprisonment for a term not exceeding ten\nyears, and shall also be liable to fine."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 0.75,
+        "total_gold_claims": 4,
+        "recalled_gold_claims": 3
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:03:16.111635Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}

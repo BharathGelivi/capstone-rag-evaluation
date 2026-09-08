@@ -1,0 +1,983 @@
+<title>X-RAG Diagnostic Report — 6d7c4967-a7d1-4c00-8e63-f84abad3de3b</title>
+<style>
+:root {
+  --bg: #F4F5F7; --surface: #FFFFFF; --ink: #1A1D24; --ink-soft: #565C68; --ink-faint: #8A8F9A;
+  --accent: #2E3B6E; --good: #2F7D5D; --warn: #A6742D; --bad: #A6402D;
+  --line: #E0E2E7; --line-strong: #C9CCD3;
+}
+:root[data-theme="dark"] {
+  --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+  --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+  --line: #2A2E38; --line-strong: #383D4A;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12141A; --surface: #1B1E26; --ink: #E7E9EE; --ink-soft: #A6ACB8; --ink-faint: #6B7280;
+    --accent: #8C9BE8; --good: #5FCB9B; --warn: #E3B15C; --bad: #E38C7A;
+    --line: #2A2E38; --line-strong: #383D4A;
+  }
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.55; padding: 48px 24px 80px; }
+.page { max-width: 940px; margin: 0 auto; }
+.mono { font-family: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace; font-variant-numeric: tabular-nums; }
+.muted { color: var(--ink-faint); }
+header { border-bottom: 2px solid var(--ink); padding-bottom: 20px; margin-bottom: 32px; }
+.eyebrow { font-size: 0.72rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: 1.8rem; font-weight: 600; line-height: 1.2; text-wrap: balance; margin: 0 0 10px; }
+.dek { color: var(--ink-soft); font-size: 1rem; max-width: 70ch; }
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 16px; font-size: 0.82rem; color: var(--ink-faint); }
+.meta-row span b { color: var(--ink-soft); font-weight: 600; }
+.section-title { font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 40px 0 14px; display: flex; align-items: center; gap: 10px; }
+.section-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.summary-tile { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+.summary-tile .tile-label { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; margin-bottom: 6px; }
+.summary-tile .tile-val { font-size: 1.3rem; font-weight: 700; }
+.case { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 22px 24px; }
+.case .q-label, .case .a-label { font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.case .q-text { font-size: 1.05rem; font-weight: 500; margin-bottom: 18px; }
+.case .a-text { font-size: 0.95rem; color: var(--ink-soft); }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; }
+details > summary { cursor: pointer; padding: 14px 18px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 10px; }
+details > summary::-webkit-details-marker { display: none; }
+details > summary::before { content: "▸"; color: var(--accent); font-size: 0.8em; transition: transform 0.15s; flex-shrink: 0; }
+details[open] > summary::before { transform: rotate(90deg); }
+details.top-level > summary { font-size: 0.95rem; }
+.details-body-outer { padding: 0 18px 18px; }
+.claim-detail, .chunk-detail { margin: 8px 18px; border-radius: 8px; }
+.claim-detail summary, .chunk-detail summary { padding: 10px 12px; font-weight: 500; font-size: 0.86rem; }
+.claim-body, .chunk-body { padding: 4px 12px 14px; font-size: 0.84rem; }
+.claim-field { margin-bottom: 6px; }
+.claim-field.muted { font-style: italic; }
+.evidence-text { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; font-size: 0.78rem; white-space: pre-wrap; max-height: 260px; overflow-y: auto; margin-top: 4px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; display: inline-block; background: var(--ink-faint); }
+.dot.good { background: var(--good); } .dot.warn { background: var(--warn); } .dot.bad { background: var(--bad); }
+.claim-status { font-size: 0.7rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.03em; flex-shrink: 0; }
+.claim-status.good { color: var(--good); } .claim-status.warn { color: var(--warn); } .claim-status.bad { color: var(--bad); }
+.claim-summary-text { color: var(--ink-soft); font-weight: 400; }
+.chunk-rank { font-family: ui-monospace, monospace; background: var(--bg); border-radius: 5px; padding: 2px 7px; font-size: 0.75rem; flex-shrink: 0; }
+.chunk-id { flex-shrink: 0; }
+.chunk-src { color: var(--ink-faint); font-weight: 400; font-size: 0.8rem; }
+.score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 20px; margin-bottom: 10px; padding: 10px; background: var(--bg); border-radius: 8px; }
+.score-grid > div { display: flex; justify-content: space-between; font-size: 0.78rem; }
+.stage-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.stage { background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--good); border-radius: 8px; padding: 12px; }
+.stage.unknown { border-top-color: var(--line-strong); }
+.stage.fail { border-top-color: var(--bad); }
+.stage-name { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 6px; }
+.stage-status { font-size: 0.85rem; font-weight: 600; color: var(--good); margin-bottom: 4px; }
+.stage.unknown .stage-status { color: var(--ink-faint); }
+.stage.fail .stage-status { color: var(--bad); }
+.stage-obs { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; }
+.stage-conf { font-size: 0.66rem; color: var(--ink-faint); margin-top: 6px; }
+.stage-efficiency { font-size: 0.66rem; color: var(--accent); margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.reasoning-chain { padding-left: 22px; font-size: 0.88rem; color: var(--ink-soft); }
+.reasoning-chain li { margin-bottom: 6px; }
+.action-card { background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 8px; }
+.action-title { font-weight: 700; font-size: 0.86rem; margin-bottom: 4px; }
+.action-desc { font-size: 0.82rem; color: var(--ink-soft); }
+.fw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.fw-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.fw-card.xrag { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.fw-card.ragas { border-color: var(--good); }
+.fw-name { font-weight: 700; font-size: 0.95rem; }
+.fw-name .tag { display: block; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-top: 2px; }
+.fw-desc { font-size: 0.72rem; color: var(--ink-faint); line-height: 1.4; min-height: 3.5em; }
+.metric-list { display: flex; flex-direction: column; gap: 7px; border-top: 1px solid var(--line); padding-top: 10px; }
+.metric-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.82rem; }
+.metric-row .m-val { font-weight: 700; }
+.metric-row .m-val.hi { color: var(--good); }
+.metric-row .m-val.mid { color: var(--warn); }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-faint); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.scroll-x { overflow-x: auto; }
+@media (max-width: 720px) {
+  .fw-grid, .summary-grid { grid-template-columns: repeat(2, 1fr); }
+  .stage-strip { grid-template-columns: repeat(2, 1fr); }
+  .score-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .fw-grid, .summary-grid, .stage-strip, .score-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 1.4rem; }
+}
+</style>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">X-RAG Diagnostic Framework — Full Report</div>
+    <h1>Under BNSS, who may withdraw powers conferred by the High Court or State Government on a person or subordinate officer?</h1>
+    <p class="dek">Trace <span class="mono">6d7c4967-a7d1-4c00-8e63-f84abad3de3b</span>, generated 2026-09-06T14:45:29.407989Z.</p>
+    <div class="meta-row">
+      <span><b>Generator:</b> nvidia/nemotron-3-super-120b-a12b</span>
+      <span><b>Embedding:</b> BAAI/bge-base-en-v1.5</span>
+      <span><b>Chunk size / overlap:</b> 512 / 100</span>
+      <span><b>Retrieval top-k:</b> 5</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-title">Executive Summary</div>
+    <div class="summary-grid">
+      <div class="summary-tile"><div class="tile-label">Overall Health</div><div class="tile-val mono">50%</div></div>
+      <div class="summary-tile"><div class="tile-label">Primary Issue</div><div class="tile-val mono">UNSUPPORTED_GENERATION</div></div>
+      <div class="summary-tile"><div class="tile-label">Claims Supported</div><div class="tile-val mono">2 / 4</div></div>
+      <div class="summary-tile"><div class="tile-label">Avg. Entailment</div><div class="tile-val mono">0.550</div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">The Case</div>
+    <div class="case">
+      <div class="q-label">Question</div>
+      <div class="q-text">Under BNSS, who may withdraw powers conferred by the High Court or State Government on a person or subordinate officer?</div>
+      <div class="a-label">X-RAG's Answer</div>
+      <div class="a-text">Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the authority that may withdraw powers conferred by the High Court or the State Government is **the High Court or the State Government itself** (as the case may be).  
+
+Specifically, Section 28(1) states:  
+
+&gt; “The High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.”【ff466593-e128-4b78-b947-3bf56cc05525】  
+
+Additionally, if the powers were originally conferred by a Chief Judicial Magistrate or a District Magistrate, those respective magistrates may withdraw the powers they granted【ff466593-e128-4b78-b947-3bf56cc05525】.  
+
+Thus, the withdrawing authority mirrors the conferring authority: the High Court or State Government for powers they conferred, and the Chief Judicial Magistrate or District Magistrate for powers they conferred.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Raw Retrieval &amp; Generation Trace</div>
+    <details class="top-level">
+      <summary>View full RAG trace (6 chunks retrieved, 0.75s retrieval + 12.88s generation)</summary>
+      <div class="details-body-outer">
+        <div class="claim-field"><b>Total pipeline time:</b> <span class="mono">13.632s</span></div>
+        <div class="claim-field"><b>Pre-rerank candidate pool:</b> <span class="mono">72</span> chunks (BM25 + dense, before RRF fusion and reranking)</div>
+        <div class="claim-field"><b>Full prompt sent to the generator:</b></div>
+        <pre class="evidence-text">[SYSTEM]: detailed thinking off
+[SYSTEM]: You are a helpful, knowledgeable assistant answering questions over a document corpus.
+
+HOW TO ANSWER
+1. If the conversation history answers the question (the user is asking about what was said earlier, asking a follow-up, or making small talk), answer directly from the conversation. Do NOT refuse, and do NOT demand document context for these turns.
+2. If the retrieved context contains the answer, or contains partial or related information, use it. Answer as fully as the context allows and say plainly which parts the context does not cover.
+3. Only if you have NO usable information at all — nothing in the conversation and nothing relevant in the context — say: &#x27;I do not have enough information to answer this.&#x27; Prefer a partial, clearly-hedged answer over a refusal.
+4. Never invent facts that are not in the context or the conversation.
+
+FOLLOW-UP QUESTIONS
+Questions like &#x27;elaborate on that&#x27;, &#x27;why?&#x27;, or &#x27;what about the second one&#x27; refer to the previous turn. Resolve them against the conversation history and answer them — treat the earlier answer as available information.
+
+CITATIONS
+Cite the [Chunk-ID] for each claim you take from the retrieved context. Content drawn from the conversation history is cited as [Memory]. Do not attach a citation to conversational filler.
+
+FORMATTING
+Use markdown. Use short paragraphs, and bulleted or numbered lists when enumerating items. Bold the key terms. Keep the answer as long as it needs to be and no longer.
+
+[USER]: Retrieved context for this question:
+
+--- Context chunk 1 [Chunk-ID: 189efb12-520f-4ad3-9bbe-32a25652a651] ---
+Explanation.—All Magistrates, whether Executive or Judicial, and whether exercising
+original or appellate jurisdiction, shall be deemed to be inferior to the Sessions Judge for the
+purposes of this sub-section and of section 439.
+(2) The powers of revision conferred by sub-section (1) shall not be exercised in
+relation to any interlocutory order passed in any appeal, inquiry, trial or other proceeding.
+(3) If an application under this section has been made by any person either to the
+High Court or to the Sessions Judge, no further application by the same person shall be
+entertained by the other of them.
+439. On examining any record under section 438 or otherwise, the High Court or the
+Sessions Judge may direct the Chief Judicial Magistrate by himself or by any of the
+Magistrates subordinate to him to make, and the Chief Judicial Magistrate may himself
+make or direct any subordinate Magistrate to make, further inquiry into any complaint
+which has been dismissed under section 226 or sub-section (4) of section 227, or into the
+case of any person accused of an offence who has been discharged:
+Provided that no Court shall make any direction under this section for inquiry into the
+case of any person who has been discharged unless such person has had an opportunity of
+showing cause why such direction should not be made.
+440. (1) In the case of any proceeding the record of which has been called for by
+himself, the Sessions Judge may exercise all or any of the powers which may be exercised by
+the High Court under sub-section (1) of section 442.
+(2) Where any proceeding by way of revision is commenced before a Sessions Judge
+under sub-section (1), the provisions of sub-sections (2), (3), (4) and (5) of section 442
+shall, so far as may be, apply to such proceeding and references in the said sub-sections to
+the High Court shall be construed as references to the Sessions Judge.
+(3) Where any application for revision is made by or on behalf of any person before
+the Sessions Judge, the decision of the Sessions Judge thereon in relation to such person
+shall be final and no further proceeding by way of revision at the instance of such person
+shall be entertained by the High Court or any other Court.
+441.
+
+--- Context chunk 2 [Chunk-ID: af48fa55-a4a9-402a-9373-05fcae42215b] ---
+11. (1) The High Court may, if requested by the Central or State Government so to do,
+confer upon any person who holds or has held any post under the Government, all or any
+of the powers conferred or conferrable by or under this Sanhita on a Judicial Magistrate of
+the first class or of the second class, in respect to particular cases or to particular classes of
+cases, in any local area:
+Provided that no such power shall be conferred on a person unless he possesses
+such qualification or experience in relation to legal affairs as the High Court may, by rules,
+specify.
+(2) Such Magistrates shall be called Special Judicial Magistrates and shall be appointed
+for such term, not exceeding one year at a time, as the High Court may, by general or special
+order, direct.
+12. (1) Subject to the control of the High Court, the Chief Judicial Magistrate may,
+from time to time, define the local limits of the areas within which the Magistrates appointed
+under section 9 or under section 11 may exercise all or any of the powers with which they
+may respectively be invested under this Sanhita:
+Provided that the Court of Special Judicial Magistrate may hold its sitting at any place
+within the local area for which it is established.
+(2) Except as otherwise provided by such definition, the jurisdiction and powers of
+every such Magistrate shall extend throughout the district.
+(3) Where the local jurisdiction of a Magistrate appointed under section 9 or section 11
+extends to an area beyond the district in which he ordinarily holds Court, any reference in
+this Sanhita to the Court of Session or Chief Judicial Magistrate shall, in relation to such
+Magistrate, throughout the area within his local jurisdiction, be construed, unless the
+context otherwise requires, as a reference to the Court of Session or Chief Judicial Magistrate,
+as the case may be, exercising jurisdiction in relation to the said district.
+13. (1) Every Chief Judicial Magistrate shall be subordinate to the Sessions Judge;
+and every other Judicial Magistrate shall, subject to the general control of the Sessions
+Judge, be subordinate to the Chief Judicial Magistrate.
+
+--- Context chunk 3 [Chunk-ID: a9c8b9c5-dcb3-4200-9ce8-b46c6afa3a0e] ---
+Explanation.—In this section—
+(a) &quot;unit&quot; includes a regiment, corps, ship, detachment, group, battalion or
+company;
+(b) &quot;Court-martial&quot; includes any Tribunal with the powers similar to those of a
+Court-martial constituted under the relevant law applicable to the Armed Forces of
+the Union.
+(2) Every Magistrate shall, on receiving a written application for that purpose by the
+commanding officer of any unit or body of soldiers, sailors or airmen stationed or employed
+at any such place, use his utmost endeavours to apprehend and secure any person accused
+of such offence.
+(3) A High Court may, if it thinks fit, direct that a prisoner detained in any jail situate
+within the State be brought before a Court-martial for trial or to be examined touching any
+matter pending before the Court-martial.
+522. Subject to the power conferred by article 227 of the Constitution, the forms set
+forth in the Second Schedule, with such variations as the circumstances of each case
+require, may be used for the respective purposes therein mentioned, and if used shall be
+sufficient.
+523. (1) Every High Court may, with the previous approval of the State Government,
+make rules—
+(a) as to the persons who may be permitted to act as petition-writers in the
+Criminal Courts subordinate to it;
+(b) regulating the issue of licences to such persons, the conduct of business by
+them, and the scale of fees to be charged by them;
+(c) providing a penalty for a contravention of any of the rules so made and
+determining the authority by which such contravention may be investigated and the
+penalties imposed;
+(d) any other matter which is required to be, or may be, provided by rules made
+by the State Government.
+Continuing
+offence.
+Extension of
+period of
+limitation in
+certain cases.
+Trials before
+High Courts.
+Delivery to
+commanding
+officers of
+persons liable
+to be tried by
+Court-martial.
+Forms.
+Power of High
+Court to make
+rules.
+45 of 1950.
+46 of 1950.
+62 of 1957.
+Sec.
+
+--- Context chunk 4 [Chunk-ID: 77d27795-7a2c-4a64-884c-1e6f6446f194] ---
+(6) Nothing in this section shall preclude the State Government from conferring,
+under any law for the time being in force, on a Commissioner of Police all or any of the
+powers of an Executive Magistrate.
+15. The State Government may appoint, for such term as it may think fit, Executive
+Magistrates or any police officer not below the rank of Superintendent of Police or equivalent,
+to be known as Special Executive Magistrates, for particular areas or for the performance of
+particular functions and confer on such Special Executive Magistrates such of the powers
+as are conferrable under this Sanhita on Executive Magistrates, as it may deem fit.
+16. (1) Subject to the control of the State Government, the District Magistrate may,
+from time to time, define the local limits of the areas within which the Executive Magistrates
+may exercise all or any of the powers with which they may be invested under this Sanhita.
+(2) Except as otherwise provided by such definition, the jurisdiction and powers of
+every such Magistrate shall extend throughout the district.
+17. (1) All Executive Magistrates shall be subordinate to the District Magistrate, and
+every Executive Magistrate (other than the Sub-divisional Magistrate) exercising powers in
+a sub-division shall also be subordinate to the Sub-divisional Magistrate, subject, to the
+general control of the District Magistrate.
+(2) The District Magistrate may, from time to time, make rules or give special orders,
+consistent with this Sanhita, as to the distribution or allocation of business among the
+Executive Magistrates subordinate to him.
+18. (1) For every High Court, the Central Government or the State Government shall,
+after consultation with the High Court, appoint a Public Prosecutor and may also appoint
+one or more Additional Public Prosecutors, for conducting in such Court, any prosecution,
+appeal or other proceeding on behalf of the Central Government or the State Government,
+as the case may be:
+Provided that for National Capital Territory of Delhi, the Central Government shall,
+after consultation with the High Court of Delhi, appoint the Public Prosecutor or Additional
+Public Prosecutors for the purposes of this sub-section.
+(2) The Central Government may appoint one or more Public Prosecutors for the
+purpose of conducting any case in any district or local area.
+
+--- Context chunk 5 [Chunk-ID: cbdca00f-9721-4032-99ff-98ed1bf7c83d] ---
+25. (1) When a person is convicted at one trial of two or more offences, the Court may,
+subject to the provisions of section 9 of the Bharatiya Nyaya Sanhita, 2023, sentence him
+for such offences, to the several punishments prescribed therefor which such Court is
+competent to inflict and the Court shall, considering the gravity of offences, order such
+punishments to run concurrently or consecutively.
+(2) In the case of consecutive sentences, it shall not be necessary for the Court by
+reason only of the aggregate punishment for the several offences being in excess of the
+punishment which it is competent to inflict on conviction of a single offence, to send the
+offender for trial before a higher Court:
+Provided that—
+(a) in no case shall such person be sentenced to imprisonment for a longer
+period than twenty years;
+(b) the aggregate punishment shall not exceed twice the amount of punishment
+which the Court is competent to inflict for a single offence.
+(3) For the purpose of appeal by a convicted person, the aggregate of the consecutive
+sentences passed against him under this section shall be deemed to be a single sentence.
+26. (1) In conferring powers under this Sanhita, the High Court or the State Government,
+as the case may be, may, by order, empower persons specially by name or in virtue of their
+offices or classes of officials generally be their official titles.
+(2) Every such order shall take effect from the date on which it is communicated to the
+person so empowered.
+27. Whenever any person holding an office in the service of Government who has
+been invested by the High Court or the State Government with any powers under this
+Sanhita throughout any local area is appointed to an equal or higher office of the same
+Sentences
+which High
+Courts and
+Sessions Judges
+may pass.
+Sentences
+which
+Magistrates
+may pass.
+Sentence of
+imprisonment
+in default of
+fine.
+Sentence in
+cases of
+conviction of
+several
+offences at
+one trial.
+Mode of
+conferring
+powers.
+Powers of
+officers
+appointed.
+
+--- Context chunk 6 [Chunk-ID: ff466593-e128-4b78-b947-3bf56cc05525] ---
+nature, within a like local area under the same State Government, he shall, unless the High
+Court or the State Government, as the case may be, otherwise directs, or has otherwise
+directed, exercise the same powers in the local area in which he is so appointed.
+28. (1) The High Court or the State Government, as the case may be, may withdraw all
+or any of the powers conferred by it under this Sanhita on any person or by any officer
+subordinate to it.
+(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate
+may be withdrawn by the respective Magistrate by whom such powers were conferred.
+29. (1) Subject to the other provisions of this Sanhita, the powers and duties of a
+Judge or Magistrate may be exercised or performed by his successor-in-office.
+(2) When there is any doubt as to who is the successor-in-office, the Sessions Judge
+shall determine by order in writing the Judge who shall, for the purposes of this Sanhita or
+of any proceedings or order thereunder, be deemed to be the successor-in-office.
+(3) When there is any doubt as to who is the successor-in-office of any Magistrate,
+the Chief Judicial Magistrate, or the District Magistrate, as the case may be, shall determine
+by order in writing the Magistrate who shall, for the purpose of this Sanhita or of any
+proceedings or order thereunder, be deemed to be the successor-in-office of such Magistrate.
+CHAPTER IV
+POWERS OF SUPERIOR OFFICERS OF POLICE AND AID TO THE MAGISTRATES AND THE POLICE
+30. Police officers superior in rank to an officer in charge of a police station may
+exercise the same powers, throughout the local area to which they are appointed, as may be
+exercised by such officer within the limits of his station.
+31. Every person is bound to assist a Magistrate or police officer reasonably demanding
+his aid—
+(a) in the taking or preventing the escape of any other person whom such
+Magistrate or police officer is authorised to arrest; or
+(b) in the prevention or suppression of a breach of the peace; or
+(c) in the prevention of any injury attempted to be committed to any public
+property.
+32.
+
+
+Question: Under BNSS, who may withdraw powers conferred by the High Court or State Government on a person or subordinate officer?</pre>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <div class="section-title">Claim Decomposition &amp; Verification (4 atomic claims)</div>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the authority that may withdraw powers conferred by the High Court or the State Government is the High Court or the State Government itself (as the case may be).</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">a854874b-61cb-4826-928c-e69399f4d58b</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ff466593-e128-4b78-b947-3bf56cc05525</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(1) The High Court or the State Government, as the case may be, may withdraw all
+or any of the powers conferred by it under this Sanhita on any person or by any officer
+subordinate to it.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot "></span>
+            <span class="claim-status ">UNSUPPORTED</span>
+            <span class="claim-summary-text">Section 28(1) of the BNSS states that the High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">d81dc1ac-c405-4f09-9cd1-db881250fcbb</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">a9c8b9c5-dcb3-4200-9ce8-b46c6afa3a0e</span> (rank 4)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">Forms.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">If the powers were originally conferred by a Chief Judicial Magistrate or a District Magistrate, those respective magistrates may withdraw the powers they granted.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">12a7d982-a3d8-425e-8192-a36f7c27c2fd</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">ff466593-e128-4b78-b947-3bf56cc05525</span> (rank 1)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate
+may be withdrawn by the respective Magistrate by whom such powers were conferred.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot warn"></span>
+            <span class="claim-status warn">NOT_VERIFIABLE</span>
+            <span class="claim-summary-text">The withdrawing authority mirrors the conferring authority: the High Court or State Government for powers they conferred, and the Chief Judicial Magistrate or District Magistrate for powers they conferred.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Claim ID:</b> <span class="mono">bdc3d2e1-b685-47a6-8788-0832e4a1cc73</span></div>
+            <div class="claim-field"><b>Supporting chunk:</b> <span class="mono">77d27795-7a2c-4a64-884c-1e6f6446f194</span> (rank 3)</div>
+            <div class="claim-field"><b>Evidence text:</b></div>
+            <pre class="evidence-text">(2) The District Magistrate may, from time to time, make rules or give special orders,
+consistent with this Sanhita, as to the distribution or allocation of business among the
+Executive Magistrates subordinate to him.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">Chunk Mapping &amp; Provenance</div>
+    
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#1</span>
+            <span class="mono chunk-id">ff466593-e128-4b78-b947-3bf56cc05525</span>
+            <span class="chunk-src">bnss.pdf p.11</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.310</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">33.40</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0328</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.990</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">1</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">655f4a0b-b6fd-43e9-a91c-23c6579fcb79</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">279</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2113 (2113 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">nature, within a like local area under the same State Government, he shall, unless the High
+Court or the State Government, as the case may be, otherwise directs, or has otherwise
+directed, exercise the same powers in the local area in which he is so appointed.
+28. (1) The High Court or the State Government, as the case may be, may withdraw all
+or any of the powers conferred by it under this Sanhita on any person or by any officer
+subordinate to it.
+(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate
+may be withdrawn by the respective Magistrate by whom such powers were conferred.
+29. (1) Subject to the other provisions of this Sanhita, the powers and duties of a
+Judge or Magistrate may be exercised or performed by his successor-in-office.
+(2) When there is any doubt as to who is the successor-in-office, the Sessions Judge
+shall determine by order in writing the Judge who shall, for the purposes of this Sanhita or
+of any proceedings or order thereunder, be deemed to be the successor-in-office.
+(3) When there is any doubt as to who is the successor-in-office of any Magistrate,
+the Chief Judicial Magistrate, or the District Magistrate, as the case may be, shall determine
+by order in writing the Magistrate who shall, for the purpose of this Sanhita or of any
+proceedings or order thereunder, be deemed to be the successor-in-office of such Magistrate.
+CHAPTER IV
+POWERS OF SUPERIOR OFFICERS OF POLICE AND AID TO THE MAGISTRATES AND THE POLICE
+30. Police officers superior in rank to an officer in charge of a police station may
+exercise the same powers, throughout the local area to which they are appointed, as may be
+exercised by such officer within the limits of his station.
+31. Every person is bound to assist a Magistrate or police officer reasonably demanding
+his aid—
+(a) in the taking or preventing the escape of any other person whom such
+Magistrate or police officer is authorised to arrest; or
+(b) in the prevention or suppression of a breach of the peace; or
+(c) in the prevention of any injury attempted to be committed to any public
+property.
+32.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#2</span>
+            <span class="mono chunk-id">cbdca00f-9721-4032-99ff-98ed1bf7c83d</span>
+            <span class="chunk-src">bnss.pdf p.10</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.386</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">20.46</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0288</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.527</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">11</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">8</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">3a24c34c-2d50-402e-92e3-16a39511e45d</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">277</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1743 - 3753 (2010 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">25. (1) When a person is convicted at one trial of two or more offences, the Court may,
+subject to the provisions of section 9 of the Bharatiya Nyaya Sanhita, 2023, sentence him
+for such offences, to the several punishments prescribed therefor which such Court is
+competent to inflict and the Court shall, considering the gravity of offences, order such
+punishments to run concurrently or consecutively.
+(2) In the case of consecutive sentences, it shall not be necessary for the Court by
+reason only of the aggregate punishment for the several offences being in excess of the
+punishment which it is competent to inflict on conviction of a single offence, to send the
+offender for trial before a higher Court:
+Provided that—
+(a) in no case shall such person be sentenced to imprisonment for a longer
+period than twenty years;
+(b) the aggregate punishment shall not exceed twice the amount of punishment
+which the Court is competent to inflict for a single offence.
+(3) For the purpose of appeal by a convicted person, the aggregate of the consecutive
+sentences passed against him under this section shall be deemed to be a single sentence.
+26. (1) In conferring powers under this Sanhita, the High Court or the State Government,
+as the case may be, may, by order, empower persons specially by name or in virtue of their
+offices or classes of officials generally be their official titles.
+(2) Every such order shall take effect from the date on which it is communicated to the
+person so empowered.
+27. Whenever any person holding an office in the service of Government who has
+been invested by the High Court or the State Government with any powers under this
+Sanhita throughout any local area is appointed to an equal or higher office of the same
+Sentences
+which High
+Courts and
+Sessions Judges
+may pass.
+Sentences
+which
+Magistrates
+may pass.
+Sentence of
+imprisonment
+in default of
+fine.
+Sentence in
+cases of
+conviction of
+several
+offences at
+one trial.
+Mode of
+conferring
+powers.
+Powers of
+officers
+appointed.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#3</span>
+            <span class="mono chunk-id">77d27795-7a2c-4a64-884c-1e6f6446f194</span>
+            <span class="chunk-src">bnss.pdf p.7</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.391</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">23.91</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0289</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.447</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">17</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">3</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">c7e9770b-29b7-4ed4-8ff5-42a50ba2cf6c</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">270</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2340 (2340 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">(6) Nothing in this section shall preclude the State Government from conferring,
+under any law for the time being in force, on a Commissioner of Police all or any of the
+powers of an Executive Magistrate.
+15. The State Government may appoint, for such term as it may think fit, Executive
+Magistrates or any police officer not below the rank of Superintendent of Police or equivalent,
+to be known as Special Executive Magistrates, for particular areas or for the performance of
+particular functions and confer on such Special Executive Magistrates such of the powers
+as are conferrable under this Sanhita on Executive Magistrates, as it may deem fit.
+16. (1) Subject to the control of the State Government, the District Magistrate may,
+from time to time, define the local limits of the areas within which the Executive Magistrates
+may exercise all or any of the powers with which they may be invested under this Sanhita.
+(2) Except as otherwise provided by such definition, the jurisdiction and powers of
+every such Magistrate shall extend throughout the district.
+17. (1) All Executive Magistrates shall be subordinate to the District Magistrate, and
+every Executive Magistrate (other than the Sub-divisional Magistrate) exercising powers in
+a sub-division shall also be subordinate to the Sub-divisional Magistrate, subject, to the
+general control of the District Magistrate.
+(2) The District Magistrate may, from time to time, make rules or give special orders,
+consistent with this Sanhita, as to the distribution or allocation of business among the
+Executive Magistrates subordinate to him.
+18. (1) For every High Court, the Central Government or the State Government shall,
+after consultation with the High Court, appoint a Public Prosecutor and may also appoint
+one or more Additional Public Prosecutors, for conducting in such Court, any prosecution,
+appeal or other proceeding on behalf of the Central Government or the State Government,
+as the case may be:
+Provided that for National Capital Territory of Delhi, the Central Government shall,
+after consultation with the High Court of Delhi, appoint the Public Prosecutor or Additional
+Public Prosecutors for the purposes of this sub-section.
+(2) The Central Government may appoint one or more Public Prosecutors for the
+purpose of conducting any case in any district or local area.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#4</span>
+            <span class="mono chunk-id">a9c8b9c5-dcb3-4200-9ce8-b46c6afa3a0e</span>
+            <span class="chunk-src">bnss.pdf p.155</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.363</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">23.45</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0308</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.375</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">5</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">5</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">ef00de5d-a978-4218-917d-95898ce2d9de</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">639</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1696 - 3649 (1953 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation.—In this section—
+(a) &quot;unit&quot; includes a regiment, corps, ship, detachment, group, battalion or
+company;
+(b) &quot;Court-martial&quot; includes any Tribunal with the powers similar to those of a
+Court-martial constituted under the relevant law applicable to the Armed Forces of
+the Union.
+(2) Every Magistrate shall, on receiving a written application for that purpose by the
+commanding officer of any unit or body of soldiers, sailors or airmen stationed or employed
+at any such place, use his utmost endeavours to apprehend and secure any person accused
+of such offence.
+(3) A High Court may, if it thinks fit, direct that a prisoner detained in any jail situate
+within the State be brought before a Court-martial for trial or to be examined touching any
+matter pending before the Court-martial.
+522. Subject to the power conferred by article 227 of the Constitution, the forms set
+forth in the Second Schedule, with such variations as the circumstances of each case
+require, may be used for the respective purposes therein mentioned, and if used shall be
+sufficient.
+523. (1) Every High Court may, with the previous approval of the State Government,
+make rules—
+(a) as to the persons who may be permitted to act as petition-writers in the
+Criminal Courts subordinate to it;
+(b) regulating the issue of licences to such persons, the conduct of business by
+them, and the scale of fees to be charged by them;
+(c) providing a penalty for a contravention of any of the rules so made and
+determining the authority by which such contravention may be investigated and the
+penalties imposed;
+(d) any other matter which is required to be, or may be, provided by rules made
+by the State Government.
+Continuing
+offence.
+Extension of
+period of
+limitation in
+certain cases.
+Trials before
+High Courts.
+Delivery to
+commanding
+officers of
+persons liable
+to be tried by
+Court-martial.
+Forms.
+Power of High
+Court to make
+rules.
+45 of 1950.
+46 of 1950.
+62 of 1957.
+Sec.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#5</span>
+            <span class="mono chunk-id">af48fa55-a4a9-402a-9373-05fcae42215b</span>
+            <span class="chunk-src">bnss.pdf p.6</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.361</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">27.47</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0320</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.305</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">3</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">2</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">db13c9a3-ed9c-4b66-b95b-cfb9fa27575b</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">268</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">0 - 2140 (2140 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">11. (1) The High Court may, if requested by the Central or State Government so to do,
+confer upon any person who holds or has held any post under the Government, all or any
+of the powers conferred or conferrable by or under this Sanhita on a Judicial Magistrate of
+the first class or of the second class, in respect to particular cases or to particular classes of
+cases, in any local area:
+Provided that no such power shall be conferred on a person unless he possesses
+such qualification or experience in relation to legal affairs as the High Court may, by rules,
+specify.
+(2) Such Magistrates shall be called Special Judicial Magistrates and shall be appointed
+for such term, not exceeding one year at a time, as the High Court may, by general or special
+order, direct.
+12. (1) Subject to the control of the High Court, the Chief Judicial Magistrate may,
+from time to time, define the local limits of the areas within which the Magistrates appointed
+under section 9 or under section 11 may exercise all or any of the powers with which they
+may respectively be invested under this Sanhita:
+Provided that the Court of Special Judicial Magistrate may hold its sitting at any place
+within the local area for which it is established.
+(2) Except as otherwise provided by such definition, the jurisdiction and powers of
+every such Magistrate shall extend throughout the district.
+(3) Where the local jurisdiction of a Magistrate appointed under section 9 or section 11
+extends to an area beyond the district in which he ordinarily holds Court, any reference in
+this Sanhita to the Court of Session or Chief Judicial Magistrate shall, in relation to such
+Magistrate, throughout the area within his local jurisdiction, be construed, unless the
+context otherwise requires, as a reference to the Court of Session or Chief Judicial Magistrate,
+as the case may be, exercising jurisdiction in relation to the said district.
+13. (1) Every Chief Judicial Magistrate shall be subordinate to the Sessions Judge;
+and every other Judicial Magistrate shall, subject to the general control of the Sessions
+Judge, be subordinate to the Chief Judicial Magistrate.</pre>
+          </div>
+        </details>
+        <details class="chunk-detail">
+          <summary>
+            <span class="chunk-rank">#6</span>
+            <span class="mono chunk-id">189efb12-520f-4ad3-9bbe-32a25652a651</span>
+            <span class="chunk-src">bnss.pdf p.134</span>
+          </summary>
+          <div class="chunk-body">
+            <div class="score-grid">
+              <div><span class="m-name">Dense score</span><span class="mono">0.000</span></div>
+              <div><span class="m-name">Sparse (BM25)</span><span class="mono">23.24</span></div>
+              <div><span class="m-name">RRF score</span><span class="mono">0.0152</span></div>
+              <div><span class="m-name">Reranker score</span><span class="mono">0.259</span></div>
+              <div><span class="m-name">Dense rank</span><span class="mono">-1</span></div>
+              <div><span class="m-name">Sparse rank</span><span class="mono">6</span></div>
+            </div>
+            <div class="claim-field"><b>Parent document:</b> <span class="mono">e5d18d15-3a55-418f-86b9-6769842657e6</span></div>
+            <div class="claim-field"><b>Chunk index in document:</b> <span class="mono">588</span></div>
+            <div class="claim-field"><b>Configured chunk size / overlap:</b> <span class="mono">512 / 100</span></div>
+            <div class="claim-field"><b>Character span:</b> <span class="mono">1585 - 3811 (2226 chars)</span></div>
+            <div class="claim-field"><b>Full chunk text:</b></div>
+            <pre class="evidence-text">Explanation.—All Magistrates, whether Executive or Judicial, and whether exercising
+original or appellate jurisdiction, shall be deemed to be inferior to the Sessions Judge for the
+purposes of this sub-section and of section 439.
+(2) The powers of revision conferred by sub-section (1) shall not be exercised in
+relation to any interlocutory order passed in any appeal, inquiry, trial or other proceeding.
+(3) If an application under this section has been made by any person either to the
+High Court or to the Sessions Judge, no further application by the same person shall be
+entertained by the other of them.
+439. On examining any record under section 438 or otherwise, the High Court or the
+Sessions Judge may direct the Chief Judicial Magistrate by himself or by any of the
+Magistrates subordinate to him to make, and the Chief Judicial Magistrate may himself
+make or direct any subordinate Magistrate to make, further inquiry into any complaint
+which has been dismissed under section 226 or sub-section (4) of section 227, or into the
+case of any person accused of an offence who has been discharged:
+Provided that no Court shall make any direction under this section for inquiry into the
+case of any person who has been discharged unless such person has had an opportunity of
+showing cause why such direction should not be made.
+440. (1) In the case of any proceeding the record of which has been called for by
+himself, the Sessions Judge may exercise all or any of the powers which may be exercised by
+the High Court under sub-section (1) of section 442.
+(2) Where any proceeding by way of revision is commenced before a Sessions Judge
+under sub-section (1), the provisions of sub-sections (2), (3), (4) and (5) of section 442
+shall, so far as may be, apply to such proceeding and references in the said sub-sections to
+the High Court shall be construed as references to the Sessions Judge.
+(3) Where any application for revision is made by or on behalf of any person before
+the Sessions Judge, the decision of the Sessions Judge thereon in relation to such person
+shall be final and no further proceeding by way of revision at the instance of such person
+shall be entertained by the High Court or any other Court.
+441.</pre>
+          </div>
+        </details>
+  </section>
+
+  <section>
+    <div class="section-title">X-RAG Stage Attribution</div>
+    <div class="stage-strip">
+      
+        <div class="stage ">
+          <div class="stage-name">CORPUS</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">Corpus contains sufficient relevant content, evidenced by at least one supported claim.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">RETRIEVER</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">At least one retrieved chunk provides supporting evidence for a verified claim.</div>
+          <div class="stage-conf">confidence 0.95</div>
+          <div class="stage-efficiency">Efficiency: 1/6 chunks used (17%)</div>
+        </div>
+        <div class="stage fail">
+          <div class="stage-name">GENERATOR</div>
+          <div class="stage-status">FAIL</div>
+          <div class="stage-obs">1 generated claims remain unsupported despite high retrieval scores.</div>
+          <div class="stage-conf">confidence 0.85</div>
+          
+        </div>
+        <div class="stage ">
+          <div class="stage-name">GROUNDING</div>
+          <div class="stage-status">PASS</div>
+          <div class="stage-obs">No claims are contradicted by retrieved evidence.</div>
+          <div class="stage-conf">confidence 0.9</div>
+          
+        </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-title">Root Cause Reasoning Chain</div>
+    <ol class='reasoning-chain'><li>Starting root cause analysis for trace 6d7c4967-a7d1-4c00-8e63-f84abad3de3b.</li><li>CORPUS passed (confidence=0.90).</li><li>RETRIEVER passed (confidence=0.95).</li><li>Skipping CHUNKING: no observable state in matrix.</li><li>Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.</li><li>GROUNDING passed (confidence=0.90).</li><li>Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).</li><li>Analysis complete. Primary cause: UNSUPPORTED_GENERATION.</li></ol>
+    <div class="claim-field" style="margin-top: 10px;"><b>Diagnosis confidence:</b> <span class="mono">0.900</span></div>
+  </section>
+
+  <section>
+    <div class="section-title">Corrective Actions</div>
+    
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[IMMEDIATE]</span>Lower Sampling Temperature</div>
+          <div class="action-desc">Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[SHORT_TERM]</span>Strict Prompt Grounding</div>
+          <div class="action-desc">Inject systemic instructions forcing the LLM to output &#x27;I don&#x27;t know&#x27; if context is insufficient.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>The LLM guesses when retrieved context is irrelevant.</div>
+        </div>
+        <div class="action-card">
+          <div class="action-title"><span class="claim-status" style="margin-right:8px;">[INFORMATIONAL]</span>Review Retrieval Top-K / Reranker Cutoff</div>
+          <div class="action-desc">Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.</div>
+          <div class='claim-field muted' style='margin-top:6px;'>1/6 retrieved chunks were used as supporting evidence for any verified claim.</div>
+        </div>
+  </section>
+
+  <section>
+    <div class="section-title">Answer Correctness (Claim Recall)</div>
+    
+    <div class="summary-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 14px;">
+      <div class="summary-tile"><div class="tile-label">Claim Recall</div><div class="tile-val mono">1.000</div></div>
+      <div class="summary-tile"><div class="tile-label">Gold Claims Recalled</div><div class="tile-val mono">2 / 2</div></div>
+    </div>
+    <div class="claim-field"><b>Gold answer used:</b></div>
+    <pre class="evidence-text">The High Court or the State Government, as the case may be, may withdraw all or any of the powers it conferred under the Sanhita on any person or officer subordinate to it.</pre>
+    
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The High Court may withdraw all or any of the powers it conferred under the Sanhita on any person or officer subordinate to it.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.995</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Specifically, Section 28(1) states:  
+
+&gt; “The High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.</pre>
+          </div>
+        </details>
+        <details class="claim-detail">
+          <summary>
+            <span class="dot good"></span>
+            <span class="claim-status good">SUPPORTED</span>
+            <span class="claim-summary-text">The State Government may withdraw all or any of the powers it conferred under the Sanhita on any person or officer subordinate to it.</span>
+          </summary>
+          <div class="claim-body">
+            <div class="claim-field"><b>Confidence:</b> <span class="mono">0.997</span></div>
+            <div class="claim-field"><b>Best-matching sentence in generated answer:</b></div>
+            <pre class="evidence-text">Specifically, Section 28(1) states:  
+
+&gt; “The High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.</pre>
+          </div>
+        </details>
+    
+  </section>
+
+  <section>
+    <div class="section-title">Native RAGAS-style Metrics</div>
+    <p class='muted'>Not computed for this trace.</p>
+  </section>
+
+  <section>
+    <div class="section-title">Cross-Framework Comparison</div>
+    <div class="scroll-x">
+      
+    <div class="fw-grid">
+      <div class="fw-card xrag">
+        <div class="fw-name">X-RAG<span class="tag">this project</span></div>
+        <div class="fw-desc">Claim-level NLI verification + root-cause attribution to a specific pipeline stage.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Avg. entailment</span><span class="m-val hi mono">0.550</span></div>
+          <div class="metric-row"><span class="m-name">Primary cause</span><span class="m-val mono">UNSUPPORTED_GENERATION</span></div>
+        </div>
+      </div>
+      <div class="fw-card ragas">
+        <div class="fw-name">RAGAS<span class="tag">real ragas==0.2.15</span></div>
+        <div class="fw-desc">LLM-judged faithfulness, relevancy, and context quality. No stage attribution.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">nan</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevancy</span><span class="m-val hi mono">0.848</span></div>
+          <div class="metric-row"><span class="m-name">Context precision</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Context recall</span><span class="m-val hi mono">1.000</span></div>
+          <div class="metric-row"><span class="m-name">Answer correctness</span><span class="m-val mid mono">nan</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">RAGChecker<span class="tag">retriever vs. generator</span></div>
+        <div class="fw-desc">Claim-level precision/recall against the gold answer.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Precision</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Recall</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">F1</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Faithfulness</span><span class="m-val mid mono">0.000</span></div>
+          <div class="metric-row"><span class="m-name">Hallucination</span><span class="m-val hi mono">1.000</span></div>
+        </div>
+      </div>
+      <div class="fw-card">
+        <div class="fw-name">ARES<span class="tag">ues_idp judge</span></div>
+        <div class="fw-desc">Per-document LLM relevance and faithfulness judgments.</div>
+        <div class="metric-list">
+          <div class="metric-row"><span class="m-name">Context relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer relevance</span><span class="m-val mid mono">0.167</span></div>
+          <div class="metric-row"><span class="m-name">Answer faithfulness</span><span class="m-val mid mono">0.167</span></div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>X-RAG Diagnostic Framework</span>
+    <span>Trace 6d7c4967-a7d1-4c00-8e63-f84abad3de3b -- generated from a live run, not simulated data</span>
+  </footer>
+
+</div>

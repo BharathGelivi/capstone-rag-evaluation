@@ -1,0 +1,175 @@
+{
+    "framework_metadata": {
+        "trace_id": "6d7c4967-a7d1-4c00-8e63-f84abad3de3b",
+        "framework_name": "X-RAG Diagnostic Framework",
+        "framework_version": "1.0",
+        "analysis_timestamp": "2026-09-06T14:46:28.304655Z",
+        "metadata": {}
+    },
+    "executive_summary": {
+        "question": "Under BNSS, who may withdraw powers conferred by the High Court or State Government on a person or subordinate officer?",
+        "generated_answer": "Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the authority that may withdraw powers conferred by the High Court or the State Government is **the High Court or the State Government itself** (as the case may be).  \n\nSpecifically, Section\u202f28(1) states:  \n\n> \u201cThe High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.\u201d\u3010ff466593-e128-4b78-b947-3bf56cc05525\u3011  \n\nAdditionally, if the powers were originally conferred by a Chief Judicial Magistrate or a District Magistrate, those respective magistrates may withdraw the powers they granted\u3010ff466593-e128-4b78-b947-3bf56cc05525\u3011.  \n\nThus, the withdrawing authority mirrors the conferring authority: the High Court or State Government for powers they conferred, and the Chief Judicial Magistrate or District Magistrate for powers they conferred.",
+        "overall_health_score": 0.5,
+        "primary_issue": "UNSUPPORTED_GENERATION",
+        "supported_claims": 2,
+        "total_claims": 4,
+        "number_of_corrective_actions": 3,
+        "summary": "Analysis completed."
+    },
+    "pipeline_overview": {
+        "pipeline_stages": [
+            {
+                "stage": "CORPUS",
+                "status": "PASS",
+                "observation": "Corpus contains sufficient relevant content, evidenced by at least one supported claim.",
+                "confidence": "0.9",
+                "metadata": {
+                    "pre_rerank_min_dense_distance": 0.3101460337638855,
+                    "pool_size": 72
+                }
+            },
+            {
+                "stage": "RETRIEVER",
+                "status": "PASS",
+                "observation": "At least one retrieved chunk provides supporting evidence for a verified claim.",
+                "confidence": "0.95",
+                "metadata": {
+                    "max_score": 0.9903007745742798,
+                    "threshold": 0.5,
+                    "chunk_utilization_rate": 0.16666666666666666,
+                    "chunks_used": 1,
+                    "chunks_retrieved": 6
+                }
+            },
+            {
+                "stage": "GENERATOR",
+                "status": "FAIL",
+                "observation": "1 generated claims remain unsupported despite high retrieval scores.",
+                "confidence": "0.85",
+                "metadata": {
+                    "unsupported_count": 1,
+                    "max_score": 0.9903007745742798
+                }
+            },
+            {
+                "stage": "GROUNDING",
+                "status": "PASS",
+                "observation": "No claims are contradicted by retrieved evidence.",
+                "confidence": "0.9",
+                "metadata": {
+                    "contradicted_count": 0
+                }
+            }
+        ]
+    },
+    "evaluation_metrics": {
+        "retrieved_chunks": 6,
+        "verified_claims": 4,
+        "supported_claims": 2,
+        "partially_supported_claims": 0,
+        "unsupported_claims": 1,
+        "contradicted_claims": 0,
+        "grounding_score": 0.5,
+        "evidence_coverage": 0.5,
+        "average_entailment": 0.5499119814485312,
+        "retrieval_latency_ms": 753.9222240447998,
+        "generation_latency_ms": 12877.715587615967,
+        "verification_latency_ms": 15960.229635238647
+    },
+    "root_cause_analysis": {
+        "primary_cause": "UNSUPPORTED_GENERATION",
+        "secondary_effects": [],
+        "reasoning_chain": [
+            "Starting root cause analysis for trace 6d7c4967-a7d1-4c00-8e63-f84abad3de3b.",
+            "CORPUS passed (confidence=0.90).",
+            "RETRIEVER passed (confidence=0.95).",
+            "Skipping CHUNKING: no observable state in matrix.",
+            "Failure at GENERATOR: UNSUPPORTED_GENERATION (confidence=0.85). Observation: 1 generated claims remain unsupported despite high retrieval scores.",
+            "GROUNDING passed (confidence=0.90).",
+            "Primary root cause: UNSUPPORTED_GENERATION at GENERATOR (earliest upstream failure, confidence=0.85).",
+            "Analysis complete. Primary cause: UNSUPPORTED_GENERATION."
+        ],
+        "diagnosis_confidence": 0.9
+    },
+    "overall_assessment": {
+        "major_strength": "RETRIEVER is healthy (confidence=95%): At least one retrieved chunk provides supporting evidence for a verified claim.",
+        "major_weakness": "UNSUPPORTED_GENERATION",
+        "next_priority": "Lower Sampling Temperature",
+        "overall_recommendation": "Pipeline requires architectural adjustments across multiple stages."
+    },
+    "evidence_analysis": [
+        {
+            "claim_id": "a854874b-61cb-4826-928c-e69399f4d58b",
+            "claim_text": "Under the Bharatiya Nagarik Suraksha Sanhita (BNSS), the authority that may withdraw powers conferred by the High Court or the State Government is the High Court or the State Government itself (as the case may be).",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(1) The High Court or the State Government, as the case may be, may withdraw all\nor any of the powers conferred by it under this Sanhita on any person or by any officer\nsubordinate to it."
+        },
+        {
+            "claim_id": "d81dc1ac-c405-4f09-9cd1-db881250fcbb",
+            "claim_text": "Section 28(1) of the BNSS states that the High Court or the State Government, as the case may be, may withdraw all or any of the powers conferred by it under this Sanhita on any person or by any officer subordinate to it.",
+            "verification_status": "UNSUPPORTED",
+            "supporting_chunk_id": "a9c8b9c5-dcb3-4200-9ce8-b46c6afa3a0e",
+            "supporting_chunk_rank": 4,
+            "supporting_evidence": "Forms."
+        },
+        {
+            "claim_id": "12a7d982-a3d8-425e-8192-a36f7c27c2fd",
+            "claim_text": "If the powers were originally conferred by a Chief Judicial Magistrate or a District Magistrate, those respective magistrates may withdraw the powers they granted.",
+            "verification_status": "SUPPORTED",
+            "supporting_chunk_id": "ff466593-e128-4b78-b947-3bf56cc05525",
+            "supporting_chunk_rank": 1,
+            "supporting_evidence": "(2) Any powers conferred by the Chief Judicial Magistrate or by the District Magistrate\nmay be withdrawn by the respective Magistrate by whom such powers were conferred."
+        },
+        {
+            "claim_id": "bdc3d2e1-b685-47a6-8788-0832e4a1cc73",
+            "claim_text": "The withdrawing authority mirrors the conferring authority: the High Court or State Government for powers they conferred, and the Chief Judicial Magistrate or District Magistrate for powers they conferred.",
+            "verification_status": "NOT_VERIFIABLE",
+            "supporting_chunk_id": "77d27795-7a2c-4a64-884c-1e6f6446f194",
+            "supporting_chunk_rank": 3,
+            "supporting_evidence": "(2) The District Magistrate may, from time to time, make rules or give special orders,\nconsistent with this Sanhita, as to the distribution or allocation of business among the\nExecutive Magistrates subordinate to him."
+        }
+    ],
+    "corrective_actions": [
+        {
+            "priority": "immediate",
+            "title": "Lower Sampling Temperature",
+            "description": "Reduce generator temperature to 0.0 or 0.1 for deterministic outputs.",
+            "observed_evidence": "LLM generates facts that sound plausible but do not exist in the retrieved text (1 unsupported claim(s) observed).",
+            "expected_improvement": "Output becomes rigid and closely aligned to the prompt context.",
+            "success_metric": "Hallucination rate (Unsupported claims) drops to near 0% (currently 1).",
+            "tradeoff": "Responses may become dry, repetitive, or overly cautious."
+        },
+        {
+            "priority": "short_term",
+            "title": "Strict Prompt Grounding",
+            "description": "Inject systemic instructions forcing the LLM to output 'I don't know' if context is insufficient.",
+            "observed_evidence": "The LLM guesses when retrieved context is irrelevant.",
+            "expected_improvement": "LLM reliably declines to answer ungrounded queries.",
+            "success_metric": "Increase in 'Not Verifiable' traces rather than 'Unsupported' claims.",
+            "tradeoff": "May refuse to answer queries that could be logically deduced."
+        },
+        {
+            "priority": "informational",
+            "title": "Review Retrieval Top-K / Reranker Cutoff",
+            "description": "Retrieval efficiency is low (17%); consider reducing top-k or tightening the reranker score cutoff.",
+            "observed_evidence": "1/6 retrieved chunks were used as supporting evidence for any verified claim.",
+            "expected_improvement": "Reduced prompt size and lower latency/cost with no loss of verified support.",
+            "success_metric": "Chunk utilization rate above 40%.",
+            "tradeoff": "Aggressively narrowing top-k risks losing recall for other, harder questions."
+        }
+    ],
+    "ragas_metrics": null,
+    "answer_correctness": {
+        "claim_recall": 1.0,
+        "total_gold_claims": 2,
+        "recalled_gold_claims": 2
+    },
+    "artifact_version": "1.0",
+    "analysis_status": "COMPLETED",
+    "created_at": "2026-09-06T14:46:28.304737Z",
+    "metadata": {
+        "missing_artifacts": []
+    }
+}
