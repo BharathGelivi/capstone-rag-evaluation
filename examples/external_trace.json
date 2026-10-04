@@ -1,0 +1,9 @@
+{
+  "trace_id": "external-example",
+  "question": "What is the capital of France?",
+  "answer": "Paris is the capital of France.",
+  "retrieved_chunks": [
+    {"chunk_id": "doc-1", "text": "Paris is the capital and most populous city of France.", "rank": 1}
+  ],
+  "claims": ["Paris is the capital of France."]
+}

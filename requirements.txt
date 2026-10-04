@@ -12,10 +12,14 @@ pymupdf
 llama-index-readers-file
 rank_bm25
 sentence-transformers
+transformers
+torch
+sentencepiece
+llama-index-llms-openai-like
 
 fastapi
 uvicorn
-pydantic
+pydantic>=2
 xhtml2pdf
 
 # Memory & UI

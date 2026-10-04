@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "capstone-rag-evaluation"
+version = "0.1.0"
+description = "Portable RAG trace evaluation using the X-RAG local NLI verifier"
+readme = "README.md"
+requires-python = ">=3.13"
+dynamic = ["dependencies"]
+
+[project.optional-dependencies]
+test = ["pytest", "httpx", "build"]
+
+[project.scripts]
+xrag-evaluate = "xrag.cli:main"
+xrag-api = "xrag.cli:serve"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["xrag*", "src*", "configs*"]
+
+[tool.setuptools.package-data]
+configs = ["*.yaml"]
