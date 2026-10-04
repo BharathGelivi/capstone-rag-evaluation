@@ -10,6 +10,7 @@ long-term retrieval.
 import json
 import logging
 import os
+from src import rate_limiter
 from typing import List, Optional
 
 from src.memory.memory_models import (
@@ -49,6 +50,7 @@ class MemorySummarizer:
                     NVIDIA_CLAIM_DECOMPOSER_MODEL,
                     NVIDIA_BASE_URL,
                     LLM_TEMPERATURE,
+                    LLM_REQUEST_TIMEOUT,
                 )
 
                 self._llm = OpenAILike(
@@ -58,6 +60,8 @@ class MemorySummarizer:
                     api_key=os.environ.get("NVIDIA_API_KEY", ""),
                     api_base=NVIDIA_BASE_URL,
                     is_chat_model=True,
+                    timeout=LLM_REQUEST_TIMEOUT,
+                    max_retries=0,
                 )
             except Exception as e:
                 logger.warning("LLM unavailable for summarization: %s", e)
@@ -133,7 +137,7 @@ class MemorySummarizer:
         ]
 
         try:
-            response = llm.chat(messages)
+            response = rate_limiter.call(llm.chat, messages)
             response_text = str(response.message.content)
 
             # Parse JSON response

@@ -14,6 +14,7 @@ import type { RuntimeSettings } from "../App";
 
 /* ─── Types ─────────────────────────────────────────────── */
 interface Message {
+  id: string;
   role: "user" | "assistant";
   content: string;
   meta?: MsgMeta;           // only on assistant messages
@@ -181,7 +182,7 @@ function DetailsPanel({ meta, defaultOpen }: { meta: MsgMeta; defaultOpen?: bool
         <span className="details-pills">
           {chunkCount > 0 && <span className="dpill">📄 {chunkCount}</span>}
           {meta.groundedness != null && (
-            <span className="dpill accent">🎯 Grounded: {(meta.groundedness * 100).toFixed(0)}%</span>
+            <span className="dpill accent">🎯 Lexical overlap: {(meta.groundedness * 100).toFixed(0)}%</span>
           )}
           {meta.faithfulness != null && (
             <span className="dpill accent">🛡️ Faithful: {(meta.faithfulness * 100).toFixed(0)}%</span>
@@ -443,9 +444,9 @@ function ThinkingBox({ meta }: { meta: MsgMeta }) {
   // just starts collapsed. Hooks must run unconditionally, so this sits
   // above the "nothing to show" early return below.
   useEffect(() => {
-    if (hasRealReasoning && meta.reasoningDone) setOpen(false);
+    if (hasRealReasoning && meta.reasoningDone) Promise.resolve().then(() => setOpen(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [meta.reasoningDone]);
+  }, [meta.reasoningDone, hasRealReasoning]);
 
   if (!hasRealReasoning && pipelineLines.length === 0) return null;
 
@@ -485,31 +486,43 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
   const listRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const busyRef = useRef(false);
+  const requestSessionRef = useRef<string | null>(null);
+  const activeMessageRef = useRef<string | null>(null);
+  const [error, setError] = useState("");
   const reasoningStartRef = useRef<number | null>(null);
 
   useEffect(() => {
     getConfig().then((c) => {
       setConfig(c);
       if (c.arms.length) setArm((prev) => (c.arms.includes(prev) ? prev : c.arms[0]));
-    });
+    }).catch(() => setError("Unable to load runtime configuration"));
+    return () => { abortRef.current?.abort(); };
   }, []);
 
   // "both" has no graph/IRCoT analogue -- it merges two independently
   // hybrid-reranked corpora, so only the baseline arm applies.
   useEffect(() => {
-    if (corpus === "both") setArm("C_hybrid_rerank");
-  }, [corpus]);
+    const allowed = config?.arms_by_corpus[corpus] || [];
+    if (allowed.length && !allowed.includes(arm)) Promise.resolve().then(() => setArm("C_hybrid_rerank"));
+  }, [corpus, config, arm]);
 
   useEffect(() => {
+    if (busyRef.current && requestSessionRef.current === activeSessionId) return;
+    abortRef.current?.abort();
+    abortRef.current = null;
+    busyRef.current = false;
+    const controller = new AbortController();
+    Promise.resolve().then(() => { setBusy(false); setStageLabel(""); });
     if (!activeSessionId) {
-      setMessages([]);
+      Promise.resolve().then(() => setMessages([]));
       return;
     }
     let cancelled = false;
-    getSessionMessages(activeSessionId)
+    getSessionMessages(activeSessionId, controller.signal)
       .then((msgs) => {
-        if (cancelled) return;
-        setMessages(msgs.map((m) => ({ role: m.role, content: m.content })));
+        if (cancelled || busyRef.current) return;
+        setMessages(msgs.map((m, i) => ({ id: `${activeSessionId}-${i}`, role: m.role, content: m.content })));
         // Re-fetching a session (page reload, or navigating to another view
         // and back to Chat -- Chat unmounts, so this whole effect re-runs)
         // only gets role/content back; chunks/timings/eval scores only ever
@@ -519,8 +532,8 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
         // RAGTrace instead of leaving it permanently blank.
         msgs.forEach((m, i) => {
           if (m.role !== "assistant" || !m.trace_id) return;
-          getTrace(m.trace_id).then((trace) => {
-            if (cancelled || !trace) return;
+          getTrace(m.trace_id, controller.signal).then((trace) => {
+            if (cancelled || busyRef.current || !trace) return;
             const stats = trace.execution_statistics || {};
             setMessages((cur) => {
               if (cur.length !== msgs.length) return cur; // stale, session changed since
@@ -549,11 +562,11 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
               };
               return next;
             });
-          });
+          }).catch(() => { if (!cancelled) setError("Unable to load saved trace details"); });
         });
       })
-      .catch(() => { if (!cancelled) setMessages([]); });
-    return () => { cancelled = true; };
+      .catch((err) => { if (!cancelled && err.name !== "AbortError") setError("Unable to load session messages"); });
+    return () => { cancelled = true; controller.abort(); };
   }, [activeSessionId]);
 
   useEffect(() => {
@@ -571,70 +584,72 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
   function patchLastMeta(patch: Partial<MsgMeta> | ((prev: MsgMeta) => Partial<MsgMeta>)) {
     setMessages((m) => {
       if (!m.length) return m;
+      const index = m.findIndex(message => message.id === activeMessageRef.current);
+      if (index < 0) return m;
       const next = [...m];
-      const last = { ...next[next.length - 1] };
+      const last = { ...next[index] };
       const resolved = typeof patch === "function" ? patch(last.meta || {}) : patch;
       last.meta = { ...last.meta, ...resolved };
-      next[next.length - 1] = last;
+      next[index] = last;
       return next;
     });
   }
 
-  async function send(question?: string) {
+  async function send(question?: string, baseMessages: Message[] = messages) {
     const q = (question ?? input).trim();
-    if (!q || busy) return;
-
-    let sessId = activeSessionId;
-    if (!sessId) {
-      const newSess = await createSession(q.slice(0, 30));
-      sessId = newSess.session_id;
-      onSessionCreated(sessId);
-    }
-
-    setInput("");
-    if (textareaRef.current) textareaRef.current.style.height = "auto";
+    if (!q || busyRef.current) return;
+    busyRef.current = true;
     setBusy(true);
-    setStageLabel("Starting…");
-
-    const history = messages.map((m) => ({ role: m.role, content: m.content }));
-    const isFirstQuestion = messages.length === 0;
-    const initialMeta: MsgMeta = { arm, corpus };
-
-    setMessages((m) => [
-      ...m,
-      { role: "user", content: q },
-      { role: "assistant", content: "", meta: initialMeta },
-    ]);
-
+    setError("");
+    setStageLabel("Starting...");
     const controller = new AbortController();
     abortRef.current = controller;
-    reasoningStartRef.current = null;
-
+    requestSessionRef.current = activeSessionId;
+    const messageId = crypto.randomUUID();
+    activeMessageRef.current = messageId;
+    let sessId = activeSessionId;
     try {
-      for await (const evt of streamChat({
-        question: q,
-        session_id: sessId,
-        arm,
-        corpus,
-        chat_history: history,
-        memory_enabled: settings.memoryEnabled,
-        deep_analysis: settings.deepAnalysis,
-      }, controller.signal)) {
-        applyEvent(evt, q);
+      if (!sessId) {
+        const newSess = await createSession(q.slice(0, 30));
+        if (controller.signal.aborted) return;
+        sessId = newSess.session_id;
+        requestSessionRef.current = sessId;
+        onSessionCreated(sessId);
       }
-
-      if (isFirstQuestion && sessId) {
-        const title = q.split(" ").slice(0, 5).join(" ") + (q.split(" ").length > 5 ? "..." : "");
-        await renameSession(sessId, title);
-        onSessionRenamed();
+      setInput("");
+      if (textareaRef.current) textareaRef.current.style.height = "auto";
+      const history = baseMessages.map(m => ({ role: m.role, content: m.content }));
+      const isFirstQuestion = baseMessages.length === 0;
+      setMessages([...baseMessages,
+        { id: crypto.randomUUID(), role: "user", content: q },
+        { id: messageId, role: "assistant", content: "", meta: { arm, corpus } }]);
+      reasoningStartRef.current = null;
+      let succeeded = false;
+      for await (const evt of streamChat({ question: q, session_id: sessId, arm, corpus,
+        chat_history: history, memory_enabled: settings.memoryEnabled,
+        deep_analysis: settings.deepAnalysis }, controller.signal)) {
+        if (abortRef.current !== controller || controller.signal.aborted) return;
+        applyEvent(evt, q);
+        succeeded ||= evt.event === "done";
+      }
+      if (succeeded && isFirstQuestion && !controller.signal.aborted) {
+        const title = q.split(" ").slice(0, 5).join(" ");
+        try { await renameSession(sessId, title); onSessionRenamed(); }
+        catch { setError("The answer completed, but the session title could not be saved"); }
       }
     } catch (err) {
-      if ((err as Error).name !== "AbortError") throw err;
-      // Stopped by the user -- keep whatever text/chunks already streamed in.
+      if ((err as Error).name !== "AbortError" && abortRef.current === controller) {
+        setError((err as Error).message);
+        setMessages(current => current.map(m => m.id === messageId
+          ? { ...m, content: `${m.content}\n\nError: ${(err as Error).message}`, failedQuestion: q } : m));
+      }
     } finally {
-      abortRef.current = null;
-      setBusy(false);
-      setStageLabel("");
+      if (abortRef.current === controller) {
+        abortRef.current = null;
+        busyRef.current = false;
+        setBusy(false);
+        setStageLabel("");
+      }
     }
   }
 
@@ -675,10 +690,12 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
       }
       const text = evt.text as string;
       setMessages((m) => {
+        const index = m.findIndex(message => message.id === activeMessageRef.current);
+        if (index < 0) return m;
         const next = [...m];
-        const last = { ...next[next.length - 1] };
+        const last = { ...next[index] };
         last.content = last.content + text;
-        next[next.length - 1] = last;
+        next[index] = last;
         return next;
       });
     } else if (evt.event === "strategy") {
@@ -711,9 +728,11 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
       if (evt.trace_id) onTurnDone(evt.trace_id as string);
     } else if (evt.event === "error") {
       setMessages((m) => {
+        const index = m.findIndex(message => message.id === activeMessageRef.current);
+        if (index < 0) return m;
         const next = [...m];
-        next[next.length - 1] = {
-          ...next[next.length - 1],
+        next[index] = {
+          ...next[index],
           content: `⚠️ Error: ${evt.message}`,
           failedQuestion: question,
         };
@@ -723,14 +742,15 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
   }
 
   function retry(question: string) {
-    setMessages((m) => m.slice(0, -2));
-    send(question);
+    const history = messages.slice(0, -2);
+    void send(question, history);
   }
 
   const isEmpty = messages.length === 0;
 
   return (
     <div className="chat-page">
+      {error && <p role="alert">{error}</p>}
       {/* ── Top bar ─────────────────────────────── */}
       <div className="topbar">
         <span className="topbar-title">{CORPUS_LABELS[corpus] ?? corpus}</span>
@@ -746,14 +766,14 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
                 : `Retrieval strategy: ${ARM_DESCRIPTIONS[arm] ?? arm}`
             }
           >
-            {config?.arms.map((a) => (
+            {(config?.arms_by_corpus[corpus] || []).map((a) => (
               <option key={a} value={a} title={ARM_DESCRIPTIONS[a]}>{a}</option>
             ))}
           </select>
           <select
             className="topbar-select"
             value={corpus}
-            onChange={(e) => setCorpus(e.target.value)}
+            onChange={(e) => { setCorpus(e.target.value); setArm("C_hybrid_rerank"); }}
             title="Which ingested document corpus to answer from"
           >
             {config?.corpora.map((c) => (
@@ -832,6 +852,7 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
             <textarea
               ref={textareaRef}
               className="input-textarea"
+              aria-label="Question"
               rows={1}
               value={input}
               onChange={handleInput}
@@ -848,7 +869,7 @@ export default function Chat({ activeSessionId, onSessionCreated, onSessionRenam
                 </svg>
               </button>
             ) : (
-              <button className="send-btn" onClick={() => send()} disabled={!input.trim()}>
+              <button aria-label="Send message" className="send-btn" onClick={() => send()} disabled={!input.trim()}>
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path d="M12 4l8 8h-5v8H9v-8H4z" />
                 </svg>

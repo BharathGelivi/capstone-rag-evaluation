@@ -86,18 +86,12 @@ def main():
     print(f"Extracted {candidate_claim_set.total_candidates} claims.")
 
     # Convert CandidateClaimSet to canonical ClaimSet
-    from src.claims import ClaimSet, ClaimFactory
-    claim_factory = ClaimFactory(trace.trace_id)
-    claim_set = ClaimSet(trace_id=trace.trace_id)
-    for c in candidate_claim_set.candidate_claims:
-        claim = claim_factory.create_claim(
-            claim_text=c.claim_text,
-            sentence_id=c.sentence_id,
-            character_start=c.character_start,
-            character_end=c.character_end,
-        )
-        claim_set.add_claim(claim)
-    claim_set.to_json(f"artifacts/claims/TRACE_{trace.trace_id}.json")
+    from src.claims import ClaimSet
+    claim_set = ClaimSet.from_candidates(candidate_claim_set)
+    trace.diagnostics = {**(trace.diagnostics or {}), "decomposition_success":
+                         candidate_claim_set.metadata.get("diagnostics", {}).get("success", True)}
+    claims_path = f"artifacts/claims/TRACE_{trace.trace_id}.json"
+    claim_set.to_json(claims_path)
 
     # 7. Verify Claims
     print("\n--- Verifying Claims against Evidence ---")
@@ -133,7 +127,7 @@ def main():
     print("\n--- Generating Corrective Action Plan ---")
     from src.corrective_action_engine import CorrectiveActionEngine
     cae = CorrectiveActionEngine()
-    plan = cae.generate(rca, psm=psm)
+    plan = cae.generate(rca, psm=psm, config_snapshot=trace.configuration_snapshot)
     plan_path = plan.save()
     print(f"Corrective Action Plan saved to: {plan_path}")
     total_actions = len(plan.immediate_actions) + len(plan.short_term_actions) + len(plan.experimental_actions)
@@ -165,6 +159,15 @@ def main():
     from src.report_presenter import DiagnosticReportPresenter
 
     report = ReportBuilder().build(trace=trace, psm=psm, rca=rca, cap=plan, verification=verification_summary, ragas_metrics=ragas_metrics)
+    paths = {"RAGTrace": trace_path, "ClaimSet": claims_path,
+             "Verification": f"artifacts/verification/TRACE_{trace.trace_id}.json",
+             "PipelineStateMatrix": psm_path, "RootCauseAnalysis": rca_path,
+             "CorrectiveActionPlan": plan_path}
+    report.metadata["artifact_paths"] = paths
+    paths["DiagnosticEvaluationReport"] = report.save()
+    report.save()
+    trace.diagnostics["artifact_paths"] = paths
+    RAGTraceBuilder.save_to_json(trace)
     presenter = DiagnosticReportPresenter(report)
 
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")

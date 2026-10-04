@@ -129,19 +129,12 @@ def build_strategy(docs: List[ParsedJudgment], strategy: str, rebuild: bool) -> 
     registry = ChunkRegistry()
     registry.register(nodes)
     os.makedirs(REGISTRY_DIR, exist_ok=True)
-    registry.save_to_json(registry_path(strategy))
 
     embeddings = generate_embeddings(registry)
 
     store = ChromaVectorStore(collection_name=COLLECTIONS[strategy])
     store.initialize_collection()
-    if rebuild:
-        try:
-            store.delete_collection()
-        except Exception:
-            pass
-        store.initialize_collection()
-    store.add_embeddings(embeddings, registry)
+    store.publish_registry(embeddings, registry, registry_path(strategy))
 
     stats = registry.get_statistics()
     logger.info("%s: stored %d vectors (avg chunk %.0f chars)",
@@ -159,7 +152,7 @@ def main() -> int:
                         choices=["legal", "fixed"])
     parser.add_argument("--judgments-root", default=JUDGMENTS_ROOT)
     parser.add_argument("--rebuild", action="store_true",
-                        help="drop and recreate the Chroma collections first")
+                        help="replace corpus contents after successful vector insertion (never delete first)")
     parser.add_argument("--stats-only", action="store_true",
                         help="parse and report corpus composition without embedding")
     args = parser.parse_args()

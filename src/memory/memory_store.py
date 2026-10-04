@@ -10,11 +10,12 @@ Handles both short-term (in-memory ring buffer) and long-term
 import json
 import logging
 import os
+import threading
+from functools import wraps
 from collections import deque
 from typing import Any, Dict, List, Optional
 
 import chromadb
-from chromadb.config import Settings
 
 from src.memory.memory_models import (
     MemoryConfig,
@@ -25,8 +26,6 @@ from src.memory.memory_models import (
 )
 from src.memory.memory_utils import (
     ensure_directory,
-    generate_memory_id,
-    get_timestamp,
     load_json,
     save_json,
     setup_memory_logger,
@@ -34,6 +33,14 @@ from src.memory.memory_utils import (
 
 logger = logging.getLogger(__name__)
 mem_logger = setup_memory_logger()
+
+
+def _locked(method):
+    @wraps(method)
+    def call(self, *args, **kwargs):
+        with self._lock:
+            return method(self, *args, **kwargs)
+    return call
 
 
 from chromadb.api.types import EmbeddingFunction as ChromaEmbeddingFunction
@@ -58,6 +65,7 @@ class MemoryStore:
 
     def __init__(self, config: Optional[MemoryConfig] = None) -> None:
         self.config = config or MemoryConfig()
+        self._lock = threading.RLock()
         self._short_term: deque = deque(maxlen=self.config.short_memory_size)
         self._chroma_client: Optional[chromadb.ClientAPI] = None
         self._collection: Optional[Any] = None
@@ -81,6 +89,7 @@ class MemoryStore:
         self._sessions_file = os.path.join(self._persist_dir, "sessions.json")
         self._summaries_file = os.path.join(self._persist_dir, "summaries.json")
 
+    @_locked
     def initialize(self) -> None:
         """Initialize the memory store, loading persisted data."""
         if self._initialized:
@@ -94,26 +103,11 @@ class MemoryStore:
             self._chroma_client = chromadb.PersistentClient(
                 path=os.path.join(self._persist_dir, "chroma")
             )
-            try:
-                self._collection = self._chroma_client.get_or_create_collection(
+            self._collection = self._chroma_client.get_or_create_collection(
                     name=self.config.collection_name,
                     metadata={"hnsw:space": "cosine"},
                     embedding_function=_NullEmbeddingFunction(),
                 )
-            except Exception as ve:
-                if "Embedding function conflict" in str(ve) or "conflict" in str(ve).lower():
-                    mem_logger.warning("Re-creating memory collection to match 768-dim embedding model.")
-                    try:
-                        self._chroma_client.delete_collection(name=self.config.collection_name)
-                    except Exception:
-                        pass
-                    self._collection = self._chroma_client.create_collection(
-                        name=self.config.collection_name,
-                        metadata={"hnsw:space": "cosine"},
-                        embedding_function=_NullEmbeddingFunction(),
-                    )
-                else:
-                    raise
             mem_logger.info(
                 "ChromaDB memory collection initialized. Count: %d",
                 self._collection.count(),
@@ -133,15 +127,18 @@ class MemoryStore:
     # Short-term memory
     # ------------------------------------------------------------------
 
+    @_locked
     def add_to_short_term(self, entry: MemoryEntry) -> None:
         """Add an entry to the short-term memory buffer."""
         self._short_term.append(entry)
         mem_logger.debug("Added to short-term memory: %s", entry.memory_id)
 
+    @_locked
     def get_short_term_memories(self) -> List[MemoryEntry]:
         """Get all entries in the short-term memory buffer."""
         return list(self._short_term)
 
+    @_locked
     def clear_short_term(self) -> None:
         """Clear the short-term memory buffer."""
         self._short_term.clear()
@@ -151,6 +148,7 @@ class MemoryStore:
     # Long-term memory (ChromaDB)
     # ------------------------------------------------------------------
 
+    @_locked
     def save_memory(
         self,
         entry: MemoryEntry,
@@ -169,9 +167,6 @@ class MemoryStore:
         if not self._initialized:
             self.initialize()
 
-        # Also add to short-term
-        self.add_to_short_term(entry)
-
         # Save to ChromaDB
         metadata = {
             "session_id": entry.session_id,
@@ -183,6 +178,8 @@ class MemoryStore:
             "tags": json.dumps(entry.tags),
             "chunk_ids": json.dumps(entry.retrieved_chunk_ids),
             "claim_ids": json.dumps(entry.claim_ids),
+            "last_accessed": entry.last_accessed or "",
+            "entry_metadata": json.dumps(entry.metadata),
         }
 
         document = f"Q: {entry.question}\nA: {entry.answer}"
@@ -197,6 +194,9 @@ class MemoryStore:
                 upsert_kwargs["embeddings"] = [embedding]
 
             self._collection.upsert(**upsert_kwargs)
+            self._short_term = deque((e for e in self._short_term if e.memory_id != entry.memory_id),
+                                     maxlen=self.config.short_memory_size)
+            self.add_to_short_term(entry)
 
             mem_logger.info(
                 "Saved memory %s to long-term store (session: %s)",
@@ -210,6 +210,7 @@ class MemoryStore:
 
         return entry.memory_id
 
+    @_locked
     def get_memory(self, memory_id: str) -> Optional[MemoryEntry]:
         """Retrieve a single memory entry by ID."""
         if not self._initialized:
@@ -227,6 +228,7 @@ class MemoryStore:
             logger.error("Failed to get memory %s: %s", memory_id, e)
             return None
 
+    @_locked
     def delete_memory(self, memory_id: str) -> bool:
         """Delete a memory entry by ID."""
         if not self._initialized:
@@ -234,21 +236,36 @@ class MemoryStore:
 
         try:
             self._collection.delete(ids=[memory_id])
+            self._short_term = deque((e for e in self._short_term if e.memory_id != memory_id),
+                                     maxlen=self.config.short_memory_size)
             mem_logger.info("Deleted memory: %s", memory_id)
             return True
         except Exception as e:
             logger.error("Failed to delete memory %s: %s", memory_id, e)
             return False
 
+    @_locked
     def update_memory(self, entry: MemoryEntry, embedding: Optional[List[float]] = None) -> bool:
         """Update an existing memory entry."""
         try:
+            old = self.get_memory(entry.memory_id)
+            if old is None:
+                return False
+            if embedding is None:
+                if (old.question, old.answer) != (entry.question, entry.answer):
+                    raise ValueError("Text changes require an explicit replacement embedding")
+                result = self._collection.get(ids=[entry.memory_id], include=["embeddings"])
+                vectors = result.get("embeddings")
+                if vectors is None or len(vectors) == 0:
+                    raise ValueError("Stored embedding is unavailable")
+                embedding = list(vectors[0])
             self.save_memory(entry, embedding)
             mem_logger.info("Updated memory: %s", entry.memory_id)
             return True
         except Exception:
             return False
 
+    @_locked
     def search_by_embedding(
         self,
         query_embedding: List[float],
@@ -278,6 +295,7 @@ class MemoryStore:
             logger.error("Memory search failed: %s", e)
             return {"ids": [[]], "documents": [[]], "metadatas": [[]], "distances": [[]]}
 
+    @_locked
     def get_session_memories(
         self, session_id: str, limit: int = 100
     ) -> List[MemoryEntry]:
@@ -289,7 +307,6 @@ class MemoryStore:
             results = self._collection.get(
                 where={"session_id": session_id},
                 include=["documents", "metadatas"],
-                limit=limit,
             )
             entries = []
             if results and results["ids"]:
@@ -299,11 +316,12 @@ class MemoryStore:
                         entries.append(entry)
             # Sort by timestamp
             entries.sort(key=lambda e: e.timestamp)
-            return entries
+            return entries[-limit:] if limit is not None else entries
         except Exception as e:
             logger.error("Failed to get session memories: %s", e)
             return []
 
+    @_locked
     def get_all_memories(self, limit: int = 1000) -> List[MemoryEntry]:
         """Get all memories across all sessions."""
         if not self._initialized:
@@ -315,7 +333,6 @@ class MemoryStore:
                 return []
             results = self._collection.get(
                 include=["documents", "metadatas"],
-                limit=min(limit, count),
             )
             entries = []
             if results and results["ids"]:
@@ -324,11 +341,12 @@ class MemoryStore:
                     if entry:
                         entries.append(entry)
             entries.sort(key=lambda e: e.timestamp)
-            return entries
+            return entries[-limit:]
         except Exception as e:
             logger.error("Failed to get all memories: %s", e)
             return []
 
+    @_locked
     def clear_session_memory(self, session_id: str) -> int:
         """Clear all memories for a specific session. Returns count deleted."""
         if not self._initialized:
@@ -344,12 +362,18 @@ class MemoryStore:
                 self._collection.delete(ids=results["ids"])
                 count = len(results["ids"])
                 mem_logger.info("Cleared %d memories for session %s", count, session_id)
-                return count
-            return 0
+            else:
+                count = 0
+            self._short_term = deque((e for e in self._short_term if e.session_id != session_id),
+                                     maxlen=self.config.short_memory_size)
+            self._summaries = {k: s for k, s in self._summaries.items() if s.session_id != session_id}
+            self._persist_summaries()
+            return count
         except Exception as e:
             logger.error("Failed to clear session memory: %s", e)
-            return 0
+            raise
 
+    @_locked
     def clear_all_memory(self) -> int:
         """Clear all memories. Returns count deleted."""
         if not self._initialized:
@@ -363,14 +387,18 @@ class MemoryStore:
                 self._collection = self._chroma_client.get_or_create_collection(
                     name=self.config.collection_name,
                     metadata={"hnsw:space": "cosine"},
+                    embedding_function=_NullEmbeddingFunction(),
                 )
             self._short_term.clear()
+            self._summaries.clear()
+            self._persist_summaries()
             mem_logger.info("Cleared all %d memories.", count)
             return count
         except Exception as e:
             logger.error("Failed to clear all memory: %s", e)
-            return 0
+            raise
 
+    @_locked
     def memory_count(self) -> int:
         """Get the total number of memories stored."""
         if not self._initialized:
@@ -384,33 +412,37 @@ class MemoryStore:
     # Session management (persisted as JSON)
     # ------------------------------------------------------------------
 
+    @_locked
     def save_session(self, session: SessionInfo) -> None:
         """Save or update a session."""
         self._sessions[session.session_id] = session
         self._persist_sessions()
         mem_logger.info("Session saved: %s (%s)", session.session_id, session.title)
 
+    @_locked
     def get_session(self, session_id: str) -> Optional[SessionInfo]:
         """Get a session by ID."""
         return self._sessions.get(session_id)
 
+    @_locked
     def list_sessions(self) -> List[SessionInfo]:
         """List all sessions, sorted by last activity (most recent first)."""
         sessions = list(self._sessions.values())
         sessions.sort(key=lambda s: s.last_activity, reverse=True)
         return sessions
 
+    @_locked
     def delete_session(self, session_id: str) -> bool:
         """Delete a session and its memories."""
         if session_id in self._sessions:
+            self.clear_session_memory(session_id)
             del self._sessions[session_id]
             self._persist_sessions()
-            # Also clear memories for this session
-            self.clear_session_memory(session_id)
             mem_logger.info("Session deleted: %s", session_id)
             return True
         return False
 
+    @_locked
     def rename_session(self, session_id: str, new_title: str) -> bool:
         """Rename a session."""
         if session_id in self._sessions:
@@ -424,12 +456,14 @@ class MemoryStore:
     # Summaries
     # ------------------------------------------------------------------
 
+    @_locked
     def save_summary(self, summary: MemorySummary) -> None:
         """Save a memory summary."""
         self._summaries[summary.summary_id] = summary
         self._persist_summaries()
         mem_logger.info("Summary saved: %s", summary.summary_id)
 
+    @_locked
     def get_summaries(self, session_id: Optional[str] = None) -> List[MemorySummary]:
         """Get summaries, optionally filtered by session."""
         summaries = list(self._summaries.values())
@@ -472,6 +506,8 @@ class MemoryStore:
                 tags=json.loads(meta.get("tags", "[]")),
                 retrieved_chunk_ids=json.loads(meta.get("chunk_ids", "[]")),
                 claim_ids=json.loads(meta.get("claim_ids", "[]")),
+                last_accessed=meta.get("last_accessed") or None,
+                metadata=json.loads(meta.get("entry_metadata", "{}")),
             )
         except Exception as e:
             logger.error("Failed to parse memory from ChromaDB result: %s", e)

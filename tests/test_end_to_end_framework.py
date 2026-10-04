@@ -1,4 +1,6 @@
 import unittest
+import tempfile
+import os
 from unittest.mock import patch, MagicMock
 
 from src.rag_trace import RAGTrace
@@ -81,6 +83,19 @@ def make_verification(trace_id, statuses):
 
 
 class TestEndToEndFramework(unittest.TestCase):
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        original = os.getcwd()
+        os.chdir(directory.name)
+        self.addCleanup(os.chdir, original)
+        for target in ("src.runner.Generator", "src.embedding_engine.get_shared_embed_model"):
+            patcher = patch(target)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        patcher = patch("src.runner.RagasEvaluator", return_value=None)
+        patcher.start()
+        self.addCleanup(patcher.stop)
     def test_full_diagnostic_chain_produces_report(self):
         trace = make_trace()
         claim_set = make_claim_set(trace.trace_id)
@@ -117,6 +132,9 @@ class TestEndToEndFramework(unittest.TestCase):
         verification = make_verification(trace.trace_id, [VerificationStatus.SUPPORTED])
 
         mock_decomposer_cls.return_value.decompose.return_value = MagicMock()
+        mock_decomposer_cls.return_value.decompose.return_value.trace_id = trace.trace_id
+        mock_decomposer_cls.return_value.decompose.return_value.metadata = {}
+        mock_decomposer_cls.return_value.decompose.return_value.candidate_claims = []
         mock_verifier_cls.return_value.verify.return_value = verification
 
         runner = PipelineRunner()
@@ -135,6 +153,8 @@ class TestEndToEndFramework(unittest.TestCase):
         verification = make_verification(trace.trace_id, [VerificationStatus.SUPPORTED])
 
         mock_decomposer_cls.return_value.decompose.return_value = MagicMock()
+        mock_decomposer_cls.return_value.decompose.return_value.trace_id = trace.trace_id
+        mock_decomposer_cls.return_value.decompose.return_value.metadata = {}
         mock_verifier_cls.return_value.verify.return_value = verification
         # AnswerCorrectnessEvaluator's decompose() call reuses this same mocked decomposer.
         mock_decomposer_cls.return_value.decompose.return_value.candidate_claims = []

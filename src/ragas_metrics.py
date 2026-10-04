@@ -25,6 +25,7 @@ from llama_index.core.llms import ChatMessage, MessageRole
 
 from src.claim_verifier import ClaimVerifier, VerificationSummary
 from src.retriever import RetrievedChunk
+from src import rate_limiter
 from configs.ragas import (
     ANSWER_RELEVANCY_NUM_QUESTIONS,
     ANSWER_CORRECTNESS_WEIGHTS,
@@ -106,7 +107,7 @@ class RagasEvaluator:
 
     def _call_llm(self, prompt: str) -> str:
         try:
-            response = self.llm.chat([ChatMessage(role=MessageRole.USER, content=prompt)])
+            response = rate_limiter.call(self.llm.chat, [ChatMessage(role=MessageRole.USER, content=prompt)])
             return str(response.message.content)
         except Exception as e:
             logger.error(f"RAGAS metric LLM call failed: {e}")
@@ -139,8 +140,9 @@ class RagasEvaluator:
         ]
         return round(sum(similarities) / len(similarities), 4) if similarities else None
 
-    def _judge_relevance(self, prompt: str) -> bool:
-        return self._call_llm(prompt).strip().upper().startswith("Y")
+    def _judge_relevance(self, prompt: str) -> Optional[bool]:
+        answer = self._call_llm(prompt).strip().upper().rstrip(".! ")
+        return True if answer == "YES" else False if answer == "NO" else None
 
     def compute_context_precision(self, question: str, answer: str, retrieved_chunks: List[RetrievedChunk]) -> Optional[float]:
         """
@@ -160,6 +162,8 @@ class RagasEvaluator:
             )
             relevance_flags.append(self._judge_relevance(prompt))
 
+        if any(flag is None for flag in relevance_flags):
+            return None
         total_relevant = sum(relevance_flags)
         if total_relevant == 0:
             return 0.0
@@ -189,7 +193,7 @@ class RagasEvaluator:
                 f"Question: {question}\nContext: {chunk.chunk_text}"
             )
             flags.append(self._judge_relevance(prompt))
-        return round(sum(flags) / len(flags), 4)
+        return None if any(flag is None for flag in flags) else round(sum(flags) / len(flags), 4)
 
     def compute_context_recall(self, reference: str, retrieved_chunks: List[RetrievedChunk]) -> Optional[float]:
         """Fraction of reference-answer sentences entailed by the retrieved context.

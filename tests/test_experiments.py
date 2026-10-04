@@ -695,7 +695,7 @@ class TestRetrieverSeams(unittest.TestCase):
         ) as reranked:
             result = retriever.retrieve("q")
 
-        ranked.assert_called_once_with("q", RERANK_INPUT_SIZE)
+        ranked.assert_called_once_with("q", RERANK_INPUT_SIZE, mode="hybrid")
         reranked.assert_called_once()
         self.assertEqual(len(result.retrieved_chunks), min(RERANKER_TOP_N, 4))
         self.assertEqual(result.retrieved_chunks[0].chunk_id, "c3")
@@ -1105,9 +1105,9 @@ class TestSuiteDriver(unittest.TestCase):
         self.addCleanup(shutil.rmtree, self.dir, ignore_errors=True)
         self.experiments = run_all.load_experiments()
 
-    def test_experiments_are_numbered_one_through_five(self):
-        self.assertEqual([e.number for e in self.experiments], [1, 2, 3, 4, 5])
-        self.assertEqual(len({e.key for e in self.experiments}), 5)
+    def test_experiments_are_numbered_one_through_thirteen(self):
+        self.assertEqual([e.number for e in self.experiments], list(range(1, 14)))
+        self.assertEqual(len({e.key for e in self.experiments}), 13)
 
     def test_every_experiment_declares_a_claim(self):
         for experiment in self.experiments:
@@ -1117,12 +1117,12 @@ class TestSuiteDriver(unittest.TestCase):
     def test_from_selects_the_tail_of_the_suite(self):
         args = run_all.build_parser().parse_args(["--from", "5"])
         selected = run_all.select(self.experiments, args)
-        self.assertEqual([e.number for e in selected], [5])
+        self.assertEqual([e.number for e in selected], list(range(5, 14)))
 
     def test_from_three_keeps_three_onwards(self):
         args = run_all.build_parser().parse_args(["--from", "3"])
         self.assertEqual(
-            [e.number for e in run_all.select(self.experiments, args)], [3, 4, 5]
+            [e.number for e in run_all.select(self.experiments, args)], list(range(3, 14))
         )
 
     def test_only_selects_exactly_those_experiments(self):
@@ -1244,7 +1244,7 @@ class TestSuiteIntegration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.dir = tempfile.mkdtemp()
-        cls.code = run_all.main(["--base-dir", cls.dir])
+        cls.code = run_all.main(["--base-dir", cls.dir, "--only", "1", "2", "3", "4", "5"])
 
     @classmethod
     def tearDownClass(cls):
@@ -1254,7 +1254,7 @@ class TestSuiteIntegration(unittest.TestCase):
         self.assertEqual(self.code, 0)
 
     def test_every_experiment_meets_the_fifty_example_floor(self):
-        for experiment in run_all.load_experiments():
+        for experiment in run_all.load_experiments()[:5]:
             summary = Checkpoint(experiment.key, base_dir=self.dir).load_summary()
             self.assertIsNotNone(summary, f"{experiment.key} produced no summary")
             self.assertGreaterEqual(
@@ -1263,14 +1263,14 @@ class TestSuiteIntegration(unittest.TestCase):
             )
 
     def test_every_summary_carries_a_headline_and_interpretation(self):
-        for experiment in run_all.load_experiments():
+        for experiment in run_all.load_experiments()[:5]:
             summary = Checkpoint(experiment.key, base_dir=self.dir).load_summary()
             self.assertIn("headline", summary, experiment.key)
             self.assertIn("claim", summary, experiment.key)
             self.assertTrue(summary.get("interpretation_notes"), experiment.key)
 
     def test_every_summary_is_json_serialisable(self):
-        for experiment in run_all.load_experiments():
+        for experiment in run_all.load_experiments()[:5]:
             path = Checkpoint(experiment.key, base_dir=self.dir).summary_path
             with open(path, encoding="utf-8") as f:
                 json.load(f)
@@ -1284,12 +1284,12 @@ class TestSuiteIntegration(unittest.TestCase):
     def test_rerunning_the_suite_recomputes_nothing(self):
         before = {
             e.key: os.path.getsize(Checkpoint(e.key, base_dir=self.dir).records_path)
-            for e in run_all.load_experiments()
+            for e in run_all.load_experiments()[:5]
         }
-        run_all.main(["--base-dir", self.dir])
+        run_all.main(["--base-dir", self.dir, "--only", "1", "2", "3", "4", "5"])
         after = {
             e.key: os.path.getsize(Checkpoint(e.key, base_dir=self.dir).records_path)
-            for e in run_all.load_experiments()
+            for e in run_all.load_experiments()[:5]
         }
         self.assertEqual(before, after)
 
@@ -1297,7 +1297,7 @@ class TestSuiteIntegration(unittest.TestCase):
         first = os.path.getmtime(
             Checkpoint("exp01_fault_injection", base_dir=self.dir).records_path
         )
-        run_all.main(["--base-dir", self.dir, "--from", "5"])
+        run_all.main(["--base-dir", self.dir, "--only", "5"])
         self.assertEqual(
             first,
             os.path.getmtime(Checkpoint("exp01_fault_injection", base_dir=self.dir).records_path),

@@ -249,6 +249,9 @@ def run_rag_pipeline(
     if error:
         return {"error": error, "answer": error}
 
+    import copy
+    generator = copy.copy(generator)
+
     result = {"question": question, "timestamps": {}}
 
     # Step 1: Memory retrieval

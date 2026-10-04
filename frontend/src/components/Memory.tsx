@@ -16,6 +16,7 @@ export default function Memory() {
   const [debounced, setDebounced] = useState("");
   const [memories, setMemories] = useState<ScoredMemory[]>([]);
   const [searched, setSearched] = useState(false);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -24,11 +25,13 @@ export default function Memory() {
   }, [search]);
 
   useEffect(() => {
-    setLoading(true);
-    getMemory({ search: debounced || undefined, limit: 30 })
-      .then((r) => { setMemories(r.memories); setSearched(r.searched); })
-      .catch(() => setMemories([]))
-      .finally(() => setLoading(false));
+    const controller = new AbortController();
+    Promise.resolve().then(() => { if (!controller.signal.aborted) { setLoading(true); setError(""); } });
+    getMemory({ search: debounced || undefined, limit: 30 }, controller.signal)
+      .then(r => { if (!controller.signal.aborted) { setMemories(r.memories); setSearched(r.searched); } })
+      .catch(err => { if (err.name !== "AbortError") setError("Unable to load memories"); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
   }, [debounced]);
 
   return (
@@ -46,6 +49,8 @@ export default function Memory() {
       </div>
 
       <div className="memory-grid xrag-scroll">
+        {error && <p role="alert">{error}</p>}
+        {loading && <p>Loading memories...</p>}
         {!loading && memories.length === 0 && (
           <p className="text-muted">
             {search ? `No memories match "${search}".` : "No memories yet. Start a conversation to create some."}

@@ -36,6 +36,11 @@ def make_valid_trace_payload():
 
 
 class TestAPI(unittest.TestCase):
+    def setUp(self):
+        patcher = patch("src.api.RAGTraceBuilder.save_to_json")
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def test_get_root(self):
         response = client.get("/")
         self.assertEqual(response.status_code, 200)

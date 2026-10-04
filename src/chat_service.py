@@ -16,8 +16,10 @@ import os
 import sys
 import threading
 import time
+import copy
+import logging
+import uuid
 from datetime import datetime, timezone
-from functools import lru_cache
 from typing import Any, Dict, Generator as TypingGenerator, List, Optional
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__) + "/..")
@@ -25,6 +27,9 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 from src.memory.memory_manager import MemoryManager
+from src.cache_utils import serialized_cache
+
+logger = logging.getLogger(__name__)
 
 #: Serializes access to GPU-resident models (reranker, NLI verifier) across
 #: concurrent request threads -- a single-worker uvicorn process still runs
@@ -50,6 +55,7 @@ CORPORA = {
 #: in ``_run_chat_turn``). Exposed as a corpus option in the UI alongside the
 #: real ones so a question can be answered from statutes and case law at once.
 CORPUS_OPTIONS = list(CORPORA.keys()) + ["both"]
+CORPORA["judgments_fixed"] = ("artifacts/legal/chunk_registry_fixed.json", "legal_corpus_fixed", "Judgments (fixed chunks)")
 
 #: Arms whose retrieval strategy is itself multi-step (interleaved
 #: retrieval/reasoning, agentic planning, or graph expansion) get a prompted
@@ -64,15 +70,28 @@ def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(tzinfo=None).isoformat() + "Z"
 
 
-@lru_cache(maxsize=None)
+def _registry_signature(corpus):
+    path = os.path.join(PROJECT_ROOT, CORPORA[corpus][0])
+    try:
+        stat = os.stat(path)
+        return stat.st_mtime_ns, stat.st_size
+    except FileNotFoundError:
+        return None
+
+
 def load_pipeline(corpus: str = "statutes"):
-    from src.env_check import ensure_llm_credentials
+    return _load_pipeline(corpus, _registry_signature(corpus))
+
+
+@serialized_cache(maxsize=3)
+def _load_pipeline(corpus, signature):
     from src.chunk_registry import ChunkRegistry
     from src.vector_store import ChromaVectorStore
     from src.retriever import Retriever
     from src.generator import Generator
 
-    ensure_llm_credentials()
+    if not os.environ.get("NVIDIA_API_KEY"):
+        raise RuntimeError("Set NVIDIA_API_KEY in the server environment before starting chat")
 
     relative_registry, collection, _label = CORPORA[corpus]
     registry_path = os.path.join(PROJECT_ROOT, relative_registry)
@@ -89,8 +108,12 @@ def load_pipeline(corpus: str = "statutes"):
     return retriever, generator, registry, None
 
 
-@lru_cache(maxsize=None)
 def load_registry(corpus: str = "statutes"):
+    return _load_registry(corpus, _registry_signature(corpus))
+
+
+@serialized_cache(maxsize=3)
+def _load_registry(corpus, signature):
     """Just the chunk registry -- a JSON file load, no vector store or GPU
     reranker/generator involved. For read-only chunk-text lookups (e.g.
     backfilling a historical trace's chunk text, see /ui/trace in api_ui.py)
@@ -110,7 +133,7 @@ def load_registry(corpus: str = "statutes"):
     return ChunkRegistry.load_from_json(registry_path)
 
 
-@lru_cache(maxsize=1)
+@serialized_cache(maxsize=1)
 def load_knowledge_graph():
     from src.legal_graph import GRAPH_PATH, load_graph
 
@@ -120,19 +143,19 @@ def load_knowledge_graph():
     return load_graph(path)
 
 
-@lru_cache(maxsize=1)
+@serialized_cache(maxsize=1)
 def load_verifier():
     from src.claim_verifier import ClaimVerifier
     return ClaimVerifier()
 
 
-@lru_cache(maxsize=1)
+@serialized_cache(maxsize=1)
 def load_decomposer():
     from src.claim_decomposer import ClaimDecomposer
     return ClaimDecomposer()
 
 
-@lru_cache(maxsize=1)
+@serialized_cache(maxsize=1)
 def get_memory_manager() -> MemoryManager:
     mm = MemoryManager()
     mm.initialize()
@@ -160,7 +183,9 @@ def run_chat_turn(
         yield from _run_chat_turn(
             question, session_id, arm, corpus, chat_history, memory_enabled, deep_analysis)
     except Exception as exc:
-        yield {"event": "error", "message": f"{type(exc).__name__}: {exc}"}
+        reference = uuid.uuid4().hex
+        logger.exception("Chat failed [ref=%s]", reference)
+        yield {"event": "error", "message": "Chat could not complete. Please retry.", "reference_id": reference}
 
 
 def _run_chat_turn(
@@ -173,6 +198,7 @@ def _run_chat_turn(
     deep_analysis: bool,
 ) -> TypingGenerator[Dict[str, Any], None, None]:
     mm = get_memory_manager()
+    pipeline_corpus = "judgments_fixed" if arm == "C_fixed_chunking" else corpus
     if corpus == "both":
         # Combined mode has no single retriever/registry -- each corpus's
         # retriever is pulled from the (lru_cache'd) per-corpus pipeline in
@@ -188,12 +214,14 @@ def _run_chat_turn(
         registry = None
         arm = "C_hybrid_rerank"
     else:
-        retriever, generator, registry, error = load_pipeline(corpus)
+        retriever, generator, registry, error = load_pipeline(pipeline_corpus)
         if error:
             yield {"event": "error", "message": error}
             return
 
+    generator = copy.copy(generator)
     t0 = time.time()
+    warnings = []
 
     yield {"event": "stage", "stage": "memory", "label": "Searching memory…"}
 
@@ -220,11 +248,14 @@ def _run_chat_turn(
                 for r in memory_results
             ]
         except Exception:
+            logger.exception("Memory recall failed")
+            warnings.append("Memory recall was unavailable")
             memory_context = ""
+    memory_time = time.time() - t_mem
     yield {
         "event": "memory",
         "recalled": recalled_memories,
-        "memory_time": round(time.time() - t_mem, 3),
+        "memory_time": round(memory_time, 3),
     }
 
     yield {"event": "stage", "stage": "condense", "label": "Condensing query…"}
@@ -291,6 +322,9 @@ def _run_chat_turn(
         else:
             needs_graph = ARMS[arm].get("graph") or ARMS[arm].get("graph_expand")
             graph = load_knowledge_graph() if needs_graph else None
+            if needs_graph and graph is None:
+                yield {"event": "error", "message": "This strategy requires an ingested legal knowledge graph."}
+                return
             chunks, strategy_meta, graph_added = execute_arm(
                 arm, search_query, registry, retriever, graph, generator.llm)
             retrieval_result = RetrievalResult(
@@ -303,6 +337,12 @@ def _run_chat_turn(
                 retrieval_metadata={**strategy_meta, "arm": arm, "graph_added": graph_added},
             )
 
+    from experiments.exp06_strategy_ablation import ARMS
+    config = ARMS[arm]
+    retrieval_result.retrieval_metadata.update({"corpus": corpus, "arm": arm,
+        "registry_path": CORPORA[pipeline_corpus][0] if pipeline_corpus in CORPORA else None,
+        "chunking_strategy": config["chunking"], "retrieval_mode": config["mode"],
+        "bm25_enabled": config["mode"] in ("hybrid", "bm25"), "reranker_enabled": config["rerank"]})
     retrieval_time = time.time() - t1
     yield {
         "event": "chunks",
@@ -357,7 +397,8 @@ def _run_chat_turn(
     generation_time = time.time() - t2
 
     if generation_result.error:
-        yield {"event": "error", "message": generation_result.error}
+        logger.error("Generation failed: %s", generation_result.error)
+        yield {"event": "error", "message": "Generation failed. Please retry."}
         return
 
     # Step 4: RAGTrace
@@ -382,6 +423,7 @@ def _run_chat_turn(
         try:
             decomposer = load_decomposer()
             claim_set = decomposer.decompose(trace)
+            trace.diagnostics["decomposition_success"] = claim_set.metadata.get("diagnostics", {}).get("success", True)
             claim_count = claim_set.total_candidates
             if not claim_set.candidate_claims:
                 strategy_event["verification"] = {"claim_count": 0, "results": []}
@@ -411,7 +453,9 @@ def _run_chat_turn(
                     ],
                 }
         except Exception as exc:
-            strategy_event["claim_error"] = str(exc)
+            logger.exception("Claim analysis failed")
+            strategy_event["claim_error"] = "Claim analysis was unavailable"
+            warnings.append("Claim analysis was unavailable")
 
         # The trace file was already saved above, before claim decomposition
         # ran -- without this, verification results only ever existed on the
@@ -423,13 +467,15 @@ def _run_chat_turn(
                 with open(trace_path, "r", encoding="utf-8") as f:
                     trace_json = json.load(f)
                 if "verification" in strategy_event:
-                    trace_json["claim_verification"] = strategy_event["verification"]
+                    trace_json.setdefault("diagnostics", {})["claim_verification"] = strategy_event["verification"]
                 if "claim_error" in strategy_event:
-                    trace_json["claim_error"] = strategy_event["claim_error"]
+                    trace_json.setdefault("diagnostics", {})["claim_error"] = strategy_event["claim_error"]
+                trace_json["diagnostics"]["decomposition_success"] = trace.diagnostics.get("decomposition_success", False)
                 with open(trace_path, "w", encoding="utf-8") as f:
                     json.dump(trace_json, f, indent=2)
             except Exception:
-                pass
+                logger.exception("Diagnostic persistence failed")
+                warnings.append("Diagnostic persistence failed")
 
     yield strategy_event
 
@@ -443,19 +489,20 @@ def _run_chat_turn(
         return float(np.dot(a_arr, b_arr) / (na * nb)) if (na > 0 and nb > 0) else 0.0
 
     # 1. Answer Relevancy
-    answer_relevancy = 0.85
+    answer_relevancy = None
     try:
-        if hasattr(retriever, "vector_store") and hasattr(retriever.vector_store, "embedding_model"):
-            q_emb = retriever.vector_store.embedding_model.get_text_embedding(question)
-            a_emb = retriever.vector_store.embedding_model.get_text_embedding(generation_result.generated_answer[:600])
+        if getattr(retriever, "embed_model", None):
+            with GPU_LOCK:
+                q_emb = retriever.embed_model.get_text_embedding(question)
+                a_emb = retriever.embed_model.get_text_embedding(generation_result.generated_answer[:600])
             answer_relevancy = round(max(0.0, min(1.0, cosine_sim(q_emb, a_emb))), 4)
     except Exception:
         pass
 
     # 2. Context Precision & Context Relevancy
     scores = [c.similarity_score for c in retrieval_result.retrieved_chunks]
-    context_precision = round(sum(scores) / len(scores), 4) if scores else 0.0
-    context_relevancy = round(len([s for s in scores if s >= 0.45]) / len(scores), 4) if scores else 0.0
+    context_precision = None
+    context_relevancy = None
 
     # 3. Citation Analysis
     chunk_pattern = re.compile(r'\[(?:Chunk-ID:\s*|Chunk:\s*)([a-f0-9\-]+)\]', re.IGNORECASE)
@@ -465,7 +512,7 @@ def _run_chat_turn(
         grounded_citations = cited_ids.intersection(retrieved_ids)
         citation_precision = round(len(grounded_citations) / len(cited_ids), 4)
     else:
-        citation_precision = 1.0 if retrieval_result.retrieved_chunks else 0.0
+        citation_precision = None
 
     # 4. Groundedness & Faithfulness
     ans_text = generation_result.generated_answer.lower()
@@ -479,11 +526,14 @@ def _run_chat_turn(
             overlap = sum(1 for w in words if w in combined_context) / len(words)
             if overlap >= 0.45:
                 grounded_count += 1
-    groundedness = round(grounded_count / len(sentences), 4) if sentences else 0.90
-    faithfulness = round((groundedness * 0.65) + (citation_precision * 0.35), 4)
+    groundedness = round(grounded_count / len(sentences), 4) if sentences else None
+    faithfulness = None
+    if deep_analysis and strategy_event.get("verification", {}).get("results"):
+        results = strategy_event["verification"]["results"]
+        faithfulness = round(sum(r["status"] == "SUPPORTED" for r in results) / len(results), 4)
 
-    import torch
-    device_name = "NVIDIA RTX 4060 GPU (CUDA)" if torch.cuda.is_available() else "CPU"
+    from src.device import describe_device
+    device_name = describe_device()
 
     yield {
         "event": "evaluation",
@@ -495,11 +545,14 @@ def _run_chat_turn(
         "citation_precision": citation_precision,
         "citations_found": len(cited_ids),
         "device": device_name,
+        "metric_methods": {"groundedness": "lexical_overlap_heuristic", "answer_relevancy": "embedding_cosine",
+                           "faithfulness": "verified_supported_claim_fraction", "context_precision": "not_computed",
+                           "context_relevancy": "not_computed"},
     }
 
     # Step 7: save to memory -- unconditional, same as the fast path in
     # ui/app.py, so a turn is remembered whether or not deep analysis ran.
-    claim_ids: List[str] = []
+    claim_ids = [r["claim_id"] for r in strategy_event.get("verification", {}).get("results", [])]
     if memory_enabled:
         try:
             mm.save_interaction(
@@ -511,7 +564,8 @@ def _run_chat_turn(
                 claim_ids=claim_ids,
             )
         except Exception:
-            pass
+            logger.exception("Interaction persistence failed")
+            warnings.append("The interaction could not be saved to memory")
 
     yield {
         "event": "done",
@@ -520,5 +574,7 @@ def _run_chat_turn(
         "total_time": round(time.time() - t0, 3),
         "generation_time": round(generation_time, 3),
         "retrieval_time": round(retrieval_time, 3),
-        "memory_time": round(time.time() - t_mem if not memory_enabled else 0, 3),
+        "memory_time": round(memory_time, 3),
+        "status": "partial" if warnings or generation_result.generation_metadata.get("finish_reason") == "length" else "completed",
+        "warnings": warnings,
     }

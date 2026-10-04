@@ -304,7 +304,9 @@ class CorrectiveActionEngine:
         immediate = []
         short_term = []
         experimental = []
-        snapshot = config_snapshot or {}
+        snapshot = dict(config_snapshot or {})
+        if "llm_temperature" in snapshot:
+            snapshot.setdefault("temperature", snapshot["llm_temperature"])
 
         # Ordered dedup (not a set) so action ordering is deterministic across runs.
         failures_to_process = list(dict.fromkeys(

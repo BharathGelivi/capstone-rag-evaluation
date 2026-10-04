@@ -1,6 +1,38 @@
 # X-RAG Diagnostic Framework
 
-## Run the React UI
+## Run the dashboard (React)
+
+From a fresh clone, create the Python environment, install dependencies, and
+copy `.env.example` to `.env` with your `NVIDIA_API_KEY`. The chat dashboard
+also needs an ingested corpus (`python run_pipeline.py` after adding PDFs to
+`data/`). Keep your existing environment and corpus when updating this repo.
+
+Windows PowerShell setup from the repository root:
+
+```powershell
+py -3.13 -m venv venv
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+Copy-Item .env.example .env
+# Edit .env, add PDFs to data/, then ingest:
+.\venv\Scripts\python.exe run_pipeline.py
+```
+
+Start these in two separate PowerShell terminals:
+
+```powershell
+# Terminal 1, repository root
+.\venv\Scripts\python.exe run_api_ui.py
+
+# Terminal 2, repository root
+cd frontend
+npm ci
+npm run dev
+```
+
+Open <http://localhost:5173>. Keep both terminals running. The dashboard
+backend uses port **8010**; the separate diagnostic API uses **8000**.
+The alternative Streamlit dashboard runs with
+`.\venv\Scripts\python.exe -m streamlit run ui/app.py` at port **8501**.
 
 Two servers, both from the repo root. Requires the Python env set up (see
 [Quick Start](#quick-start) below) and Node.js/npm installed.

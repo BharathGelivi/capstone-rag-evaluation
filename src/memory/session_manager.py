@@ -6,9 +6,7 @@ switching, export, and import. Each session groups related interactions
 and their memory entries.
 """
 
-import json
 import logging
-import os
 from typing import Any, Dict, List, Optional
 
 from src.memory.memory_models import (
@@ -16,12 +14,11 @@ from src.memory.memory_models import (
     MemoryEntry,
     SessionInfo,
 )
-from src.memory.memory_store import MemoryStore
+from src.memory.memory_store import MemoryStore, _locked
 from src.memory.memory_utils import (
-    ensure_directory,
     generate_session_id,
+    generate_memory_id,
     get_timestamp,
-    save_json,
     setup_memory_logger,
 )
 
@@ -42,6 +39,7 @@ class SessionManager:
         config: Optional[MemoryConfig] = None,
     ) -> None:
         self.store = store
+        self._lock = store._lock
         self.config = config or MemoryConfig()
         self._current_session_id: Optional[str] = None
 
@@ -50,6 +48,7 @@ class SessionManager:
         """Get the current active session ID."""
         return self._current_session_id
 
+    @_locked
     def create_session(self, title: str = "New Session") -> SessionInfo:
         """Create a new session.
 
@@ -70,6 +69,7 @@ class SessionManager:
         mem_logger.info("Created session: %s (%s)", session.session_id, title)
         return session
 
+    @_locked
     def delete_session(self, session_id: str) -> bool:
         """Delete a session and all its memories.
 
@@ -91,6 +91,7 @@ class SessionManager:
         """Rename a session."""
         return self.store.rename_session(session_id, new_title)
 
+    @_locked
     def switch_session(self, session_id: str) -> Optional[SessionInfo]:
         """Switch to a different session.
 
@@ -112,6 +113,7 @@ class SessionManager:
         """List all sessions sorted by last activity."""
         return self.store.list_sessions()
 
+    @_locked
     def update_session_activity(self, session_id: Optional[str] = None) -> None:
         """Update the last activity timestamp of a session.
 
@@ -127,6 +129,7 @@ class SessionManager:
             session.question_count += 1
             self.store.save_session(session)
 
+    @_locked
     def increment_memory_count(self, session_id: Optional[str] = None) -> None:
         """Increment the memory count for a session."""
         sid = session_id or self._current_session_id
@@ -138,6 +141,7 @@ class SessionManager:
             session.memory_count += 1
             self.store.save_session(session)
 
+    @_locked
     def increment_trace_count(self, session_id: Optional[str] = None) -> None:
         """Increment the trace count for a session."""
         sid = session_id or self._current_session_id
@@ -149,6 +153,7 @@ class SessionManager:
             session.trace_count += 1
             self.store.save_session(session)
 
+    @_locked
     def ensure_session(self) -> str:
         """Ensure a session exists, creating one if necessary.
 
@@ -185,7 +190,7 @@ class SessionManager:
         if not session:
             raise ValueError(f"Session {session_id} not found")
 
-        memories = self.store.get_session_memories(session_id)
+        memories = self.store.get_session_memories(session_id, limit=None)
         summaries = self.store.get_summaries(session_id)
 
         export_data = {
@@ -234,7 +239,8 @@ class SessionManager:
         )
         return export_data
 
-    def import_session(self, data: Dict[str, Any]) -> SessionInfo:
+    @_locked
+    def import_session(self, data: Dict[str, Any], embed_text=None) -> SessionInfo:
         """Import a session from exported data.
 
         Creates a new session with a new ID and imports all memories.
@@ -251,9 +257,16 @@ class SessionManager:
 
         # Import memories
         for mem_data in data.get("memories", []):
-            entry = MemoryEntry.from_dict(mem_data)
+            entry = MemoryEntry.from_dict(dict(mem_data))
+            existing = self.store._collection.get(ids=[entry.memory_id], include=["embeddings"])
+            vectors = existing.get("embeddings")
+            embedding = list(vectors[0]) if vectors is not None and len(vectors) else None
+            if embedding is None and embed_text is not None:
+                embedding = embed_text(f"{entry.question} {entry.answer}")
+            entry.metadata["imported_from_memory_id"] = entry.memory_id
+            entry.memory_id = generate_memory_id()
             entry.session_id = new_session.session_id
-            self.store.save_memory(entry)
+            self.store.save_memory(entry, embedding)
 
         # Update session counts
         new_session.question_count = len(data.get("memories", []))

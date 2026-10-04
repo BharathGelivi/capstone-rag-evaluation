@@ -264,6 +264,7 @@ class Checkpoint:
         self.state_path = os.path.join(self.dir, "state.json")
         self.summary_path = os.path.join(self.dir, "summary.json")
         self._handle = None
+        self._checked_records_signature = None
 
     # -- state -----------------------------------------------------------
 
@@ -293,13 +294,16 @@ class Checkpoint:
             return []
         records: List[Dict[str, Any]] = []
         with open(self.records_path, encoding="utf-8") as f:
-            for line_no, line in enumerate(f, start=1):
+            lines = f.readlines()
+            for line_no, line in enumerate(lines, start=1):
                 line = line.strip()
                 if not line:
                     continue
                 try:
                     records.append(json.loads(line))
                 except json.JSONDecodeError:
+                    if line_no != len(lines):
+                        raise ValueError(f"Corrupt interior checkpoint record: {self.records_path}:{line_no}")
                     # Only ever expected on the final line, from a process
                     # killed mid-write. Dropping it is correct: the example is
                     # simply not marked complete and will be re-run.
@@ -316,10 +320,30 @@ class Checkpoint:
         if "example_id" not in record:
             raise ValueError("Checkpoint records must carry an 'example_id'.")
         os.makedirs(self.dir, exist_ok=True)
+        signature = None
+        if os.path.exists(self.records_path):
+            stat = os.stat(self.records_path)
+            signature = (stat.st_size, stat.st_mtime_ns)
+        if signature is not None and signature != self._checked_records_signature:
+            # Repair only an interrupted final fragment; never hide interior corruption.
+            self.load_records()
+            with open(self.records_path, "rb+") as handle:
+                content = handle.read()
+                lines = content.splitlines(keepends=True)
+                if lines:
+                    try:
+                        json.loads(lines[-1])
+                    except (json.JSONDecodeError, UnicodeDecodeError):
+                        handle.truncate(sum(map(len, lines[:-1])))
+                    else:
+                        if not content.endswith(b"\n"):
+                            handle.write(b"\n")
         with open(self.records_path, "a", encoding="utf-8") as f:
             f.write(json.dumps(record, default=str) + "\n")
             f.flush()
             os.fsync(f.fileno())
+        stat = os.stat(self.records_path)
+        self._checked_records_signature = (stat.st_size, stat.st_mtime_ns)
 
     def save_summary(self, summary: Dict[str, Any]) -> str:
         os.makedirs(self.dir, exist_ok=True)

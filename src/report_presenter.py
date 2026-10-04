@@ -1,5 +1,5 @@
-import json
-from typing import List, Dict, Any, Optional
+from html import escape
+from typing import Dict, Any, Optional
 from src.report import DiagnosticEvaluationReport
 
 class DiagnosticReportPresenter:
@@ -35,42 +35,23 @@ class DiagnosticReportPresenter:
         """Extracts traceability paths from the existing report data."""
         claim_ids = [e.claim_id for e in self.report.evidence_analysis]
         chunk_ids = [e.supporting_chunk_id for e in self.report.evidence_analysis if e.supporting_chunk_id]
+        from src.root_cause_reasoner import RootCauseReasoner
+        stages = {failure.value: stage.value for stage, failure in RootCauseReasoner.STAGE_TO_FAILURE_MAP.items()}
+        stages["CONTRADICTORY_GENERATION"] = "GENERATOR"
         
         return {
             "primary_cause": self.report.root_cause_analysis.primary_cause,
             "derived_from": "RootCauseAnalysis",
-            "pipeline_stage": self.report.root_cause_analysis.primary_cause.replace("_FAILURE", ""),
+            "pipeline_stage": stages.get(self.report.root_cause_analysis.primary_cause, "UNKNOWN"),
             "supporting_claims": claim_ids,
             "supporting_chunks": chunk_ids,
-            "supporting_verifications": [f"V_{cid}" for cid in claim_ids] # Derived for representation
+            "supporting_verifications": self.report.metadata.get("verification_ids", [])
         }
 
     def _get_appendix(self) -> str:
-        t_id = self.report.framework_metadata.trace_id
-        return f"""
-Artifacts Generated
-
-✓ RAGTrace
-artifacts/rag_traces/{t_id}.json
-
-✓ ClaimSet
-artifacts/claim_sets/{t_id}.json
-
-✓ VerificationResults
-artifacts/verification/{t_id}.json
-
-✓ PipelineStateMatrix
-artifacts/pipeline_state_matrix/{t_id}.json
-
-✓ RootCauseAnalysis
-artifacts/root_cause_analysis/{t_id}.json
-
-✓ CorrectiveActionPlan
-artifacts/corrective_action_plan/{t_id}.json
-
-✓ DiagnosticEvaluationReport
-artifacts/reports/{t_id}.json
-"""
+        paths = self.report.metadata.get("artifact_paths", {})
+        return "Artifacts Generated\n\n" + ("\n\n".join(f"{name}\n{path}" for name, path in paths.items())
+                                               if paths else "Artifact paths were not recorded for this report.")
 
     def render_console(self) -> str:
         r = self.report
@@ -305,7 +286,7 @@ artifacts/reports/{t_id}.json
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Diagnostic Report - {self.report.framework_metadata.trace_id}</title>
+<title>Diagnostic Report - {escape(self.report.framework_metadata.trace_id)}</title>
 <style>
     body {{ font-family: sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }}
     h1, h2 {{ color: #333; }}
@@ -316,7 +297,7 @@ artifacts/reports/{t_id}.json
 </style>
 </head>
 <body>
-    <pre>{md}</pre>
+    <pre>{escape(md)}</pre>
 </body>
 </html>"""
         return html

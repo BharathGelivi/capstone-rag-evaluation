@@ -172,7 +172,14 @@ def execute_arm(arm: str, question_text: str, registry, retriever, graph, llm):
         chunks += materialise(new, registry)
         graph_added += len(new)
 
-    return chunks, result.retrieval_metadata, graph_added
+    for rank, chunk in enumerate(chunks, start=1):
+        chunk.rank = rank
+    metadata = dict(result.retrieval_metadata)
+    metadata["retrieval_calls"] = (int(metadata.get("ircot_retrieval_calls", 0))
+                                   or int(metadata.get("agent_retrieval_calls", 0)) or 1) + int(bool(config.get("contradiction")))
+    metadata["initial_retrieval_budget"] = BASE_TOP_N if config["strategy"] != "agentic" else 6
+    metadata["n_retrieved"] = len(chunks)
+    return chunks, metadata, graph_added
 
 
 def load_benchmark(path: str = BENCHMARK_PATH) -> Dict[str, Any]:
@@ -193,7 +200,7 @@ class StrategyAblationExperiment(Experiment):
     )
     # Always runs against the ingested corpus; there is no simulated variant,
     # so the suite's mode flag is irrelevant here.
-    supported_modes = ("offline", "live")
+    supported_modes = ("live",)
 
     def __init__(self) -> None:
         self._benchmark: Dict[str, Any] = {}
@@ -291,8 +298,7 @@ class StrategyAblationExperiment(Experiment):
             "document_level_only": arm in DOCUMENT_LEVEL_ONLY,
             "latency_s": round(time.time() - start, 3),
             "llm_calls": int(meta.get("ircot_llm_calls", 0)) + int(meta.get("agent_llm_calls", 0)),
-            "retrieval_calls": int(meta.get("ircot_retrieval_calls", 0))
-                               or int(meta.get("agent_retrieval_calls", 0)) or 1,
+            "retrieval_calls": int(meta["retrieval_calls"]),
             "n_retrieved": len(retrieved_ids),
             "graph_added": graph_added,
             "termination_reason": meta.get("ircot_termination_reason")

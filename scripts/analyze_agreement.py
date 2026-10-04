@@ -17,9 +17,17 @@ import argparse
 import csv
 import json
 import os
+import math
 from typing import Any, Dict, List, Optional
 
 RESULTS_DIR = "artifacts/benchmark_comparison"
+
+
+def _finite(value):
+    try:
+        return value is not None and not isinstance(value, bool) and math.isfinite(float(value))
+    except (ValueError, TypeError):
+        return False
 
 
 def load_results(path: str) -> List[Dict[str, Any]]:
@@ -29,7 +37,7 @@ def load_results(path: str) -> List[Dict[str, Any]]:
 
 def _pearson_r(xs: List[Optional[float]], ys: List[Optional[float]]) -> Optional[float]:
     """Pure-python Pearson correlation coefficient. None if <2 paired points or zero variance in either series."""
-    pairs = [(x, y) for x, y in zip(xs, ys) if x is not None and y is not None]
+    pairs = [(float(x), float(y)) for x, y in zip(xs, ys) if _finite(x) and _finite(y)]
     if len(pairs) < 2:
         return None
     xs2, ys2 = zip(*pairs)
@@ -82,11 +90,11 @@ def _xrag_flags(results: List[Dict[str, Any]]) -> List[bool]:
 
 
 def _ragas_flags(results: List[Dict[str, Any]], threshold: float) -> List[Optional[bool]]:
-    return [(r.get("ragas_faithfulness") < threshold) if r.get("ragas_faithfulness") is not None else None for r in results]
+    return [(float(r["ragas_faithfulness"]) < threshold) if _finite(r.get("ragas_faithfulness")) else None for r in results]
 
 
 def _ragchecker_flags(results: List[Dict[str, Any]], threshold: float) -> List[Optional[bool]]:
-    return [(r.get("ragchecker_hallucination") > threshold) if r.get("ragchecker_hallucination") is not None else None for r in results]
+    return [(float(r["ragchecker_hallucination"]) > threshold) if _finite(r.get("ragchecker_hallucination")) else None for r in results]
 
 
 def compute_agreement(

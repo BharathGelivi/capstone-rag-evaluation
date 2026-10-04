@@ -172,8 +172,19 @@ class ChunkRegistry:
         os.makedirs(os.path.dirname(os.path.abspath(file_path)), exist_ok=True)
 
         data = {chunk_id: asdict(record) for chunk_id, record in self._records.items()}
-        with open(file_path, "w", encoding="utf-8") as fh:
-            json.dump(data, fh, indent=4)
+        import tempfile
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=False,
+                                             dir=os.path.dirname(os.path.abspath(file_path))) as fh:
+                temporary = fh.name
+                json.dump(data, fh, indent=4)
+                fh.flush()
+                os.fsync(fh.fileno())
+            os.replace(temporary, file_path)
+        finally:
+            if temporary and os.path.exists(temporary):
+                os.unlink(temporary)
 
         logger.info("Registry saved (%d record(s)).", len(self._records))
 

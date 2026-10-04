@@ -1,14 +1,17 @@
 import os
 import glob
 import uuid
+import re
+import threading
+from pathlib import Path
 from functools import lru_cache
 from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, HTMLResponse, PlainTextResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 
 from src.logger import get_logger
-from src.rag_trace import RAGTrace
+from src.rag_trace import RAGTrace, RAGTraceBuilder
 from src.runner import PipelineRunner
 from src.report import DiagnosticEvaluationReport
 from src.report_presenter import DiagnosticReportPresenter
@@ -17,7 +20,7 @@ from configs.api import API_VERSION, SUPPORTED_PIPELINE_VERSION
 
 class RAGTraceRequest(BaseModel):
     """Mirrors the RAGTrace dataclass fields (src/rag_trace.py) for request validation."""
-    trace_id: str
+    trace_id: str = Field(pattern=r"^[A-Za-z0-9_-]{1,128}$")
     trace_version: str
     pipeline_version: str
     framework_version: str
@@ -32,6 +35,15 @@ class RAGTraceRequest(BaseModel):
     pipeline_stage_status: Dict[str, str]
     diagnostics: Optional[Dict[str, Any]] = None
 
+    @field_validator("configuration_snapshot")
+    @classmethod
+    def validate_registry(cls, snapshot):
+        if snapshot.get("registry_path"):
+            root = Path("artifacts").resolve()
+            if not Path(snapshot["registry_path"]).resolve().is_relative_to(root):
+                raise ValueError("registry_path must be inside artifacts")
+        return snapshot
+
 logger = get_logger(__name__)
 
 app = FastAPI(
@@ -41,10 +53,26 @@ app = FastAPI(
 )
 
 
+_runner_lock = threading.Lock()
+
 @lru_cache(maxsize=1)
-def get_runner() -> PipelineRunner:
+def _get_runner() -> PipelineRunner:
     """Lazily construct the PipelineRunner (and its heavy models) on first use."""
     return PipelineRunner()
+
+
+def get_runner() -> PipelineRunner:
+    with _runner_lock:
+        return _get_runner()
+
+
+get_runner.cache_clear = _get_runner.cache_clear
+
+
+def _safe_id(trace_id):
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", trace_id):
+        raise HTTPException(status_code=422, detail="Invalid trace identifier")
+    return trace_id
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
@@ -96,14 +124,13 @@ def analyze_trace(payload: RAGTraceRequest):
     report.save()
 
     # We can also save the original trace since it was passed here
-    os.makedirs("artifacts/rag_traces", exist_ok=True)
-    with open(f"artifacts/rag_traces/{trace.trace_id}.json", "w") as f:
-        f.write(trace.to_json())
+    RAGTraceBuilder.save_to_json(trace)
 
     return report.__dict__
 
 @app.get("/report/{trace_id}")
 def get_report(trace_id: str):
+    _safe_id(trace_id)
     path = f"artifacts/reports/{trace_id}.json"
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Report not found")
@@ -112,6 +139,7 @@ def get_report(trace_id: str):
 
 @app.get("/report/{trace_id}/markdown")
 def get_report_markdown(trace_id: str):
+    _safe_id(trace_id)
     path = f"artifacts/reports/{trace_id}.json"
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Report not found")
@@ -121,6 +149,7 @@ def get_report_markdown(trace_id: str):
 
 @app.get("/report/{trace_id}/html")
 def get_report_html(trace_id: str):
+    _safe_id(trace_id)
     path = f"artifacts/reports/{trace_id}.json"
     if not os.path.exists(path):
         raise HTTPException(status_code=404, detail="Report not found")
@@ -130,10 +159,11 @@ def get_report_html(trace_id: str):
 
 @app.get("/artifacts/{trace_id}")
 def get_artifacts(trace_id: str):
+    _safe_id(trace_id)
     artifacts = {}
     base_dirs = {
         "RAGTrace": "artifacts/rag_traces",
-        "ClaimSet": "artifacts/claim_sets",
+        "ClaimSet": "artifacts/claims",
         "Verification": "artifacts/verification",
         "PipelineStateMatrix": "artifacts/pipeline_state_matrix",
         "RootCauseAnalysis": "artifacts/root_cause_analysis",
@@ -142,8 +172,14 @@ def get_artifacts(trace_id: str):
     }
     
     for name, directory in base_dirs.items():
-        path = f"{directory}/{trace_id}.json"
-        if os.path.exists(path):
-            artifacts[name] = path
+        candidates = [f"{directory}/{trace_id}.json", f"{directory}/TRACE_{trace_id}.json"]
+        if name == "RAGTrace":
+            candidates += sorted(glob.glob(f"{directory}/*/trace_{trace_id}.json"))
+        if name == "ClaimSet":
+            candidates += [f"artifacts/claim_sets/{trace_id}.json"]
+        for path in candidates:
+            if os.path.isfile(path):
+                artifacts[name] = path
+                break
             
     return {"trace_id": trace_id, "artifacts": artifacts}

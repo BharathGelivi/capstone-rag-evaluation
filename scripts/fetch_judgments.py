@@ -26,7 +26,9 @@ from __future__ import annotations
 import argparse
 import csv
 import io
+import os
 import sys
+import tempfile
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -45,7 +47,7 @@ OUT_ROOT = Path("data/judgments")
 MANIFEST_COLUMNS = [
     "pdf", "court", "year", "title", "citation", "cnr", "decision_date",
     "judge", "disposal_nature", "case_type", "bench_name", "petitioner",
-    "respondent",
+    "respondent", "source_url",
 ]
 
 
@@ -185,6 +187,7 @@ def _manifest_row(row: dict, pdf_name: str, court: str, year: int) -> dict:
 
 def _download(job: tuple) -> tuple[bool, dict | None]:
     bucket, key, dest, meta = job
+    meta = {**meta, "source_url": f"{_endpoint(bucket)}/{key}"}
     if dest.exists() and dest.stat().st_size > 0:
         return True, None  # already have it; don't duplicate the manifest row
     try:
@@ -217,6 +220,21 @@ def _run(plan: list[tuple], workers: int) -> None:
 
     for directory, rows in by_dir.items():
         manifest = directory / "manifest.csv"
+        if manifest.exists():
+            with manifest.open(encoding="utf-8", newline="") as handle:
+                previous = list(csv.DictReader(handle))
+                columns = list(previous[0]) if previous else []
+            if columns != MANIFEST_COLUMNS:
+                rows = previous + rows
+                with tempfile.NamedTemporaryFile("w", dir=directory, newline="", encoding="utf-8", delete=False) as handle:
+                    writer = csv.DictWriter(handle, fieldnames=MANIFEST_COLUMNS)
+                    writer.writeheader()
+                    writer.writerows(rows)
+                    handle.flush()
+                    os.fsync(handle.fileno())
+                    temporary = handle.name
+                os.replace(temporary, manifest)
+                continue
         write_header = not manifest.exists()
         with manifest.open("a", newline="", encoding="utf-8") as handle:
             writer = csv.DictWriter(handle, fieldnames=MANIFEST_COLUMNS)

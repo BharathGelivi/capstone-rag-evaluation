@@ -1,7 +1,8 @@
 import os
 from typing import Optional
 from src.logger import get_logger
-from src.rag_trace import RAGTrace
+from src.rag_trace import RAGTrace, RAGTraceBuilder
+from src.claims import ClaimSet
 from src.claim_decomposer import ClaimDecomposer
 from src.claim_verifier import ClaimVerifier
 from src.pipeline_state_analyzer import PipelineStateAnalyzer
@@ -12,8 +13,6 @@ from src.report import DiagnosticEvaluationReport
 from src.answer_correctness_evaluator import AnswerCorrectnessEvaluator
 from src.ragas_metrics import RagasEvaluator
 from src.generator import Generator
-from src.retriever import get_retriever
-from src.vector_store import ChromaVectorStore
 from src.chunk_registry import ChunkRegistry
 
 logger = get_logger(__name__)
@@ -38,29 +37,13 @@ class PipelineRunner:
         # We also need an LLM and embedding model for RAGAS metrics. We instantiate them here.
         # RagasEvaluator will reuse them to avoid multiple loads.
         try:
-            from configs.models import LLM_PROVIDER
-            from src.generator import Generator
-            
-            # Temporary instantiation just to fetch the current LLM/embed models from defaults
             temp_gen = Generator()
             llm = temp_gen.llm
-            
-            from src.vector_store import ChromaVectorStore
-            from src.chunk_registry import ChunkRegistry
-            from src.retriever import get_retriever
-            
-            # The embed_model is usually in Retriever. To keep it simple, we can create a temporary one,
-            # or rely on the pipeline injecting it. Since Runner doesn't have it, let's create a temp Retriever.
-            registry_path = "artifacts/chunk_registry.json"
-            if os.path.exists(registry_path):
-                cr = ChunkRegistry.load_from_json(registry_path)
-                vs = ChromaVectorStore()
-                vs.initialize_collection()
-                temp_retriever = get_retriever(vs, cr)
-                embed_model = temp_retriever.embed_model
-            else:
-                embed_model = None
-                
+            # Reuse the bi-encoder directly; diagnostics do not need a reranker or BM25 index.
+            from src.embedding_engine import get_shared_embed_model
+            from configs.models import EMBEDDING_MODEL_NAME
+            embed_model = get_shared_embed_model(EMBEDDING_MODEL_NAME)
+
             self.ragas_evaluator = RagasEvaluator(llm=llm, embed_model=embed_model, claim_verifier=self.verifier)
         except Exception as e:
             logger.warning(f"Could not initialize RagasEvaluator: {e}")
@@ -80,6 +63,8 @@ class PipelineRunner:
         # 1. Claim Decomposition
         logger.info("Running Claim Decomposer...")
         claim_set = self.decomposer.decompose(trace)
+        trace.diagnostics = {**(trace.diagnostics or {}), "decomposition_success":
+                             claim_set.metadata.get("diagnostics", {}).get("success", True)}
 
         # 2. Claim Verification
         logger.info("Running Claim Verifier...")
@@ -95,7 +80,7 @@ class PipelineRunner:
 
         # 5. Corrective Action Engine
         logger.info("Running Corrective Action Engine...")
-        cap = self.cae.generate(rca, psm=psm)
+        cap = self.cae.generate(rca, psm=psm, config_snapshot=trace.configuration_snapshot)
 
         # 5.5 Answer Correctness (Claim Recall) -- optional, only when a gold answer is available
         answer_correctness = None
@@ -111,45 +96,14 @@ class PipelineRunner:
         if self.ragas_evaluator and self.ragas_evaluator.embed_model:
             logger.info("Running Native RAGAS Evaluator...")
             try:
-                retrieved_chunks = [
-                    ref for ref in trace.retrieved_chunk_references
-                ] # In a real scenario we need RetrievedChunk objects. 
-                  # Looking at src/ragas_metrics.py, it expects `chunk.chunk_text`.
-                  # We'll map them carefully.
-                from src.retriever import RetrievedChunk
-                mapped_chunks = [
-                    RetrievedChunk(
-                        chunk_id=c.chunk_id,
-                        chunk_text=c.text,
-                        rank=c.rank,
-                        dense_score=c.dense_score,
-                        sparse_score=c.sparse_score,
-                        rrf_score=c.rrf_score,
-                        parent_document_id=c.parent_document_id,
-                        chunk_index=c.chunk_index,
-                        source_file=c.source_file,
-                        page_number=c.page_number
-                    ) for c in trace.retrieved_chunk_references if hasattr(c, 'text')
-                ]
-                # Fallback if text is not in references (it usually isn't in traces directly, it's in registry)
-                if not mapped_chunks and os.path.exists("artifacts/chunk_registry.json"):
-                    cr = ChunkRegistry.load_from_json("artifacts/chunk_registry.json")
-                    for c in trace.retrieved_chunk_references:
-                        record = cr.get_record(c.chunk_id)
-                        if record:
-                            mapped_chunks.append(RetrievedChunk(
-                                chunk_id=c.chunk_id,
-                                chunk_text=record["text"],
-                                rank=c.rank,
-                                dense_score=c.dense_score,
-                                sparse_score=c.sparse_score,
-                                rrf_score=c.rrf_score,
-                                parent_document_id=c.parent_document_id,
-                                chunk_index=c.chunk_index,
-                                source_file=c.source_file,
-                                page_number=c.page_number
-                            ))
-                
+                mapped_chunks = self.verifier.build_retrieved_chunks_from_trace(trace, None)
+                if len(mapped_chunks) != len(trace.retrieved_chunk_references):
+                    corpus = trace.configuration_snapshot.get("corpus", "statutes")
+                    path = trace.configuration_snapshot.get("registry_path") or (
+                        "artifacts/legal/chunk_registry_legal.json" if corpus == "judgments" else "artifacts/chunk_registry.json")
+                    registry = ChunkRegistry.load_from_json(path) if os.path.exists(path) else None
+                    mapped_chunks = self.verifier.build_retrieved_chunks_from_trace(trace, registry)
+
                 ragas_metrics = self.ragas_evaluator.evaluate(
                     question=trace.question,
                     answer=trace.generated_answer,
@@ -159,6 +113,18 @@ class PipelineRunner:
                 )
             except Exception as e:
                 logger.warning(f"Native RAGAS evaluation failed: {e}")
+
+        # Persist the existing canonical artifacts and record actual paths.
+        canonical = ClaimSet.from_candidates(claim_set)
+        claims_path = f"artifacts/claims/TRACE_{trace.trace_id}.json"
+        canonical.to_json(claims_path)
+        self.verifier.save_artifacts(verification)
+        paths = {"ClaimSet": claims_path,
+                 "Verification": f"artifacts/verification/TRACE_{trace.trace_id}.json",
+                 "PipelineStateMatrix": psm.save(), "RootCauseAnalysis": rca.save(),
+                 "CorrectiveActionPlan": cap.save()}
+        paths["RAGTrace"] = RAGTraceBuilder.save_to_json(trace)
+        trace.diagnostics["artifact_paths"] = paths
 
         # 6. Report Builder
         logger.info("Running Report Builder...")
@@ -172,5 +138,8 @@ class PipelineRunner:
             ragas_metrics=ragas_metrics
         )
 
+        paths["DiagnosticEvaluationReport"] = f"artifacts/reports/{trace.trace_id}.json"
+        report.metadata["artifact_paths"] = dict(paths)
+        RAGTraceBuilder.save_to_json(trace)
         logger.info(f"Pipeline run completed for Trace ID: {trace.trace_id}")
         return report

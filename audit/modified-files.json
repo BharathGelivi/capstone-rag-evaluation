@@ -1,0 +1,381 @@
+{
+  "baseline_revision": "300b7873f4a0ae38e0524bcfb51be8b287da054c",
+  "architecture_changed": false,
+  "dependencies_added": [],
+  "file_count": 62,
+  "files": [
+    {
+      "path": "audit/REPORT.md",
+      "status": "added",
+      "purpose": "Findings, fixes, evidence, limitations, integrity and runtime handoff.",
+      "sha256": "3b707800a52b8f95d1b1cfb0df075f2ff70d0dd939012af7e801646d491b0c39"
+    },
+    {
+      "path": "audit/modified-files.json",
+      "status": "added",
+      "purpose": "Complete modified/new file manifest with hashes and purpose.",
+      "sha256": null
+    },
+    {
+      "path": "audit/validation.json",
+      "status": "added",
+      "purpose": "Machine-readable final tests, benchmarks, integrity and service evidence.",
+      "sha256": "78849eb15b6c50d46c95ca129d9893179313a581ecccb6b7ebcd3c65b6017304"
+    },
+    {
+      "path": "configs/models.py",
+      "status": "modified",
+      "purpose": "Remove unused retry setting; retain shared-limiter policy.",
+      "sha256": "10e921b1fca2aca47e83a95f2d300896b372ab7e14291086c791334c31956e68"
+    },
+    {
+      "path": "configs/pipeline.py",
+      "status": "modified",
+      "purpose": "Correct ingestion guidance without changing retrieval configuration.",
+      "sha256": "eea2d00965d01062c06c73860d409460bbc8c1ffe1ee693743a9820c13adcd51"
+    },
+    {
+      "path": "experiments/common.py",
+      "status": "modified",
+      "purpose": "Checkpoint tail recovery, corruption checks and efficient append validation.",
+      "sha256": "f7a8115357d745f09bc60ae9bcda5fd1b98e6b34595f6be88f26c84a36520d15"
+    },
+    {
+      "path": "experiments/exp06_strategy_ablation.py",
+      "status": "modified",
+      "purpose": "Correct final ranks and retrieval-call accounting.",
+      "sha256": "df2e3faea39951e0c43d35795639df664fccf85f543515761b475c8bb78599e1"
+    },
+    {
+      "path": "experiments/exp07_generation_ablation.py",
+      "status": "modified",
+      "purpose": "Require explicit live mode for model-backed experiment.",
+      "sha256": "216e360efdb870af5a41fc92f46fbe686c4e45e72a136cd9ec381906a7bf8702"
+    },
+    {
+      "path": "experiments/run_all.py",
+      "status": "modified",
+      "purpose": "Validate checkpoint configuration before skip; exclude live-only experiments offline.",
+      "sha256": "6d7c632ac94393aad74415a0d7872ba143949473310705515eee5e7ecaab2738"
+    },
+    {
+      "path": "frontend/src/App.tsx",
+      "status": "modified",
+      "purpose": "Session request error handling, stable state callbacks, accessibility and device display.",
+      "sha256": "8584e72a0b21b79f9ac4d90c81de44a4637d7b4eba1da2c58dda3319788415b8"
+    },
+    {
+      "path": "frontend/src/components/Chat.tsx",
+      "status": "modified",
+      "purpose": "Guard sends, cancel stale streams/hydration, preserve retry history and message identity.",
+      "sha256": "0f64ec36a5eb59603857a39034c0d617c11023fb07579756de0c52a6e7e96931"
+    },
+    {
+      "path": "frontend/src/components/Debug.tsx",
+      "status": "modified",
+      "purpose": "Cancel stale loads and show errors/loading.",
+      "sha256": "8f5b99807df4e918c5e7315aa281bffafa0d811489acdf4610848fe13c436dc5"
+    },
+    {
+      "path": "frontend/src/components/Graph.tsx",
+      "status": "modified",
+      "purpose": "Cancel stale loads and show errors/loading.",
+      "sha256": "5e0eb23675bd5c02a8863090d29fe9910b2724b6fa0589177710fa8e643b3a51"
+    },
+    {
+      "path": "frontend/src/components/Memory.tsx",
+      "status": "modified",
+      "purpose": "Cancel stale loads and show errors/loading.",
+      "sha256": "e078b2fb78e6a27ed5bf15ef3b89bd22409a8e249941cddf3b28128fca90e0c3"
+    },
+    {
+      "path": "frontend/src/components/Overview.tsx",
+      "status": "modified",
+      "purpose": "Actual available-arm count and keyboard navigation.",
+      "sha256": "4869ea1437450c82a06c6399c6370f136b39c191f76f2b3aa85561ca33b80ae2"
+    },
+    {
+      "path": "frontend/src/lib/api.ts",
+      "status": "modified",
+      "purpose": "HTTP/SSE error handling, terminal-event enforcement, reader cleanup and abort signals.",
+      "sha256": "030d3bf9cbfbae38a4fb968cf3d2fa0e5563f1919db30e66deb9da1cc39c4f3c"
+    },
+    {
+      "path": "query.py",
+      "status": "modified",
+      "purpose": "Consistent claim IDs, trace diagnostics, configuration guards and actual artifact manifest.",
+      "sha256": "cd3edc80b34e53596b0aeeccc27feb64e4a257ca0bc6c2240e75e96bd3da71f3"
+    },
+    {
+      "path": "run_pipeline.py",
+      "status": "modified",
+      "purpose": "Publish registry after successful vector storage.",
+      "sha256": "f401e38fdc47923ec2939d4fb576cd238747621a09a47e92d949ba650044c77e"
+    },
+    {
+      "path": "scripts/analyze_agreement.py",
+      "status": "modified",
+      "purpose": "Exclude unavailable/non-finite observations instead of fabricating agreement.",
+      "sha256": "e41a8b1e8b21d464759087684d9b1c8b5cdbb0417a5402d4c9e4a9ffb47ba7e7"
+    },
+    {
+      "path": "scripts/audit_repository.py",
+      "status": "added",
+      "purpose": "Local semantic inventory and immutable protected-file baseline helper.",
+      "sha256": "da4f79d9bb68642389255dc179b0a3a94bd5d18796ceca0d2491cafbba4a0266"
+    },
+    {
+      "path": "scripts/build_legal_corpus.py",
+      "status": "modified",
+      "purpose": "Preserve existing usable index until successful ingestion publication.",
+      "sha256": "f444c6321dc15611ebbdd60531a7548db925052fd3de2661fe61a4198d2271e7"
+    },
+    {
+      "path": "scripts/fetch_judgments.py",
+      "status": "modified",
+      "purpose": "Exact source URLs and atomic legacy manifest schema migration.",
+      "sha256": "dc2f5f02aee3eede94fa97dd1aa83df1e45f556e12e5a8401d1b6ea305255bf0"
+    },
+    {
+      "path": "scripts/repair_memory_embeddings.py",
+      "status": "added",
+      "purpose": "Backed-up local vector repair preserving memory documents and metadata.",
+      "sha256": "46ee43b3d462eafe896121fa509bcf82447220670fafdaf8888e9b99d3374cc7"
+    },
+    {
+      "path": "scripts/run_baseline_comparison.py",
+      "status": "modified",
+      "purpose": "Make dry-run nonexecuting and honor explicit limits.",
+      "sha256": "cfd50ba07299542861f1c26e1e5dcbe898658b7beccbbfea89083642971ce316"
+    },
+    {
+      "path": "src/api.py",
+      "status": "modified",
+      "purpose": "Identifier/path containment, safe errors, compatibility artifact discovery and serialized runner initialization.",
+      "sha256": "92cbf24176d24a606f79fad922e199054f344dab90889ec8e9f9fc2b00252649"
+    },
+    {
+      "path": "src/api_ui.py",
+      "status": "modified",
+      "purpose": "Request bounds/compatibility, actual device/config, legacy traces and captured evidence backfill.",
+      "sha256": "f91030fe08b1b1dfd9c7a57a476da2ee9b87b877b1fdd53124cc80578428c52b"
+    },
+    {
+      "path": "src/cache_utils.py",
+      "status": "added",
+      "purpose": "Small standard-library locking wrapper for existing cached initializers.",
+      "sha256": "641ebc2df5acc8a123a7a20d8c4cde58a5983e208dac9935d75c344fe537b997"
+    },
+    {
+      "path": "src/chat_service.py",
+      "status": "modified",
+      "purpose": "Serialized loaders, per-turn generation state, truthful metrics/diagnostics and explicit warnings.",
+      "sha256": "da3ddd95fc8ffc2185d8b143e4325b51e3a70f2e575560184e09272bb774f78d"
+    },
+    {
+      "path": "src/chunk_registry.py",
+      "status": "modified",
+      "purpose": "Atomic fsynced registry writes.",
+      "sha256": "37f4c3f16da07fdf1ea890ab81d7cca148ba678df8932b2d13165f650e517760"
+    },
+    {
+      "path": "src/claim_decomposer.py",
+      "status": "modified",
+      "purpose": "Validate claim JSON shapes and bound remote request timeout.",
+      "sha256": "7b76bbdc2bc9b8abb3960078c4075ad0681754a8280c932c5e056e4062343358"
+    },
+    {
+      "path": "src/claim_verifier.py",
+      "status": "modified",
+      "purpose": "Recover original context/provenance and represent unavailable evidence without false failure.",
+      "sha256": "414b62f68a4418dcc6842929d6f96e9b2b1c1c21a789e5ccd5544367efe5f38d"
+    },
+    {
+      "path": "src/claims.py",
+      "status": "modified",
+      "purpose": "Canonical conversion preserves candidate IDs and metadata.",
+      "sha256": "8d426b27c1dc9ccba0ca1662f7179fcb5f845977349141dcdd914eb78d800fa4"
+    },
+    {
+      "path": "src/corrective_action_engine.py",
+      "status": "modified",
+      "purpose": "Read actual configuration and legacy temperature alias.",
+      "sha256": "02e890446122a36cc418fd5ff12d76a327dc49096f9926bcfa7e8ad9d64dc200"
+    },
+    {
+      "path": "src/embedding_engine.py",
+      "status": "modified",
+      "purpose": "Serialize shared model initialization and write/validate embedding cache atomically.",
+      "sha256": "4997c767c25ea72abc2acca8b506af4fad4c2c0850a5148a2de1c2edbef114a5"
+    },
+    {
+      "path": "src/generator.py",
+      "status": "modified",
+      "purpose": "Capture finish reason and actual displayed question without changing generation budgets.",
+      "sha256": "de0e53a1f2801e142d1f52018fcea065e74d455f6c5467940e96e0475a5ed765"
+    },
+    {
+      "path": "src/ircot.py",
+      "status": "modified",
+      "purpose": "Use existing shared limiter for structured model calls.",
+      "sha256": "3b7da247ce167c60753d67a46926c38a89df3d92e84ccd0be3eeae59b8a39a27"
+    },
+    {
+      "path": "src/legal_corpus.py",
+      "status": "modified",
+      "purpose": "Prefer recorded exact source URLs.",
+      "sha256": "111081a6ad867897af2a8f94caab6c670ca60ee46790e714a45e1abd87c661a8"
+    },
+    {
+      "path": "src/legal_graph.py",
+      "status": "modified",
+      "purpose": "Deterministic seed/edge traversal.",
+      "sha256": "2a696802e64db0cb112ceff1efd04aa4c3e80cac237e12b51cab0b77888a274e"
+    },
+    {
+      "path": "src/memory/memory_manager.py",
+      "status": "modified",
+      "purpose": "Complete session history, safe import embeddings and remove unused imports.",
+      "sha256": "44b2a226881e3edab2cf568ed99391f265d99ccdedd3cd2b554b4b7a4955f413"
+    },
+    {
+      "path": "src/memory/memory_store.py",
+      "status": "modified",
+      "purpose": "Preserve vectors, synchronize persistence and make delete/clear consistent.",
+      "sha256": "4bb5ce90c3f5cbd2ec72e294d606853313f3c0ffb91ed613c90d4a468832a881"
+    },
+    {
+      "path": "src/memory/memory_summarizer.py",
+      "status": "modified",
+      "purpose": "Bound timeouts and use the existing shared limiter.",
+      "sha256": "38086cd34a9b1a05d412cb6d1015b82ce14cdbdd922ce06b4d91a0de38cde02d"
+    },
+    {
+      "path": "src/memory/memory_utils.py",
+      "status": "modified",
+      "purpose": "Atomic JSON persistence and robust timezone handling.",
+      "sha256": "da7b3ff106ba1fab0a370633b63cbf43946387aac972e84572d3429ac540f9da"
+    },
+    {
+      "path": "src/memory/session_manager.py",
+      "status": "modified",
+      "purpose": "Synchronize counters and import without ID collisions/input mutation.",
+      "sha256": "781dc54a331f4509a8ee99c43e3ea241e21518bb3cb33cbf32014c2e3eb67e7e"
+    },
+    {
+      "path": "src/pipeline_state_analyzer.py",
+      "status": "modified",
+      "purpose": "UNKNOWN for unassessable generation rather than false success.",
+      "sha256": "23df2894b45067760713d3b91347ba4e01110d00246e1d3d0edde5b3a9a36bd9"
+    },
+    {
+      "path": "src/rag_trace.py",
+      "status": "modified",
+      "purpose": "Actual configuration/status, metadata and legacy diagnostic compatibility.",
+      "sha256": "b4e8347eeb5fb84626695dae6c4f0bee80ac5a40523e8085e3ae7f11c8bb15e4"
+    },
+    {
+      "path": "src/ragas_metrics.py",
+      "status": "modified",
+      "purpose": "Shared limiter and tri-state unavailable evaluator results.",
+      "sha256": "81364dd80cb19eac7d301555325da75f28fcafeed62bf0715080039e1e695db2"
+    },
+    {
+      "path": "src/report_builder.py",
+      "status": "modified",
+      "purpose": "Partial diagnostics, real traceability and avoid empty grounding health weight.",
+      "sha256": "33f792656cd34244306c2246474cfbc4e53d4c21434f2829a044e8baaeec7b93"
+    },
+    {
+      "path": "src/report_presenter.py",
+      "status": "modified",
+      "purpose": "Escape HTML, actual artifacts/verification IDs and correct cause-to-stage mapping.",
+      "sha256": "f0064d7a45945c14e4c0b9e72561a03b1829a37ac7f2ada05b15a11bf6c5c256"
+    },
+    {
+      "path": "src/retriever.py",
+      "status": "modified",
+      "purpose": "Deterministic ranking ties and serialized cached construction.",
+      "sha256": "c6609f094b706d5f4ebacbb4d13577b3b37c90eaf9e8eed98ecddfb68b3936b8"
+    },
+    {
+      "path": "src/runner.py",
+      "status": "modified",
+      "purpose": "Correct shared context reconstruction, persist artifacts and avoid unused retriever/reranker load.",
+      "sha256": "cc9a7feaab85942f29dbe03cfb70384a7499c4680787f334db6946f0173e7168"
+    },
+    {
+      "path": "src/vector_store.py",
+      "status": "modified",
+      "purpose": "Preserve collections and publish ingestion safely with pre-publication rollback.",
+      "sha256": "4d81e53c8f3b032587e41d462d1f0ffc25bac1dc6492a6fc68c6ad75abaff3e9"
+    },
+    {
+      "path": "tests/test_api.py",
+      "status": "modified",
+      "purpose": "Mock artifact writes for isolated API tests.",
+      "sha256": "5ae91caea6eb5617502e5398e28dda2fc656400c84f1ae314841e35226915331"
+    },
+    {
+      "path": "tests/test_api_ui.py",
+      "status": "modified",
+      "purpose": "Mock memory access to protect real sessions and vectors.",
+      "sha256": "c668d1e7c57c0ca1c4becaa9461487a680a3488a9ab59db9af0e2755e810c34b"
+    },
+    {
+      "path": "tests/test_audit_regressions.py",
+      "status": "added",
+      "purpose": "Twenty focused data-loss, correctness, path, concurrency and checkpoint regressions.",
+      "sha256": "9e9643ca2f4a89df597e113ca261bff66fe9aefb9be2f4ae30a88b1e2e2c80b3"
+    },
+    {
+      "path": "tests/test_end_to_end_framework.py",
+      "status": "modified",
+      "purpose": "Isolated realistic artifact fixtures with external/model calls mocked.",
+      "sha256": "5edbb380f2e9090ebb9a9c04c9b74737701bbbd9159db19e45d566698cba2322"
+    },
+    {
+      "path": "tests/test_experiments.py",
+      "status": "modified",
+      "purpose": "Repair stale expectations and limit offline integration to non-live experiments.",
+      "sha256": "e3580691497d6f4accb5f23de0d13118b81c4b586605f36a265caf167386d823"
+    },
+    {
+      "path": "tests/test_generator.py",
+      "status": "modified",
+      "purpose": "Regression check for the actual user question and synchronous truncation metadata.",
+      "sha256": "a35834a31226ff31546026f2a9e353db5cdf413ee235a4485ec6060a4992d5e0"
+    },
+    {
+      "path": "tests/test_memory_summarizer.py",
+      "status": "modified",
+      "purpose": "Prevent real model initialization during summarizer tests.",
+      "sha256": "9032a0e12d0383f6948fc805cfbfeb99ef2c0cc530296d451486f3a956f40ec5"
+    },
+    {
+      "path": "tests/test_report_presenter.py",
+      "status": "modified",
+      "purpose": "Regression checks for HTML escaping and actual stage/verification references.",
+      "sha256": "35f60160a9b0e863c0755463fe3831825a5a6ba4db17ebcbe1c720c281a614e6"
+    },
+    {
+      "path": "tests/test_run_baseline_comparison.py",
+      "status": "modified",
+      "purpose": "Isolate result directories and failure logs.",
+      "sha256": "279aa5f14a947f034e2c3cf4afe34922658d52db6f545dbe1eabaa556a8dff98"
+    },
+    {
+      "path": "tests/test_ui_e2e.py",
+      "status": "modified",
+      "purpose": "Seven opt-in mocked-browser state/error/concurrency regressions.",
+      "sha256": "34362d78dddb0f7ee77438e4c8137e9bf6e44f71e7b364e5e97e1260bffc458c"
+    },
+    {
+      "path": "ui/app.py",
+      "status": "modified",
+      "purpose": "Per-turn generator copy for the existing Streamlit path.",
+      "sha256": "542cefcb2e3d4f3dd02afc97771e6e126f5d04b3f6099a42dba576a89c7aa711"
+    }
+  ],
+  "self_hash_note": "The manifest omits its own recursive hash."
+}

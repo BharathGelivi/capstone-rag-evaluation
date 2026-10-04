@@ -137,5 +137,21 @@ class TestDiagnosticReportPresenter(unittest.TestCase):
         self.assertIn("C1", tr["supporting_claims"])
         self.assertIn("Chunk1", tr["supporting_chunks"])
 
+    def test_html_escapes_untrusted_title_and_answer(self):
+        self.report.framework_metadata.trace_id = '</title><script>alert(1)</script>'
+        self.report.executive_summary.generated_answer = '<img src=x onerror=alert(1)>'
+        output = self.presenter.render_html()
+        self.assertNotIn('<script>', output)
+        self.assertNotIn('<img src=', output)
+        self.assertIn('&lt;script&gt;', output)
+        self.assertIn('&lt;img src=', output)
+
+    def test_traceability_uses_real_stage_and_verification_ids(self):
+        self.report.root_cause_analysis.primary_cause = 'MISSING_CORPUS'
+        self.report.metadata['verification_ids'] = ['real-verification-id']
+        traceability = self.presenter._get_traceability_data()
+        self.assertEqual(traceability['pipeline_stage'], 'CORPUS')
+        self.assertEqual(traceability['supporting_verifications'], ['real-verification-id'])
+
 if __name__ == '__main__':
     unittest.main()

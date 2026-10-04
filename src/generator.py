@@ -279,7 +279,7 @@ class Generator:
             api_base=NVIDIA_BASE_URL,
             is_chat_model=True,
             timeout=LLM_REQUEST_TIMEOUT,
-            # 0, not LLM_MAX_RETRIES: the client's own blind retry fires real
+            # Disable client retries: the client's own blind retry fires real
             # HTTP requests that rate_limiter.call() below never sees, letting
             # retries burst past the shared account-wide budget. All
             # retry/backoff decisions belong to rate_limiter.call() instead.
@@ -328,9 +328,16 @@ class Generator:
         )
 
         error: Optional[str] = None
+        finish_reason = None
         try:
             response = rate_limiter.call(self.llm.chat, messages)
             generated_answer = str(response.message.content)
+            raw = getattr(response, "raw", None)
+            if isinstance(raw, dict):
+                choices = raw.get("choices") or []
+                finish_reason = choices[0].get("finish_reason") if choices else None
+            elif raw is not None and getattr(raw, "choices", None):
+                finish_reason = getattr(raw.choices[0], "finish_reason", None)
         except Exception as exc:
             logger.error("LLM generation failed: %s", exc, exc_info=True)
             error = f"{type(exc).__name__}: {exc}"
@@ -343,7 +350,7 @@ class Generator:
         generation_time = time.time() - start_time
 
         result = GenerationResult(
-            question=retrieval_result.question,
+            question=display_question,
             generated_answer=generated_answer,
             prompt=prompt_str,
             prompt_length=len(prompt_str),
@@ -357,6 +364,7 @@ class Generator:
                 "top_k_used": retrieval_result.top_k,
                 "provider": "nvidia",
                 "history_turns": len(chat_history or []),
+                "finish_reason": finish_reason,
             },
             error=error,
         )
@@ -489,7 +497,7 @@ class Generator:
 
         answer = "".join(parts)
         self.last_stream_result = GenerationResult(
-            question=retrieval_result.question,
+            question=display_question,
             generated_answer=answer,
             prompt=prompt_str,
             prompt_length=len(prompt_str),
@@ -503,6 +511,7 @@ class Generator:
                 "top_k_used": retrieval_result.top_k,
                 "provider": "nvidia",
                 "history_turns": len(chat_history or []),
+                "finish_reason": finish_reason,
                 "streamed": True,
             },
             reasoning="".join(think_parts),

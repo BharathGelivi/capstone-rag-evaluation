@@ -35,7 +35,7 @@ from llama_index.core.llms import ChatMessage, MessageRole
 from src.rag_trace import RAGTrace
 from src import rate_limiter
 from configs.pipeline import CLAIM_DECOMPOSER_PROMPT_VERSION, CLAIM_DECOMPOSER_MAX_TOKENS
-from configs.models import NVIDIA_CLAIM_DECOMPOSER_MODEL, NVIDIA_BASE_URL, LLM_TEMPERATURE
+from configs.models import NVIDIA_CLAIM_DECOMPOSER_MODEL, NVIDIA_BASE_URL, LLM_TEMPERATURE, LLM_REQUEST_TIMEOUT
 from configs.prompts import DETAILED_THINKING_OFF
 
 logger = logging.getLogger(__name__)
@@ -128,6 +128,7 @@ class ClaimDecomposer:
             # See src/rate_limiter.py: retries must go through call(), not the
             # client's own blind retry, or they burst past the shared budget.
             max_retries=0,
+            timeout=LLM_REQUEST_TIMEOUT,
         )
 
     # ------------------------------------------------------------------
@@ -363,6 +364,15 @@ class ClaimDecomposer:
             return ""
 
     def _robust_json_parse(self, text: str) -> List[Dict[str, Any]]:
+        claims = self._recover_json(text)
+        if not isinstance(claims, list) or any(
+            not isinstance(c, dict) or not isinstance(c.get("claim_text"), str)
+            or not c["claim_text"].strip() for c in claims
+        ):
+            raise JSONRecoveryError("Expected an array of objects with nonempty claim_text strings.")
+        return claims
+
+    def _recover_json(self, text: str) -> Any:
         if not text or not text.strip():
             raise JSONRecoveryError("Empty string provided to JSON parser.")
 

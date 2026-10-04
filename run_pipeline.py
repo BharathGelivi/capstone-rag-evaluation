@@ -31,8 +31,6 @@ def main():
     # Save the registry to a file for diagnostic tracking
     os.makedirs("artifacts", exist_ok=True)
     registry_path = "artifacts/chunk_registry.json"
-    registry.save_to_json(registry_path)
-    print(f"Registry saved to {registry_path}.\n")
 
     # 4. Embedding: Generate embeddings for each chunk
     print("--- Step 4: Generating embeddings ---")
@@ -44,7 +42,8 @@ def main():
     vector_store = ChromaVectorStore()
     vector_store.initialize_collection()
     
-    vector_store.add_embeddings(embeddings, registry)
+    vector_store.publish_registry(embeddings, registry, registry_path)
+    print(f"Registry published to {registry_path}.\n")
     print(f"\nPipeline complete! Total chunks stored in ChromaDB: {vector_store.count()}")
 
 if __name__ == "__main__":

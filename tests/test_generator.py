@@ -290,5 +290,17 @@ class TestGenerateStreamReasoning(unittest.TestCase):
         self.assertEqual("".join(deltas), "A complete answer.")
 
 
+class TestAuditGeneration(unittest.TestCase):
+    @patch("src.generator.OpenAILike")
+    def test_actual_question_and_sync_truncation_are_recorded(self, mock_llm_cls):
+        mock_llm = mock_llm_cls.return_value
+        mock_llm.chat.return_value.message.content = "Partial answer"
+        mock_llm.chat.return_value.raw = {"choices": [{"finish_reason": "length"}]}
+        generator = Generator()
+        result = generator.generate(make_retrieval_result(), question_override="Actual user question")
+        self.assertEqual(result.question, "Actual user question")
+        self.assertEqual(result.generation_metadata["finish_reason"], "length")
+
+
 if __name__ == "__main__":
     unittest.main()

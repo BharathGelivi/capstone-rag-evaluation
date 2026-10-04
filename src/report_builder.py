@@ -1,10 +1,9 @@
-import os
 import logging
 from typing import Optional
 
 from src.rag_trace import RAGTrace
 from src.pipeline_state_analyzer import PipelineStateMatrix, PipelineStatus
-from src.root_cause_reasoner import RootCauseAnalysis, FailureType
+from src.root_cause_reasoner import RootCauseAnalysis
 from src.corrective_action_engine import CorrectiveActionPlan
 from src.claim_verifier import VerificationSummary, VerificationStatus
 from src.ragas_metrics import RagasMetrics
@@ -55,6 +54,10 @@ class ReportBuilder:
         
         # 2. Status determination
         is_partial = any(a is None for a in [trace, psm, rca, cap, verification])
+        if trace:
+            diagnostics = trace.diagnostics or {}
+            is_partial = is_partial or diagnostics.get("decomposition_success") is False or bool(
+                diagnostics.get("unresolved_chunk_ids")) or trace.pipeline_stage_status.get("generator") in ("failed", "partial")
         analysis_status = "PARTIAL_ANALYSIS" if is_partial else "COMPLETED"
         if trace_id == "UNKNOWN":
             analysis_status = "FAILED"
@@ -66,6 +69,8 @@ class ReportBuilder:
             "CorrectiveActionPlan": cap,
             "VerificationSummary": verification
         }.items() if val is None]}
+        metadata["verification_ids"] = [v.verification_id for v in verification.results] if verification else []
+        metadata["artifact_paths"] = (trace.diagnostics or {}).get("artifact_paths", {}) if trace else {}
 
         # 3. Framework Metadata
         framework_metadata = FrameworkMetadata(
@@ -146,7 +151,7 @@ class ReportBuilder:
         #   measures factual grounding; the remaining metrics fill in retrieval
         #   and relevancy quality. Weights normalise over available metrics.
         WEIGHTS = [
-            ("grounding",          0.50, metrics.grounding_score if verification else None),
+            ("grounding",          0.50, metrics.grounding_score if verification and verification.results else None),
             ("context_precision",  0.20, ragas_metrics.context_precision if ragas_metrics else None),
             ("answer_relevancy",   0.20, ragas_metrics.answer_relevancy if ragas_metrics else None),
             ("context_recall",     0.10, ragas_metrics.context_recall if ragas_metrics else None),
@@ -156,7 +161,7 @@ class ReportBuilder:
         overall_health = round(weighted_sum / total_weight, 4) if total_weight > 0 else 0.0
 
         primary_issue = rca.primary_cause.value if rca else "UNKNOWN"
-        summary_text = "Analysis completed." if not is_partial else "Analysis completed with missing artifacts."
+        summary_text = "Analysis completed." if not is_partial else "Analysis is partial; inspect missing artifacts and diagnostic availability."
 
         executive_summary = ExecutiveSummary(
             question=trace.question if trace else "UNKNOWN",
@@ -196,7 +201,7 @@ class ReportBuilder:
         elif overall_health > 0.5:
             overall_rec = "Pipeline requires targeted improvements to the primary failure stage."
         else:
-            overall_rec = "Pipeline requires architectural adjustments across multiple stages."
+            overall_rec = "Inspect stage evidence and apply targeted correctness fixes before considering architecture changes."
 
         overall_assessment = OverallAssessment(
             major_strength=major_strength,

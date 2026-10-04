@@ -56,11 +56,17 @@ export default function Graph() {
   const [hidden, setHidden] = useState<Set<string>>(new Set());
   const [query, setQuery] = useState("");
   const [info, setInfo] = useState<Node | null>(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState("");
 
   useEffect(() => {
-    setInfo(null);
-    getGraph(scope).then(setData);
+    const controller = new AbortController();
+    Promise.resolve().then(() => { if (!controller.signal.aborted) { setInfo(null); setData(null); setLoading(true); setError(""); } });
+    getGraph(scope, controller.signal).then(value => { if (!controller.signal.aborted) setData(value); })
+      .catch(err => { if (err.name !== "AbortError") setError("Unable to load graph"); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
   }, [scope]);
 
   useEffect(() => {
@@ -98,7 +104,7 @@ export default function Graph() {
       .map((e) => ({ s: byId[e.source], t: byId[e.target], kind: e.kind }))
       .filter((e) => e.s && e.t);
 
-    setStats(`${nodes.length} nodes · ${links.length} edges${data!.truncated ? " (sample)" : ""}`);
+    Promise.resolve().then(() => setStats(`${nodes.length} nodes · ${links.length} edges${data!.truncated ? " (sample)" : ""}`));
     // testability hook, per the e2e plan
     (window as unknown as Record<string, unknown>).__graphNodeCount = nodes.length;
 
@@ -326,6 +332,8 @@ export default function Graph() {
 
   return (
     <div className="graph-page">
+      {error && <p role="alert">{error}</p>}
+      {loading && <p>Loading graph...</p>}
       <div className="graph-toolbar">
         <select value={scope} onChange={(e) => setScope(e.target.value as "rag" | "legal" | "memory")}>
           <option value="rag">RAG provenance</option>
@@ -349,7 +357,7 @@ export default function Graph() {
                 onClick={() =>
                   setHidden((h) => {
                     const next = new Set(h);
-                    next.has(t) ? next.delete(t) : next.add(t);
+                    if (next.has(t)) next.delete(t); else next.add(t);
                     return next;
                   })
                 }

@@ -1,6 +1,7 @@
 """Fast, no-browser checks for src/api_ui.py -- run before the Playwright e2e suite."""
 
 import unittest
+from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
@@ -10,6 +11,14 @@ from src.api_ui import app
 class TestApiUI(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
+        mm = MagicMock()
+        mm.list_sessions.return_value = []
+        mm.get_session_memories.return_value = []
+        mm.store.get_all_memories.return_value = []
+        mm.search_memory.return_value = []
+        patcher = patch("src.chat_service.get_memory_manager", return_value=mm)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def test_config_lists_arms_and_corpora(self):
         r = self.client.get("/ui/config")

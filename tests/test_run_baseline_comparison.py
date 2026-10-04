@@ -152,6 +152,13 @@ class TestBuildXragTraceAndReportSkipsFailedGeneration(unittest.TestCase):
 
 class TestProcessOneExample(unittest.TestCase):
     def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        for name, value in (("RESULTS_DIR", directory.name),
+                            ("FAILURES_LOG_PATH", os.path.join(directory.name, "failures.log"))):
+            patcher = patch.object(runner_module, name, value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
         self.eval_row = {"id": "1", "question": "What is the punishment for murder?", "gold_answer": "Death or life imprisonment.", "expected_failure_type": ""}
 
         self.fake_trace = MagicMock()

@@ -10,7 +10,7 @@ interface OverviewProps {
 const CARDS: Array<{ tab: Tab; title: string; desc: string; icon: React.ReactNode }> = [
   {
     tab: "chat", title: "Chat",
-    desc: "Ask questions across nine retrieval arms and read grounded, citable answers.",
+    desc: "Ask questions across the available retrieval arms and read grounded, citable answers.",
     icon: <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />,
   },
   {
@@ -51,13 +51,13 @@ export default function Overview({ sessionCount, onNavigate }: OverviewProps) {
       <span className="tag tag-outline">Diagnostic framework</span>
       <h1 className="overview-title">Inspect how X-RAG answers, not just what it answers.</h1>
       <p className="overview-lede">
-        Nine retrieval strategies, one interface. Trace every answer back to its chunks, its
+        {config ? `${config.arms.length} retrieval strategies` : "Retrieval strategies"}, one interface. Trace every answer back to its chunks, its
         recalled memories, and its timing — across the statutes and judgments corpora.
       </p>
 
       <div className="overview-cards">
         {CARDS.map((c) => (
-          <div key={c.tab} className="overview-card blueprint" onClick={() => onNavigate(c.tab)}>
+          <div role="button" tabIndex={0} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") onNavigate(c.tab); }} key={c.tab} className="overview-card blueprint" onClick={() => onNavigate(c.tab)}>
             <i className="corner tl" /><i className="corner tr" />
             <i className="corner bl" /><i className="corner br" />
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent-700)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

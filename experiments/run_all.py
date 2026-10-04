@@ -193,14 +193,8 @@ def run_suite(experiments: List[Experiment], ctx: ExperimentContext, rerun_compl
     for experiment in experiments:
         checkpoint = Checkpoint(experiment.key, base_dir=ctx.base_dir)
 
-        if checkpoint.is_complete() and not rerun_complete and not ctx.force:
-            logger.info(
-                "E%d %s: already complete (%d records) -- skipping. "
-                "Use --force to recompute.",
-                experiment.number, experiment.key, len(checkpoint.completed_ids()),
-            )
-            manifest["experiments"][experiment.key] = experiment_status(experiment, ctx.base_dir)
-            save_manifest(ctx.base_dir, manifest)
+        if not ctx.is_live and "offline" not in experiment.supported_modes:
+            logger.info("E%d requires --mode live; skipping in offline mode", experiment.number)
             continue
 
         if ctx.is_live and "live" not in experiment.supported_modes:
@@ -215,6 +209,18 @@ def run_suite(experiments: List[Experiment], ctx: ExperimentContext, rerun_compl
 
         t0 = time.time()
         try:
+            if checkpoint.is_complete() and not rerun_complete and not ctx.force:
+                specs = experiment.plan(experiment_ctx)
+                if experiment_ctx.limit is not None:
+                    specs = specs[:experiment_ctx.limit]
+                if checkpoint.load_state().get("plan_fingerprint") != experiment.plan_fingerprint(specs, experiment_ctx):
+                    raise ConfigDriftError("Completed checkpoint configuration changed; use a separate output directory or --force")
+                logger.info("E%d: validated completed checkpoint; skipping", experiment.number)
+                manifest["experiments"][experiment.key] = experiment_status(experiment, ctx.base_dir)
+                save_manifest(ctx.base_dir, manifest)
+                continue
+            if rerun_complete and checkpoint.is_complete():
+                experiment_ctx = ExperimentContext(**{**experiment_ctx.__dict__, "force": True})
             summary = experiment.run(experiment_ctx)
         except ConfigDriftError as e:
             logger.error("E%d %s: %s", experiment.number, experiment.key, e)

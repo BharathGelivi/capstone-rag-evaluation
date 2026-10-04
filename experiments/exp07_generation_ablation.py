@@ -94,7 +94,7 @@ class GenerationAblationExperiment(Experiment):
         "Retrieval gains do not automatically become answer quality: grounding and "
         "citation correctness must be measured on the generated answer itself."
     )
-    supported_modes = ("offline", "live")
+    supported_modes = ("live",)
 
     def __init__(self) -> None:
         self._benchmark: Dict[str, Any] = {}

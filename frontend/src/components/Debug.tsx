@@ -12,7 +12,7 @@ function toggle(label: string, on: boolean, onClick: () => void) {
   return (
     <div key={label} className="debug-toggle-row">
       <span>{label}</span>
-      <button className={`debug-toggle ${on ? "on" : ""}`} onClick={onClick}>
+      <button role="switch" aria-checked={on} aria-label={label} className={`debug-toggle ${on ? "on" : ""}`} onClick={onClick}>
         <span className="debug-toggle-knob" />
       </button>
     </div>
@@ -21,12 +21,17 @@ function toggle(label: string, on: boolean, onClick: () => void) {
 
 export default function Debug({ settings, onSettingsChange, lastTraceId }: DebugProps) {
   const [trace, setTrace] = useState<TraceData | null>(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const load = lastTraceId ? getTrace(lastTraceId) : getLatestTrace();
-    load.then(setTrace).finally(() => setLoading(false));
+    const controller = new AbortController();
+    Promise.resolve().then(() => { if (!controller.signal.aborted) { setLoading(true); setError(""); } });
+    const load = lastTraceId ? getTrace(lastTraceId, controller.signal) : getLatestTrace(controller.signal);
+    load.then(value => { if (!controller.signal.aborted) setTrace(value); })
+      .catch(err => { if (err.name !== "AbortError") setError("Unable to load trace"); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
+    return () => controller.abort();
   }, [lastTraceId]);
 
   const stats = (trace?.execution_statistics || {}) as Record<string, number>;
@@ -39,6 +44,7 @@ export default function Debug({ settings, onSettingsChange, lastTraceId }: Debug
   return (
     <div className="debug-page xrag-scroll">
       <span className="topbar-title">Debug</span>
+      {error && <p role="alert">{error}</p>}
 
       <div className="card elev-sm">
         <div className="card-kicker">Runtime toggles</div>

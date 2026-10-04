@@ -24,14 +24,14 @@ from datetime import datetime
 from typing import List, Optional, Tuple
 
 import numpy as np
-import functools
+from src.cache_utils import serialized_cache
 
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 from src.device import get_device
 
 
-@functools.lru_cache(maxsize=4)
+@serialized_cache(maxsize=4)
 def get_shared_embed_model(model_name: str) -> HuggingFaceEmbedding:
     """Return a process-wide shared embedding model for ``model_name``.
 
@@ -100,13 +100,27 @@ class _EmbeddingCache:
         """Return the cached embedding for *text*, or ``None`` on a miss."""
         path = os.path.join(self._dir, f"{self._key(text)}.npy")
         if os.path.exists(path):
-            return np.load(path).tolist()
+            try:
+                vector = np.load(path, allow_pickle=False)
+                if vector.ndim == 1 and np.isfinite(vector).all():
+                    return vector.tolist()
+            except (ValueError, OSError, EOFError):
+                logger.warning("Ignoring invalid embedding cache entry: %s", path)
         return None
 
     def put(self, text: str, vector: List[float]) -> None:
         """Persist *vector* to disk so future runs can skip re-embedding."""
         path = os.path.join(self._dir, f"{self._key(text)}.npy")
-        np.save(path, np.array(vector, dtype=np.float32))
+        import tempfile
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(dir=self._dir, suffix=".npy", delete=False) as handle:
+                temporary = handle.name
+                np.save(handle, np.array(vector, dtype=np.float32))
+            os.replace(temporary, path)
+        finally:
+            if temporary and os.path.exists(temporary):
+                os.unlink(temporary)
 
 
 # ---------------------------------------------------------------------------

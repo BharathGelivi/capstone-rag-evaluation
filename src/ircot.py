@@ -48,6 +48,7 @@ from typing import Any, Dict, List, Optional, Sequence
 from llama_index.core.llms import ChatMessage, MessageRole
 
 from src.retriever import RetrievalResult, RetrievedChunk
+from src import rate_limiter
 
 logger = logging.getLogger(__name__)
 
@@ -115,7 +116,7 @@ def structured_call(llm, prompt: str, default: Dict[str, Any]) -> Dict[str, Any]
     exception. The fallback is recorded by the caller as a termination reason.
     """
     try:
-        response = llm.chat([ChatMessage(role=MessageRole.USER, content=prompt)])
+        response = rate_limiter.call(llm.chat, [ChatMessage(role=MessageRole.USER, content=prompt)])
         text = str(response.message.content).strip()
     except Exception as exc:
         logger.warning("structured_call: LLM error %s", exc)

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Chat from "./components/Chat";
 import Graph from "./components/Graph";
 import Overview from "./components/Overview";
 import Memory from "./components/Memory";
 import Debug from "./components/Debug";
-import { createSession, deleteSession, getSessions, type Session } from "./lib/api";
+import { createSession, deleteSession, getSessions, getConfig, type Session } from "./lib/api";
 import "./App.css";
 
 export type Tab = "overview" | "chat" | "graph" | "memory" | "debug";
@@ -42,6 +42,8 @@ const NAV: Array<{ id: Tab; label: string; icon: React.ReactNode }> = [
 ];
 
 export default function App() {
+  const [device, setDevice] = useState("Unavailable");
+  const [error, setError] = useState("");
   const [tab, setTab] = useState<Tab>("overview");
   const [sessions, setSessions] = useState<Session[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
@@ -50,21 +52,21 @@ export default function App() {
     memoryEnabled: true, deepAnalysis: true, autoExpandDetails: false,
   });
 
-  const loadSessions = async () => {
+  const loadSessions = useCallback(async () => {
     try {
       const list = await getSessions();
       setSessions(list);
-      if (list.length > 0 && !activeSessionId) {
-        setActiveSessionId(list[0].session_id);
-      }
+      setActiveSessionId(current => current || list[0]?.session_id || null);
     } catch (e) {
       console.error("Failed to load sessions:", e);
+      setError("Unable to load sessions");
     }
-  };
+  }, []);
 
   useEffect(() => {
-    loadSessions();
-  }, []);
+    void Promise.resolve().then(loadSessions);
+    getConfig().then(config => setDevice(config.device)).catch(() => setDevice("Unavailable"));
+  }, [loadSessions]);
 
   const handleNewChat = async () => {
     try {
@@ -74,6 +76,7 @@ export default function App() {
       setTab("chat");
     } catch (e) {
       console.error("Failed to create session:", e);
+      setError("Unable to create session");
     }
   };
 
@@ -88,6 +91,7 @@ export default function App() {
       }
     } catch (err) {
       console.error("Failed to delete session:", err);
+      setError("Unable to delete session");
     }
   };
 
@@ -95,7 +99,7 @@ export default function App() {
     <div className="app">
       {/* ── Sidebar ─────────────────────────────── */}
       <aside className="sidebar">
-        <div className="sidebar-header" style={{ cursor: "pointer" }} onClick={() => setTab("overview")}>
+        <div role="button" tabIndex={0} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") setTab("overview"); }} className="sidebar-header" style={{ cursor: "pointer" }} onClick={() => setTab("overview")}>
           <span className="sidebar-logo">X-RAG</span>
           <span className="sidebar-tagline">Diagnostic</span>
         </div>
@@ -111,6 +115,8 @@ export default function App() {
         <div className="sidebar-sessions-list">
           {sessions.map((s) => (
             <div
+              role="button" tabIndex={0}
+              onKeyDown={e => { if (e.target === e.currentTarget && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); setActiveSessionId(s.session_id); setTab("chat"); } }}
               key={s.session_id}
               className={`sidebar-session-item ${activeSessionId === s.session_id && tab === "chat" ? "active" : ""}`}
               onClick={() => {
@@ -147,12 +153,13 @@ export default function App() {
         ))}
 
         <div className="sidebar-footer">
-          Device: <span>RTX 4060 · CUDA</span>
+          Device: <span>{device}</span>
         </div>
       </aside>
 
       {/* ── Main content ────────────────────────── */}
       <div className="main">
+        {error && <p role="alert">{error}</p>}
         {tab === "overview" && <Overview sessionCount={sessions.length} onNavigate={setTab} />}
         {tab === "chat" && (
           <Chat

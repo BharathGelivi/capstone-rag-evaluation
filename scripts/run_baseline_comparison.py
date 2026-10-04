@@ -304,12 +304,19 @@ def generate_and_name_report(eval_id: str, trace_id: str) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description="Compare X-RAG against RAGAS/RAGChecker/ARES over the labeled eval set.")
-    parser.add_argument("--dry-run", action="store_true", help="Process only the first 2 examples.")
+    parser.add_argument("--dry-run", action="store_true", help="Show planned examples without model calls or writes.")
     parser.add_argument("--limit", type=int, default=None, help="Process only the first N examples.")
     parser.add_argument("--skip-ragchecker", action="store_true")
     parser.add_argument("--skip-ares", action="store_true")
     parser.add_argument("--eval-dataset", default="eval/eval_dataset.csv")
     args = parser.parse_args()
+    if args.dry_run:
+        rows = load_eval_dataset(args.eval_dataset)
+        if args.limit is not None:
+            rows = rows[:args.limit]
+        print(json.dumps({"dry_run": True, "examples": [r["id"] for r in rows],
+                          "skip_ragchecker": args.skip_ragchecker, "skip_ares": args.skip_ares}, indent=2))
+        return
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
@@ -325,9 +332,7 @@ def main():
     from src.runner import PipelineRunner
 
     eval_rows = load_eval_dataset(args.eval_dataset)
-    if args.dry_run:
-        eval_rows = eval_rows[:2]
-    elif args.limit is not None:
+    if args.limit is not None:
         eval_rows = eval_rows[:args.limit]
 
     manifest = load_manifest()

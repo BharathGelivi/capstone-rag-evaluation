@@ -99,11 +99,6 @@ LLM_MAX_TOKENS  = 2048
 # not going to answer.
 LLM_REQUEST_TIMEOUT = 90.0
 
-# Retries for transient failures (429 rate limits, 5xx). Applied by the client
-# with exponential backoff, so keep this small — the timeout above is per
-# attempt, and the worst case is roughly timeout x (retries + 1).
-LLM_MAX_RETRIES = 2
-
 # NVIDIA's build.nvidia.com free tier caps requests at 40/minute per model,
 # account-wide (confirmed via NVIDIA developer forums/docs, 2026). Every call
 # in this project — generation, claim decomposition, and the claim verifier's

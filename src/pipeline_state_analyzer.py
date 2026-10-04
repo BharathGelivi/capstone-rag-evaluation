@@ -245,7 +245,11 @@ class PipelineStateAnalyzer:
         else:
             generator_fail_signal = unsupported_fraction > self.generator_fail_min_unsupported_fraction
 
-        if generator_fail_signal and max_score >= self.retrieval_score_threshold:
+        if not verification.results or all(v.verification_status == VerificationStatus.NOT_VERIFIABLE for v in verification.results):
+            gen_status = PipelineStatus.UNKNOWN
+            gen_obs = "No assessable claims were available; generation quality is unknown."
+            gen_conf = 0.5
+        elif generator_fail_signal and max_score >= self.retrieval_score_threshold:
             gen_status = PipelineStatus.FAIL
             gen_obs = f"{len(unsupported_verifications)} generated claims remain unsupported despite high retrieval scores."
             gen_conf = 0.85
@@ -255,7 +259,7 @@ class PipelineStateAnalyzer:
             gen_conf = 0.5
         else:
             gen_status = PipelineStatus.PASS
-            gen_obs = "All generated claims are fully supported by evidence."
+            gen_obs = "No generated claims were classified as unsupported; see grounding for contradictions."
             gen_conf = 0.95
             
         states.append(PipelineState(

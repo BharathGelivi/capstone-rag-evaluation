@@ -10,6 +10,7 @@ import logging
 import os
 import json
 import uuid
+import tempfile
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
@@ -44,11 +45,13 @@ def compute_recency_score(timestamp_str: str, decay_hours: float = 24.0) -> floa
     """
     try:
         ts = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
         now = datetime.now(timezone.utc)
         hours_ago = max(0, (now - ts).total_seconds() / 3600.0)
         import math
         return math.exp(-0.693 * hours_ago / max(decay_hours, 0.01))
-    except (ValueError, AttributeError):
+    except (ValueError, AttributeError, TypeError):
         return 0.5
 
 
@@ -75,9 +78,20 @@ def ensure_directory(path: str) -> None:
 
 def save_json(data: Any, filepath: str) -> None:
     """Save data as a JSON file."""
-    ensure_directory(os.path.dirname(filepath))
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, default=str)
+    directory = os.path.dirname(os.path.abspath(filepath))
+    ensure_directory(directory)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=directory,
+                                         delete=False, suffix=".tmp") as f:
+            temporary = f.name
+            json.dump(data, f, indent=2, default=str)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(temporary, filepath)
+    finally:
+        if temporary and os.path.exists(temporary):
+            os.unlink(temporary)
 
 
 def load_json(filepath: str) -> Any:

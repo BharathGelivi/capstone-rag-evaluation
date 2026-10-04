@@ -81,6 +81,17 @@ class ClaimSet:
                 return claim
         return None
 
+    @classmethod
+    def from_candidates(cls, candidates) -> 'ClaimSet':
+        result = cls(trace_id=candidates.trace_id, metadata=dict(candidates.metadata))
+        for candidate in candidates.candidate_claims:
+            result.add_claim(Claim(
+                claim_id=candidate.candidate_id, trace_id=candidate.trace_id,
+                claim_text=candidate.claim_text, sentence_id=candidate.sentence_id,
+                claim_index=candidate.claim_index, character_start=candidate.character_start,
+                character_end=candidate.character_end, metadata=dict(candidate.metadata)))
+        return result
+
     def to_json(self, file_path: str) -> None:
         """Serializes the ClaimSet to a JSON file."""
         os.makedirs(os.path.dirname(file_path), exist_ok=True)

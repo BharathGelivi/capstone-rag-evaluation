@@ -12,7 +12,6 @@ import uuid
 import re
 import logging
 from enum import Enum
-from datetime import datetime
 from dataclasses import dataclass, asdict, field
 from typing import List, Dict, Any, Optional
 
@@ -30,6 +29,7 @@ from configs.models import (
     NVIDIA_CLAIM_DECOMPOSER_MODEL,
     NVIDIA_BASE_URL,
     LLM_TEMPERATURE,
+    LLM_REQUEST_TIMEOUT,
 )
 from configs.pipeline import CLAIM_JUDGE_MAX_TOKENS
 from configs.prompts import CLAIM_JUDGE_SYSTEM_INSTRUCTION, DETAILED_THINKING_OFF
@@ -51,12 +51,13 @@ except ImportError:
 
 try:
     import nltk
-    # Ensure the sentence tokenizer corpus is available; download silently if not.
+    # Imports must never trigger downloads; use the existing regex fallback.
     try:
         nltk.data.find("tokenizers/punkt_tab")
     except LookupError:
-        nltk.download("punkt_tab", quiet=True)
-    _NLTK_AVAILABLE = True
+        _NLTK_AVAILABLE = False
+    else:
+        _NLTK_AVAILABLE = True
 except ImportError:
     _NLTK_AVAILABLE = False
 
@@ -172,6 +173,7 @@ class ClaimVerifier:
             # See src/rate_limiter.py: retries must go through call(), not the
             # client's own blind retry, or they burst past the shared budget.
             max_retries=0,
+            timeout=LLM_REQUEST_TIMEOUT,
         ) if enable_llm_judge else None
         device_index = get_hf_device_index()
         logger.info(
@@ -546,10 +548,14 @@ class ClaimVerifier:
         without duplicating this reconstruction logic.
         """
         retrieved_chunks = []
+        snapshot = dict(re.findall(
+            r"--- Context chunk \d+ \[Chunk-ID: ([^\]]*)\] ---\n(.*?)(?=\n--- Context chunk |\n\nQuestion: |\Z)",
+            trace.prompt_snapshot or "", re.DOTALL))
         for ref in trace.retrieved_chunk_references:
             chunk_id = ref["chunk_id"]
-            record = registry.get_chunk(chunk_id)
-            if record:
+            record = registry.get_chunk(chunk_id) if registry is not None else None
+            text = snapshot.get(chunk_id) or (record.text if record else ref.get("chunk_text", ref.get("text")))
+            if text:
                 chunk = RetrievedChunk(
                     chunk_id=chunk_id,
                     similarity_score=ref.get("similarity_score", 0.0),
@@ -557,7 +563,8 @@ class ClaimVerifier:
                     page_number=str(ref.get("page_number", "")),
                     source_file=ref.get("source_file", ""),
                     chunk_index=ref.get("chunk_index", 0),
-                    chunk_text=record.text,
+                    chunk_text=text.strip(),
+                    parent_document_id=ref.get("parent_document_id") or (record.parent_document_id if record else ""),
                     dense_score=ref.get("dense_score", 0.0),
                     sparse_score=ref.get("sparse_score", 0.0),
                     dense_rank=ref.get("dense_rank", -1),
@@ -566,19 +573,32 @@ class ClaimVerifier:
                     reranker_score=ref.get("reranker_score", 0.0)
                 )
                 retrieved_chunks.append(chunk)
+        missing = [r["chunk_id"] for r in trace.retrieved_chunk_references
+                   if r["chunk_id"] not in {c.chunk_id for c in retrieved_chunks}]
+        if missing:
+            trace.diagnostics = {**(trace.diagnostics or {}), "unresolved_chunk_ids": missing}
+        elif trace.diagnostics:
+            trace.diagnostics.pop("unresolved_chunk_ids", None)
         return retrieved_chunks
 
     def verify(self, trace: RAGTrace, claim_set: CandidateClaimSet) -> VerificationSummary:
         from src.chunk_registry import ChunkRegistry
         import os
 
-        registry_path = "artifacts/chunk_registry.json"
-        if not os.path.exists(registry_path):
-            raise FileNotFoundError(f"Cannot find {registry_path} to load chunk texts.")
-
-        registry = ChunkRegistry.load_from_json(registry_path)
+        corpus = trace.configuration_snapshot.get("corpus", "statutes")
+        registry_path = trace.configuration_snapshot.get("registry_path") or (
+            "artifacts/legal/chunk_registry_legal.json" if corpus == "judgments" else "artifacts/chunk_registry.json")
+        registry = ChunkRegistry.load_from_json(registry_path) if os.path.exists(registry_path) else None
         retrieved_chunks = self.build_retrieved_chunks_from_trace(trace, registry)
-        return self.verify_all(claim_set, trace.trace_id, retrieved_chunks)
+        summary = self.verify_all(claim_set, trace.trace_id, retrieved_chunks)
+        if (trace.diagnostics or {}).get("unresolved_chunk_ids"):
+            for result in summary.results:
+                if result.verification_status == VerificationStatus.UNSUPPORTED:
+                    result.verification_status = VerificationStatus.NOT_VERIFIABLE
+                    result.verification_reason = "Some original evidence could not be recovered; support cannot be conclusively assessed."
+            summary.unsupported_claims = sum(r.verification_status == VerificationStatus.UNSUPPORTED for r in summary.results)
+            summary.not_verifiable_claims = sum(r.verification_status == VerificationStatus.NOT_VERIFIABLE for r in summary.results)
+        return summary
 
     def verify_all(self, claim_set: CandidateClaimSet, trace_id: str, retrieved_chunks: List[RetrievedChunk]) -> VerificationSummary:
         """Verifies all claims in a CandidateClaimSet."""

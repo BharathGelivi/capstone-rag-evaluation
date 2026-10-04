@@ -75,8 +75,8 @@ class TestMemorySummarizer(unittest.TestCase):
             for i in range(3)
         ]
 
-        # _llm is None by default, so it should fall back to extractive
-        summary = self.summarizer.summarize(memories, "s1")
+        with patch.object(self.summarizer, "_get_llm", return_value=None):
+            summary = self.summarizer.summarize(memories, "s1")
         self.assertIsNotNone(summary)
         self.assertEqual(summary.question_count, 3)
 

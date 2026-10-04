@@ -377,7 +377,7 @@ def expand(
     }
 
     frontier: List[Tuple[str, int, List[str]]] = [
-        (document_to_node[d], 0, []) for d in seed_documents if d in document_to_node
+        (document_to_node[d], 0, []) for d in sorted(seed_documents) if d in document_to_node
     ]
     visited: Set[str] = {node for node, _, _ in frontier}
     seen_chunks: Set[str] = set(seed_chunk_ids)
@@ -387,7 +387,7 @@ def expand(
         node, depth, path = frontier.pop(0)
         if depth >= max_hops:
             continue
-        for _, target, data in graph.edges(node, data=True):
+        for _, target, data in sorted(graph.edges(node, data=True), key=lambda e: (e[1], e[2].get("relation", ""))):
             relation = data.get("relation", "")
             if relations and relation not in relations:
                 continue

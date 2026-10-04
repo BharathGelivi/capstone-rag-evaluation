@@ -9,7 +9,7 @@
 #   "sentence"      - SentenceSplitter (default, sentence-boundary aware, fast)
 #   "semantic"      - SemanticSplitterNodeParser (breakpoint-based, higher quality, slow)
 #   "hierarchical"  - HierarchicalNodeParser (multi-granularity, best for complex docs)
-# Changing strategy or chunk size requires a full re-ingest (delete db/chroma).
+# Changing strategy or chunk size requires a full re-ingest; successful ingestion replaces obsolete vectors.
 CHUNKING_STRATEGY = "sentence"
 
 CHUNK_SIZE = 512

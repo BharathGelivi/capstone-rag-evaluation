@@ -6,7 +6,6 @@ MemoryStore, MemoryRetriever, MemorySummarizer, and SessionManager.
 Provides a unified API for the UI and pipeline integration.
 """
 
-import json
 import logging
 import os
 from typing import Any, Dict, List, Optional
@@ -15,7 +14,6 @@ from src.memory.memory_models import (
     MemoryConfig,
     MemoryEntry,
     MemorySearchResult,
-    MemorySummary,
     MemoryType,
     SessionInfo,
 )
@@ -26,7 +24,6 @@ from src.memory.session_manager import SessionManager
 from src.memory.memory_utils import (
     generate_memory_id,
     get_timestamp,
-    save_json,
     setup_memory_logger,
 )
 
@@ -316,7 +313,7 @@ class MemoryManager:
             self.initialize()
         sid = session_id or self.session_manager.current_session_id
         if sid:
-            return self.store.get_session_memories(sid)
+            return self.store.get_session_memories(sid, limit=None)
         return []
 
     def export_session(
@@ -331,7 +328,7 @@ class MemoryManager:
         """Import a session from exported data."""
         if not self._initialized:
             self.initialize()
-        return self.session_manager.import_session(data)
+        return self.session_manager.import_session(data, embed_text=self.retriever.embed_text)
 
     # ------------------------------------------------------------------
     # Statistics and info

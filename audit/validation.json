@@ -1,0 +1,172 @@
+{
+  "python_suite": {
+    "tests": 505,
+    "failures": 0,
+    "errors": 0,
+    "skips": 7,
+    "seconds": 247.038
+  },
+  "last_audit_regressions": {
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 5.094
+  },
+  "last_affected_suites": {
+    "vector_store": 4,
+    "generator": 20,
+    "report_presenter": 14
+  },
+  "browser": {
+    "tests": 7,
+    "passed": 7,
+    "seconds": 18.103,
+    "backend": "fully mocked"
+  },
+  "pytest_functions": {
+    "passed": 23,
+    "seconds": 14.9
+  },
+  "evaluator_adapters": {
+    "ARES": 4,
+    "RAGChecker": 3
+  },
+  "frontend": {
+    "build": "passed",
+    "lint_warnings": 0,
+    "bundle_seconds": 0.329
+  },
+  "pip_check": "passed",
+  "compileall": "passed",
+  "git_diff_check": "passed",
+  "integrity": {
+    "protected_files": 2077,
+    "changed": [
+      "db/memory/chroma/chroma.sqlite3",
+      "db/memory/chroma/f4322e7b-19f1-4e36-a8fd-0b31a0be4f5b/data_level0.bin",
+      "db/memory/chroma/f4322e7b-19f1-4e36-a8fd-0b31a0be4f5b/length.bin",
+      "artifacts/benchmark_comparison/failures.log",
+      "artifacts/memory_logs/memory_2026-10-02.log"
+    ],
+    "missing": [],
+    "memory": {
+      "count_before": 28,
+      "count_after": 28,
+      "invalid_before": 28,
+      "invalid_after": 0,
+      "documents_and_metadata_identical": true
+    }
+  },
+  "benchmark": {
+    "health_in_process_baseline_median_ms": 0.703,
+    "health_in_process_after_median_ms": 11.120450042653829,
+    "samples_ms": [
+      15.501299989409745,
+      11.55509997624904,
+      10.202599922195077,
+      10.541200055740774,
+      11.428100056946278,
+      9.444699971936643,
+      10.234199929982424,
+      10.81280002836138,
+      12.467199936509132,
+      12.158700032159686
+    ],
+    "live_bounded_baseline_seconds": 43.979,
+    "live_after_seconds": null,
+    "note": "No additional live calls authorized. Health timings are in-process, not full RAG requests.",
+    "services": [
+      {
+        "name": "diagnostic-api",
+        "port": 8001,
+        "status": 200
+      },
+      {
+        "name": "chat-api",
+        "port": 8010,
+        "status": 200
+      },
+      {
+        "name": "frontend",
+        "port": 5173,
+        "status": 200
+      }
+    ],
+    "health_after_persistent_client_median_ms": 4.161600023508072,
+    "health_after_persistent_client_samples_ms": [
+      4.413499962538481,
+      3.9880999829620123,
+      3.810799913480878,
+      4.043100052513182,
+      4.286500043235719,
+      4.280099994502962,
+      4.040599917061627,
+      3.9646000368520617,
+      5.768199916929007,
+      5.1928999600932
+    ],
+    "health_comparability": "Client lifetime and concurrent audit workload affect timings; no controlled production latency claim."
+  },
+  "local_retrieval": {
+    "question": "What punishment does Section 103 of the BNS prescribe for murder?",
+    "network_calls": 0,
+    "index_copy": "C:\\Users\\geliv\\OneDrive\\Desktop\\rag_benchmark - Copy\\.cache\\xrag-audit\\benchmark-chroma",
+    "dependency_import_seconds": 25.99903359997552,
+    "cold_component_initialization_seconds": 13.894968200009316,
+    "first_retrieval_seconds": 2.7800408999901265,
+    "warm_retrieval_seconds": [
+      0.6915596999460831,
+      0.6713227999862283,
+      0.6912622000090778,
+      0.6775932000018656,
+      0.6676392999943346
+    ],
+    "warm_retrieval_median_seconds": 0.6775932000018656,
+    "chunks": 6,
+    "stable_chunk_ids": true,
+    "vectors": 893,
+    "rss_bytes": 1744556032,
+    "gpu_peak_allocated_bytes": 1831288320,
+    "config": {
+      "embedding_model": "BAAI/bge-base-en-v1.5",
+      "bge_query_instruction_applied": true,
+      "vector_store_type": "ChromaVectorStore",
+      "retrieval_mode": "hybrid",
+      "rerank_enabled": true,
+      "retrieval_type": "hybrid_cross_encoder",
+      "reranker_model": "BAAI/bge-reranker-base",
+      "rerank_input_size": 20,
+      "reranker_top_n": 6,
+      "pre_rerank_candidate_pool_size": 65,
+      "pre_rerank_min_dense_distance": 0.34673863649368286
+    },
+    "comparability": "Same statutory question and configured retrieval budgets. One prior live observation is not a controlled before/after distribution; generator and diagnostics are excluded."
+  },
+  "services": [
+    {
+      "port": 8010,
+      "pid": 20756,
+      "url": "http://127.0.0.1:8010",
+      "command": "\"C:\\Users\\geliv\\OneDrive\\Desktop\\rag_benchmark - Copy\\venv\\Scripts\\python.exe\" run_api_ui.py "
+    },
+    {
+      "port": 8001,
+      "pid": 37400,
+      "url": "http://127.0.0.1:8001",
+      "command": "\"C:\\Users\\geliv\\OneDrive\\Desktop\\rag_benchmark - Copy\\venv\\Scripts\\python.exe\" -m uvicorn src.api:app --host 127.0.0.1 --port 8001 "
+    },
+    {
+      "port": 5173,
+      "pid": 45712,
+      "url": "http://127.0.0.1:5173",
+      "command": "\"node\"   \"C:\\Users\\geliv\\OneDrive\\Desktop\\rag_benchmark - Copy\\frontend\\node_modules\\.bin\\\\..\\vite\\bin\\vite.js\" --host 127.0.0.1 --port 5173 --strictPort"
+    }
+  ],
+  "cleanup": {
+    "removed_new_synthetic_test_artifacts": [
+      "artifacts/answer_correctness/TRACE_TRACE_E2E.json",
+      "artifacts/claims/TRACE_TRACE_E2E.json"
+    ]
+  },
+  "live_after_benchmark": "not authorized/performed"
+}

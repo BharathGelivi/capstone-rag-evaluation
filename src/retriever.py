@@ -8,7 +8,7 @@ and fusing the results using Reciprocal Rank Fusion (RRF).
 import time
 import logging
 import re
-from functools import lru_cache
+from src.cache_utils import serialized_cache
 from typing import List, Dict, Any
 from dataclasses import dataclass
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
@@ -210,7 +210,7 @@ class Retriever:
         # best k out of a large candidate pool. That is where reranking earns
         # its cost, and experiments/exp02_reranker_window.py quantifies it.
         final_ranking = sorted(
-            rrf_scores.items(), key=lambda x: x[1], reverse=True
+            rrf_scores.items(), key=lambda x: (-x[1], x[0])
         )[:limit]
 
         retrieved_chunks = []
@@ -346,7 +346,7 @@ class Retriever:
         return result
 
 
-@lru_cache(maxsize=1)
+@serialized_cache(maxsize=1)
 def get_retriever(vector_store: VectorStore, chunk_registry: ChunkRegistry, top_k: int = RETRIEVAL_TOP_K) -> Retriever:
     """Lazily construct a Retriever (and its heavy models) once per process."""
     return Retriever(vector_store=vector_store, chunk_registry=chunk_registry, top_k=top_k)

@@ -10,17 +10,15 @@ import json
 import uuid
 import logging
 from datetime import datetime
-from dataclasses import dataclass, asdict, field
+from dataclasses import dataclass, asdict
 from typing import List, Dict, Any, Optional
 
 from src.retriever import RetrievalResult
 from src.generator import GenerationResult
-from configs.pipeline import CHUNK_SIZE, CHUNK_OVERLAP, RETRIEVAL_TOP_K, RERANKER_TOP_N
+from configs.pipeline import CHUNK_SIZE, CHUNK_OVERLAP, RERANKER_TOP_N
 from configs.models import (
     EMBEDDING_MODEL_NAME,
     RERANKER_MODEL_NAME,
-    LLM_TEMPERATURE,
-    LLM_MAX_TOKENS
 )
 
 # Configure logging
@@ -59,6 +57,10 @@ class RAGTrace:
     @classmethod
     def from_json(cls, data_str: str) -> 'RAGTrace':
         data = json.loads(data_str) if isinstance(data_str, str) else data_str
+        data = dict(data)
+        for key in ("claim_verification", "claim_error"):
+            if key in data:
+                data["diagnostics"] = {**(data.get("diagnostics") or {}), key: data.pop(key)}
         return cls(**data)
 
 class RAGTraceBuilder:
@@ -102,13 +104,21 @@ class RAGTraceBuilder:
             "embedding_model": EMBEDDING_MODEL_NAME,
             "chunk_size": CHUNK_SIZE,
             "chunk_overlap": CHUNK_OVERLAP,
-            "retrieval_top_k": RETRIEVAL_TOP_K,
+            "retrieval_top_k": retrieval_result.top_k,
             "reranker_model": RERANKER_MODEL_NAME,
-            "reranker_top_n": RERANKER_TOP_N,
+            "reranker_top_n": retrieval_result.retrieval_metadata.get("reranker_top_n", RERANKER_TOP_N),
             "llm_model": generation_result.model_name,
-            "llm_temperature": LLM_TEMPERATURE,
-            "llm_max_tokens": LLM_MAX_TOKENS
+            "llm_temperature": generation_result.temperature,
+            "temperature": generation_result.temperature,
+            "llm_max_tokens": generation_result.max_tokens,
+            **{k: v for k, v in retrieval_result.retrieval_metadata.items()
+               if k in ("corpus", "registry_path", "arm", "chunking_strategy", "retrieval_mode", "rerank_enabled", "bm25_enabled", "reranker_enabled")},
         }
+        mode = config_snapshot.get("retrieval_mode")
+        if mode is not None:
+            config_snapshot.setdefault("bm25_enabled", mode in ("bm25", "hybrid"))
+        if "rerank_enabled" in config_snapshot:
+            config_snapshot.setdefault("reranker_enabled", config_snapshot["rerank_enabled"])
         
         # Create execution statistics
         execution_stats = {
@@ -126,7 +136,8 @@ class RAGTraceBuilder:
             "embedding_engine": "completed",
             "vector_store": "completed",
             "retriever": "completed",
-            "generator": "completed"
+            "generator": ("failed" if generation_result.error else
+                          "partial" if generation_result.generation_metadata.get("finish_reason") == "length" else "completed")
         }
         
         trace = RAGTrace(
@@ -143,7 +154,8 @@ class RAGTraceBuilder:
             configuration_snapshot=config_snapshot,
             execution_statistics=execution_stats,
             pipeline_stage_status=pipeline_stage_status,
-            diagnostics=None
+            diagnostics={"retrieval_metadata": retrieval_result.retrieval_metadata,
+                         "generation_metadata": generation_result.generation_metadata}
         )
         
         logger.info(f"RAGTrace built successfully: {trace.trace_id}")

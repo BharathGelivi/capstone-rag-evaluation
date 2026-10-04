@@ -9,7 +9,6 @@ import logging
 from abc import ABC, abstractmethod
 from typing import List, Dict, Any, Optional
 import chromadb
-from chromadb.config import Settings
 
 from src.embedding_engine import EmbeddingRecord
 from src.chunk_registry import ChunkRegistry
@@ -89,26 +88,11 @@ class ChromaVectorStore(VectorStore):
         try:
             self.client = chromadb.PersistentClient(path=self.persist_dir)
             
-            try:
-                self.collection = self.client.get_or_create_collection(
+            self.collection = self.client.get_or_create_collection(
                     name=self.collection_name,
                     metadata={"hnsw:space": "cosine"},
                     embedding_function=_NullEmbeddingFunction(),
                 )
-            except Exception as ve:
-                if "Embedding function conflict" in str(ve) or "conflict" in str(ve).lower():
-                    logger.warning("Re-creating Chroma collection to match 768-dim embedding model.")
-                    try:
-                        self.client.delete_collection(name=self.collection_name)
-                    except Exception:
-                        pass
-                    self.collection = self.client.create_collection(
-                        name=self.collection_name,
-                        metadata={"hnsw:space": "cosine"},
-                        embedding_function=_NullEmbeddingFunction(),
-                    )
-                else:
-                    raise
             logger.info("ChromaDB collection initialized successfully.")
         except Exception as e:
             logger.error(f"Failed to initialize ChromaDB collection: {e}")
@@ -203,6 +187,36 @@ class ChromaVectorStore(VectorStore):
             n_results=top_k
         )
         return results
+
+    def publish_registry(self, records, registry, registry_path):
+        """Publish a complete new view only after its vectors have been stored."""
+        ids = {r.chunk_id for r in records}
+        if not ids or ids != set(registry._records):
+            raise ValueError("Refusing to publish an empty or incomplete corpus")
+        previous = set(self.collection.get(include=[])["ids"])
+        overlap = sorted(previous & ids)
+        originals = [self.collection.get(ids=overlap[start:start + 5000],
+                     include=["embeddings", "documents", "metadatas"])
+                     for start in range(0, len(overlap), 5000)]
+        try:
+            self.add_embeddings(records, registry)
+            stored = set(self.collection.get(ids=sorted(ids), include=[])["ids"])
+            if stored != ids:
+                raise RuntimeError("Vector insertion was incomplete; previous registry was preserved")
+            registry.save_to_json(registry_path)
+        except Exception:
+            # Upserts may have changed reused IDs before a later batch failed.
+            for original in originals:
+                self.collection.upsert(**{key: original[key] for key in
+                    ("ids", "embeddings", "documents", "metadatas") if original.get(key) is not None})
+            added = sorted(set(self.collection.get(include=[])["ids"]) & (ids - previous))
+            for start in range(0, len(added), 5000):
+                self.collection.delete(ids=added[start:start + 5000])
+            raise
+        obsolete = sorted(previous - ids)
+        batch = min(self.client.get_max_batch_size(), 5000)
+        for start in range(0, len(obsolete), batch):
+            self.collection.delete(ids=obsolete[start:start + batch])
 
     def get_by_chunk_id(self, chunk_id: str) -> Optional[Dict[str, Any]]:
         """Retrieves a specific stored record by its exact chunk ID."""
