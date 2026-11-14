@@ -11,9 +11,19 @@ const verdictLabels = {
 
 export default function EvidenceExplorer({ trace }: { trace: TraceData | null }) {
   const [filter, setFilter] = useState("ALL");
+  const [copyFeedback, setCopyFeedback] = useState("");
+  async function copyEvidence(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyFeedback("Claim and evidence copied.");
+    } catch {
+      setCopyFeedback("Could not copy. Select the claim and evidence text and copy manually.");
+    }
+  }
   const claims = trace?.claim_verification?.results ?? [];
   return <section className="card elev-sm" aria-label="Claim evidence explorer">
     <h2>Claim evidence explorer</h2>
+    <p role="status" aria-live="polite">{copyFeedback}</p>
     <p>Inspect each claim against the evidence used by the verifier. Scores are model outputs, not proof of correctness.</p>
     {trace?.claim_error && <p role="alert">Verification failed: {trace.claim_error}</p>}
     {!claims.length && <p>No verified claims available. Enable Deep analysis above, then ask a question in Chat.</p>}
@@ -35,6 +45,16 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
         return <details key={c.claim_id} style={{ marginTop: 16, padding: 16, border: "1px solid #94a3b8", borderRadius: 12 }}>
           <summary style={{ cursor: "pointer" }}><strong>{c.status.replaceAll("_", " ")}</strong> - {c.claim_text}</summary>
           <p>{c.reason || "No explanation supplied by the verifier."}</p>
+          <button type="button" disabled={!evidence} onClick={() => {
+            setCopyFeedback("");
+            void copyEvidence([
+              `Claim: ${c.claim_text}`,
+              `Verdict: ${verdictLabels[c.status]}`,
+              `Source: ${source?.source_file || c.best_chunk_id || "Unknown"}`,
+              ...(source?.page_number != null ? [`Page: ${source.page_number}`] : []),
+              `Evidence: ${evidence}`,
+            ].join("\n"));
+          }}>Copy evidence</button>
           <p><strong>Evidence</strong> � {source?.source_file || c.best_chunk_id || "No source identified"}{source?.page_number != null ? ` � Page ${source.page_number}` : ""}</p>
           {evidence ? <blockquote style={{ borderLeft: "3px solid #10a37f", paddingLeft: 16, whiteSpace: "pre-wrap" }}>{evidence}</blockquote> : <p>No evidence text available. This does not establish that the claim is false.</p>}
           <table style={{ width: "100%", textAlign: "left" }}><thead><tr><th>Model signal</th><th>Score</th></tr></thead><tbody>
@@ -46,3 +66,4 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
     </>}
   </section>;
 }
+
