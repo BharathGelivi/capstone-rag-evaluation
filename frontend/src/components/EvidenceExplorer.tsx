@@ -17,6 +17,7 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
     });
   }
   const [filter, setFilter] = useState("ALL");
+  const [search, setSearch] = useState("");
   const [copyFeedback, setCopyFeedback] = useState("");
   async function copyEvidence(text: string) {
     try {
@@ -27,6 +28,11 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
     }
   }
   const claims = trace?.claim_verification?.results ?? [];
+  const query = search.trim().toLowerCase();
+  const visibleClaims = claims.filter(claim =>
+    (filter === "ALL" || claim.status === filter) &&
+    claim.claim_text.toLowerCase().includes(query)
+  );
   return <section ref={explorerRef} className="card elev-sm" aria-label="Claim evidence explorer">
     <h2>Claim evidence explorer</h2>
     <p role="status" aria-live="polite">{copyFeedback}</p>
@@ -45,11 +51,17 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
         <option value="ALL">All claims ({claims.length})</option>
         {[...new Set(claims.map(c => c.status))].map(s => <option key={s} value={s}>{s.replaceAll("_", " ")}</option>)}
       </select></label>
+      <label style={{ display: "block", marginTop: 12 }}>Search claims {" "}
+        <input type="search" value={search} onChange={event => setSearch(event.target.value)} placeholder="Find a word or phrase" />
+      </label>
+      {search && <button type="button" onClick={() => setSearch("")}>Clear search</button>}
+      <p role="status">Showing {visibleClaims.length} of {claims.length} claims</p>
+      {!visibleClaims.length && <p>No claims match your search and verdict filter.</p>}
       <div role="group" aria-label="Visible evidence panels" style={{ display: "flex", gap: 8, marginTop: 12 }}>
         <button type="button" onClick={() => setVisiblePanelsOpen(true)}>Expand all</button>
         <button type="button" onClick={() => setVisiblePanelsOpen(false)}>Collapse all</button>
       </div>
-      {claims.filter(c => filter === "ALL" || c.status === filter).map(c => {
+      {visibleClaims.map(c => {
         const source = trace?.retrieved_chunk_references.find(r => r.chunk_id === c.best_chunk_id);
         const evidence = c.evidence_text || source?.text;
         return <details key={c.claim_id} style={{ marginTop: 16, padding: 16, border: "1px solid #94a3b8", borderRadius: 12 }}>
