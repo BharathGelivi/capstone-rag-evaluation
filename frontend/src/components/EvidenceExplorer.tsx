@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { TraceData } from "../lib/api";
 
 const verdictLabels = {
@@ -10,6 +10,12 @@ const verdictLabels = {
 } as const;
 
 export default function EvidenceExplorer({ trace }: { trace: TraceData | null }) {
+  const explorerRef = useRef<HTMLElement>(null);
+  function setVisiblePanelsOpen(open: boolean) {
+    explorerRef.current?.querySelectorAll<HTMLDetailsElement>("details").forEach(panel => {
+      panel.open = open;
+    });
+  }
   const [filter, setFilter] = useState("ALL");
   const [copyFeedback, setCopyFeedback] = useState("");
   async function copyEvidence(text: string) {
@@ -21,7 +27,7 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
     }
   }
   const claims = trace?.claim_verification?.results ?? [];
-  return <section className="card elev-sm" aria-label="Claim evidence explorer">
+  return <section ref={explorerRef} className="card elev-sm" aria-label="Claim evidence explorer">
     <h2>Claim evidence explorer</h2>
     <p role="status" aria-live="polite">{copyFeedback}</p>
     <p>Inspect each claim against the evidence used by the verifier. Scores are model outputs, not proof of correctness.</p>
@@ -39,6 +45,10 @@ export default function EvidenceExplorer({ trace }: { trace: TraceData | null })
         <option value="ALL">All claims ({claims.length})</option>
         {[...new Set(claims.map(c => c.status))].map(s => <option key={s} value={s}>{s.replaceAll("_", " ")}</option>)}
       </select></label>
+      <div role="group" aria-label="Visible evidence panels" style={{ display: "flex", gap: 8, marginTop: 12 }}>
+        <button type="button" onClick={() => setVisiblePanelsOpen(true)}>Expand all</button>
+        <button type="button" onClick={() => setVisiblePanelsOpen(false)}>Collapse all</button>
+      </div>
       {claims.filter(c => filter === "ALL" || c.status === filter).map(c => {
         const source = trace?.retrieved_chunk_references.find(r => r.chunk_id === c.best_chunk_id);
         const evidence = c.evidence_text || source?.text;
