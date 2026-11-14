@@ -1,3 +1,4 @@
+import EvidenceExplorer from "./EvidenceExplorer";
 import { useEffect, useState } from "react";
 import { getLatestTrace, getTrace, type TraceData } from "../lib/api";
 import type { RuntimeSettings } from "../App";
@@ -60,7 +61,7 @@ export default function Debug({ settings, onSettingsChange, lastTraceId }: Debug
 
       <div className="card elev-sm">
         <div className="card-kicker">
-          {trace ? `Last trace — ${trace.trace_id}` : loading ? "Last trace" : "Last trace — none recorded yet"}
+          {trace ? `Last trace - ${trace.trace_id}` : loading ? "Last trace" : "Last trace - none recorded yet"}
         </div>
         {trace && (
           <div className="debug-trace-rows">
@@ -70,24 +71,26 @@ export default function Debug({ settings, onSettingsChange, lastTraceId }: Debug
                 <div className="debug-trace-track">
                   <div className="debug-trace-fill" style={{ width: `${Math.min(100, ((val || 0) / total) * 100)}%` }} />
                 </div>
-                <span className="debug-trace-time">{val != null ? (val < 1 ? `${Math.round(val * 1000)} ms` : `${val.toFixed(2)} s`) : "—"}</span>
+                <span className="debug-trace-time">{val != null ? (val < 1 ? `${Math.round(val * 1000)} ms` : `${val.toFixed(2)} s`) : "-"}</span>
               </div>
             ))}
           </div>
         )}
       </div>
 
+      <EvidenceExplorer trace={trace} />
       <div className="card elev-sm">
         <div className="card-kicker">Prompt sent to model</div>
-        <pre className="debug-pre">{trace?.prompt_snapshot || (loading ? "Loading…" : "No trace available.")}</pre>
+        <pre className="debug-pre">{trace?.prompt_snapshot || (loading ? "Loading." : "No trace available.")}</pre>
       </div>
 
       <div className="card elev-sm">
         <div className="card-kicker">Raw retrieval metadata</div>
         <pre className="debug-pre">
-          {trace ? JSON.stringify(trace.retrieved_chunk_references, null, 2) : (loading ? "Loading…" : "No trace available.")}
+          {trace ? JSON.stringify(trace.retrieved_chunk_references, null, 2) : (loading ? "Loading." : "No trace available.")}
         </pre>
       </div>
     </div>
   );
 }
+

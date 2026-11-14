@@ -31,3 +31,20 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# Local documentation, generated visual aids, and analysis tools
+*.md
+.archify/
+.codecharta/
+scripts/run_codecharta.py
+
+# Generated output and development caches
+artifacts/
+node_modules/
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+*.tsbuildinfo
+.env.*
+!.env.example
